@@ -4,7 +4,7 @@
 build_xml.py is a script to reconstruct the Achron.ocs.xml file from all the source files in this repo.
 The sources files are organized by race/unit/concept, this aides makeing changes as it provides some organization to the sources,
 making it eaiser to find and make approapirate edits.
-However these files to need to be combined into a single large file Achron.ocs.xml that can be compiled by the game moding tools.
+However these files to need to be combined into a single large file *.ocs.xml that can be compiled by the game moding tools.
 Therefore each source XML file can contain the 8 toplevel elements:
     AIScripts
     Sounds
@@ -16,7 +16,7 @@ Therefore each source XML file can contain the 8 toplevel elements:
     ObjectClasses
 The subelements from each source file will be combined into the single Echo_mod.ocs.xml.
 '''
-print ("hello world")
+print ("Running Achron OCS XML Assembler")
 
 import sys
 import glob
