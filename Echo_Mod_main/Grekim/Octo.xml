@@ -133,7 +133,7 @@
             <Is3DSound>1</Is3DSound>
             <ReferenceDistanceHeard>10</ReferenceDistanceHeard>
         </Sound>
-    <Sounds>
+    </Sounds>
     <EffectsResources />
     <GlobalGameResources />
     <TimelineStatistics />
