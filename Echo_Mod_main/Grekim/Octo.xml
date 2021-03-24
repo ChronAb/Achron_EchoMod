@@ -17,60 +17,60 @@
         
         <!-- general/grekim -->
         <AIScript>
-            <Name>Script4_basic_idle</Name>
+            <Name>s000_basic_idle</Name>
             <Path>./ais/general_idle.abn</Path>
         </AIScript>
         <AIScript>
-            <Name>Script21_move</Name>
+            <Name>s005_move</Name>
             <Path>./ais/move_dispatch.abn</Path>
         </AIScript>
         <AIScript>
-            <Name>Script22_moving</Name>
+            <Name>s008_moving</Name>
             <Path>./ais/move.abn</Path>
         </AIScript>
         <AIScript>
-            <Name>Script193_atk_target</Name>
-            <Path>./ais/attackU_dispatch.abn</Path>
-        </AIScript>
-        <AIScript>
-            <Name>Script194_atking</Name>
-            <Path>./ais/attack.abn</Path>
-        </AIScript>
-        <AIScript>
-            <Name>Script195_atking_target</Name>
-            <Path>./ais/attack_unit.abn</Path>
-        </AIScript>
-        <AIScript>
-            <Name>Script196_atk_move</Name>
+            <Name>s015_atk_move</Name>
             <Path>./ais/attack_dispatch.abn</Path>
         </AIScript>
         <AIScript>
-            <Name>Script197_stop</Name>
+            <Name>s016_atk_target</Name>
+            <Path>./ais/attackU_dispatch.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>s017_atking</Name>
+            <Path>./ais/attack.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>s018_atking_target</Name>
+            <Path>./ais/attack_unit.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>s025_stop</Name>
             <Path>./ais/stop.abn</Path>
         </AIScript>
         <AIScript>
-            <Name>Script198_ptrl</Name>
+            <Name>s030_ptrl</Name>
             <Path>./ais/patrol_dispatch.abn</Path>
         </AIScript>
         <AIScript>
-            <Name>Script199_ptrling</Name>
+            <Name>s035_ptrling</Name>
             <Path>./ais/patrol.abn</Path>
-        </AIScript>
-        <AIScript>
-            <Name>Script206_tport</Name>
-            <Path>./ais/teleportme.abn</Path>
         </AIScript>
         
         <AIScript>
-            <Name>Script209_g_cport_na</Name>
-            <Path>./ais/unknown.abn</Path>
+            <Name>s040_tport</Name>
+            <Path>./ais/teleportme.abn</Path>
         </AIScript>
         <AIScript>
-            <Name>Script211_g_cport</Name>
+            <Name>s051_g_cport</Name>
             <Path>./ais/grekim_cast.abn</Path>
         </AIScript>
         <AIScript>
-            <Name>Script213_make_room</Name>
+            <Name>s055_cport_na</Name>
+            <Path>./ais/unknown.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>s060_make_room</Name>
             <Path>./ais/moveaway.abn</Path>
         </AIScript>
         
@@ -2004,83 +2004,81 @@
             <Objectives>
                 <Objective>
                     <ObjectiveNumber>0</ObjectiveNumber>
-                    <Script>Script4_basic_idle</Script>
+                    <Script>s000_basic_idle</Script>
                     <Name>Idle</Name>
                     <Details></Details>
+                    <ObjectiveControlShortcutNumber>3</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>1</ObjectiveNumber>
-                    <Script>Script21_move</Script>
+                    <Script>s005_move</Script>
                     <Name>Move</Name>
                     <Details> \Move to specified location \Move Speed: 3, MaxInc: 45\Vision Range: 18, Aggro Radius: 25 \Invisible in Fog of War</Details>
-                    <ObjectiveControlShortcutNumber>4</ObjectiveControlShortcutNumber>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>5</ObjectiveNumber>
-                    <Script>Script22_moving</Script>
-                    <Name>Moving</Name>
-                    <Details></Details>
-                    <ObjectiveControlShortcutNumber>4</ObjectiveControlShortcutNumber>
-                </Objective>
-                
-                <Objective>
-                    <ObjectiveNumber>4</ObjectiveNumber>
-                    <Script>Script193_atk_target</Script>
-                    <Name>Attack Unit</Name>
-                    <Details></Details>
                     <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
-                    <ParameterType>UNIT</ParameterType>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>6</ObjectiveNumber>
-                    <Script>Script194_atking</Script>
-                    <Name>Attacking</Name>
-                    <Details></Details>
-                    <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
-                    <ParameterType>POSITION</ParameterType>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>54</ObjectiveNumber>
-                    <Script>Script195_atking_target</Script>
-                    <Name>Attacking Unit</Name>
-                    <Details></Details>
-                    <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
-                    <ParameterType>UNIT</ParameterType>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>2</ObjectiveNumber>
-                    <Script>Script196_atk_move</Script>
-                    <Name>Attack</Name>
-                    <Details>Attack target or Attack-Move to location \+25% TSS Energy per attack \[Weapons Avg Damage/10secs ]\Gnd: 50,  R 1,  SR 3,  Sta C</Details>
+                    <Script>s008_moving</Script>
+                    <Name>Moving</Name>
+                    <Details></Details>
                     <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
-                    <ParameterType>POSITION</ParameterType>
                 </Objective>
-                
-                <Objective>
-                    <ObjectiveNumber>16</ObjectiveNumber>
-                    <Script>Script197_stop</Script>
-                    <Name>Stop</Name>
-                    <Details> \Interrupt current objective\and return to idling</Details>
-                </Objective>
-                
                 <Objective>
                     <ObjectiveNumber>3</ObjectiveNumber>
-                    <Script>Script198_ptrl</Script>
-                    <Name>Patrol</Name>
-                    <Details>Hold CTRL and select up to 5 points to\continuously patrol around\Target one of your own units to HOLD\current position or select a single\location to HOLD that position</Details>
-                    <ObjectiveControlShortcutNumber>2</ObjectiveControlShortcutNumber>
+                    <Script>s015_atk_move</Script>
+                    <Name>Attack</Name>
+                    <Details>Attack target or Attack-Move to location \+25% TSS Energy per attack \[Weapons Avg Damage/10secs ]\Gnd: 50,  R 1,  SR 3,  Sta C</Details>
+                    <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
+                    <ParameterType>POSITION</ParameterType>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>4</ObjectiveNumber>
+                    <Script>s016_atk_target</Script>
+                    <Name>Attack Unit</Name>
+                    <Details></Details>
+                    <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
+                    <ParameterType>UNIT</ParameterType>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>5</ObjectiveNumber>
+                    <Script>s017_atking</Script>
+                    <Name>Attacking</Name>
+                    <Details></Details>
+                    <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
+                    <ParameterType>POSITION</ParameterType>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>6</ObjectiveNumber>
+                    <Script>s018_atking_target</Script>
+                    <Name>Attacking Unit</Name>
+                    <Details></Details>
+                    <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
+                    <ParameterType>UNIT</ParameterType>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>7</ObjectiveNumber>
-                    <Script>Script199_ptrling</Script>
+                    <Script>s025_stop</Script>
+                    <Name>Stop</Name>
+                    <Details> \Interrupt current objective\and return to idling</Details>
+                    <ObjectiveControlShortcutNumber>3</ObjectiveControlShortcutNumber>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>8</ObjectiveNumber>
+                    <Script>s030_ptrl</Script>
+                    <Name>Patrol</Name>
+                    <Details>Hold CTRL and select up to 5 points to\continuously patrol around\Target one of your own units to HOLD\current position or select a single\location to HOLD that position</Details>
+                    <ObjectiveControlShortcutNumber>4</ObjectiveControlShortcutNumber>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>9</ObjectiveNumber>
+                    <Script>s035_ptrling</Script>
                     <Name>Patrolling</Name>
                     <Details></Details>
-                    <ObjectiveControlShortcutNumber>2</ObjectiveControlShortcutNumber>
+                    <ObjectiveControlShortcutNumber>4</ObjectiveControlShortcutNumber>
                 </Objective>
-                
                 <Objective>
-                    <ObjectiveNumber>47</ObjectiveNumber>
-                    <Script>Script206_tport</Script>
+                    <ObjectiveNumber>10</ObjectiveNumber>
+                    <Script>s040_tport</Script>
                     <Name>Teleport</Name>
                     <Details>Teleport to a specified location\ \Self-skipping requires line of sight\Using a Teleporter negates costs\Must not have a TSS</Details>
                     <Resource1>40</Resource1>
@@ -2088,22 +2086,22 @@
                     <Resource5>20</Resource5>
                 </Objective>
                 <Objective>
-                    <ObjectiveNumber>46</ObjectiveNumber>
-                    <Script>Script209_g_cport_na</Script>
-                    <Name>Chronoport</Name>
-                    <Details>   Not Available\    Requires Chronoporting upgrade</Details>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>48</ObjectiveNumber>
-                    <Script>Script211_g_cport</Script>
+                    <ObjectiveNumber>11</ObjectiveNumber>
+                    <Script>s051_g_cport</Script>
                     <Name>Chronoport</Name>
                     <Details>Chronoport to a specified point in time\ \Recharges Shields 50%\Must not have a TSS</Details>
                     <Resource1>40</Resource1>
                     <Resource4>0</Resource4>
                 </Objective>
                 <Objective>
-                    <ObjectiveNumber>49</ObjectiveNumber>
-                    <Script>Script213_make_room</Script>
+                    <ObjectiveNumber>12</ObjectiveNumber>
+                    <Script>s055_cport_na</Script>
+                    <Name>Chronoport</Name>
+                    <Details>   Not Available\    Requires Chronoporting upgrade</Details>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>13</ObjectiveNumber>
+                    <Script>s060_make_room</Script>
                     <Name>Move Away</Name>
                     <Details></Details>
                 </Objective>
@@ -2115,14 +2113,14 @@
                 </Objective-->
                 
                 <Objective>
-                    <ObjectiveNumber>12</ObjectiveNumber>
+                    <ObjectiveNumber>15</ObjectiveNumber>
                     <Script>Script258_go_morph_rp</Script>
                     <Name>Moving to Morph </Name>
                     <Details></Details>
                     <ObjectiveControlShortcutNumber>6</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
-                    <ObjectiveNumber>18</ObjectiveNumber>
+                    <ObjectiveNumber>16</ObjectiveNumber>
                     <Script>Script305_octo_rp</Script>
                     <Name>Resource Processor</Name>
                     <Details>   - place near resource bins\Assimilates resources: Power and Q-Plasma\Can convert Q-Plasma into Power\Cloaks and moves itself</Details>
@@ -2139,7 +2137,7 @@
                 </Objective-->
                 
                 <Objective>
-                    <ObjectiveNumber>10</ObjectiveNumber>
+                    <ObjectiveNumber>20</ObjectiveNumber>
                     <Script>Script307_octo_dome</Script>
                     <Name>Morph: Dome</Name>
                     <Details> \Durable cloaked weapon emplacement \Devastating to aircraft \Can move itself \Detects cloaked units</Details>
@@ -2172,7 +2170,7 @@
                 </Objective>
                 
                 <Objective>
-                    <ObjectiveNumber>13</ObjectiveNumber>
+                    <ObjectiveNumber>40</ObjectiveNumber>
                     <Script>Script415_rally_to</Script>
                     <Name>Offspring Dispatch</Name>
                     <Details></Details>
@@ -2182,7 +2180,27 @@
             <ControlShortcuts>
                 <ControlShortcut>
                     <ControlNumber>0</ControlNumber>
-                    <ControlObjectiveNumber>2</ControlObjectiveNumber>
+                    <ControlObjectiveNumber>1</ControlObjectiveNumber>
+                    <MouseInputType>SHORTCUT_TILE</MouseInputType>
+                    <ParameterType>POSITION_AUTO_HEIGHT</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut>$AchronKBMove</KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>6</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions />
+                </ControlShortcut>
+                <ControlShortcut>
+                    <ControlNumber>1</ControlNumber>
+                    <ControlObjectiveNumber>3</ControlObjectiveNumber>
                     <MouseInputType>SHORTCUT_QUICK_1</MouseInputType>
                     <ParameterType>POSITION_OR_UNIT</ParameterType>
                     <Parameter>0</Parameter>
@@ -2206,6 +2224,163 @@
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
+                <ControlShortcut>
+                    <ControlNumber>2</ControlNumber>
+                    <ControlObjectiveNumber>4</ControlObjectiveNumber>
+                    <MouseInputType>SHORTCUT_ENEMY_UNIT</MouseInputType>
+                    <ParameterType>UNIT</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut></KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>1</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions />
+                </ControlShortcut>
+                <ControlShortcut>
+                    <ControlNumber>3</ControlNumber>
+                    <ControlObjectiveNumber>7</ControlObjectiveNumber>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut>$AchronKBStop</KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>U_IS_CARRIED</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>0</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+                <ControlShortcut>
+                    <ControlNumber>4</ControlNumber>
+                    <ControlObjectiveNumber>8</ControlObjectiveNumber>
+                    <MouseInputType>SHORTCUT_QUICK_3</MouseInputType>
+                    <ParameterType>POSITION_OR_UNIT</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut>$AchronKBPatrol</KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>U_IS_CARRIED</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>0</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+                <ControlShortcut>
+                    <ControlNumber>5</ControlNumber>
+                    <ControlObjectiveNumber>10</ControlObjectiveNumber>
+                    <ParameterType>POSITION</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut>$AchronKBTeleport</KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>U_IS_CARRIED</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>0</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+                <ControlShortcut>
+                    <ControlNumber>6</ControlNumber>
+                    <ControlObjectiveNumber>11</ControlObjectiveNumber>
+                    <ParameterType>TIME</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut>$AchronKBChronoport</KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>U_IS_CARRIED</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>0</Value>
+                        </ControlCondition>
+                        <ControlCondition>
+                            <Resource>P_ADVANCEMENTS</Resource>
+                            <Comparison>BITMASK</Comparison>
+                            <Value>512</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+                <ControlShortcut>
+                    <ControlNumber>7</ControlNumber>
+                    <ControlObjectiveNumber>12</ControlObjectiveNumber>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut></KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>1</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>U_IS_CARRIED</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>0</Value>
+                        </ControlCondition>
+                        <ControlCondition>
+                            <Resource>P_ADVANCEMENTS</Resource>
+                            <Comparison>BITMASK_NOT</Comparison>
+                            <Value>512</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+                
                 <ControlShortcut>
                     <ControlNumber>1</ControlNumber>
                     <ControlObjectiveNumber>37</ControlObjectiveNumber>
@@ -2243,72 +2418,6 @@
                     </ControlConditions>
                 </ControlShortcut>
                 <ControlShortcut>
-                    <ControlNumber>2</ControlNumber>
-                    <ControlObjectiveNumber>3</ControlObjectiveNumber>
-                    <MouseInputType>SHORTCUT_QUICK_3</MouseInputType>
-                    <ParameterType>POSITION_OR_UNIT</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut>$AchronKBPatrol</KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>U_IS_CARRIED</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>0</Value>
-                        </ControlCondition>
-                    </ControlConditions>
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>4</ControlNumber>
-                    <ControlObjectiveNumber>1</ControlObjectiveNumber>
-                    <MouseInputType>SHORTCUT_TILE</MouseInputType>
-                    <ParameterType>POSITION_AUTO_HEIGHT</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut>$AchronKBMove</KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>6</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions />
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>5</ControlNumber>
-                    <ControlObjectiveNumber>4</ControlObjectiveNumber>
-                    <MouseInputType>SHORTCUT_ENEMY_UNIT</MouseInputType>
-                    <ParameterType>UNIT</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut></KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>1</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions />
-                </ControlShortcut>
-                <ControlShortcut>
                     <ControlNumber>6</ControlNumber>
                     <ControlObjectiveNumber>18</ControlObjectiveNumber>
                     <MouseInputType>SHORTCUT_QUICK_4</MouseInputType>
@@ -2331,41 +2440,6 @@
                             <Resource>U_IS_CARRIED</Resource>
                             <Comparison>EQUAL</Comparison>
                             <Value>0</Value>
-                        </ControlCondition>
-                    </ControlConditions>
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>7</ControlNumber>
-                    <ControlObjectiveNumber>48</ControlObjectiveNumber>
-                    <ParameterType>TIME</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut>$AchronKBChronoport</KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>U_IS_CARRIED</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>0</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>U_STATUS</Resource>
-                            <Comparison>BITMASK_NOT</Comparison>
-                            <Value>4</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>P_ADVANCEMENTS</Resource>
-                            <Comparison>BITMASK</Comparison>
-                            <Value>512</Value>
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
@@ -2479,36 +2553,6 @@
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>13</ControlNumber>
-                    <ControlObjectiveNumber>46</ControlObjectiveNumber>
-                    <ParameterType>NO_PARAMETER</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut></KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>1</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>U_IS_CARRIED</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>0</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>P_ADVANCEMENTS</Resource>
-                            <Comparison>BITMASK_NOT</Comparison>
-                            <Value>512</Value>
-                        </ControlCondition>
-                    </ControlConditions>
-                </ControlShortcut>
                 <!-- ControlShortcut>
                     <ControlNumber>15</ControlNumber>
                     <ControlObjectiveNumber>45</ControlObjectiveNumber>
@@ -2544,56 +2588,6 @@
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut -->
-                <ControlShortcut>
-                    <ControlNumber>16</ControlNumber>
-                    <ControlObjectiveNumber>16</ControlObjectiveNumber>
-                    <ParameterType>NO_PARAMETER</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut>$AchronKBStop</KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>U_IS_CARRIED</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>0</Value>
-                        </ControlCondition>
-                    </ControlConditions>
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>17</ControlNumber>
-                    <ControlObjectiveNumber>47</ControlObjectiveNumber>
-                    <ParameterType>POSITION</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut>$AchronKBTeleport</KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>U_IS_CARRIED</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>0</Value>
-                        </ControlCondition>
-                    </ControlConditions>
-                </ControlShortcut>
                 <ControlShortcut>
                     <ControlNumber>19</ControlNumber>
                     <ControlObjectiveNumber>35</ControlObjectiveNumber>
