@@ -1,12 +1,15 @@
 <?xml version="1.0" ?>
 <ResequenceObjectClassSet>
-    <AIScripts />
-    <Sounds />
+    <AIScripts>
+    </AIScripts>
+    <Sounds>
+    </Sounds>
     <EffectsResources />
     <GlobalGameResources />
     <TimelineStatistics />
     <UnitLists />
-    <ActionStepModifiers />
+    <ActionStepModifiers>
+    </ActionStepModifiers>
     <ObjectClasses>
     </ObjectClasses>
 </ResequenceObjectClassSet>
