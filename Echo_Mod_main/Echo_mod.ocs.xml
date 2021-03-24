@@ -11847,7 +11847,7 @@ Weapons: 2X  regen. [+360 hp, +36/s]</Description>
           <Script>Script258_go_morph_rp</Script>
           <Name>Moving to Morph </Name>
           <Details/>
-          <ObjectiveControlShortcutNumber>6</ObjectiveControlShortcutNumber>
+          <ObjectiveControlShortcutNumber>9</ObjectiveControlShortcutNumber>
         </Objective>
         <Objective>
           <ObjectiveNumber>16</ObjectiveNumber>
@@ -11857,7 +11857,7 @@ Weapons: 2X  regen. [+360 hp, +36/s]</Description>
           <Resource1>400</Resource1>
           <Resource4>100</Resource4>
           <Resource6>0</Resource6>
-          <ObjectiveControlShortcutNumber>6</ObjectiveControlShortcutNumber>
+          <ObjectiveControlShortcutNumber>9</ObjectiveControlShortcutNumber>
         </Objective>
         <!--Objective>
                     <ObjectiveNumber>17</ObjectiveNumber>
@@ -11873,7 +11873,7 @@ Weapons: 2X  regen. [+360 hp, +36/s]</Description>
           <Resource1>200</Resource1>
           <Resource4>200</Resource4>
           <Resource6>0</Resource6>
-          <ObjectiveControlShortcutNumber>10</ObjectiveControlShortcutNumber>
+          <ObjectiveControlShortcutNumber>11</ObjectiveControlShortcutNumber>
         </Objective>
         <!--Objective>
                     <ObjectiveNumber>9</ObjectiveNumber>
@@ -11887,21 +11887,21 @@ Weapons: 2X  regen. [+360 hp, +36/s]</Description>
           <Name>Factory/Progeneration Mode</Name>
           <Details>Create base and pod-class units\when near an Arcticus\or other progenerators</Details>
           <ValidRadius>9</ValidRadius>
-          <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
+          <ObjectiveControlShortcutNumber>8</ObjectiveControlShortcutNumber>
         </Objective>
         <Objective>
           <ObjectiveNumber>37</ObjectiveNumber>
           <Script>Script300_quick_progen</Script>
           <Name>Factory/Progeneration Mode</Name>
           <Details>Create base and pod-class units\when near an Arcticus\or other progenerators</Details>
-          <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
+          <ObjectiveControlShortcutNumber>8</ObjectiveControlShortcutNumber>
         </Objective>
         <Objective>
           <ObjectiveNumber>40</ObjectiveNumber>
           <Script>Script415_rally_to</Script>
           <Name>Offspring Dispatch</Name>
           <Details/>
-          <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
+          <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
         </Objective>
       </Objectives>
       <ControlShortcuts>
@@ -12108,7 +12108,7 @@ Weapons: 2X  regen. [+360 hp, +36/s]</Description>
           </ControlConditions>
         </ControlShortcut>
         <ControlShortcut>
-          <ControlNumber>1</ControlNumber>
+          <ControlNumber>8</ControlNumber>
           <ControlObjectiveNumber>37</ControlObjectiveNumber>
           <MouseInputType>SHORTCUT_QUICK_2</MouseInputType>
           <ParameterType>POSITION_CLASS</ParameterType>
@@ -12144,7 +12144,7 @@ Weapons: 2X  regen. [+360 hp, +36/s]</Description>
           </ControlConditions>
         </ControlShortcut>
         <ControlShortcut>
-          <ControlNumber>6</ControlNumber>
+          <ControlNumber>9</ControlNumber>
           <ControlObjectiveNumber>18</ControlObjectiveNumber>
           <MouseInputType>SHORTCUT_QUICK_4</MouseInputType>
           <ParameterType>POSITION_CLASS</ParameterType>
@@ -12170,7 +12170,7 @@ Weapons: 2X  regen. [+360 hp, +36/s]</Description>
           </ControlConditions>
         </ControlShortcut>
         <!--ControlShortcut>
-                    <ControlNumber>9</ControlNumber>
+                    <ControlNumber>10</ControlNumber>
                     <ControlObjectiveNumber>9</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
@@ -12210,7 +12210,7 @@ Weapons: 2X  regen. [+360 hp, +36/s]</Description>
                     </ControlConditions>
                 </ControlShortcut-->
         <ControlShortcut>
-          <ControlNumber>10</ControlNumber>
+          <ControlNumber>11</ControlNumber>
           <ControlObjectiveNumber>10</ControlObjectiveNumber>
           <ParameterType>POSITION_CLASS</ParameterType>
           <Parameter>1065</Parameter>
@@ -12255,7 +12255,7 @@ Weapons: 2X  regen. [+360 hp, +36/s]</Description>
           </ControlConditions>
         </ControlShortcut>
         <ControlShortcut>
-          <ControlNumber>11</ControlNumber>
+          <ControlNumber>12</ControlNumber>
           <ControlObjectiveNumber>12</ControlObjectiveNumber>
           <ParameterType>NO_PARAMETER</ParameterType>
           <Parameter>0</Parameter>
@@ -12280,7 +12280,7 @@ Weapons: 2X  regen. [+360 hp, +36/s]</Description>
           </ControlConditions>
         </ControlShortcut>
         <!-- ControlShortcut>
-                    <ControlNumber>15</ControlNumber>
+                    <ControlNumber>13</ControlNumber>
                     <ControlObjectiveNumber>45</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
@@ -12315,7 +12315,7 @@ Weapons: 2X  regen. [+360 hp, +36/s]</Description>
                     </ControlConditions>
                 </ControlShortcut -->
         <ControlShortcut>
-          <ControlNumber>19</ControlNumber>
+          <ControlNumber>14</ControlNumber>
           <ControlObjectiveNumber>35</ControlObjectiveNumber>
           <MouseInputType>SHORTCUT_QUICK_2</MouseInputType>
           <ParameterType>NO_PARAMETER</ParameterType>
