@@ -1,0 +1,189 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+//  arcticus_idle.ais - idle script for arcticus bases
+
+#include common/include/unit_common_header.aih
+
+//loop through subordinates to find the slowest moving one for speed matching
+#define MATCH_SPEED  	int storedSpeed = 0;\
+						while (1) { \
+							target = unit->NextSubordinate; \
+							if (target>0) { \
+								int uclass = target->Class; \
+								int speed = 20; \
+								$SPEED_BY_CLASS \
+								if (uclass==$ARCTICUS_CLASS) { speed = target->AdditionalParameters[$ARCTICUS_SPEED_MATCH]; } \
+								storedSpeed = speed |> storedSpeed; \
+							} else {break; } } \
+						if (storedSpeed) { 	newap[$ARCTICUS_SPEED_MATCH] = storedSpeed; } 
+
+
+int ap = unit->AdditionalParameters;
+
+int I  = 0; $PRINT_AAP
+
+
+//clear the AP every 31 ticks if a 5-bit timestamp is stored
+PERFORM GET_CUR_TIME;
+int curtime = perf_ret;
+if (curtime[0,5]) {
+    if (curtime[0,5] == ap[11,5]) { //if timestamps line up, clear the AP
+        if (ap[$ARCTICUS_COMMAND]) { //had an arcticus command, remember it so that units don't speed match
+			ap = 0;
+			ap[$ARCTICUS_COMMAND] = 1;
+		} else {
+			ap = 0;
+		}
+        PERFORM SET_ADDITIONAL_PARAMS ap; 	
+    }
+	if (unit->Objective!=0) { PERFORM SET_OBJECTIVE 0; } //set objective to idle if running idle script
+}   
+
+
+int nonap = ap;
+int followCommandingArcticusOnly = 0;
+//just issued a player command via arcticus, ignore all other input from leader units
+if ( ap[$ARCTICUS_COMMAND]) {
+	nonap[$ARCTICUS_COMMAND] = 0; //clear out the command and the speed match bits
+	nonap[$ARCTICUS_SPEED_MATCH] = 0;
+	if (nonap) {  //do not ignore input from commanding arcticuses
+		followCommandingArcticusOnly = 1;
+	}
+}
+
+object myCommander = unit->Commander;
+
+//an arcticus can report to a unit or to an another arcticus
+if (myCommander->IsAlive == 1)  {
+
+	int cclass =  myCommander->Class;
+	if (cclass != $ARCTICUS_CLASS && myCommander.Rank < $BUILDINGS_RANK) {
+		PERFORM $ACTION_CHANGE_COMMANDER 0;
+		PERFORM NOTHING;
+	}
+	
+	if (myCommander==unit) {
+		PERFORM $ACTION_CHANGE_COMMANDER 0;
+		PERFORM NOTHING;
+	}
+
+	int cap = myCommander->AdditionalParameters;
+
+	//if linked to an another arcticus, grab its orders to pass on
+	if (cclass==$ARCTICUS_CLASS)  
+	{
+		//the other arcticus is dispatching an order AND this arcticus hasn't recently been ordered by the player
+		if (cap>0 && !ap[$ARCTICUS_PLAYER_DISPATCHED] ) 
+		{ 
+			//if the commander's # is higher than this unit and the timestamp matches 
+			//this order may have been cleared at the top of this script already
+			//so only run this part if this is being executed after the commander ran its script,
+			//or the timestamps do not match, preventing infinite loop of arcticuses
+			//setting ap in a circular hierarchy
+			if (unit > myCommander || curtime[0,5] != cap[11,5]) 
+			{
+				if (cap[$ARCTICUS_FOLLOW] && cap[$STOREDUNIT]>0)  //follow a leader unit of that arcticus
+				{			
+
+					if (cap != ap) { //this order is not yet stored into the ap
+						PERFORM SET_ADDITIONAL_PARAMS cap;
+						target = cap[$STOREDUNIT];
+						PERFORM SET_PARAM target->ObjectiveParameters;
+						PERFORM NOTHING;
+					}
+				} 
+				else if (!cap[$ARCTICUS_LINK]) //follow the arcticus itself, but only if it's not ordering its subordinates to relink
+				{
+					//set the ap on self as though this arcticus is dispatching the order
+					//except don't set the ARCTICUS_PLAYER_DISPATCHED bit
+					int newap = cap; //copy commander's AP
+					newap[$ARCTICUS_PLAYER_DISPATCHED] = 0; //clear the player dispatched bit
+					newap[$STOREDUNIT] = unit; //overwrite self into upper 16 bits
+					
+					
+					//this order is not yet stored into the ap 
+					if (newap != ap) { 
+						PERFORM SET_ADDITIONAL_PARAMS newap;
+						PERFORM SET_PARAM myCommander->ObjectiveParameters;
+						PERFORM NOTHING;
+					}
+					
+				}
+			}
+		}
+	}
+	else if (!followCommandingArcticusOnly)  //linked to a leader unit 
+	{ 
+		int obj = myCommander->Objective;
+		
+		int leadMoves = cap[$MOVE_COUNTER]; //leader's move counter, will be non-zero if recent order was issued	
+		
+		if (( leadMoves > 0 && ( obj == $OBJECTIVE_ATTACKING || 
+								obj == $OBJECTIVE_ATTACKING_UNIT || 
+								obj == $OBJECTIVE_UNIT_MOVE ||
+								obj == $OBJECTIVE_UNIT_DEFEND) )  ||
+			cap[$OBJECTIVE]==$OBJECTIVE_STOP ){
+			
+			int newap = 0;
+			if (obj == $OBJECTIVE_ATTACKING_UNIT || obj == $OBJECTIVE_ATTACKING) {
+				newap[$ARCTICUS_ATTACK] =  1; //set arcticus attack bit
+				if (cap[$UNIT_BIT]) { 
+					newap[$ARCTICUS_MOVE] = 1;  //set arcticus Uattack 
+				} 
+			}
+			if (obj == $OBJECTIVE_UNIT_MOVE) { 
+				newap[$ARCTICUS_MOVE] = 1;  //set arcticus move bit
+			}
+			
+			if (cap[$OBJECTIVE]==$OBJECTIVE_STOP) {
+				newap[$ARCTICUS_STOP] = 1;
+			}
+
+			if (newap > 0) {
+				int comOP = myCommander->ObjectiveParameters;				
+				
+				if ( ap[$STOREDUNIT] != myCommander || newap[$ARCTICUS_ATTACK] != ap[$ARCTICUS_ATTACK] || newap[$ARCTICUS_STOP] != ap[$ARCTICUS_STOP] || 
+					newap[$ARCTICUS_MOVE ]!= ap[$ARCTICUS_MOVE] || unit->ObjectiveParameters != comOP ) {		
+					newap[$ARCTICUS_FOLLOW] = 1; //follow this unit		
+					if (curtime[0,5] == 0) { newap[11,5] = 31; } //never store 0 
+					else { newap[11,5] = curtime[0,5]; } //store first 5 bits of timestamp into bits 11-15 of AP
+					newap[$STOREDUNIT] = myCommander;  //store sub into AP
+					$MATCH_SPEED
+					PERFORM SET_ADDITIONAL_PARAMS newap;
+					PERFORM SET_PARAM comOP;
+					PERFORM NOTHING;
+				}
+			}
+			else { 
+				if (obj == $OBJECTIVE_UNIT_DEFEND) {
+					int comOP = myCommander->ObjectiveParameters;
+					
+					if (ap[$STOREDUNIT] != myCommander || unit->ObjectiveParameters != comOP ) {
+						newap[$ARCTICUS_FOLLOW] = 1; //follow this unit		
+						if (curtime[0,5] == 0) { newap[11,5] = 31; } //never store 0 
+						else { newap[11,5] = curtime[0,5]; } //store first 5 bits of timestamp into bits 11-15 of AP
+						newap[$STOREDUNIT] = myCommander;  //store sub into AP
+						$MATCH_SPEED
+						PERFORM SET_ADDITIONAL_PARAMS newap;
+						PERFORM SET_PARAM myCommander->ObjectiveParameters;
+						PERFORM NOTHING;
+					}
+				}
+			}
+			
+		}
+		
+	}
+	
+	//every 19 ticks update speed matching so subordinates following a leader can move at the slowest speed
+	if (ap==0 || curtime % 19==0) {
+		int newap = ap;
+		$MATCH_SPEED
+		PERFORM SET_ADDITIONAL_PARAMS newap;
+	}
+	
+}
+
+
+
+

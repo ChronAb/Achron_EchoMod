@@ -1,0 +1,169 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+
+#include common/include/unit_common_header.ais
+#include common/include/human_idle.ais
+
+
+
+if (!player->Advancements[$HUMAN_ADV_WEAPONS] ) {
+	PERFORM SET_ADDITIONAL_PARAMS 0;
+	PERFORM SET_ADDITIONAL_PARAMS2 0;
+	PERFORM SET_OBJECTIVE 0;
+	PERFORM NOTHING;
+}
+
+if (unit->Ammo == 1 ) { PERFORM SET_ADDITIONAL_PARAMS 0; PERFORM SET_ADDITIONAL_PARAMS2 0; PERFORM SET_OBJECTIVE 0; PERFORM NOTHING; }
+
+//the code below is run if ammo is 0
+    
+if (ap[$MOVE_BIT]) {
+	ap[$MOVE_BIT] = 0;
+	setAdditionalParameters = 1;
+}
+if (ap[$ATTACK_BIT]) {
+	ap[$ATTACK_BIT] = 0;
+	setAdditionalParameters = 1;
+}
+
+object closesthf = 0;
+
+if (ap[$UNIT_BIT]) { //already have a unit stored
+	closesthf = ap[$STOREDUNIT]; //16 most sig bits of AP
+	
+	if (closesthf->Class != $MACROFAB_CLASS) { //if the stored unit isn't a hf
+		ap[$UNIT_BIT] = 0;
+		ap[$STOREDUNIT] = 0;
+		PERFORM SET_ADDITIONAL_PARAMS ap;
+		closesthf = 0;        
+	}
+}
+
+if (!closesthf) {   
+	closesthf = QUERY UNIT [unit] MIN [ unit <=> query ] WHERE [query->Class==$MACROFAB_CLASS && query->Owner == player]; 
+}
+
+if (closesthf) {
+	int dir = 0;
+	int dist = unit <_> closesthf;
+	if (|/(dist) >= (closesthf.SightHRange - 3)) { 
+		
+		ignore_collision_with_unit = closesthf;
+		int dir = QUERY BESTMOVE [unit, $ACTION_MOVE] MIN [ closesthf <_> query ] WHERE [1];    
+		if (dir == 0 || dir == $QUERY_EXHAUSTED) {  //can't move, so move up
+			int giveup = 0;
+			PERFORM GET_MAP_NEXT_Z_POSITION_UP unit->Position;
+			int location = perf_ret;
+			PERFORM IS_MAP_POSITION_VALID location;
+			if (perf_ret==0) { //give up, can't go any higher
+				giveup = 1;
+			} else {
+				target = uclass;
+				PERFORM CAN_CLASS_FIT_AT location;
+				if (perf_ret!=255) {
+					giveup = 1;
+				} else {
+					dir = 0;
+					dir = $TERRAIN_UP; //hardcode bestmove to go UP
+				}
+			}		
+			
+			if (giveup) {
+				PERFORM SET_ADDITIONAL_PARAMS2 0;
+				PERFORM SET_ADDITIONAL_PARAMS 0;
+				PERFORM SET_OBJECTIVE 0; 
+				PERFORM NOTHING;
+			}
+			
+		}                    
+		
+		PERFORM $ACTION_MOVE dir; 
+		$SET_AP
+		PERFORM NOTHING;
+
+	}
+	
+	if (unit<^>closesthf > 900) {		//higher than 30 off the ground
+	
+		PERFORM GET_MAP_NEXT_Z_POSITION_DOWN unit->Position;
+		int location = perf_ret;
+		
+		int x = location[$Xpos];
+		int y = location[$Ypos];
+		int length = 3;
+		int mult = length;
+		int xoffset = length; 
+		int yoffset = 0;
+		target = uclass;
+		PERFORM CAN_CLASS_FIT_AT location; //see if the unit fits
+		int spotClear = perf_ret; 
+		int counter = 0;
+		while (spotClear != 255) { //the unit does not fit, so calculate new offset coords
+			counter = counter + 1;
+			if (counter == 9) { break; }
+			location[$Xpos] = x + xoffset;
+			location[$Ypos] = y + yoffset;
+
+			PERFORM CAN_CLASS_FIT_AT location;
+			spotClear = perf_ret;   
+			
+			if (xoffset > 0 && yoffset < 0) { yoffset = 0; mult=mult+length; xoffset = mult; } 
+			else {
+				if (xoffset <= 0 && yoffset < 0) { xoffset = xoffset + mult;  }
+				if (xoffset < 0 && yoffset >= 0) { yoffset = yoffset - mult;  }
+				if (xoffset >= 0 && yoffset > 0) { xoffset = xoffset - mult;  }
+				if (xoffset > 0 && yoffset == 0) { yoffset = yoffset + mult;  } 
+			}
+			if (xoffset == 0 && yoffset == 0) { xoffset = xoffset + mult; }
+		}  
+		
+		if (counter==9) {
+			$SAY_OBSTACLE;
+			PERFORM $ACTION_ERROR2;
+			PERFORM SET_ADDITIONAL_PARAMS2 0;
+			PERFORM SET_ADDITIONAL_PARAMS 0;
+			PERFORM SET_OBJECTIVE 0; 
+			PERFORM NOTHING; 
+		}
+		
+		if (counter==0) { //spot below is clear, can move vertically
+			dir = QUERY BESTMOVE [unit, $ACTION_MOVE] MIN [ location <=> query ] WHERE [1];
+		} else { //move horizontally
+			dir = QUERY BESTMOVE [unit, $ACTION_MOVE] MIN [ location <_> query ] WHERE [1];
+		}
+		dir[16,8]=0; //clear out the 3rd byte that stores the counter
+		if (dir == 0 || dir == $QUERY_EXHAUSTED) {  //can't land, so do nothing
+			$SAY_OBSTACLE;
+			PERFORM $ACTION_ERROR2;
+			PERFORM SET_ADDITIONAL_PARAMS2 0;
+			PERFORM SET_ADDITIONAL_PARAMS 0;
+			PERFORM SET_OBJECTIVE 0; 
+			PERFORM NOTHING; 
+		} else {
+		  PERFORM $ACTION_MOVE dir;
+		  PERFORM NOTHING;
+		}
+
+	}
+	
+	if (ap[$UNIT_BIT]) {
+		ap[$UNIT_BIT] = 0;
+		ap[$STOREDUNIT] = 0;
+	}
+	$SET_AP
+	PERFORM NOTHING;
+}
+else {
+	
+	if (smart) {
+		int LOOKUP = $MACROFAB;
+		object lookup=0;
+		#include common/include/unit_lookup_request.ais
+	}  
+	
+	PERFORM SET_OBJECTIVE 0;
+}
+
+$SET_AP
+
+

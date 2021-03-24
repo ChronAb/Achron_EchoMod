@@ -1,0 +1,194 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+
+if(unit->TotalCarriedSize == 0) { 
+    $SAY_CARGO
+    PERFORM SET_OBJECTIVE 0;
+	PERFORM SET_ADDITIONAL_PARAMS2 0;
+	PERFORM SET_ADDITIONAL_PARAMS 0;
+    PERFORM NOTHING;
+}
+
+int dir=0;
+
+int op = unit->ObjectiveParameters;
+int location = op;
+
+object o = unit->NextCarriedUnit;
+if (!o) { 
+    PERFORM SET_OBJECTIVE 0;
+	PERFORM SET_ADDITIONAL_PARAMS2 0;
+	PERFORM SET_ADDITIONAL_PARAMS 0;
+    PERFORM NOTHING;
+}
+
+int unitPosition = unit->Position;
+int airunit = 0;
+
+//if releasing air unit, release on same zcoord as the carried
+if ((o.Flags)[0]) { 
+	location[$Zpos] = unitPosition[$Zpos];  
+	airunit = 1;
+}
+
+
+//when further than 3 spots away, just move towards the location
+if (unit <_> op > 9 ) {
+	//don't land
+	if (op[$Zpos]==0) {
+		PERFORM GET_MAP_NEXT_Z_POSITION_UP op;
+		op = perf_ret;
+	}
+
+    op[$Zpos] = op[$Zpos] |> unitPosition[$Zpos];
+	int counter = unit->AdditionalParameters2; //move counter to move in the same direction
+	if (counter>0) {           //more than 0 means already moving in a direction
+		counter = counter - 1; //decrease the counter
+		PERFORM SET_ADDITIONAL_PARAMS2 counter;
+		int rot = unit->Rotation; //get the unit's current rotation
+		$DIR_FROM_ROT             //set the dir to move to based on that unit's rotation
+	}
+	else {  //no move counter stored, so query where to move to next
+		
+		dir = QUERY BESTMOVE [unit, $ACTION_MOVE] MIN [ (op <_> query) * 2 ] WHERE [1];
+		if (dir[0,8] >= 16) { counter = 0; } //moving up or down, so don't store counter
+		else {
+			counter = dir[16,8]; 			  //the counter is stored in the 3rd byte of dir
+			if (counter > 7) { counter = 7; } //cap it at 7 since AdditionalParameters2 only has 3 bits
+		}
+		PERFORM SET_ADDITIONAL_PARAMS2 counter;
+	}
+	
+	dir[16,8] = 0; //clear out the 3rd byte that stores the counter
+
+
+    if (dir && dir!=$QUERY_EXHAUSTED) {
+        PERFORM $ACTION_MOVE dir;
+		if (perf_ret!=1) {
+			PERFORM SET_ADDITIONAL_PARAMS2 0;
+		}
+        PERFORM NOTHING;
+    } else {
+        $SAY_OBSTACLE
+		PERFORM SET_ADDITIONAL_PARAMS2 0;
+		PERFORM SET_ADDITIONAL_PARAMS 0;
+        PERFORM SET_OBJECTIVE 0;
+        PERFORM NOTHING;
+    }
+}
+
+int x = op[$Xpos];
+int y = op[$Ypos];
+
+
+//if higher than height max of release action, move vertically towards location
+
+if (!airunit) {    
+	location[$Zpos] = 0; //default the Z-coord to be 0
+
+	if (unit<^>location > 900) {		//higher than 300 off the ground
+
+		PERFORM GET_MAP_NEXT_Z_POSITION_DOWN unitPosition;
+		location = perf_ret;
+		
+		int x = location[$Xpos];
+		int y = location[$Ypos];
+		int length = 3;
+		int mult = length;
+		int xoffset = length; 
+		int yoffset = 0;
+		target = unit->Class;
+		PERFORM CAN_CLASS_FIT_AT location; //see if the unit fits
+		int spotClear = perf_ret; 
+		int counter = 0;
+		while (spotClear != 255) { //the unit does not fit, so calculate new offset coords
+			counter = counter + 1;
+			if (counter == 9) { break; }
+			location[$Xpos] = x + xoffset;
+			location[$Ypos] = y + yoffset;
+
+			PERFORM CAN_CLASS_FIT_AT location;
+			spotClear = perf_ret;   
+			
+			if (xoffset > 0 && yoffset < 0) { yoffset = 0; mult=mult+length; xoffset = mult; } 
+			else {
+				if (xoffset <= 0 && yoffset < 0) { xoffset = xoffset + mult;  }
+				if (xoffset < 0 && yoffset >= 0) { yoffset = yoffset - mult;  }
+				if (xoffset >= 0 && yoffset > 0) { xoffset = xoffset - mult;  }
+				if (xoffset > 0 && yoffset == 0) { yoffset = yoffset + mult;  } 
+			}
+			if (xoffset == 0 && yoffset == 0) { xoffset = xoffset + mult; }
+		}  
+		
+		if (counter==9) {
+			$SAY_OBSTACLE;
+			PERFORM $ACTION_ERROR2;
+			PERFORM SET_ADDITIONAL_PARAMS2 0;
+			PERFORM SET_ADDITIONAL_PARAMS 0;
+			PERFORM SET_OBJECTIVE 0; 
+			PERFORM NOTHING; 
+		}
+		
+		//don't land
+		if (location[$Zpos]==0) {
+			PERFORM GET_MAP_NEXT_Z_POSITION_UP location;
+			location = perf_ret;
+		}
+				
+		dir = QUERY BESTMOVE [unit, $ACTION_MOVE] MIN [ (location <=> query) * 2 ] WHERE [1];
+		
+		dir[16,8]=0; //clear out the 3rd byte that stores the counter
+		if (dir == 0 || dir == $QUERY_EXHAUSTED) {  //can't land, so do nothing
+			$SAY_OBSTACLE;
+			PERFORM $ACTION_ERROR2;
+			PERFORM SET_ADDITIONAL_PARAMS2 0;
+			PERFORM SET_ADDITIONAL_PARAMS 0;
+			PERFORM SET_OBJECTIVE 0; 
+			PERFORM NOTHING; 
+		} else {
+		  PERFORM $ACTION_MOVE dir;
+		  PERFORM NOTHING;
+		}
+
+	}
+}
+
+
+
+target = o->Class;
+
+int spotClear = 0;
+int length = o.Length;
+int mult = length;
+int xoffset = length; 
+int yoffset = 0;
+while (spotClear != 255) {
+
+    location[$Xpos] = x + xoffset;
+    location[$Ypos] = y + yoffset;
+        
+    PERFORM CAN_CLASS_FIT_AT location;
+    spotClear = perf_ret;   
+    if (xoffset > 0 && yoffset < 0) { yoffset = 0; mult=mult+length; xoffset = mult; } 
+    else {
+        if (xoffset <= 0 && yoffset < 0) { xoffset = xoffset + mult;  }
+        if (xoffset < 0 && yoffset >= 0) { yoffset = yoffset - mult;  }
+        if (xoffset >= 0 && yoffset > 0) { xoffset = xoffset - mult;  }
+        if (xoffset > 0 && yoffset == 0) { yoffset = yoffset + mult;  } 
+    }
+    if (xoffset == 0 && yoffset == 0) { xoffset = xoffset + mult; }
+}   
+
+
+    target = o;
+	if (airunit) { PERFORM $ACTION_RELEASE_AIRUNIT location; }
+    else { PERFORM $ACTION_RELEASE_UNIT location; }
+	PERFORM SET_OTHER_ADDITIONAL_PARAMS 0;
+
+    if(unit->TotalCarriedSize == 0) {
+		PERFORM SET_ADDITIONAL_PARAMS2 0;
+		PERFORM SET_ADDITIONAL_PARAMS 0;
+		PERFORM SET_OBJECTIVE 0;
+	}
+    PERFORM NOTHING;
+

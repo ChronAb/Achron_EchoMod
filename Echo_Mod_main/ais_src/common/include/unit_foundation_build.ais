@@ -1,0 +1,31 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+
+if (unit->UnitAIServiceTime > 0) { PERFORM NOTHING; } //must be mid-repair
+
+if (unit->HP < 25) {
+    $SAY_HP
+    PERFORM $ACTION_ERROR1;
+    PERFORM SET_OBJECTIVE 0;
+    PERFORM NOTHING;
+}
+
+
+if (player->$LCrystals < lc || player->$QPlasma < qp) {
+    $SAY_RESOURCES
+    PERFORM $ACTION_ERROR1;
+    PERFORM SET_OBJECTIVE 0;
+    PERFORM NOTHING;
+}
+
+PERFORM SET_OBJECTIVE $OBJ_BLDG_CONSTRUCTION;
+
+
+target = building_class;
+PERFORM CAN_CLASS_FIT_AT unit->Position;
+if (!perf_ret[$ROT_S]) {
+    $SAY_FOUNDATION_OBSTACLE
+    PERFORM $ACTION_ERROR2;
+    PERFORM NOTHING;
+}
+

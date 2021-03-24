@@ -1,0 +1,83 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+
+
+/*
+	when the unit starts moving into position:
+		ap[12,6] = actual objective # for the building
+		ap[18,14] = seven least significant X and Y position bits
+	when the unit is moving into position:
+		ap[$OBJECTIVE] should be 0 
+	once the building is placed:
+		ap[$OBJECTIVE] = $OBJECTIVE_BUILD 
+		ap[$PLAYER_BIT]  = 1 
+
+*/
+
+
+int ap = unit->AdditionalParameters;
+
+//just placed the building down successfully, so clear out information
+if (ap[$OBJECTIVE]==$OBJECTIVE_BUILD) {
+	
+	target = unit->ActionParameters; //recently placed building
+	
+	//unit hasn't been created yet, wait another tick
+	if (target->IsAlive!=1 || target->Parent!=unit) {
+		//player bit is set when build action is called
+		//and cleared when this block of code is run
+		if (ap[$PLAYER_BIT]) { 
+			ap[$PLAYER_BIT] = 0;
+			PERFORM SET_ADDITIONAL_PARAMS ap;
+		} 
+		else { 
+			//player_bit is already cleared, this block of code is being run a second time in a row
+			//that means the unit was not created properly, error out
+			PERFORM SET_ADDITIONAL_PARAMS 0; 
+            PERFORM SET_OBJECTIVE 0;
+			
+			//if it's a shin vir unit trying to place a foundation, it's cap_bit_3 that allows them to place foundations
+			//may have been cleared during the throw animation. If that's the case, its action will be $ACTION_MAKE_FOUNDATION (21)
+			//instead of forced action #24, the unFoundation action that returns the spent resources which is what should be called
+			int uclass = unit->Class;
+			if (uclass==$VIR_SHIN_CLASS || uclass==$DJELT_CLASS || uclass==$DAMATH_CLASS) {
+				if  (unit->Action==$ACTION_MAKE_FOUNDATION) {
+					$SAY_NEARBY
+				} 
+				else {
+					$SAY_BUILD	
+				}
+			} 
+			else {
+				$SAY_BUILD						
+			}
+		}
+		PERFORM NOTHING;
+	}
+    	
+	PERFORM SET_PARAM $INVALID_POSITION;
+    PERFORM SET_OBJECTIVE 0;
+	PERFORM SET_ADDITIONAL_PARAMS 0;
+	PERFORM SET_ADDITIONAL_PARAMS2 0;
+    PERFORM NOTHING;
+}
+
+
+int objective = unit->Objective;
+int OP = unit->ObjectiveParameters;
+
+//pack the least 7 bits of X and Y into 14 bits, and then store them into ap[18,14]
+int sevenLeastSignificantXandYPositionBits = OP[0,7]; 
+sevenLeastSignificantXandYPositionBits[7,7] =  OP[12,7];
+
+
+//if is not already moving into position (eg, if it was moving somewhere else)
+//reset the ap and the move counter
+if (ap[$OBJECTIVE]!=0 || ap[12,6] != objective || ap[18,14] != sevenLeastSignificantXandYPositionBits) {
+	PERFORM SET_ADDITIONAL_PARAMS2 0;	
+	ap = 0;
+	ap[$OBJECTIVE] = 0;
+	ap[12,6] = objective;
+	ap[18,14] = sevenLeastSignificantXandYPositionBits;
+	PERFORM SET_ADDITIONAL_PARAMS ap;
+}

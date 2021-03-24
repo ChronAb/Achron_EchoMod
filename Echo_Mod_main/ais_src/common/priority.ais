@@ -1,0 +1,8 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+//this sets the priority bits in the AP
+#include common/include/unit_common_header.aih
+
+int ap = unit->AdditionalParameters;
+
+#include common/include/unit_common_priority.ais

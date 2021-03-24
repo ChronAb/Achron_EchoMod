@@ -1,0 +1,102 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+	//if placing down an rp, auto-correct its location if accidentally placing on top of the resource box
+	//check all 9 tiles of the RP footprint to see if it's overlapping
+	int dest = OP;
+	PERFORM GET_UNIT_AT dest; //see if the location has a unit on it
+	if (perf_ret==0 || perf_ret==unit) { 
+		dest[$Ypos] = OP[$Ypos] - 1; //above
+		PERFORM GET_UNIT_AT dest; //see if the location has a unit on it
+	}
+	if (perf_ret==0 || perf_ret==unit) { 
+		dest[$Xpos] = OP[$Xpos] + 1; //above-right
+		PERFORM GET_UNIT_AT dest; //see if the location has a unit on it
+	}
+	if (perf_ret==0 || perf_ret==unit) { 
+		dest[$Ypos] = OP[$Ypos]; //right
+		PERFORM GET_UNIT_AT dest; //see if the location has a unit on it
+	}
+	if (perf_ret==0 || perf_ret==unit) { 
+		dest[$Ypos] = OP[$Ypos] + 1; //below-right
+		PERFORM GET_UNIT_AT dest; //see if the location has a unit on it
+	}
+	if (perf_ret==0 || perf_ret==unit) { 
+		dest[$Xpos] = OP[$Xpos]; //below
+		PERFORM GET_UNIT_AT dest; //see if the location has a unit on it
+	}
+	if (perf_ret==0 || perf_ret==unit) { 
+		dest[$Xpos] = OP[$Xpos] - 1; //below left
+		PERFORM GET_UNIT_AT dest; //see if the location has a unit on it
+	}
+	if (perf_ret==0 || perf_ret==unit) { 
+		dest[$Ypos] = OP[$Ypos]; //left
+		PERFORM GET_UNIT_AT dest; //see if the location has a unit on it
+	}
+	if (perf_ret==0 || perf_ret==unit) { 
+		dest[$Ypos] = OP[$Ypos] - 1; //above left
+		PERFORM GET_UNIT_AT dest; //see if the location has a unit on it
+	}
+	//if it does, calculate closest available building spot
+	if (perf_ret > 0) { 
+
+		object patch = perf_ret;
+		//the object is a patch
+		if (patch->IsAlive==1 && patch->Class >= $LC_CLASS) {
+
+			int patchPosition = patch->Position;
+			int rX = patchPosition[$Xpos];
+			int rY = patchPosition[$Ypos];
+			
+			target = $GREKIM_RP_CLASS;
+			int loc = 0;
+			
+			int above = $FARAWAY;
+			int below = $FARAWAY;
+			int left = $FARAWAY;
+			int right = $FARAWAY;
+			
+			loc[$Xpos] = rX;
+			loc[$Ypos] = rY - length;
+			PERFORM CAN_CLASS_FIT_AT loc;
+			if (perf_ret>0) above = loc <_> unit;
+			
+			loc[$Xpos] = rX;
+			loc[$Ypos] = rY + length;
+			PERFORM CAN_CLASS_FIT_AT loc;
+			if (perf_ret>0) below = loc <_> unit;
+			
+			loc[$Xpos] = rX + length;;
+			loc[$Ypos] = rY;
+			PERFORM CAN_CLASS_FIT_AT loc;
+			if (perf_ret>0) right = loc <_> unit;
+			
+			loc[$Xpos] = rX - length;
+			loc[$Ypos] = rY;
+			PERFORM CAN_CLASS_FIT_AT loc;
+			if (perf_ret>0) left = loc <_> unit;
+
+//say " ", length, " ah ", above,",",below,",",right,",",left;
+
+			loc = patchPosition;
+			//find the closest spot of the 4 if any were visible/fittable
+			if (above!=$FARAWAY || below!=$FARAWAY || left!=$FARAWAY || right!= $FARAWAY) {
+				int newPos = above <| below;
+				newPos = newPos <| left;
+				newPos = newPos <| right;
+				
+				if (newPos==above) {
+					loc[$Ypos] =  loc[$Ypos] - 3; //above
+				} else if (newPos==below) {
+					loc[$Ypos] =  loc[$Ypos] + 3; //below
+				} else if (newPos==left) {
+					loc[$Xpos] =  loc[$Xpos] - 3; //left
+				} else { //right
+					loc[$Xpos] =  loc[$Xpos] + 3; //right
+				}
+				PERFORM SET_PARAM loc;
+				PERFORM NOTHING;
+			}
+
+		}
+		
+	}

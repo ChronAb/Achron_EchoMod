@@ -1,0 +1,19 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+
+if (!(player->Advancements[$HUMAN_ADV_HEAVY])) {
+    PERFORM SET_OBJECTIVE 0;
+    PERFORM NOTHING;
+}
+
+#include common/include/unit_created_check.ais
+
+#define LC_COST $TURRET_LC
+#define QP_COST $TURRET_QP
+
+#define ACTION_CREATE_AT $ACTION_MAKE_TURRET
+#define UNIT_CLASS $TURRET_CLASS
+
+#include common/include/unit_create_at.ais

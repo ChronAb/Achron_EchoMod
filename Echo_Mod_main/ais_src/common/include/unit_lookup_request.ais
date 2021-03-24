@@ -1,0 +1,54 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+//unit_lookup_request.ais -- the request 'lookup'  function. 
+//                           Takes 'int LOOKUP;' as a parameter with the unit # stored from unit_...._header.aih
+
+int flags = $FLAGS;
+if (!flags[$LOOKUP_BIT]) {
+    //$print "Looking for needed unit:", LOOKUP, "\n";
+    PERFORM SET_PLAYER_CUSTOM_FIELD_2 ($CUSTOMFIELD_TSS | (unit << 16 ));
+	flags[$LOOKUP_UNIT] = LOOKUP;
+	flags[$LOOKUP_BIT] = 1;	
+    PERFORM SET_PLAYER_CUSTOM_FIELD_3 flags;
+	$SET_AP
+    PERFORM NOTHING;
+}
+
+int waiting = 0;
+
+if (flags[$LOOKUP_BIT] ) { 
+    lookup = $CUSTOMFIELD_LOOKUP;
+    if (lookup == unit) { //noone responded!
+        //$print "noone responded\n";    
+       // PERFORM SET_PLAYER_CUSTOM_FIELD_2 ($CUSTOMFIELD_TSS);
+		flags[$LOOKUP_UNIT] = 0;
+		flags[$LOOKUP_BIT] = 0;
+        PERFORM SET_PLAYER_CUSTOM_FIELD_3 flags;
+        waiting = 1;
+    }
+    else {
+        //check if another requester axed first
+        int dist = lookup->AdditionalParameters;
+        if (!dist[$UNIT_BIT]) { 
+            waiting = 1;
+          //  $print "another unit requesting, waiting...\n"; 
+        }
+        else {
+            if (dist[$STOREDUNIT] == unit) { //responder! 
+                //$print "Found closest Unit...",lookup,"\n";
+                ap[$STOREDUNIT]= lookup;
+				ap[$UNIT_BIT] = 1; //store lookup into unit's AP
+                PERFORM SET_ADDITIONAL_PARAMS ap;
+                flags = $FLAGS;
+				flags[$LOOKUP_UNIT] = 0;
+				flags[$LOOKUP_BIT] = 0;
+                PERFORM SET_PLAYER_CUSTOM_FIELD_3 flags;
+                PERFORM NOTHING;
+            }
+            else { 
+                waiting = 1;
+                //$print "Waiting for LOOKUP queue to free... \n"; 
+            }     
+        }        
+    }
+}

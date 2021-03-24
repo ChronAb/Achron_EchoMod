@@ -1,0 +1,24 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+//arcticus_relink.ais - have all subordinates relink to another arcticus
+// by setting the unit field in the AP and the link bit
+
+#include common/include/unit_common_header.aih
+
+target = unit->ObjectiveParameters;
+int uclass = target->Class;
+if (target->IsAlive!=1 || uclass != $ARCTICUS_CLASS ) {           //not an arcticus    
+	PERFORM SET_ADDITIONAL_PARAMS 0;
+    PERFORM SET_OBJECTIVE 0;
+    PERFORM NOTHING;
+}
+
+int ap = 0;
+ap[$ARCTICUS_LINK] = 1; //set the link bit
+ap[$STOREDUNIT] = target; //set arcticus as unit-to-look-at
+PERFORM GET_CUR_TIME;
+ap[11,5] = perf_ret[0,5]; //store first 5 bits of timestamp into bits 11-15 of AP
+PERFORM SET_ADDITIONAL_PARAMS ap;
+PERFORM SET_OBJECTIVE 0;
+$print "moving over all subordinates to ", target, "\n";
+

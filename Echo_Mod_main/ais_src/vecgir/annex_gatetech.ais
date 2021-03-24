@@ -1,0 +1,65 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+PERFORM GET_CUR_TIME; //have the annex check for nearby Depots very 40 seconds
+if (perf_ret%$DEPOT_CHECK==0) { //run the check for depot that cleared it's annex ping bit
+	while(1) { 
+		target = QUERY UNIT [unit] MIN [unit<_>query] WHERE [query->IsAlly && query->Class==$DEPOT_CLASS &&
+																 query<_>unit <= 144 &&!(query->Status[$CAP_BIT_3]) ]; 
+																													 
+		//annex sets the depot's cap_bit_1, allowing it to create vehicles directly
+		if (target->IsAlive==1) {
+			PERFORM $ACTION_SET_DEPOT_BIT;
+		} else { break; }
+	}
+}
+
+
+//this check is run while this upgrade is happening (the upgrade actions allow script to run)
+//guarantees that the concurrency bit for this upgrade is set
+int unitAction = unit->Action;
+if(unitAction >= $ACTION_RESEARCH_U1 && unitAction<=$ACTION_RESEARCH_U5 || unitAction==$ACTION_RESEARCH_U6) { 
+	
+	if (unitAction==$ACTION_RESEARCH_U1 ) { PERFORM SET_OBJECTIVE $OBJ_BLDG_UPGRADE1; PERFORM NOTHING; }
+	else if (unitAction==$ACTION_RESEARCH_U2 ) { PERFORM SET_OBJECTIVE $OBJ_BLDG_UPGRADE2; PERFORM NOTHING; }
+	else if (unitAction==$ACTION_RESEARCH_U3 ) { PERFORM SET_OBJECTIVE $OBJ_BLDG_UPGRADE3; PERFORM NOTHING; }
+	//else if (unitAction==$ACTION_RESEARCH_U4 ) { PERFORM SET_OBJECTIVE $OBJ_BLDG_UPGRADE4; PERFORM NOTHING; }
+	else if (unitAction==$ACTION_RESEARCH_U5 ) { PERFORM SET_OBJECTIVE $OBJ_BLDG_UPGRADE5; PERFORM NOTHING; }
+	else if (unitAction==$ACTION_RESEARCH_U6 ) { PERFORM SET_OBJECTIVE $OBJ_BLDG_UPGRADE6; PERFORM NOTHING; }
+	
+	int cc = player->CustomControls;
+	if (!cc[$VECGIR_ADV_GATE]) {
+		cc[$VECGIR_ADV_GATE] = 1;
+		PERFORM SET_PLAYER_CUSTOM_CONTROLS cc;
+	}
+    PERFORM NOTHING; 
+}
+
+//do not allow this script to continue if the concurrency bit is set for this upgrade
+if (player->CustomControls[$VECGIR_ADV_GATE]) { PERFORM SET_OBJECTIVE 0; PERFORM NOTHING; }
+
+//don't allow script to continue if this has already been upgraded
+if (player->Advancements[$VECGIR_ADV_GATE]) { PERFORM SET_OBJECTIVE 0; PERFORM NOTHING; }
+
+int ua = unit->Action;
+int interrupt = 0;
+if (ua == $ACTION_REL_ZAYIN || ua==$ACTION_REL_TETH || ua==$ACTION_REL_SHIN) {
+	interrupt = 1;
+}
+
+if ( player->$LCrystals >= $ADV4_LC && player->$QPlasma >= $ADV4_QP) {
+	if (interrupt) { PERFORM $ACTION_INTERRUPT; PERFORM NOTHING;}
+    $SAY_RESEARCH_GATE
+    PERFORM $ACTION_RESEARCH_U4 0;
+    if (perf_ret==0) { PERFORM SET_OBJECTIVE 0; }
+    PERFORM NOTHING;
+}
+else {
+  $SAY_RESOURCES
+  if (!interrupt) { PERFORM $ACTION_ERROR1; }
+  PERFORM SET_OBJECTIVE 0;
+  PERFORM NOTHING;
+}
+
+

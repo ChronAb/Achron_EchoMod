@@ -1,0 +1,35 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+target = unit->ObjectiveParameters;
+
+//can't pickup tssed units or self
+if (target->IsStasis || target==unit) { 
+	PERFORM SET_OBJECTIVE 0; 
+	PERFORM SET_ADDITIONAL_PARAMS2 0;
+	PERFORM SET_ADDITIONAL_PARAMS 0;
+	PERFORM NOTHING; 
+}
+
+//don't pickup buildings
+int tclass = target->Class;
+int boxes = 0;
+
+if (tclass>=4000 && tclass<=4006) { 
+	boxes = 1;
+} 
+
+int trank = target.Rank;
+
+if ((trank<=$BUILDINGS_RANK && !boxes) || tclass==$OCTOLIGO_GUARD_CLASS || tclass==$KILDEN_CLASS || tclass==$KILDEN_RAISED_CLASS || trank==$CARRIER_RANK) { 
+	PERFORM SET_OBJECTIVE 0; 
+	PERFORM SET_ADDITIONAL_PARAMS2 0;
+	PERFORM SET_ADDITIONAL_PARAMS 0;
+	PERFORM NOTHING; 
+}
+
+int uclass = unit->Class;
+
+int AP_PLAYER = 0;
+#include common/include/unit_pickup.ais

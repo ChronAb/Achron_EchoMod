@@ -1,0 +1,30 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+
+//if commander is idle, or doing something besides move or attack,
+if (commanderObjective==0 || (commanderObjective>6 && commanderObjective!=$OBJECTIVE_ATTACKING_UNIT)) {  
+	$STOP; // stop moving
+}
+
+ap[$SUBORDINATE_STUCK_BIT] = 1; //set the subordinate stuck bit
+
+//the exhaust counter only counts when the stuck bit is NOT set
+if (ap[28,4] > 5) {	//if stuck counter is over 5, set the reset counter bit, so if unit gets stuck again,
+	ap[$RESET_COUNTER_BIT] = 1; //the counter will reset to max value of 8, making it stop moving sooner
+}
+PERFORM GET_CUR_TIME;
+temp2 =  perf_ret[1,4]; //set the stuck timestamp to the 2-5 least sig bits of current timestamp
+
+//store the tick 'before 'if the least sig bit isn't set 
+//because the unstuck script check when that bit is set and we want to avoid checking on the next tick
+if (!perf_ret[0]) { 
+	if (temp2 == 0) { temp2 = 15; }
+	else { temp2 = temp2 - 1;}
+}
+
+ap[28,4] = temp2;
+
+
+ap[$STUCK_BIT]=1; //set the stuck bit               
+PERFORM SET_ADDITIONAL_PARAMS ap;
+PERFORM NOTHING;

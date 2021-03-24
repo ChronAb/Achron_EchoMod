@@ -1,0 +1,30 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+
+// unit_heal_request.ais - heal request function
+skip = 0;
+int flags = $FLAGS;
+if (!flags[$HEAL_BIT]) {  //the Heal bits are clear, so the heal queue is empty...
+    //$print "Damaged - storing into HEAL queue\n";
+    PERFORM SET_PLAYER_CUSTOM_FIELD_1 (unit | ($CUSTOMFIELD_RECOVER << 16 )); //set unit in the queue to be healed
+    flags[$HEAL_BIT] = 1;
+    PERFORM SET_PLAYER_CUSTOM_FIELD_3 flags;
+	$SET_AP
+    PERFORM NOTHING;
+}
+
+if (flags[$HEAL_BIT]) {
+    object heal = $CUSTOMFIELD_HEAL;
+    if (heal == unit) {
+        //$print "noone responded\n";
+        
+		flags[$HEAL_BIT] = 0;
+        PERFORM SET_PLAYER_CUSTOM_FIELD_3 flags;
+		
+		//clear out unit from the queue to be healed
+		PERFORM SET_PLAYER_CUSTOM_FIELD_1 ($CUSTOMFIELD_RECOVER << 16 ); 
+    }
+    else {
+//		$print "Waiting for HEAL queue to free...\n";
+    }
+}

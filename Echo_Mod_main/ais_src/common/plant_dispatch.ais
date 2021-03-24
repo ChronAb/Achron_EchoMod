@@ -1,0 +1,7 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+//clear the move counter
+PERFORM SET_ADDITIONAL_PARAMS2 0;
+PERFORM SET_OBJECTIVE $OBJ_BLDG_PLANT;

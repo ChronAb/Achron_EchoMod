@@ -1,0 +1,275 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+//New Skip
+
+#include common/include/unit_common_header.aih
+
+/*
+Purpose:
+Permits units who are not near a teleporter to self-teleport (i.e. skip)
+
+Logic flow:
+    (Already done by parent script)
+        * Verify that you are permitted to teleport
+        * Check if there is a teleporter or slipgate nearby
+        
+    1. Define macros
+    2. Determine skip parameters
+        i. Set QP and Power cost
+        ii. Set range to LOS
+    x. Test that teleport criteria are met, and terminate order if not
+    x. If criteria are met, 
+
+    (old)
+	see if there is a teleporter/slingshot nearby, if there is use it instead of self-skipping.
+	if out of skip energy, move to the destination while energy regenerates. attempt skip when has energy
+	if distance > 30, shorten it to 30 in the same direction, use as desired (temporary) destination,
+	skip to destination,
+	if fails, try to skip to the 8 immediate spots all around the destination,
+	if that fails, try to skip the same distance but angled offset of  22, -22, 45, -45 degrees,
+	if that fails, try to skip 2/3s the distance in a straight line, then with the same angle offsets,
+	if that fails, try to skip 1/3s the distance in a straight line, then with the same angle offsets,
+	if that fails change objective to Move there.
+*/
+
+// 1. Define Macros
+//********************************************************************
+// object closesttport inherited from parent
+int ap = unit->AdditionalParameters;
+
+//radian angle values for 22,-22,45 and -45 degrees =  pi / 8 and pi / 4
+#define n22 -0.39269908 
+#define p22 0.39269908
+#define n45 -0.78539816
+#define p45 0.78539816
+
+//macro to calculate and a skip to a position specified by _angle offset with distance specified by _dist
+#define CUSTOM_ANGLE_DIST_SKIP pos = 0;\
+		int ux = unitPosition[$Xpos];\
+        int uy = unitPosition[$Ypos];\
+        int xd = destX - ux;\
+        int yd = destY - uy;\
+        float a = yd atan2 xd;\
+		a = a + _angle;\
+        yd = _dist * sin a;\
+        xd = _dist * cos a;\
+        pos[$Xpos] = (ux + xd);\
+		pos[$Ypos] = (uy + yd);\
+        if (airunit) { \
+			PERFORM GET_MAP_NEXT_Z_POSITION_UP pos;\
+			pos[$Zpos] = unitZ |> perf_ret[$Zpos];\
+		}\
+		if (pos!=unitPosition) { PERFORM CAN_CLASS_FIT_AT pos; can_skip = perf_ret; }
+        
+// 2. Determine skip parameters
+//********************************************************************
+int can_skip = 0;
+int airunit = 0;
+int pos = unit->ObjectiveParameters;
+if ($IS_AIR_UNIT) {
+    airunit = 1;
+    if (pos[$Zpos]==0) {
+        PERFORM GET_MAP_NEXT_Z_POSITION_UP pos;  //move to the spot above the position
+        pos[$Zpos] = perf_ret[$Zpos];
+    }
+}
+
+target = unit->Class;
+int unitPosition = unit->Position;
+int unitZ = unitPosition[$Zpos];
+int x = pos[$Xpos];
+int y = pos[$Ypos];
+int destX = x;
+int destY = y;
+int z = pos[$Zpos]; 
+int goal_dist = unit <_> pos;
+goal_dist = |/goal_dist;
+
+//check that you have a line-of-sight to destination and can fit 
+PERFORM CAN_CLASS_FIT_AT pos; 
+if( perf_ret >= 1 ){
+    can_skip = 1;
+} 
+else { //destination is blocked, see if we can find a spot nearby that works
+    int ulength = 3; //unit.Length;
+    int mult = ulength+1;
+    int xoffset = mult; 
+    int yoffset = 0;
+    int tportCounter = 0;
+    
+    //Try adjacent spots
+    while (can_skip<1 && tportCounter<9) {
+        tportCounter = tportCounter + 1;
+        pos[$Xpos] = x + xoffset;
+        pos[$Ypos] = y + yoffset;
+        
+        if (airunit) {
+            int targetZ = pos[$Zpos];
+            if (targetZ == 0) {
+                PERFORM GET_MAP_NEXT_Z_POSITION_UP pos;
+                pos[$Zpos] = unitZ |> perf_ret[$Zpos];
+                //print unitZ ," trying : ", pos[$Xpos], " ", pos[$Ypos], " ", pos[$Zpos], "\n";
+            } else {
+            
+                PERFORM IS_MAP_POSITION_VALID pos;
+                if (perf_ret==0) {
+                    PERFORM GET_MAP_NEXT_Z_POSITION_UP pos[0,24];
+                    pos = perf_ret;
+                }
+            }
+        }
+
+        if (pos != unitPosition) {		
+            PERFORM CAN_CLASS_FIT_AT pos; 
+            can_skip = perf_ret;  
+        }
+
+        if (xoffset > 0 && yoffset < 0) { yoffset = 0; mult=mult+ulength; xoffset = mult; } 
+        else {
+            if (xoffset <= 0 && yoffset < 0) { xoffset = xoffset + mult;  }
+            if (xoffset < 0 && yoffset >= 0) { yoffset = yoffset - mult;  }
+            if (xoffset >= 0 && yoffset > 0) { xoffset = xoffset - mult;  }
+            if (xoffset > 0 && yoffset == 0) { yoffset = yoffset + mult;  } 
+        }
+        if (xoffset == 0 && yoffset == 0) { xoffset = xoffset + mult; }
+    }
+
+    //Try skipping out at 22 and 45 degree angles to the destination
+    if (tportCounter==9) {
+        int _dist = 0;
+        float _angle = 0;
+        _dist = goal_dist;
+
+        if (1) { //max dist @ 22 degrees
+            _angle = $p22; $CUSTOM_ANGLE_DIST_SKIP
+        } 
+        if (can_skip<1) { //max dist @ -22 degrees
+            _angle = $n22; $CUSTOM_ANGLE_DIST_SKIP
+        } 
+        if (can_skip<1) { //max dist @ 45 degrees
+            _angle = $p45; $CUSTOM_ANGLE_DIST_SKIP
+        } 
+        if (can_skip<1) { //max dist @ -45 degrees
+            _angle = $n45; $CUSTOM_ANGLE_DIST_SKIP	
+        } 
+    }
+}
+
+
+// 3. Attempt to self-teleport (like a mofo)
+//********************************************************************
+int op = pos;
+
+// 3.1. move towards destination until skip conditions are met
+if (can_skip<1) {
+    pos = unit->ObjectiveParameters;
+    if ($IS_AIR_UNIT) {
+        airunit = 1;
+        if (z==0) {
+            PERFORM GET_MAP_NEXT_Z_POSITION_UP pos;  //move to the spot above the position
+            z = perf_ret[$Zpos];
+            pos[$Zpos] = z;
+        }
+    }
+    
+    int dir = 0;
+    int counter = unit->AdditionalParameters2; //move counter to move in the same direction
+    if (counter>0) {           //more than 0 means already moving in a direction
+        counter = counter - 1; //decrease the counter
+        PERFORM SET_ADDITIONAL_PARAMS2 counter;
+        int rot = unit->Rotation; //get the unit's current rotation
+        $DIR_FROM_ROT             //set the dir to move to based on that unit's rotation
+    }
+    else {  //no move counter stored, so query where to move to next
+        dir = QUERY BESTMOVE [unit, $ACTION_MOVE] MIN [ (pos <=> query) * 1.2 ] WHERE [1];   
+        if (dir[0,8] >= 16) { counter = 0; } //moving up or down, so don't store counter
+        else {
+            counter = dir[16,8]; 			  //the counter is stored in the 3rd byte of dir
+            if (counter > 7) { counter = 7; } //cap it at 7 since AdditionalParameters2 only has 3 bits
+        }
+        PERFORM SET_ADDITIONAL_PARAMS2 counter;
+    }
+
+    dir[16,8] = 0; //clear out the 3rd byte that stores the counter
+    
+    if (dir==0 || dir == $QUERY_EXHAUSTED)  { PERFORM NOTHING; }
+    PERFORM $ACTION_MOVE dir;
+    if (perf_ret!=1) {
+        PERFORM SET_ADDITIONAL_PARAMS2 0;
+    }	
+    PERFORM NOTHING;
+}
+
+
+// 3.2. Perform skip teleport
+PERFORM $ACTION_SKIP pos;
+//$print "at X:", unitPosition[$Xpos], " Y:",  unitPosition[$Ypos]," final dist:", unit<_>pos,"\n";
+
+ 
+
+//didn't fit into immediate area around destination
+//try skipping out at 22 and 45 degree angles to the destination
+/*then try skipping half the distance
+if (tportCounter==9) { 		
+
+    int _dist = 0;
+    float _angle = 0;
+    _dist = goal_dist;
+
+    if (1) { //max dist @ 22 degrees
+        _angle = $p22; $CUSTOM_ANGLE_DIST_SKIP
+    } 
+    if (tported<1) { //max dist @ -22 degrees
+        _angle = $n22; $CUSTOM_ANGLE_DIST_SKIP
+    } 
+    if (tported<1) { //max dist @ 45 degrees
+        _angle = $p45; $CUSTOM_ANGLE_DIST_SKIP
+    } 
+    if (tported<1) { //max dist @ -45 degrees
+        _angle = $n45; $CUSTOM_ANGLE_DIST_SKIP	
+    } 
+    
+    if (tported<1 ) {
+        _dist = goal_dist * 2 / 3; //jump two-thirds distance
+        
+        if (1) { //two-thirds, straight
+            _angle = 0; $CUSTOM_ANGLE_DIST_SKIP
+        }
+        
+        if (tported<1) { //two-thirds @ 22 degrees
+            _angle = $p22; $CUSTOM_ANGLE_DIST_SKIP
+        } 
+        if (tported<1) { //two-thirds @ -22 degrees
+            _angle = $n22; $CUSTOM_ANGLE_DIST_SKIP
+        } 
+        if (tported<1) { //two-thirds @ 45 degrees
+            _angle = $p45; $CUSTOM_ANGLE_DIST_SKIP
+        } 
+        if (tported<1) { //two-thirds @ -45 degrees
+            _angle = $n45; $CUSTOM_ANGLE_DIST_SKIP
+        } 
+    }
+    
+    
+    if (tported<1) {
+        _dist = goal_dist / 3; //jump one-thirds distance
+        
+        if (1) { //one-thirds, straight
+            _angle = 0; $CUSTOM_ANGLE_DIST_SKIP
+        }
+        
+        if (tported<1) { //one-thirds @ 22 degrees
+            _angle = $p22; $CUSTOM_ANGLE_DIST_SKIP
+        } 
+        if (tported<1) { //one-thirds @ -22 degrees
+            _angle = $n22; $CUSTOM_ANGLE_DIST_SKIP
+        } 
+        if (tported<1) { //one-thirds @ 45 degrees
+            _angle = $p45; $CUSTOM_ANGLE_DIST_SKIP
+        } 
+        if (tported<1) { //one-thirds @ -45 degrees
+            _angle = $n45; $CUSTOM_ANGLE_DIST_SKIP
+        } 
+    }
+    
+}*/

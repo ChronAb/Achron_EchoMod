@@ -1,0 +1,40 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_creator.aih
+
+/*
+	example (run by scenario monitor):  
+ap = 0; //set to 1 to nuke
+	//set to 2 to plasma cruise missile launch
+	//set to 3 to chronobomb
+target = unit_creator;
+PERFORM SET_OTHER_OBJECTIVE_PARAMS location;  	
+PERFORM SET_OTHER_OBJECTIVE $UC_OBJECTIVE_ATTACK;
+*/
+
+
+PERFORM SET_OBJECTIVE 0;
+int op = unit->ObjectiveParameters;
+int ap = unit->AdditionalParameters;
+
+if (ap==$UC_ATTACK_NUKE) {
+	PERFORM $UC_MININUKE op;
+	PERFORM SET_ADDITIONAL_PARAMS 0;
+	PERFORM SET_PARAM 0;
+} 
+else if (ap==$UC_ATTACK_PBOMB) {
+	PERFORM SET_ADDITIONAL_PARAMS op;  //store the location
+	PERFORM $UC_CREATE_PLASMA_MISSILE;
+}
+else if (ap==$UC_ATTACK_CBOMB) {
+	PERFORM GET_MAP_NEXT_Z_POSITION_UP op; 
+	PERFORM SET_ADDITIONAL_PARAMS perf_ret;
+	PERFORM $UC_CREATE_CHRONOBOMB;
+}
+else {
+	PERFORM $UC_ATTACK op;
+	PERFORM SET_ADDITIONAL_PARAMS 0;
+	PERFORM SET_PARAM 0;
+}
+
+

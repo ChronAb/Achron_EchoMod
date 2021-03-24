@@ -1,0 +1,57 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+int ap=0;
+
+//check for an adjacent depot and set its ACC-bit to allow the depot to make aerospace
+PERFORM GET_CUR_TIME;
+if (perf_ret%$DEPOT_CHECK==0) { //run the check for depot that cleared it's acc ping bit
+	while (1) {
+		target = QUERY UNIT [unit] MIN [unit<_>query] WHERE [query->IsAlly==1 && query->Class==$DEPOT_CLASS &&
+															query<_>unit <= 144 && !(query->Status[$CAP_BIT_5]) ];																														
+		//acc sets the depot's cap_bit_2, allowing it to create aerospace vehicles
+		if (target->IsAlive==1) {
+			PERFORM $ACTION_SET_DEPOT_BIT;
+		} else { break; }
+	}
+}
+
+if (unit->Action==$ACTION_ATTACK) { PERFORM NOTHING; }
+
+
+#include common/include/vecgir_building_idle.ais
+
+PERFORM RAND;
+if (perf_ret > 16192) { // 0-32k
+  PERFORM NOTHING;
+}
+
+
+PERFORM RAND;
+if (perf_ret > 16192) { // 0-32k
+   target = QUERY UNIT [unit] MAX [ unit <=> query ]
+                        WHERE [ query->IsAlly == 1 && (query.Rank == $S_VIR_RANK )&& (query->Status[$CAP_BIT_3])];
+    if (target!=0) {
+        $SAY_NEARBY
+        PERFORM $ACTION_SET_BIT target;
+        PERFORM NOTHING;
+    }        
+} 
+else {
+	if (player->Advancements[$VECGIR_ADV_AUTODEFENCE]) {
+	
+		PERFORM GET_MAX_ACTION_RANGE_RADIUS $ACTION_ATTACK;
+		query_vis_distance = perf_ret;
+		
+		target = QUERY UNIT [unit] MIN [ unit <=> query ] WHERE [!(query->IsAlly) && !(query->IsStasis) && query.MaxHP > 0 ];
+		PERFORM GET_CLOSEST_TARGET_POSITION_WITHIN_RANGE $ACTION_ATTACK;
+		int position =  perf_ret; 
+		if (position!=-1 && position!=$INVALID_POSITION) { 
+			target_is_position = 1;
+			target = position;
+			PERFORM $ACTION_ATTACK position;
+			PERFORM NOTHING;
+		}
+	}
+}

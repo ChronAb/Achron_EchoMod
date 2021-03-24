@@ -1,0 +1,20 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+//unit_priority_override.ais - override unit 's objective
+//this script uses the AP bits ap[$MOVE_COUNTER] to store a move counter which decreases with each move
+//commanders that have this counter to a non-zero value force their subordinates to follow their objectives
+//once this counter reaches 0, subordinates no longer look at the commander's objectives
+
+
+if (ap[$MOVE_COUNTER] > 0) {
+	ap[$MOVE_COUNTER] = ap[$MOVE_COUNTER] - 1;
+	setAdditionalParameters = 1;
+	
+	//attacking a unit,  still has a move counter, lower move counter since attacks take non-trivial time to complete
+	if (AP_UNIT && myObjective==$OBJECTIVE_ATTACKING_UNIT && ap[$MOVE_COUNTER]>4) {  
+		int action = unit->Action; //check that the unit isn't moving, so it must be attacking.
+		if (action!=$ACTION_MOVE && action!=$ACTION_MOVE_SLOW && action!=$ACTION_ROTATE && action!=$EVENT_NOTHING) {
+			ap[$MOVE_COUNTER] = 4;
+		}
+	}
+}

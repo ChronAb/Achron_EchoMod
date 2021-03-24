@@ -1,0 +1,175 @@
+
+
+            X = unitPosition[$Xpos];
+            Y = unitPosition[$Ypos];
+            if (uclass<=$MARINE_RAISED_CLASS) {  //marine
+                int build_here = 0;
+				
+                if (curtime <= 80$seconds ) { //first 40 seconds 
+
+                        temp1 = 0;
+                        if (curtime > 30$seconds && player->$LCrystals>0) { //it's been 30 seconds and there is still LC left
+                            object p = QUERY UNIT [unit] MIN [query <_> unit] WHERE [query->Class==$LC_CLASS]; //look for LC visible to any unit
+                            if (p->IsAlive==1) { temp1 = 1; }
+                        }
+						
+						object otherMarine = QUERY UNIT [unit] MIN [ query<_>unit] WHERE [ query.Rank == $MARINE_RANK ];
+						if(otherMarine < unit) { // i am not the first marine
+						
+                            object br  = QUERY UNIT [unit] MIN [query<_>unit] WHERE [query->Class == $ARMORY_CLASS];
+                            if (br->IsAlive==1) {
+                                PERFORM NOTHING; //one is already built, so chill out
+                            }
+                            if (player->$LCrystals >= $ARMORY_LC) {
+                                int quaddist = 7;
+								object u  = QUERY UNIT [unit] MIN [query<_>unit] WHERE [query->Class == $IMPORTER_CLASS];
+                                #include common/include/unit_auto_quadbuild.ais
+                                ap[$OBJECTIVE] = $OBJECTIVE_BUILD_ARMORY;
+                                PERFORM SET_ADDITIONAL_PARAMS ap;
+                                PERFORM SET_PARAM location;
+                                PERFORM SET_OBJECTIVE $OBJECTIVE_BUILD_ARMORY;
+								//perf_ret = unit->Position; PERFORM ENQUEUE_OBJECTIVE $OBJECTIVE_MOVE_DISPATCH; //move back
+                                PERFORM NOTHING;
+                            }
+                            else { PERFORM NOTHING; } //wait until there is enough LCs to build an armory
+                        //}
+						
+						
+						
+                        //if (otherMarine >=  unit || temp1 ) { //i am the chosen unit to make RPs on LC
+							int class = 0;
+                            object u = QUERY UNIT [unit] MIN [query<_>unit ] WHERE [(class=query->Class)==$IMPORTER_CLASS || class==$LC_CLASS];
+
+                            if (u->IsAlive==1 && player->$LCrystals >= $RP_LC) {
+                                // object recover = QUERY UNIT [unit] MIN [query<_>unit ] WHERE [(class=query->Class)==$MARINE_CLASS || class==$MARINE_RAISED_CLASS]; //look for another marine
+                                // if (recover->IsAlive==1 && unit<_>recover < 9) {
+									// temp2 = recover->Position;
+                                    // int I=0; I[$Xpos] = temp2[$Xpos] - (temp2[$Xpos] - X) * 2; I[$Ypos] = temp2[$Ypos] - (temp2[$Ypos] - Y) * 2;
+                                    // PERFORM SET_PARAM I;
+                                    // PERFORM SET_OBJECTIVE $OBJECTIVE_MOVE_DISPATCH; //don't want to crowd another marine and prevent each other from building
+                                    // PERFORM NOTHING;
+                                // }
+                                object patch = u;
+                                if (u->Class == $IMPORTER_CLASS) { 
+                                    patch = QUERY UNIT [u] MIN [query <_> u] WHERE [query->Class==$LC_CLASS]; //look for LC visible to the ops-C
+									if (patch) {
+										int RPs = QUERY VALUE [unit] SUM [1] WHERE [ ((temp2=query->Class)==$HUMAN_RP_CLASS || temp2==$HUMAN_RP_OFF_CLASS) && 
+																			  query<_>patch <= $RP_PROCESS_DISTANCE ];
+									  if (RPs>1) {
+											object patch2 = patch; //store the first patch as patch2
+											patch = QUERY UNIT [unit] MIN [query <_> unit] WHERE [query->Class==$LC_CLASS && query!=patch]; 
+											if (patch) {
+												RPs = QUERY VALUE [unit] SUM [1] WHERE [ ((temp2=query->Class)==$HUMAN_RP_CLASS || temp2==$HUMAN_RP_OFF_CLASS) && 
+																					  query<_>patch <= $RP_PROCESS_DISTANCE ];
+												if (RPs>1) { //look for a third patch that isn't either of the first two
+													patch = QUERY UNIT [unit] MAX [query <_> unit] WHERE [query->Class==$LC_CLASS && query!=patch && query!=patch2]; 
+												}
+											}
+										}
+									}	
+                                } else {  //it's a LC patch
+									int RPs = QUERY VALUE [unit] SUM [1] WHERE [ ((temp2=query->Class)==$HUMAN_RP_CLASS || temp2==$HUMAN_RP_OFF_CLASS) && 
+																		  query<_>patch <= $RP_PROCESS_DISTANCE ];
+									if (RPs>1) {
+										object patch2 = patch; //store the first patch as patch2
+										patch = QUERY UNIT [unit] MIN [query <_> unit] WHERE [query->Class==$LC_CLASS && query!=patch]; 
+										if (patch) {
+											RPs = QUERY VALUE [unit] SUM [1] WHERE [ ((temp2=query->Class)==$HUMAN_RP_CLASS || temp2==$HUMAN_RP_OFF_CLASS) && 
+																				  query<_>patch <= $RP_PROCESS_DISTANCE ];
+											if (RPs>1) { //look for a third patch that isn't either of the first two
+												patch = QUERY UNIT [unit] MAX [query <_> unit] WHERE [query->Class==$LC_CLASS && query!=patch && query!=patch2]; 
+											}
+										}
+									}								
+								}
+								
+                                if (patch && player->$LCrystals >= $RP_LC) {
+                                    PERFORM GET_UNIT_AT unit->ObjectiveParameters;
+                                    object old = perf_ret;
+                                    if (old->IsAlive==1 && old->Class==$LC_CLASS) {
+                                        patch = QUERY UNIT [unit] MIN [query <_> unit] WHERE [query->Class==$LC_CLASS && query!=old]; //look for LC visible to unit
+
+										if (patch) {
+											int RPs = QUERY VALUE [unit] SUM [1] WHERE [ ((temp2=query->Class)==$HUMAN_RP_CLASS || temp2==$HUMAN_RP_OFF_CLASS) && 
+																				  query<_>patch <= $RP_PROCESS_DISTANCE ];																	  
+										  if (RPs>=1) {
+												object patch2 = patch; //store the first patch as patch2
+												patch = QUERY UNIT [unit] MIN [query <_> unit] WHERE [query->Class==$LC_CLASS && query!=patch && query!=old]; 
+												if (patch) {
+													RPs = QUERY VALUE [unit] SUM [1] WHERE [ ((temp2=query->Class)==$HUMAN_RP_CLASS || temp2==$HUMAN_RP_OFF_CLASS) && 
+																						  query<_>patch <= $RP_PROCESS_DISTANCE ];
+													if (RPs>1) { //look for a third patch that isn't either of the first two
+														patch = QUERY UNIT [unit] MAX [query <_> unit] WHERE [query->Class==$LC_CLASS && query!=patch && query!=patch2 && query!=old]; 
+													}
+												}
+											}
+										}	
+											
+										
+                                    }
+                                    if (patch) {
+                                        PERFORM SET_PARAM patch->Position;
+                                        PERFORM SET_OBJECTIVE $OBJECTIVE_BUILD_RP;
+                                        PERFORM NOTHING;
+                                    }
+                                }
+                               
+                            }
+                            
+                        }
+                    
+						//start game, got far enough away from armory but still by LC patches
+                        if (curtime <= 90$seconds && player->$LCrystals>=$RP_LC) {
+							object patch = QUERY UNIT [unit] MIN [query <_> unit] WHERE [query->Class==$LC_CLASS]; 
+							
+							
+							int RPs = QUERY VALUE [unit] SUM [1] WHERE [ ((temp2=query->Class)==$HUMAN_RP_CLASS || temp2==$HUMAN_RP_OFF_CLASS) && 
+																		  query<_>patch <= $RP_PROCESS_DISTANCE ];
+							if (RPs>1) {
+								object patch2 = patch; //store the first patch as patch2
+								patch = QUERY UNIT [unit] MIN [query <_> unit] WHERE [query->Class==$LC_CLASS && query!=patch]; 
+								if (patch) {
+									RPs = QUERY VALUE [unit] SUM [1] WHERE [ ((temp2=query->Class)==$HUMAN_RP_CLASS || temp2==$HUMAN_RP_OFF_CLASS) && 
+																		  query<_>patch <= $RP_PROCESS_DISTANCE ];
+									if (RPs>1) { //look for a third patch that isn't either of the first two
+										patch = QUERY UNIT [unit] MAX [query <_> unit] WHERE [query->Class==$LC_CLASS && query!=patch && query!=patch2]; 
+									}
+								}
+							}
+							
+
+							
+                            if (patch) {
+                                PERFORM GET_UNIT_AT unit->ObjectiveParameters;
+                                object old = perf_ret;
+                                if (old->IsAlive==1 && old->Class==$LC_CLASS) {
+                                    patch = QUERY UNIT [unit] MIN [query <_> unit] WHERE [query->Class==$LC_CLASS && query!=old]; //look for LC visible to unit
+									
+									
+									if (patch) {
+										int RPs = QUERY VALUE [unit] SUM [1] WHERE [ ((temp2=query->Class)==$HUMAN_RP_CLASS || temp2==$HUMAN_RP_OFF_CLASS) && 
+																			  query<_>patch <= $RP_PROCESS_DISTANCE ];
+									  if (RPs>1) {
+											object patch2 = patch; //store the first patch as patch2
+											patch = QUERY UNIT [unit] MIN [query <_> unit] WHERE [query->Class==$LC_CLASS && query!=patch && query!=old]; 
+											if (patch) {
+												RPs = QUERY VALUE [unit] SUM [1] WHERE [ ((temp2=query->Class)==$HUMAN_RP_CLASS || temp2==$HUMAN_RP_OFF_CLASS) && 
+																					  query<_>patch <= $RP_PROCESS_DISTANCE ];
+												if (RPs>1) { //look for a third patch that isn't either of the first two
+													patch = QUERY UNIT [unit] MAX [query <_> unit] WHERE [query->Class==$LC_CLASS && query!=patch && query!=patch2 && query!=old]; 
+												}
+											}
+										}
+									}									
+                                }
+                                if (patch) {
+                                    PERFORM SET_PARAM patch->Position;
+                                    PERFORM SET_OBJECTIVE $OBJECTIVE_BUILD_RP;
+                                    PERFORM NOTHING;
+                                }
+                            }
+                        }
+                        
+                    
+                }
+            }

@@ -1,0 +1,47 @@
+        int find = $FLAGS & 63;
+        if (find == $ANY_UNIT) {                                
+            object lookup = $CUSTOMFIELD_LOOKUP;
+            temp1 = lookup.Rank;  //backup the value so we don't have to look it up again
+            if (temp1 < $BUILDINGS_RANK) //only applies to buildings
+            {
+                if(lookup->LastAttackedVDirection) {
+                    int boundary = 16 * $LOOKUP_BOUNDARY; //air units can respond up to 120 spaces away
+                    if (!$IS_AIR_UNIT) {        
+                        boundary =  4 * $LOOKUP_BOUNDARY;  //ground units can respond up to 80 spaces away
+                    }
+                    
+                    if (unit<_>lookup <= boundary) {    //if unit is close enough, go attack the attackers
+                        if (ap[$DISTANCE_BIT]) { ap[$DISTANCE_BIT] = 0; }
+                        target = QUERY UNIT [lookup] MIN [query<=>lookup] WHERE [!(query->IsAlly)];
+                        if (target->IsAlive==1) {  //found the enemy unit, go attack it
+                            ap[$OBJECTIVE] = $OBJECTIVE_ATTACKING;
+                            ap[$UNIT_BIT] = 1;
+                            ap[$ATTACK_BIT] = 1;
+                            PERFORM SET_ADDITIONAL_PARAMS ap; //attack the unit
+                            PERFORM SET_PARAM target;
+                            PERFORM SET_OBJECTIVE $OBJECTIVE_ATTACKING_UNIT;
+                            PERFORM NOTHING;
+                        }
+                        else {   //go to that general area and look for enemies
+                            int lahd = lookup->LastAttackedHDirection;
+                            int x = lookup->XPosition;
+                            int y = lookup->YPosition;
+                            int X = x;
+                            int Y = y;
+
+                            int direction = rottorad(lahd) + 3.1415926;	//find the direction of attack
+                            y = Y + 10.0 * sin(direction);
+                            x = X - 10.0 * cos(direction);
+                            int todir = (unit->ZPosition << 24) | (y << 12) | x;
+                            ap[$OBJECTIVE] = $OBJECTIVE_ATTACKING;
+                            ap[$UNIT_BIT] = 0;
+                            ap[$ATTACK_BIT] = 1;
+                            PERFORM SET_ADDITIONAL_PARAMS ap; //attack the position
+                            PERFORM SET_PARAM todir;
+                            PERFORM SET_OBJECTIVE $OBJECTIVE_ATTACKING;
+                            PERFORM NOTHING;
+                        }
+                    }
+                }
+            }
+        }

@@ -1,0 +1,10 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+if (!(unit->Status & 16)) {
+    PERFORM SET_OBJECTIVE 0;  
+    PERFORM NOTHING;
+} 
+
+#include common/simple_move.ais
+
+

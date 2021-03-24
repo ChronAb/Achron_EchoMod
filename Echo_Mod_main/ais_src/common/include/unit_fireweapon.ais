@@ -1,0 +1,95 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+
+        //use correct action for proper animation and proper weapon (since ground weapons won't attack air units)...
+		closestenemy = target; //backup target
+		target = position;
+		PERFORM IS_POSITION_WITHIN_ACTION_ANGLE weaponAction;
+		
+	
+        if (perf_ret>0) { //target is attackable in this direction
+
+			//tanks that are carrying troops auto-release them before firing
+			if ($IS_CARRIER_TANK && unit->Ammo > 0) {
+				PERFORM RAND;
+				if (perf_ret < 16384) { //50% chance of blind-releasing the carried soldier
+					PERFORM SET_OBJECTIVE $OBJECTIVE_RELEASEUNIT;
+					PERFORM NOTHING;
+				}
+				else { //50% of checking whether the carried soldier can be released in the first place
+					object backup = target;
+					target = $MARINE_CLASS;
+					PERFORM CAN_PUT_CLASS;
+					if (perf_ret==1) {
+						PERFORM SET_OBJECTIVE $OBJECTIVE_RELEASEUNIT;
+						PERFORM NOTHING;	
+					}
+					target = backup;
+				}
+			}
+		
+			target_is_position = 1;
+			target = position;
+            if (temp1 == 0) { PERFORM $ACTION_ATTACK position; }
+            else { PERFORM $ACTION_ATTACK_W1 position; }
+            
+			
+			//if(weaponAction==$ACTION_ATTACK) { PERFORM $ACTION_ATTACK position; } 
+			//else if (weaponAction==$ACTION_ATTACK_W1) { PERFORM $ACTION_ATTACK_W1 position; }
+			
+			target = closestenemy;
+            PERFORM RAND;
+            if (perf_ret < 4096) {
+                if (target->Owner == unit->Owner) { $SAY_NANITES }
+            }
+            
+            if (perf_ret < $LAD_CLEAR) {
+                PERFORM CLEAR_LAST_ATTACKED_DIRECTION; 
+            }
+            
+
+			int constraints = player.ScenarioConstraints;
+			int computer = player->IsComputerPlayer;
+			// if ($IS_CLOAKABLE_UNIT) { 
+				// //auto-cloak-level and ai being run by computer 
+				// if (constraints[11] && computer) {						
+					// if ( !(myStatus[$CLOAK_BIT]) && unit->Energy > 5 ) { 
+						// PERFORM SET_OBJECTIVE $OBJECTIVE_CLOAK; 
+						// $SET_AP
+						// PERFORM NOTHING; 
+					// }
+				// }
+			// }
+			
+			//summon others on attack on buildings
+			if (!constraints[1] && computer) { //$AUTOPILOT
+				int tr = target.Rank;
+				int flags = $FLAGS;
+				if (tr < $BUILDINGS_RANK && !(target->IsAlly) && !flags[$JOINME_BIT] && !flags[$LOOKUP_BIT]) {
+					PERFORM SET_PLAYER_CUSTOM_FIELD_2 ($CUSTOMFIELD_TSS | (unit << 16 ));
+					int flags = $FLAGS;
+					flags[$JOINME_BIT] = 1;
+					PERFORM SET_PLAYER_CUSTOM_FIELD_3 flags;
+				}
+			}
+			
+			
+			$SET_AP
+			PERFORM SET_ADDITIONAL_PARAMS2 0;
+            PERFORM NOTHING;
+        }
+        else {
+            
+            target = uclass; //needs to be the unit's class for CAN_CLASS_FIT_AT
+            PERFORM CAN_CLASS_FIT_AT unitPosition; //the unit's current position stored (from attack.ais)
+			int fitRotations = perf_ret;
+			PERFORM GET_BEST_POSITION_ATTACK_DIRECTION position;
+			int enemyDirection = perf_ret;
+            if  ( fitRotations &  ( 1 << (enemyDirection)  )  ) { //target can fit there rotated towards the target			
+				PERFORM $ACTION_ROTATE enemyDirection; //rotate towards the enemy
+				$SET_AP
+				PERFORM SET_ADDITIONAL_PARAMS2 0;
+				PERFORM NOTHING;
+            }
+            target = closestenemy;  //restore target
+        }

@@ -1,0 +1,51 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+PERFORM SET_OBJECTIVE 0;
+
+int op = unit->ObjectiveParameters;
+op[$Zpos] = 0; //clear out the Z coord, default to GROUND HEIGHT
+
+object candidate = 0;
+int maxdist = 999999;
+int dist = 0;
+
+//find a subordinate sepi to make a reaph
+while (1) {
+	target = unit->NextSubordinate;
+	if (target->IsAlive==1) {
+		int to = 0;
+		if (target->Class==$SEPI_CLASS && (to=target->Objective)!=$OBJECTIVE_MORPH_DISPATCH && to!=$OBJECTIVE_MORPH_COMM) {
+			dist = target<_>op;
+			//this is the closest unit to the destination
+			if (dist < maxdist) { 
+				candidate = target;
+				maxdist = dist;
+			}
+		}
+	} else { break; } //stop loop when all subordinates have been checked
+}
+
+
+if (candidate > 0) {
+	target = candidate;
+	PERFORM SET_OTHER_OBJECTIVE_PARAMS op;
+	PERFORM SET_OTHER_OBJECTIVE $OBJECTIVE_MORPH_DISPATCH;
+} else {
+    $SAY_NO_SEPI
+    PERFORM $ACTION_ERROR1;
+}
+
+
+
+int ap = unit->AdditionalParameters;
+if (ap[$ARCTICUS_COMMAND]) { //had an arcticus command, remember it so that units don't speed match
+	ap = 0;
+	ap[$ARCTICUS_COMMAND] = 1;
+} else {
+	ap = 0;
+}
+PERFORM SET_ADDITIONAL_PARAMS ap; 	
+
+

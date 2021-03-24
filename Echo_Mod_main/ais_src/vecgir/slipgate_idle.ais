@@ -1,0 +1,478 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+int ap=0;
+int skip = 0;
+
+PERFORM RAND;
+if (perf_ret > 16192) { // 0-32k
+   #include common/include/vecgir_building_idle.ais   
+   skip = 1;
+}
+else {
+    ap = unit->AdditionalParameters;
+}
+
+int myStatus = unit->Status;
+
+target = 0;
+target = QUERY UNIT [unit] MAX [ unit <=> query ]
+         WHERE [ (query->IsAlly==1 && (query.Rank == $S_VIR_RANK  ) && (query->Status[$CAP_BIT_3]))];
+if (target != 0) {
+    $SAY_NEARBY
+    PERFORM $ACTION_SET_BIT target;
+}        
+
+//************ look for a unit to chronoport
+//gate is ready to cport
+
+int myObjective = unit->Objective;
+
+if (myObjective==$OBJ_BLDG_GATE_RECHARGE) { 
+	PERFORM NOTHING;
+}
+
+if (myObjective==0) {
+    PERFORM GET_CUR_TIME;  
+    int current = perf_ret;
+	
+	if (current%2==0) {
+		int qrank = 0; //find unit that wants to chronoport but is too far away
+		target = QUERY UNIT [unit] MIN [ query <_> unit ] WHERE [ query->IsAlly==1 && query.Rank>=$BUILDINGS_RANK && query->Objective==$OBJECTIVE_CHRONOPORT && 
+																  query->AdditionalParameters[1,5] > 0 &&  //has a wait counter
+																  (qrank=(query->Commander).Rank)!=$CHRONOPORTER_RANK && qrank!=$SLIPGATE_RANK ];
+		if (target->IsAlive==1) {
+			PERFORM $ACTION_SET_COMMANDER_TO unit; //set self as its commander
+		}
+	}
+	
+	
+	
+    //get the maximum chronoporting distance in ticks
+    PERFORM GET_MAX_CHRONOPORT_DISTANCE;
+    int cport_max = perf_ret;
+    
+    PERFORM GET_RECHRONOPORT_DELAY;
+	int rechronoportdelay = perf_ret;
+    
+	int timeSinceLastChronoport=0;
+	int qStatus = 0;
+	
+	//subordinates of this gate are units that chose this gate as the one to use
+	while (1) {
+		target = unit->NextSubordinate;
+		if (target>0) {
+			if ( target->IsAlive==1) {
+			
+				if (target.Rank<$BUILDINGS_RANK) { continue; } // unit # churn
+				
+				int op = target->ObjectiveParameters;
+				//check if destination falls within chronoporting distance
+				if ( abs(op - current) < cport_max ) {		
+				
+					if (!myStatus[$CAP_BIT_2] ) {    //make sure Cporter is spun up
+						PERFORM $ACTION_SPINUP;      //this action sets cap_bit_2 and does the animation         
+						PERFORM NOTHING;
+					}
+										
+					PERFORM $ACTION_SET_COMMANDER_TO 0;
+					PERFORM $ACTION_TIMEPORT target; 
+				} 
+			
+			}
+			else { continue; } //inaccessible subordinate, get the next one
+		} 
+		else { break; } //stop looking for subordinates
+	}
+	
+}
+
+
+	
+
+
+//************* look for a unit to teleport
+object blocked = ap[$STOREDUNIT]; 
+
+if (ap[$BLOCKED_BIT] && !ap[$UNIT_BIT]) {  //if I have a blocked unit stored
+
+    int counter = ap[6,4];
+    counter = counter + 1;  //up the counter
+    if (blocked->Objective==$OBJECTIVE_SKIP) {
+    
+		int distToMe = blocked <_> unit;
+		if (distToMe > 529) { //the blocked unit is out of my range, clear it out
+	        ap[$BLOCKED_BIT,2] = 0; 
+			ap[6,4] = 0; //clear out ap[6,4] and unit field
+			ap[$STOREDUNIT] = 0;
+			PERFORM SET_ADDITIONAL_PARAMS ap;
+			PERFORM NOTHING;
+		}
+		
+	
+        int location = blocked->ObjectiveParameters;
+		int actualTargetOP = location;
+		
+		int MAX_RANGE = $MAX_TPORT_RANGE;
+		
+		if (location <_> unit > (MAX_RANGE * MAX_RANGE) ) {
+
+			int unitPos = unit->Position;
+			int ux = unitPos[$Xpos];  //unit's location
+			int uy = unitPos[$Ypos];
+			
+			int xd = location[$Xpos] - ux;   //the x-difference
+			int yd = location[$Ypos] - uy;   //the y-difference
+			
+			float a = yd atan2 xd; //angle of teleport
+			yd = (MAX_RANGE-10) * sin a;      //the new y-offset
+			xd = (MAX_RANGE-10) * cos a;      //the new x-offset
+			  
+
+			location[$Xpos] = ux + xd;
+			location[$Ypos] = uy + yd;   
+
+		}
+		
+        int x = location[$Xpos];
+        int y = location[$Ypos];
+        int blockedZ = blocked->ZPosition;
+        int z = 0;
+		if (blockedZ > 0 ) {
+			z = blockedZ - location[$Zpos];
+			if (z<0) { z = 0; }
+		}
+		
+        int newpos = 1;  
+        int xoffset = blocked.Length + ap[$EXTRA_BIT]; 
+        int mult = xoffset;
+        int yoffset = 0;
+
+		int brank = blocked.Rank; //RPs should not be teleported on the diagonal
+		if (brank==$RP_RANK && counter%2==0) { counter = counter + 1; }
+        while (newpos < counter ) { //calculate new offset (expanding spiral based on the blocked unit's length)
+            
+            if (xoffset > 0 && yoffset < 0) { 
+                yoffset = 0; mult=mult+blocked.Length+ap[$EXTRA_BIT]; xoffset = mult; 
+            } 
+            else {
+                if (xoffset <= 0 && yoffset < 0) { xoffset = xoffset + mult;  }
+                if (xoffset < 0 && yoffset >= 0) { yoffset = yoffset - mult;  }
+                if (xoffset >= 0 && yoffset > 0) { xoffset = xoffset - mult;  }
+                if (xoffset > 0 && yoffset == 0) { yoffset = yoffset + mult;  } 
+            }
+            if (xoffset == 0 && yoffset == 0) { xoffset = xoffset + mult; }
+            newpos = newpos + 1;
+        }
+        
+        location[$Xpos] = x + xoffset;  location[$Ypos] = y + yoffset; location[$Zpos] = z |> blockedZ;
+
+        target = blocked;
+        PERFORM $ACTION_TELEPORT location;
+        //$print "tried new location with counter of : ", counter, "\n";
+        if (perf_ret == 0) {  //failed to teleport again
+            ap[6,4] = 0; //clear out ap[6,4];
+            if (counter == 16) { 
+                counter = 0; 
+                if (!ap[$EXTRA_BIT]) { ap[$EXTRA_BIT] = 1; }  //up the search radius by 1
+                else {
+                    ap[$NOTELEPORT_BIT] = 1;  //can't teleport this unit bit, have it cancel out
+                }
+            } 
+            ap[6,4] = counter;
+            PERFORM SET_ADDITIONAL_PARAMS ap; 
+        }
+        else {  //finally succesfully teleported that blocked unit
+            ap[$BLOCKED_BIT,2] = 0;  //clear both Blocked and Extra bits
+            ap[6,4] = 0; //clear out ap[6,4] and unit field
+            ap[$STOREDUNIT] = 0;     
+			
+			//if teleporting a skip-capable vecgir, allow them to self skip further if they can
+			//assuming that unit hasn't reached its destination yet and is no longer within the radius of this gate
+			int TC = target->Class;
+			if  (( TC >= 2015 && TC < 2060) || TC==$INCEPTER_CLASS || TC==$TYR_CARRIER_CLASS || TC==$VECGIR_RP_OFF_CLASS ) { 
+				int targetLength = target.Length;
+				if (( TC==$INCEPTER_CLASS || TC==$TYR_CARRIER_CLASS || TC==$VECGIR_RP_OFF_CLASS || target->Status[$CAP_BIT_2] ) &&
+					target<_>actualTargetOP > 4 + targetLength*targetLength && unit<_>target > 529)
+				{
+					PERFORM SET_OTHER_OBJECTIVE $OBJECTIVE_SKIP;
+				}
+			}				
+            PERFORM $ACTION_POSTTELEPORT  target; //set the 'teleported' cap-bit
+
+				int targetAP = target->AdditionalParameters;
+				targetAP[$STOREDUNIT] = 0;  
+				targetAP[5,7] = 0; //clear out objective and unit fields and unit bit in AP 
+				if (brank!=$RP_RANK) targetAP[$OBJECTIVE] = $OBJECTIVE_SKIP; //set AP objective to teleport
+				PERFORM SET_OTHER_ADDITIONAL_PARAMS targetAP;
+				//^^^^^ autopilot for vecgir
+				//#include common/include/unit_autopilot_building.ais
+				PERFORM SET_ADDITIONAL_PARAMS ap;
+
+            PERFORM NOTHING;
+        }
+    }
+    else {
+        ap[$BLOCKED_BIT,2] = 0; 
+        ap[6,4] = 0; //clear out ap[6,4] and unit field
+        ap[$STOREDUNIT] = 0;
+        PERFORM SET_ADDITIONAL_PARAMS ap;
+    }
+}
+int tportObj = 0;
+int qstatus = 0;
+int qrank = 0;
+//47 should be set for all unit's objective to 'teleportMe'    
+if (!ap[$BLOCKED_BIT]) { //no blocking units stored
+    target = QUERY UNIT [unit] MIN [unit <=> query]         //find any unit that wants to teleport
+             WHERE [(tportObj = query->Objective) && (tportObj == $OBJECTIVE_SKIP || tportObj == $OBJECTIVE_SKIPTO) && query->IsAlly==1 && 
+					((qrank=query.Rank)==$RP_RANK || qrank>=$BUILDINGS_RANK) && !((qstatus=query->Status)[$CAP_BIT_1]) && !(qstatus[$TSS_BIT]) ];
+}
+else {  //blocking unit stored, ignore it
+    if ( !ap[$UNIT_BIT] ) {      //if UNIT_B is not set, the stored unit is blocking and Not a smart-idle requestor
+        target = QUERY UNIT [unit] MIN [unit <=> query]   
+                 WHERE [(tportObj = query->Objective) && (tportObj == $OBJECTIVE_SKIP || tportObj == $OBJECTIVE_SKIPTO)&& query->IsAlly==1 && 
+						((qrank=query.Rank)==$RP_RANK || qrank>=$BUILDINGS_RANK) && !((qstatus=query->Status)[$CAP_BIT_1]) && !(qstatus[$TSS_BIT]) && (query != blocked ) ];
+    }
+}
+
+//print "target: ", target, " ", target->XPosition, " ap: ", ap[$STOREDUNIT], "\n";
+
+if (target->IsAlive==1) {
+	object T = unit;
+	int unitPosition = unit->ObjectiveParameters;
+	if (unitPosition == 0 ) { unitPosition = unit->Position; }
+	int targetPosition = target->Position;
+	int targetOP = target->ObjectiveParameters;
+	int actualTargetOP = targetOP;
+	int targetRank = target.Rank;
+	
+	int MAX_RANGE = $MAX_TPORT_RANGE;
+	if (targetOP <_> unit > (MAX_RANGE * MAX_RANGE) ) {
+
+		int unitPos= unit->Position;
+		int ux = unitPos[$Xpos];  //unit's location
+		int uy = unitPos[$Ypos];
+		
+		int xd = targetOP[$Xpos] - ux;   //the x-difference
+		int yd = targetOP[$Ypos] - uy;   //the y-difference
+		
+		float a = yd atan2 xd; //angle of teleport
+		yd = (MAX_RANGE-10) * sin a;      //the new y-offset
+		xd = (MAX_RANGE-10) * cos a;      //the new x-offset
+		  
+		int location=0;
+		location[$Xpos] = ux + xd;
+		location[$Ypos] = uy + yd;   
+		location[$Zpos] = targetOP[$Zpos]; //objective parameter z coord
+		targetOP = location;
+	}
+
+	
+	
+	int x = (targetOP[$Xpos] - (unitPosition[$Xpos] - targetPosition[$Xpos])); //12 bits, least sig
+	int y = (targetOP[$Ypos] - (unitPosition[$Ypos] - targetPosition[$Ypos])); //12 bits
+	if (x<0) { x = 0; }
+	if (y<0) { y = 0; }
+	int z = 0; // GROUND HEIGHT
+
+	int location=0;
+	location[$Zpos] = z; location[$Xpos] = x; location[$Ypos] = y;
+	if (!(myStatus)[$CAP_BIT_5] ) {
+		location = targetOP;
+		PERFORM SET_PARAM targetPosition; //actual spot is stored into OP	
+	}
+	location[$Zpos] = 0; //all units default to ground location      	
+	int airUnit = 0;
+	
+	if (targetRank >= $AIR_RANK) { //override the Z coord if it's an air unit
+		airUnit = 1;
+		//if target wants to land, prevent it, go to the spot above the ground
+		if (targetOP[$Zpos]==0) { 
+			PERFORM GET_MAP_NEXT_Z_POSITION_UP location; //get the next height above the target location					
+			location[$Zpos] = perf_ret[$Zpos]; 
+		} else	{ //otherwise go where it wants to
+			location[$Zpos] = targetOP[$Zpos];
+		}
+	}
+
+	PERFORM IS_MAP_POSITION_VALID location; //returs 0 if it's not valid
+	if (perf_ret==0) {		
+		if (airUnit) { 
+			PERFORM GET_MAP_NEXT_Z_POSITION_UP location; //get the next height above for air units
+			location = perf_ret;
+			PERFORM IS_MAP_POSITION_VALID location; //returs 0 if it's not valid
+			if (perf_ret==0) { //the spot ABOVE the destination is not valid (WTF, top of the mountain?) make it land on the ground
+				location[$Zpos] = 0;
+			}
+		}
+	}
+	
+	T = target;
+	PERFORM $ACTION_TELEPORT location;
+	if (perf_ret == 0) {
+		if (!ap[$BLOCKED_BIT]) {
+			ap[6,4] = 0; //clear out ap[6,4] and unit field
+			ap[$STOREDUNIT] = T;  //failed to tport, store unit 
+			ap[$BLOCKED_BIT] = 1;    //set the blocked bit
+			PERFORM SET_ADDITIONAL_PARAMS ap; 
+		}
+		//else { $print "already found another unit that can't teleport as well\n"; }
+		//PERFORM $ACTION_FAKE_TELEPORT;
+	}
+	else {
+		ap[$UNIT_BIT] = 0; //clear out unit bit if it was stored
+		PERFORM SET_ADDITIONAL_PARAMS ap;
+		
+		//if teleporting a skip-capable vecgir, allow them to self skip further if they can
+		//assuming that unit hasn't reached its destination yet and is no longer within the radius of this gate
+		int TC = target->Class;
+		if  (( TC >= 2015 && TC < 2060) || TC==$INCEPTER_CLASS || TC==$TYR_CARRIER_CLASS || TC==$VECGIR_RP_OFF_CLASS ) { 
+			int targetLength = target.Length;
+			if (( TC==$INCEPTER_CLASS || TC==$TYR_CARRIER_CLASS || TC==$VECGIR_RP_OFF_CLASS || target->Status[$CAP_BIT_2] ) &&
+				target<_>actualTargetOP > 4 + targetLength*targetLength && unit<_>target > 529)
+			{
+				PERFORM SET_OTHER_OBJECTIVE $OBJECTIVE_SKIP;
+			}
+		}			
+		PERFORM $ACTION_POSTTELEPORT T; //set the 'teleported' cap-bit
+		
+		int targetAP = target->AdditionalParameters;
+		targetAP[$STOREDUNIT] = 0;  
+		targetAP[5,7] = 0; //clear out objective and unit fields and unit bit in AP 
+		if (targetRank != $RP_RANK) targetAP[$OBJECTIVE] = $OBJECTIVE_SKIP; //set AP objective to teleport
+		PERFORM SET_OTHER_ADDITIONAL_PARAMS targetAP;			
+	
+	}
+    
+}
+else  {
+
+    if (!ap[$BLOCKED_BIT]) {  //no blocked unit stored
+
+        if (myStatus[$CAP_BIT_5]) { 
+            PERFORM $ACTION_CLEAR_TBIT;
+			PERFORM SET_PARAM 0;
+        }
+    }
+    else {  //blocked unit is stored
+    }
+
+}
+
+if (ap[$UNIT_BIT]) {  //UNIT_B is set , clear it after one cycle - give requestor chance to find this gate
+    if (ap[$SMART_CLEAR_BIT]) {  //if clear bit is already set, clear em both
+        ap[$SMART_CLEAR_BIT] = 0;
+        ap[$UNIT_BIT] = 0;  //clear out unit bit if it was stored
+        PERFORM SET_ADDITIONAL_PARAMS ap;
+    }
+    else {
+        ap[$SMART_CLEAR_BIT] = 1;
+        PERFORM SET_ADDITIONAL_PARAMS ap;
+    }
+}
+
+
+
+
+
+if (!skip) {
+    #include common/include/vecgir_building_idle.ais
+}
+
+
+//***************** look for a unit to repel or attack
+    
+
+if ( myStatus[$CAP_BIT_4])     {  //REPEL - cap bit 4 means repel mode
+	PERFORM RAND;
+	if (perf_ret < 16384) {
+		int qs = 0;
+		int qr = 0;
+		//artifitially limit repel radius to allow artillery and long-range units a chance to kill repelling gates
+		query_vis_distance = 27; //look for non cloaked, non-tss'd units that are small enough to teleport
+		target = QUERY UNIT [unit] MIN [ unit <=> query ] WHERE [!(query->IsAlly) && !((qs=query->Status)[$TSS_BIT]) && !qs[$CLOAK_BIT]  && 
+										query->IsAlive==1 && (qr=query.Rank) >= $BUILDINGS_RANK && qr!=$CARRIER_RANK]; 
+
+		if (target != 0) { 
+			int unitPosition = unit->Position;
+			int targetPosition = target->Position;
+			int X = unitPosition[$Xpos];
+			int Y = unitPosition[$Ypos];
+
+			int dX = targetPosition[$Xpos] - X;
+			int dY = targetPosition[$Ypos] - Y;
+			
+			if(dX==0 && dY==0) { dX = 1; dY = 1; } //target is directly above spligate, repel it south east
+			
+			PERFORM RAND;
+			int x = perf_ret[7,7]; //random X distance 0-127
+			PERFORM RAND;
+			int y = perf_ret[7,7]; //random y distance 0-127
+			
+			// normalize vector and multiply by desired magnitude
+			float mag = |/(dX * dX + dY * dY);
+
+			dX = (x * dX) / mag;
+			dY = (y * dY) / mag;
+			
+			//ensure that slipgates repel outside of their sphere
+			if(abs(dX) < 20) {
+				if(dX < 0) 
+					dX = -22; 
+				else 
+					dX = 22;
+			}
+			if(abs(dY) < 20) {
+				if(dY < 0) 
+					dY = -22; 
+				else 
+					dY = 22;
+			}
+
+			x = dX + X;
+			y = dY + Y;
+
+			PERFORM GET_MAP_WIDTH;
+			int width = perf_ret;
+			PERFORM GET_MAP_LENGTH;
+			int length = perf_ret;
+
+			if(x < 0 || x >= width)
+			x = -dX + X;
+			if(y < 0 || y >= length)
+			y = -dY + Y;
+
+			int location=0;
+			location[$Xpos]=x;
+			location[$Ypos]=y;
+			location[$Zpos]=targetPosition[$Zpos];
+			PERFORM $ACTION_SLIPGATE_REPEL location;
+		}
+	}
+	
+	PERFORM $ACTION_ACTIVEGATE; //repel glow
+	PERFORM NOTHING;
+ }
+
+PERFORM RAND;
+if (perf_ret < 8192) {
+
+	if (player->Advancements[$VECGIR_ADV_AUTODEFENCE]) {
+	
+		PERFORM GET_MAX_ACTION_RANGE_RADIUS $ACTION_ATTACK;
+		query_vis_distance = perf_ret;
+		
+		target = QUERY UNIT [unit] MIN [ unit <=> query ] WHERE [!(query->IsAlly) && !(query->IsStasis) && query.Length<=6 && query.MaxHP > 0]; 
+		PERFORM GET_CLOSEST_TARGET_POSITION_WITHIN_RANGE $ACTION_ATTACK;
+		int position =  perf_ret; 
+		if (position!=-1 && position!=$INVALID_POSITION) { 
+			target_is_position = 1;
+			target = position;
+			PERFORM $ACTION_ATTACK position;
+			PERFORM NOTHING;
+		}
+	}	 
+	
+}

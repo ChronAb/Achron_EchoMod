@@ -1,0 +1,61 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+//unit_vecgir_create.ais - general vecgir unit creation script
+// $CREATE_ACTION must be defined as the actual actual to do the creation
+
+
+if ($OBJECT::Size + unit->TotalCarriedSize > unit.CarryingCapacity) {
+    $SAY_ENQUEUE
+    if (!(unit->AdditionalParameters)[$OBJ_BLDG_CONTINUE_DEPLOYBIT]) { 
+        PERFORM $ACTION_ERROR2; 
+        PERFORM SET_OBJECTIVE 0;
+    }
+    else {
+        PERFORM SET_OBJECTIVE $OBJ_BLDG_DEPLOY;
+    }
+    PERFORM NOTHING;
+}
+
+
+int lc = $ZAYIN_VIR_LC;
+
+if ($OBJECT == $VIR_TETH_CLASS) { 
+    lc = $TETH_VIR_LC;
+}
+if ($OBJECT == $VIR_SHIN_CLASS) { 
+    lc = $SHIN_VIR_LC;
+}
+
+int ap = unit->AdditionalParameters;
+
+if (player->$LCrystals >= lc) {
+     PERFORM SET_OBJECTIVE $OBJ_BLDG_DEPLOY;
+    ap[$OBJ_BLDG_INTERRUPTBIT] = 1;
+	ap[$OBJ_BLDG_CONTINUE_DEPLOYBIT] = 1;
+    PERFORM SET_ADDITIONAL_PARAMS ap;
+    
+     PERFORM GET_CUR_TIME;
+    int eta = perf_ret;
+    if ((unit->NextCarriedUnit)->IsAlive==1) { //if already has a queue, add to it
+        eta =  unit->ActionParameters;
+    } 
+    eta = eta + $CREATE_TIME;
+    
+    PERFORM $ACTION_OUTPUT eta; //^^^perserve action parameter
+    //$print "eta: ", eta, " Ap: ", unit->ActionParameters, "\n";
+    PERFORM $CREATE_ACTION eta;
+    PERFORM NOTHING;
+}
+else {
+	$SAY_LC
+}
+
+if (!ap[$OBJ_BLDG_CONTINUE_DEPLOYBIT]) { 
+    PERFORM SET_ADDITIONAL_PARAMS (ap & ~7);
+    PERFORM $ACTION_ERROR1; 
+    PERFORM SET_OBJECTIVE 0;
+}
+else {
+    PERFORM SET_OBJECTIVE $OBJ_BLDG_DEPLOY;
+}
+PERFORM NOTHING;

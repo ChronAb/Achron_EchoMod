@@ -1,0 +1,147 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.ais
+
+
+if (!player->Advancements[$VECGIR_ADV_HALCYON]) {
+	PERFORM SET_OBJECTIVE 0;
+    PERFORM NOTHING;
+}
+
+
+int lc=0; int qp=0; int flight = 0;
+int size = 0;
+
+if (uclass == $VIR_ZAYIN_CLASS||uclass == $VIR_ZAYIN_RAISED_CLASS) {
+     lc = $ZAYIN_HALCYON_LC;
+     qp = $ZAYIN_HALCYON_QP;
+	 size = $HALCYON_Z_CLASS::Size;
+}
+if (uclass == $VIR_TETH_CLASS||uclass==$VIR_TETH_RAISED_CLASS) {
+     lc = $TETH_HALCYON_LC;
+     qp = $TETH_HALCYON_QP;
+	 size = $HALCYON_T_CLASS::Size;
+}
+if (uclass == $VIR_SHIN_CLASS||uclass==$VIR_SHIN_RAISED_CLASS) {
+     lc = $SHIN_HALCYON_LC;
+     qp = $SHIN_HALCYON_QP;
+	 size = $HALCYON_S_CLASS::Size;
+	 flight = 1;
+}
+
+
+if (player->$LCrystals < lc || player->$QPlasma < qp) {
+    $SAY_RESOURCES
+    PERFORM $ACTION_ERROR1;
+    PERFORM SET_OBJECTIVE 0;
+    PERFORM NOTHING;
+}
+
+object closestDepot = 0;
+int dist=0;
+
+
+if (AP_UNIT) { //already have a unit stored
+    closestDepot = ap[$STOREDUNIT]; //16 most sig bits of AP
+    if (closestDepot->Class != $DEPOT_CLASS) { //if the stored unit isn't a depot
+        ap[$UNIT_BIT] = 0;
+		ap[$STOREDUNIT] = 0;
+        AP_UNIT = 0;
+        PERFORM SET_ADDITIONAL_PARAMS ap;
+        closestDepot = 0;        
+    }
+}
+
+
+//ready to pilot
+if (unit->Ammo == 3) {
+	if (AP_UNIT) {
+		//doesn't fit
+		if (closestDepot->TotalCarriedSize + size > $DEPOT_CARRYING_CAPACITY) {
+			$SAY_DEPOT
+			PERFORM $ACTION_ERROR2;
+			PERFORM SET_ADDITIONAL_PARAMS 0;
+			PERFORM SET_OBJECTIVE 0;
+		}
+		PERFORM NOTHING;
+	}
+    
+}
+    
+
+if (!closestDepot) {   
+	if (flight) {	//find a Depot with a nearby ACC (cap bit 2 set)
+		closestDepot = QUERY UNIT [unit] MIN [ unit <=> query ] 
+                    WHERE [query->Class==$DEPOT_CLASS && query->Status[$CAP_BIT_2] && ( query->TotalCarriedSize + size <= $DEPOT_CARRYING_CAPACITY ) && query->Owner == player]; 
+	} else {
+		closestDepot = QUERY UNIT [unit] MIN [ unit <=> query ] 
+                    WHERE [query->Class==$DEPOT_CLASS && ( query->TotalCarriedSize + size <= $DEPOT_CARRYING_CAPACITY ) && query->Owner == player]; 
+	}
+}
+
+if (closestDepot) {
+    dist = unit <_> closestDepot;
+    if (|/(dist) >= (closestDepot.SightHRange - 2)) { 
+		
+		ignore_collision_with_unit = closestDepot;
+        int adir = QUERY BESTMOVE [unit, $ACTION_MOVE] MIN [ closestDepot <_> query ] WHERE [1];    
+        
+        if (!AP_UNIT) {
+            ap[$UNIT_BIT] = 1;
+			ap[$STOREDUNIT] = closestDepot;
+            PERFORM SET_ADDITIONAL_PARAMS ap;
+        }
+        PERFORM $ACTION_MOVE adir; 
+        PERFORM NOTHING;
+
+    }
+	
+		
+	//doesn't fit
+	if (closestDepot->TotalCarriedSize + size > $DEPOT_CARRYING_CAPACITY) {
+		$SAY_DEPOT
+		PERFORM $ACTION_ERROR2;
+		PERFORM SET_ADDITIONAL_PARAMS 0;
+		PERFORM SET_OBJECTIVE 0;
+		PERFORM NOTHING;
+	}
+
+	//want to pilot a flying unit, but depot has no acc
+	if (flight && !(closestDepot->Status[$CAP_BIT_2])) {
+		$SAY_DEPOT
+		$SAY_NO_ACC 
+		PERFORM $ACTION_ERROR2;
+		PERFORM SET_ADDITIONAL_PARAMS 0;
+		PERFORM SET_OBJECTIVE 0;
+		PERFORM NOTHING;
+	}
+
+
+	ap[$UNIT_BIT] = 1;
+	ap[$STOREDUNIT] = closestDepot; 
+    PERFORM SET_ADDITIONAL_PARAMS ap;
+    PERFORM $ACTION_HALCYON;
+    PERFORM NOTHING;    
+}
+else {
+   	int LOOKUP = $DEPOT;
+	object lookup=0;
+	#include common/include/unit_lookup_request.ais
+	if (waiting && lookup==unit ) {    //noone responded
+		if (!ap[$TIME_BIT]) {
+			ap[$TIME_BIT] = 1;
+			PERFORM SET_ADDITIONAL_PARAMS ap;
+			PERFORM NOTHING;
+		} else {
+			ap[$TIME_BIT] = 0;
+			PERFORM SET_ADDITIONAL_PARAMS ap;
+		}
+		$SAY_DEPOT
+		if (flight) { $SAY_NO_ACC }
+		PERFORM $ACTION_ERROR2;
+		PERFORM SET_OBJECTIVE 0;
+	}    
+
+}
+
+

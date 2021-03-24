@@ -1,0 +1,29 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+//script used by SEPI and PHARO progen units to dispatch a newly made octo to make an RP
+
+
+//a new octo has just been placed, tell it to go make an RP
+target = unit->ActionParameters;
+
+if (target->IsAlive==1) {
+	if (target->Class==$OCTO_CLASS) {
+		PERFORM SET_OTHER_OBJECTIVE $OBJECTIVE_MORPH_DISPATCH;
+		PERFORM SET_OTHER_OBJECTIVE_PARAMS (unit->ObjectiveParameters)[0,24]; //ground location
+	}
+} 
+
+
+int urank = unit.Rank;
+//re-set the rally point
+target = QUERY UNIT [unit] MIN [query<_>unit] WHERE [ query->IsAlly==1 && urank==query.Rank && query->ObjectiveParameters!=$INVALID_POSITION ];
+
+if (target->IsAlive==1) {
+	PERFORM SET_PARAM target->ObjectiveParameters;
+} else {
+	PERFORM SET_PARAM $INVALID_POSITION;
+}
+
+PERFORM SET_OBJECTIVE 0;
+PERFORM SET_ADDITIONAL_PARAMS2 0;

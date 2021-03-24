@@ -1,0 +1,245 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+int skip=256;  //for skiping over lookup/heal/recover requests if queue is busy
+               //used for rand number for autoheirarchy in this script
+int ap              = unit->AdditionalParameters;
+object myCommander  = unit->Commander;
+int myObjective     = unit->Objective;
+int uclass          = unit->Class;
+int AP_PLAYER       = ap[$PLAYER_BIT]; 
+int AP_MOVE         = ap[$MOVE_BIT]; 
+int AP_ATTACK       = ap[$ATTACK_BIT]; 
+int AP_DISTANCE     = ap[$DISTANCE_BIT];
+int AP_UNIT         = ap[$UNIT_BIT];
+int temp1=0;
+int temp2=0;
+int X=0; 
+int Y=0; 
+int dir=0; 
+int location=0;
+int cap=0;  
+int commanderObjective = 0;
+int commanderOP = 0;
+int myStatus  = 0;
+int setAdditionalParameters = 0;
+object myArcticus = 0;  //grex-only
+int OrdinateOp = 0; //grex-only
+int bap = 0; //grex-only
+
+// Script debug 
+ // if (myObjective==0) { int I = 0; $PRINT_AP;}
+ // else { int I = 0;  $PRINT_MAP; }
+ // int opz = unit->ObjectiveParameters;
+ // print "to: ",  opz[$Xpos], " ", opz[$Ypos], " ", opz[$Zpos], " | ", opz , "\n";
+  
+ 
+//Grekim have a unique common header since their hierarchy is different
+if ($IS_GREKIM) { 
+    #include common/include/grekim_unit_common_header.ais
+}
+else {
+    if (myObjective != 0) { //unit is not idle so
+        skip = 8192;        //increase the chance of checking for commander for autohierarchy
+    }
+    else {          //unit IS idle
+        if (AP_PLAYER) { //AP Player bit should not be set if idle
+            ap[$PLAYER_BIT] = 0;        
+            AP_PLAYER = 0;
+			setAdditionalParameters = 1;
+        }
+    }
+        
+    myStatus = unit->Status;  //store status for reuse
+
+    //just teleported capbit is set (capbit 1)       
+	if (myStatus[$CAP_BIT_1]) {  
+        if (myCommander->IsAlive == 1 && myCommander != unit) {
+			//the commander's objective is teleport, so store its objective into own OP
+            if ((myCommander->AdditionalParameters)[$OBJECTIVE]==$OBJECTIVE_SKIP) { 
+				int actP = unit->ActionParameters;
+                if (actP != 0) { //move ActionParameters to OP (ActParams stored by human_idle.ais)
+                    PERFORM SET_PARAM actP; //should have the commander's OP stored in it
+                }
+                else {			
+					int comOp = myCommander->ObjectiveParameters;
+					if (comOp != 0 ) {
+						PERFORM SET_PARAM comOp;
+					}
+                }
+             }
+         }
+
+        PERFORM $ACTION_TELEPORTED; //clear the teleported capbit1
+		if (myObjective==0 || myObjective==$OBJECTIVE_SKIP || myObjective==$OBJECTIVE_SKIPTO) {
+			ap = 0;
+			setAdditionalParameters = 1;
+		}
+		PERFORM SET_ADDITIONAL_PARAMS2 0; 
+    }
+    
+	
+    if ( myCommander != 0 && myCommander->IsAlive != 1 && myObjective!=$OBJECTIVE_CHRONOPORTED) {
+		//clear commander if commander is stored but not alive and 
+		//unit is not recovering from a chronoport (moving away)
+		//basically this means the commander JUST died - maybe he is even in the process of blowing up
+		object u = myCommander->Commander;
+		if (u->IsAlive == 1 && u != unit && u.Rank>$BUILDINGS_RANK) {
+			PERFORM $ACTION_CHANGE_COMMANDER u; //skip to commander's commander
+			myCommander = u;
+		}
+		else {
+			PERFORM $ACTION_CHANGE_COMMANDER 0;
+			myCommander = 0;
+			//set skip variable to rand's max value, guaranteeing that autohierarchy will be run
+			skip = $MAX_RAND_VALUE; 
+			
+		}
+    }
+        
+		
+    if (myObjective==$OBJECTIVE_CHRONOPORTED || ($IS_BREAKTSS_UNIT && myObjective == $BREAKTSS_UNIT_OBJ) ){ } //just chronoported, do nothing
+    else {
+        if (myCommander != 0 && myCommander != unit) {
+
+			
+            int comrank = myCommander.Rank;
+            //if the commander is a building, change or clear commander
+            if (comrank < $BUILDINGS_RANK) {  
+				if (unit->XPosition == -1) { //being carried ?
+					$SET_AP
+					PERFORM NOTHING;
+				}
+				PERFORM $ACTION_CHANGE_COMMANDER 0;
+				myCommander = 0;
+            }
+
+			if (myCommander!=0) {
+				//check captain's bits. follow captain's objectives
+				cap = myCommander->AdditionalParameters;
+				commanderObjective = myCommander->Objective;
+				commanderOP = myCommander->ObjectiveParameters;
+		
+				//look at commander's objective and objective parameters if it just issued a new order
+				//and the unit is current not following a new player issued order
+				int moves = 0; //if unit is not attacking or moving, the value in the AP is not revelant, so set this to 0
+				if (myObjective == $OBJECTIVE_ATTACKING || myObjective == $OBJECTIVE_ATTACKING_UNIT ||
+				    myObjective == $OBJECTIVE_UNIT_MOVE || myObjective == $OBJECTIVE_UNIT_DEFEND) {
+					moves = ap[$MOVE_COUNTER];  //move counter will be non-zero if recent order was issued	
+				}				
+				int capMoves = cap[$MOVE_COUNTER]; //captain's move counter, will be non-zero if recent order was issued
+				
+				//if the commander is stopped, but this unit is not and 
+				//the unit is not following a  recent player-issued order, stop this unit
+				if (cap[$OBJECTIVE]==$OBJECTIVE_STOP && ap[$OBJECTIVE]!=$OBJECTIVE_STOP && !(AP_PLAYER  && moves > 0)) {	
+					#include common/stop.ais
+					PERFORM NOTHING;
+				}
+				
+				//if PLAYER just issued a move, attack or stop order then ignore commander (player commands take precedence)
+				if ( (AP_PLAYER && moves > 0) || ap[$OBJECTIVE]==$OBJECTIVE_STOP  || ap[$OBJECTIVE]==$OBJECTIVE_SLINGSHOT_WAIT) { }
+				else { //otherwise follow commander if it just issued an order
+					if (( commanderObjective == $OBJECTIVE_ATTACKING || commanderObjective == $OBJECTIVE_ATTACKING_UNIT ||
+						commanderObjective == $OBJECTIVE_UNIT_MOVE || commanderObjective == $OBJECTIVE_UNIT_DEFEND) && 
+						capMoves > 0 && (myObjective < 8 || myObjective==$OBJECTIVE_ATTACKING_UNIT) ) {
+//$print "Got new commander objective:", commanderObjective, " ", commanderOP, "\n";
+						#include common/include/unit_commander_objective.ais  
+					}
+				}
+				//commander is doing priority, i should propagate it
+				if (cap[$MOVE_BIT,2]==3 && ap[$MOVE_BIT,2]!=3) { 
+					//priority objectives are not ignored even if waiting for slingshot
+					if (ap[$OBJECTIVE] == $OBJECTIVE_SLINGSHOT_WAIT) { 
+						#include common/include/unit_commander_objective.ais  
+					}
+				    ap[$MOVE_BIT,2] = 3;  
+				    setAdditionalParameters = 1;
+				}
+				
+			}          
+			//this if you want to enable Chronoporting via hierarchy
+            //if commander is chronoporting but hasn't been tagged (cap_bit_5 not set) by the chronoporter yet
+            if ( commanderObjective == $OBJECTIVE_CHRONOPORT && myObjective != $OBJECTIVE_CHRONOPORT && !(myStatus[$CAP_BIT_5]) ) { 
+				$INIT_GLOBAL_CHRONAL_PROPERTIES
+				if ( $CHRONOPORT_WITH_COMMANDER ) {
+					//look for a chronoporter or just follow the commander if idling or moving
+					int qrank = 0;
+					int qobj = 0;
+					target = QUERY UNIT [unit] MIN [ unit <=> query ] WHERE [((qrank = query.Rank)==$CHRONOPORTER_RANK || qrank==$SLIPGATE_RANK) &&
+																		query->IsAlly==1 && (qobj=query->Objective)!=$OBJ_BLDG_GATE_RECHARGE && qobj!=$OBJ_BLDG_CONSTRUCTION]; 
+					if (target->IsAlive == 1) {
+						PERFORM SET_ADDITIONAL_PARAMS 0;
+						PERFORM SET_PARAM myCommander->ObjectiveParameters;
+						PERFORM SET_OBJECTIVE $OBJECTIVE_CHRONOPORT;
+						PERFORM NOTHING;
+					}
+				}
+            }
+            			
+            //else the unit is already following the commander
+        } 
+        else {      //no commander...
+		
+            if ($AUTO_HEIRARCHY && !$AUTOPILOT) { 
+                if (AP_PLAYER==1 || ap[$OBJECTIVE] == $OBJECTIVE_CLEAR_COMMANDER) { skip = -1; }    
+                PERFORM RAND; //return 0-32k     
+                if (perf_ret <= skip) { // about once every 5 seconds (assuming 24tics/sec) if idle
+                  temp2 = unit.Rank;
+				  int queryAP = 0;
+				  if (temp2 >= $AIR_RANK) {
+					//air unit of higher or same rank but not subordinate
+					target = QUERY UNIT [unit] MAX [query.Rank] WHERE [ ( (temp1=query.Rank)>=temp2 && query->Commander != unit ) && temp1 >= $AIR_RANK &&  
+							(queryAP = query->AdditionalParameters)[$PLAYER_BIT]!=1 && queryAP[$OBJECTIVE]!=$OBJECTIVE_CLEAR_COMMANDER &&  //not requesting to be left out of command
+							!(query->Status & ($FROZEN_TSS_COMMJAM)) &&   //not commjammed or tss'ed
+                            query->Owner == player ];  //look only for your own units					   
+				  } else { 
+					//look for ground unit of higher or same rank but not subordinate
+					target = QUERY UNIT [unit] MAX [query.Rank] WHERE [ ( (temp1=query.Rank)>=temp2 && query->Commander != unit ) && temp1 < $AIR_RANK && temp1 >= $BUILDINGS_RANK && 
+							(queryAP = query->AdditionalParameters)[$PLAYER_BIT]!=1 && queryAP[$OBJECTIVE]!=$OBJECTIVE_CLEAR_COMMANDER &&  //not requesting to be left out of command
+							!(query->Status & ($FROZEN_TSS_COMMJAM)) &&   //not commjammed or tss'ed
+                            query->Owner == player ];  //look only for your own units					   			   
+				  }
+				  if (target > 0) {
+					object tempC = target;  //temp commander
+					object highestCommander = target;
+					int i=0;
+					int i_max = 0;
+					for (i=0; i<8; i=i+1) { //go up to a possible 8 levels
+						i_max = i;
+						PERFORM RAND;
+						if (perf_ret <= 19960 ) { //60% chance of looking for higher up commander
+							tempC = tempC->Commander;
+							if (tempC->IsAlive!=1) {
+								break;
+							}
+							highestCommander = tempC;
+						}
+						else { break; }
+					}
+
+					int normal = 1; //not a circular
+					tempC = highestCommander;
+					for (i=i_max; i<8; i=i+1) { //check if hierarchy loops anywhere in 8 levels
+						tempC = tempC->Commander; 
+						if (tempC->IsAlive==1) { 
+							if (tempC==unit) { //it does loop, break out
+								normal = 0; 	//this is a circular hierarchy, so it's NOT normal
+								break;
+							}
+						}
+						else { break; }
+					}
+					
+					if (normal) { //hierarchy does not loop		
+						target = highestCommander;
+						PERFORM $ACTION_CHANGE_COMMANDER target;
+						myCommander = target;				  
+					}
+				  }
+                  //else $print "loop in the hierarchy\n";
+                }
+            }
+        }  //no commander
+    }  //Not IS_BREAKTSS_UNIT
+} //if ($IS_GREKIM) else

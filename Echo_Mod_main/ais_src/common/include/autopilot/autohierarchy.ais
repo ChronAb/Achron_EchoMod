@@ -1,0 +1,55 @@
+            if (myCommander->IsAlive!=1) { 
+				temp2 = unit.Rank;
+				if (temp2 >= $AIR_RANK) {
+					//air unit of higher or same rank but not subordinate
+					target = QUERY UNIT [unit] MAX [query.Rank] WHERE [ ( (temp1=query.Rank)>=temp2 && query->Commander != unit ) && 
+						temp1 >= $AIR_RANK &&  
+						query->AdditionalParameters[$OBJECTIVE]!=$OBJECTIVE_CLEAR_COMMANDER &&  //not requesting to be left out of command
+						!(query->Status & ($FROZEN_TSS_COMMJAM)) &&   //not commjammed or tss'ed
+						query->Owner == player ];  //look only for your own units					   
+				} else { 
+					//look for ground unit of higher or same rank but not subordinate
+					target = QUERY UNIT [unit] MAX [query.Rank] WHERE [ ( (temp1=query.Rank)>=temp2 && query->Commander != unit ) && 
+						temp1 < $AIR_RANK && temp1 >= $BUILDINGS_RANK && 
+						query->AdditionalParameters[$OBJECTIVE]!=$OBJECTIVE_CLEAR_COMMANDER &&  //not requesting to be left out of command
+						!(query->Status & ($FROZEN_TSS_COMMJAM)) &&   //not commjammed or tss'ed
+						query->Owner == player ];  //look only for your own units					   			   
+				}
+				if (target > 0) {
+					object tempC = target;  //temp commander
+					object highestCommander = target;
+					int i=0;
+					int i_max = 0;
+					for (i=0; i<8; i=i+1) { //go up to a possible 8 levels
+						i_max = i;
+						PERFORM RAND;
+						if (perf_ret <= 19960 ) { //60% chance of looking for higher up commander
+							tempC = tempC->Commander;
+							if (tempC->IsAlive!=1) {
+								break;
+							}
+							highestCommander = tempC;
+						}
+						else { break; }
+					}
+
+					int normal = 1; //not a circular
+					tempC = highestCommander;
+					for (i=i_max; i<8; i=i+1) { //check if hierarchy loops anywhere in 8 levels
+						tempC = tempC->Commander; 
+						if (tempC->IsAlive==1) { 
+							if (tempC==unit) { //it does loop, break out
+								normal = 0; 	//this is a circular hierarchy, so it's NOT normal
+								break;
+							}
+						}
+						else { break; }
+					}
+					
+					if (normal) { //hierarchy does not loop		
+						target = highestCommander;
+						PERFORM $ACTION_CHANGE_COMMANDER target;
+						myCommander = target;				  
+					}
+				}
+            }

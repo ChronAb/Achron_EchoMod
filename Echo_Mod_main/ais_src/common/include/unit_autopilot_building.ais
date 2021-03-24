@@ -1,0 +1,197 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+
+
+if($AUTOPILOT) //only if it's a NON-passive computer player
+{
+	//int uclass = unit->Class;  //this should be set in the caller's idle script
+
+    if ($IS_OPEN_RP) {
+        object patch = $CUSTOMFIELD_LOOKUP;
+        if ( patch.Rank == $RESOURCE_RANK && patch<_>unit <= 9 * $LOOKUP_BOUNDARY ) {
+            PERFORM SET_PARAM patch->Position;
+            PERFORM SET_OBJECTIVE $OBJ_BLDG_STARTMOVE;
+            PERFORM NOTHING;
+        }
+    }
+
+    PERFORM GET_CUR_TIME;  //request assistance if i am getting attacked
+    int curtime = perf_ret;
+    
+    PERFORM RAND;
+    if (perf_ret > 8192 && curtime % (12$seconds) == 0) {
+        int advancements = player->Advancements;
+		int customControls = player->CustomControls; //concurrent upgrades
+        int mat = player->$LCrystals;
+        int rar = player->$QPlasma;
+        if (uclass==$ARMORY_CLASS) {
+			if ( mat > 180 && rar > 180 && !customControls) { //autopilot doesn't do concurrent upgrades even though players can
+				int marin = advancements[$HUMAN_ADV_BASIC];
+				int extras = advancements[$HUMAN_ADV_EXTRAS];
+				if (!marin && !extras)  {
+					if (perf_ret < 20000 ) { PERFORM SET_OBJECTIVE $OBJ_BLDG_UPGRADE2; } //upgrade weaponry
+					else { PERFORM SET_OBJECTIVE $OBJ_BLDG_UPGRADE3; } //upgrade extras
+				}
+				else if (marin && !extras) { PERFORM SET_OBJECTIVE $OBJ_BLDG_UPGRADE3; } //upgrade extras 
+				else if (!marin && extras) { PERFORM SET_OBJECTIVE $OBJ_BLDG_UPGRADE2; } //upgrade weaponry
+				
+				PERFORM NOTHING;
+			}
+        
+			if ( mat > 300 && rar > 280 && !customControls && advancements[$HUMAN_ADV_HEAVY]) {
+				int marin = advancements[$HUMAN_ADV_BASIC];
+				int extras = advancements[$HUMAN_ADV_EXTRAS];
+				if (marin && extras) {
+					if (!advancements[$HUMAN_ADV_GATE] && !advancements[$HUMAN_ADV_WEAPONS]) {
+						if (perf_ret > 16378 ) { PERFORM SET_OBJECTIVE $OBJ_BLDG_UPGRADE5; } //upgrade weaponry
+						else { PERFORM SET_OBJECTIVE $OBJ_BLDG_UPGRADE4; } //upgrade gatetech
+					}
+					else if (advancements[$HUMAN_ADV_GATE] && !advancements[$HUMAN_ADV_WEAPONS]) {
+						PERFORM SET_OBJECTIVE $OBJ_BLDG_UPGRADE5;  //upgrade weaponry
+					}
+					else if (!advancements[$HUMAN_ADV_GATE] && advancements[$HUMAN_ADV_WEAPONS]) {
+						PERFORM SET_OBJECTIVE $OBJ_BLDG_UPGRADE4;  //upgrade gatetech
+					}
+				}
+				else if (marin && !extras) { PERFORM SET_OBJECTIVE $OBJ_BLDG_UPGRADE5; } //upgrade weaponry
+				else if (!marin && extras) { PERFORM SET_OBJECTIVE $OBJ_BLDG_UPGRADE4; } //upgrade gatetech
+			}
+        }    
+    }
+    
+    
+	PERFORM RAND;
+	if( perf_ret < 2048) // 1/16 , so a little more than once a second in a 18 t/s scenario
+	{
+
+        //buildings have a forced function to clear LAD when timestamp % 87
+        //so this guarantees that there'll be time for others to respond
+        if (( curtime % 87) > 4 && unit->LastAttackedVDirection) { 
+            int flags = $FLAGS;
+			if (!flags[$LOOKUP_BIT]) {
+                PERFORM SET_PLAYER_CUSTOM_FIELD_2 ($CUSTOMFIELD_TSS | (unit << 16 ));
+				flags[$LOOKUP_UNIT] = $ANY_UNIT;
+				flags[$LOOKUP_BIT] = 1;
+                PERFORM SET_PLAYER_CUSTOM_FIELD_3 flags;
+            }
+        }
+        
+        if ($IS_OPEN_RP) {
+            int QP = player->$QPlasma;
+            if (3 * player->$LCrystals < QP && QP > 50) { //if we have 5x more QP than regular minerals, time to swaaap
+                PERFORM RAND;
+                if( perf_ret < 8192) { // 1/4
+                    PERFORM SET_OBJECTIVE $OBJ_BLDG_CONVERT_QP;
+                    PERFORM NOTHING;
+                }
+            }
+        }
+        
+        
+        //if the unit is an "on" comm center, then make sure smart idle and auto-heirarchy are enabled
+        if(uclass == 109)
+        {
+            if(!$SMART_IDLE)
+            {
+                PERFORM SET_OBJECTIVE $OBJ_BLDG_SMARTIDLE;
+            }
+            if(!$AUTO_HEIRARCHY)
+            {
+                PERFORM SET_OBJECTIVE $OBJ_BLDG_AUTOHIERARCHY;
+            }
+        }
+        
+        
+        if (curtime > 210 $seconds) {  //the armory will try to upgrade after 3:30 into the game
+            if (uclass==$ARMORY_CLASS && !player->Advancements[$HUMAN_ADV_HEAVY]) {
+                PERFORM SET_OBJECTIVE $OBJ_BLDG_UPGRADE1;
+            }
+        }
+        
+        
+        if (curtime > 225$seconds && curtime < 255$seconds) {
+            if (uclass==$FACTORY_CLASS && player->$LCrystals>=$MECH_LC) {
+                PERFORM RAND;
+                if (perf_ret > 4096) {
+                    PERFORM SET_OBJECTIVE $OBJ_BLDG_MECH; //high chance of making a mech
+                }
+            }
+        }
+        
+        //dont build units for first 3:45 mins
+        if (curtime < 225$seconds)  { PERFORM NOTHING; } 
+        
+        int mat = player->$LCrystals;
+        int rar = player->$QPlasma;
+        
+        float multiplier = 1.0;
+      
+        if (mat >= 320 && rar >= 160) { multiplier = 1.5; }            
+
+		////////////////////////////////////
+        //see if should build something
+        PERFORM RAND;
+        if( perf_ret < (1948 * multiplier) )
+        {
+/*            //buffer up some money
+            if (curtime > 300$seconds) {
+                if (mat < 800 || rar < 600) {
+                    if (perf_ret > 512) { PERFORM NOTHING; } 
+                }
+            }
+*/            
+            if(uclass == $MACROFAB_CLASS) //macrofab
+            {
+                PERFORM RAND;
+                PERFORM SET_OBJECTIVE ((perf_ret % 6) + 2);	//build anything!
+            }
+            else if(uclass == $ARMORY_CLASS) 
+            {
+                if (curtime > 180$seconds &&  player->$ReserveSoldiers > 2) {
+                    PERFORM RAND;
+                    if (perf_ret > 8192) { //1/4th less chance that the ops will make marines or sops
+                        PERFORM RAND;
+                        if (perf_ret > 20000) { PERFORM SET_OBJECTIVE $OBJ_BLDG_SOP; }
+                        else { PERFORM SET_OBJECTIVE $OBJ_BLDG_MARINE; } //slighly higher chance of making marines
+                    }
+                 
+                }
+            }
+            else if(uclass == $FACTORY_CLASS) //factory
+            {
+            
+                if (curtime < 300$seconds) { //more reluctant to build in the first 5:00 mins
+                    PERFORM RAND;
+                    if (perf_ret < 4096) {
+                        PERFORM RAND;
+                        //higher chance of making a Mech in the first 30 seconds of its life
+                        if (unit->Age < 30 $seconds) { 
+                            if (perf_ret > 8192) {
+                                PERFORM SET_OBJECTIVE $OBJ_BLDG_MECH;
+                                PERFORM NOTHING;
+                            }
+                        }
+                        PERFORM SET_OBJECTIVE ((perf_ret % 3) + 2);	//build anything!				
+                    }
+                    PERFORM NOTHING;
+                }
+                PERFORM RAND;
+                //higher chance of making a Mech as it's first unit and athc as the second
+                int exper = unit->Experience;
+                if (exper==0 ) { 
+                    if (perf_ret > 8192) {
+                        PERFORM SET_OBJECTIVE $OBJ_BLDG_MECH;
+                        PERFORM NOTHING;
+                    }
+                }
+                if (exper==1 ) { 
+                    if (perf_ret < 8192) {
+                        PERFORM SET_OBJECTIVE $OBJ_BLDG_ATHC;
+                        PERFORM NOTHING;
+                    }
+                }
+                PERFORM SET_OBJECTIVE ((perf_ret % 5) + 2);	//build anything!				
+            }
+        }		
+   }
+}

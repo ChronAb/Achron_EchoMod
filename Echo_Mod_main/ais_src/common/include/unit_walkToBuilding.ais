@@ -1,0 +1,17 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+//if right clicked on a building (rank <100 units are buildings), walk towards it
+if (target.Rank<$BUILDINGS_RANK) {
+//$print "walking towards building\n";
+	int position = target->Position; //walk towards the building
+	if (position != $INVALID_POSITION) { //only go if it's a valid position
+		PERFORM SET_PARAM position; 
+		//set AP protocol objective to be 'move' and set the 'moving bit'
+		ap[$OBJECTIVE] = $OBJECTIVE_UNIT_MOVE;
+		ap[$MOVE_BIT] = 1;
+		PERFORM SET_ADDITIONAL_PARAMS ap;
+		PERFORM SET_ADDITIONAL_PARAMS2 0;
+		PERFORM SET_OBJECTIVE $OBJECTIVE_UNIT_MOVE;
+		PERFORM NOTHING;
+	}
+}

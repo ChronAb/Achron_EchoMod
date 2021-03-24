@@ -1,0 +1,52 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+/*
+  unit_subordinate_teleport.ais - part of human/vecgir_idles script to have the subordinate follow their teleported commander
+
+related scripts: 
+  teleportme.ais - the teleport me objective script
+  unit_common_header.ais - called during idle to clear the CAP_BIT1 after unit teleports
+  tport_idle.ais - teleporter's idle script that teleports the unit, sets CAP_BIT1
+*/
+
+
+//commander was just slingshot, so idle around, waiting for slingshot to send me if i'm within range
+if (cap[$OBJECTIVE] == $OBJECTIVE_SLINGSHOT && ap[$OBJECTIVE]!=$OBJECTIVE_SLINGSHOT && ap[$OBJECTIVE] != $OBJECTIVE_SLINGSHOT_WAIT) {
+	ap[$OBJECTIVE] = $OBJECTIVE_SLINGSHOT_WAIT;
+	setAdditionalParameters = 1;
+}
+
+
+if (ap[$OBJECTIVE] == $OBJECTIVE_SLINGSHOT_WAIT) {
+	
+	PERFORM GET_CUR_TIME;
+	int time = perf_ret[0,5] ; //if 18tics per second, 31/18 = ~1.7 seconds
+	
+	//check for an active slingshot every 31 ticks
+	//if time bit hasn't been set, find gate and set it, otherwise only check when the stored timestamp matches
+	if (!ap[$TIME_BIT] || (ap[$TIME_BIT] && ap[$TIMESTAMP] == time) ) {
+		int srank = 0;
+		//find a slingshot or teleporter which are active (cap_bit_3 set)
+		object slingshot = QUERY UNIT [unit] MIN [query<_>unit] WHERE [ query.Rank==30  && query->Status[$CAP_BIT_3] && query->IsAlly] ;
+		if (slingshot->IsAlive==1 && slingshot<_>unit <= 256 ) { //found an active slingshot and am close enough to it
+			if (!ap[$TIME_BIT]) {
+				ap[$TIME_BIT] = 1;
+				ap[$TIMESTAMP] = time;
+				setAdditionalParameters = 1;
+			}
+			$SET_AP
+			PERFORM NOTHING;
+		}
+		//slingshot died or turned off or out of range
+		ap[$TIME_BIT] = 0;
+		ap[$TIMESTAMP] = 0;
+		ap[$OBJECTIVE] = 0;
+		setAdditionalParameters = 1;
+	}
+	else {
+		$SET_AP
+		PERFORM NOTHING; //do nothing, wait to get slingshot
+	}
+	
+}
+

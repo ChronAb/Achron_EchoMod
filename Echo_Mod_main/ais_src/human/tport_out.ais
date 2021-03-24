@@ -1,0 +1,10 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+//tport_out.ais - human tport Active OUTput location placer -- this draws the output of the ACTive tporter.
+
+#include common/include/unit_common_header.aih
+
+PERFORM $ACTION_SET_TARGET unit->ObjectiveParameters;
+
+PERFORM SET_OBJECTIVE $OBJ_BLDG_LAUNCH; //tport active
+

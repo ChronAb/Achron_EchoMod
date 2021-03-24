@@ -1,0 +1,14 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+#include common/include/unit_created_check.ais
+
+
+#define LC_COST $ARMORY_LC
+#define QP_COST 0
+
+#define ACTION_CREATE_AT $ACTION_MAKE_ARMORY
+#define UNIT_CLASS $ARMORY_CLASS
+
+#include common/include/unit_create_at.ais

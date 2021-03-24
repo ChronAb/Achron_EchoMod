@@ -1,0 +1,20 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+target = unit->ObjectiveParameters;
+if (target->IsAlly==1) { //ally unit, so change commander to it instead of attacking
+	PERFORM SET_OBJECTIVE $OBJECTIVE_COMMAND_CARRY;
+	PERFORM NOTHING;
+}
+
+int ap = unit->AdditionalParameters;
+int AP_UNIT = ap[$UNIT_BIT];
+#define CLICK 1
+#include common/include/unit_attack_dispatch.ais
+
+
+if(1) { //prevent already-initialized var errors
+	#include common/include/unit_common_header.ais
+	#include common/include/unit_attacking_unit.ais
+}

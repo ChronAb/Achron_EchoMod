@@ -1,0 +1,47 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+
+//commander is teleporting somewhere, follow it if possible
+//if (myCommander>0 && (cap[$OBJECTIVE]==$OBJECTIVE_SKIP) ) { 
+if (myCommander>0 && cap[$OBJECTIVE]==$OBJECTIVE_SKIP && 
+	( commanderObjective==0 || commanderObjective==$OBJECTIVE_SKIP || commanderObjective==$OBJECTIVE_SKIPTO  ) ) {
+
+	//look for a teleporter
+	int canSkip = 0;
+	
+	if ((uclass >= $TERCHER_Z_CLASS && uclass < 2060 && myStatus[$CAP_BIT_2] ) || uclass==$INCEPTER_CLASS ) {
+		canSkip = 1;
+	}	
+	
+	if (!canSkip && uclass!=$CARRIER_CLASS ) { //carriers can't use teleporters
+		int qrank = 0;
+		object tporter = QUERY UNIT [unit] MIN [ unit <=> query ] //teleporter and slipgate are ranks of 35 and 39
+                   WHERE [ ((qrank = query.Rank)==$TELEPORTER_RANK || qrank==$SLIPGATE_RANK) && query->IsAlly==1 && (query->Objective == 0) ]; 
+				   
+		if (tporter->IsAlive==1) {
+			canSkip = 1;
+		}
+	}
+	
+
+	if ( canSkip ) { //found teleporter or unit can skip self
+		int unitPosition = unit->Position; //store unit's position , used by the formation script
+		temp1 = unit.Length;   //temp1 store the unit's length, used by the formation script
+		location = commanderOP; //store commander's destination as the location to teleport, used by the formation script
+		//this will teleport the unit in formation relative to the commander
+		#include common/include/unit_common_formation.ais
+		if (temp2!=0) { //temp2 will be set to 0 in the formation script above if jumping to <6 spaces away
+			PERFORM SET_OBJECTIVE $OBJECTIVE_SKIP;
+			ap = 0;
+			ap[$OBJECTIVE] = $OBJECTIVE_SKIP;
+			PERFORM SET_ADDITIONAL_PARAMS ap;
+			PERFORM SET_ADDITIONAL_PARAMS2 0;
+			PERFORM NOTHING;
+		}
+	}	
+	else { //check if i teleported before the commander to the correct spot
+		if (commanderOP <_> unit <= 200) {
+			$STOP
+		}
+	}
+}

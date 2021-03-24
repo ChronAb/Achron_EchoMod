@@ -1,0 +1,109 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+object buddy=0;
+int uEnergy = unit->Energy;
+
+if (smart && uEnergy >= energyRequired) {
+ 
+    int distance=0; int otherdistance=0;
+    int HEAL = $REPAIR_UNIT_OBJ;
+    int UPPER = 4000;  //upper bound for the class this unit can heal
+    int LOWER = 10;  //lower bound
+	if (uclass>=$MFB_CLASS && uclass<=$TYR_MFB_CLASS)  {  // MFB's can heal troops too
+		LOWER = 1;
+	}
+    #include common/include/unit_heal_response.ais
+}
+
+if (uEnergy < energyRequired) { 
+	$SET_AP
+	PERFORM NOTHING; 
+}
+
+PERFORM RAND; 
+if (perf_ret > 8192)  { 
+	$SET_AP
+	PERFORM NOTHING; 
+}
+
+
+if (myCommander->IsAlive==1 && (myCommander->HP < myCommander.MaxHP && myCommander->Class >= $MECH_CLASS) ) {
+    buddy = myCommander;
+}
+else {
+    //go through hierarchy looking for others to heal if smart idle is enabled every other second or so
+    //otherwise look for closest damaged ally
+    //look at up to 20 units, first in own hierarchy, then start going up the hierarchy
+    PERFORM RAND;
+    if (smart && perf_ret < 6144 ) { // 1/40 chance - 1/8 from above * 1/5 from here
+        int counter = 0;
+        int checkCommander = 0;
+        object com = myCommander;
+        object sub = 0;
+        while (com->IsAlive==1) {
+            
+            if (!checkCommander) {
+                //cycle through commander's subordinates   
+                sub = com->NextSubordinate;
+            } else {
+                //check commander first
+                sub = com; 
+                checkCommander = 0;
+            }
+
+            while (sub>0 && sub->IsAlive==1) {
+                int sc = sub->Class;
+                //damaged, not a repairer unit, nor a troop and not tssed 
+                if (sc!=225 && sc!=2030 && sc>=10 && (sub->HP <= sub.MaxHP-5) && !(sub->IsStasis)) {
+                    if (unit<_>sub <= $LOOKUP_BOUNDARY) { //only go if they are within 40 spaces
+                        PERFORM SET_ADDITIONAL_PARAMS 0;
+						PERFORM SET_ADDITIONAL_PARAMS2 0;
+                        PERFORM SET_PARAM sub; //set unit->ObjectiveParameters to the sub
+                        PERFORM SET_OBJECTIVE $REPAIR_UNIT_OBJ; //14 is the repair script
+                        PERFORM NOTHING;
+                    }
+                }
+                counter = counter + 1;
+                if (counter > 20) { sub = 0; }
+                else { sub = com->NextSubordinate; }
+            }
+            
+            //go up one level in the hierarchy
+            counter = counter + 1;
+            if (counter > 20) { com = 0; }
+            else { 
+                com = com->Commander; 
+                checkCommander = 1;
+            }
+        }
+    }
+    else { //find closest damaged ally
+        buddy =  QUERY UNIT [unit] MIN [ unit <=> query ] WHERE [(query->HP <= (query.MaxHP-5)) && 
+				query->IsAlly==1 && !(query->IsStasis) && query.Type==$TYPE_MECHANICAL]; //mechanical units only, Type=1
+    }
+}
+
+          
+          
+if (!buddy) {
+    if (unit->HP < unit.MaxHP) { 
+        target = unit;
+        PERFORM $ACTION_REPAIR target; 
+		$SET_AP
+        PERFORM NOTHING;
+    }
+}
+
+if (buddy) { //there is a buddy nearby that needs healing
+    uclass = buddy->Class;
+    if ( $IS_GREKIM) { //can't repair marines or grekim units
+        uclass = unit->Class;
+    }
+    else {
+        PERFORM SET_ADDITIONAL_PARAMS 0;
+		PERFORM SET_ADDITIONAL_PARAMS2 0;
+        PERFORM SET_PARAM buddy; //set unit->ObjectiveParameters to the buddy
+        PERFORM SET_OBJECTIVE $REPAIR_UNIT_OBJ; //14 is the repair script
+        PERFORM NOTHING;
+    }
+}

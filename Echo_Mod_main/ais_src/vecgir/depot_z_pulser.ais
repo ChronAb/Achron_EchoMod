@@ -1,0 +1,20 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+PERFORM SET_OBJECTIVE 0;
+
+if (!unit->Status[$CAP_BIT_1]) { PERFORM NOTHING; } //no nearby annex
+
+if ($PULSER_Z_CLASS::Size + unit->TotalCarriedSize > unit.CarryingCapacity) {    
+	$SAY_ENQUEUE
+	PERFORM NOTHING;
+}
+
+if (player->$LCrystals< ($ZAYIN_VIR_LC + $ZAYIN_PULSER_LC) || player->$QPlasma < $ZAYIN_PULSER_QP) {
+    $SAY_RESOURCES
+    PERFORM NOTHING;
+}
+
+
+PERFORM $ACTION_Z_PULSER;

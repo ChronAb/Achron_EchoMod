@@ -1,0 +1,19 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+// script used to match speeds - included in unit_common_speed_match.aii
+
+
+//store the max value of storedSpeed and commander's speed (cap is Commander's AP)
+//since larger value means slower unit
+
+//match commander's speed, if commander doesn't exist, 'cap' will be 0
+//so storedSpeed doesn't change
+storedSpeed =  storedSpeed |> cap[20,4];
+
+
+//if the storedSpeed is slower than this unit's default speed, move at the slower pace
+if (storedSpeed > speed) {
+	ap[20,4] = storedSpeed;         //store this slower pace
+	min_action_ticks = storedSpeed; //set to speed of slowest unit
+    matchSpeedMoveAction = $ACTION_MOVE_SLOW; 
+}

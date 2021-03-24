@@ -1,0 +1,84 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+// unit_heal_response.ais - heal response function
+//                          takes int HEAL is the unit's OBJECTIVE # for healing. 
+//                          and int UPPER and int LOWER as <= and >= bounds for allowed unit classes
+
+//target = unit->ObjectiveParameters;
+//heal = $CUSTOMFIELD_HEAL;
+int flags = $FLAGS;
+if (flags[$HEAL_BIT]) { 
+    //Got Heal request for this unit
+    object heal = $CUSTOMFIELD_HEAL;
+	
+	
+	//I am the responder
+	if (heal == unit) {
+//$print "I am the responder!\n";
+		object requestor = ap[$STOREDUNIT];
+		//only set requestor's parameters if it's still idle and waiting for healer and not a building
+		if (requestor->Objective==0) {
+			hash = requestor->AdditionalParameters;
+			hash[$STOREDUNIT] = unit;
+			hash[$UNIT_BIT] = 1;                
+			target = requestor;		
+			PERFORM SET_OTHER_ADDITIONAL_PARAMS hash;
+			//PERFORM SET_OTHER_OBJECTIVE_PARAMS unit; 
+		}
+		
+		flags[$HEAL_BIT] = 0;
+        PERFORM SET_PLAYER_CUSTOM_FIELD_3 flags;
+		//clear out unit from the queue to be healed
+		PERFORM SET_PLAYER_CUSTOM_FIELD_1 ($CUSTOMFIELD_RECOVER << 16); 
+		
+		$SAY_RESPOND_HEAL
+        
+        PERFORM SET_PARAM requestor;    //store requesting unit into OP    
+        PERFORM SET_OBJECTIVE HEAL;
+        ap = 0;
+        ap[$OBJECTIVE] = HEAL;
+        PERFORM SET_ADDITIONAL_PARAMS ap;
+        PERFORM NOTHING;
+
+	}
+	
+    hash = heal->AdditionalParameters;
+    int otherdist = 20000000;
+    skip = 0;
+	int otherObjective = heal->Objective;
+    //another healer responded
+	if (hash[$UNIT_BIT] && !hash[$ATTACK_BIT] && hash[$PRIORITY_BIT] && otherObjective==0) {
+        
+        temp = hash[$STOREDUNIT];
+        if ((temp->Class >= LOWER) && (temp->Class <= UPPER)) {
+            otherdist = heal <_> temp;
+            heal = temp;
+        }
+        else { 
+            //Different unit type requesting heal. ignoring.
+            skip = 1;
+        }
+    }
+	
+    temp1 = heal->Class;    
+    if (skip == 0 && (temp1 >= LOWER) && (temp1 <= UPPER)) {
+        int dist = unit<_>heal;
+        
+		if ((dist > ($LOOKUP_BOUNDARY * 7)) || (dist > otherdist)) {  //too far away
+//			$print "i (",unit,") am further: ", dist, " other guy (",$CUSTOMFIELD_HEAL,") is: ", otherdist,"\n";
+        }
+        else { //closer
+//			$print "i (",unit,") am closer: ", dist, " other guy (",$CUSTOMFIELD_HEAL,") is: ", otherdist,"\n";
+			ap = 0;
+			ap[$STOREDUNIT] = heal;
+			ap[$UNIT_BIT] = 1;
+			ap[$PRIORITY_BIT] = 1;
+            PERFORM SET_ADDITIONAL_PARAMS ap;
+			PERFORM SET_ADDITIONAL_PARAMS2 0;
+            PERFORM SET_PLAYER_CUSTOM_FIELD_1 (unit | ($CUSTOMFIELD_RECOVER << 16 ));             
+            PERFORM NOTHING;
+        }
+    }
+}
+
+

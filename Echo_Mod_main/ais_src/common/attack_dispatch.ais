@@ -1,0 +1,13 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+#define CLICK 0
+int ap = 0;
+int AP_UNIT = 0;
+#include common/include/unit_attack_dispatch.ais
+
+
+if(1) { //prevent already-initialized var errors
+	#include common/include/unit_common_header.ais
+	#include common/include/unit_attacking.ais
+}

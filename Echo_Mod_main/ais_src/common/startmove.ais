@@ -1,0 +1,6 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/simple_move_dispatch.ais
+//same exact script, different icon (arrow points up, instead of to the side)
+
+

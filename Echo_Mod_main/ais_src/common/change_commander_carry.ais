@@ -1,0 +1,160 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+//common script for changing commanders - checks if the right-clicked target unit is a carrier 
+//if target is a carrier unit, request pickup instead of changing commander
+//if unit is a healer/repairer ... goes to heal
+#include common/include/unit_common_header.aih
+
+target = unit->ObjectiveParameters;
+
+
+if (target->IsAlive!=1) {
+	PERFORM SET_PARAM 0;
+	PERFORM SET_ADDITIONAL_PARAMS 0;
+	PERFORM SET_ADDITIONAL_PARAMS2 0;
+	PERFORM SET_OBJECTIVE 0;
+	PERFORM NOTHING;
+}
+
+
+int uclass = unit->Class;
+int tclass = target->Class;
+int tAlly = target->IsAlly;
+
+//if unit is Vecgir and target is an own Depot, go repair in the depot
+if (uclass>=$TERCHER_Z_CLASS && uclass<=$HALCYON_S_CLASS && tAlly==1 && tclass==$DEPOT_CLASS) {
+	if(unit->HP!=unit.MaxHP) {
+		PERFORM SET_OBJECTIVE $OBJECTIVE_DEPOT_REPAIR;
+		PERFORM SET_ADDITIONAL_PARAMS 0;
+		PERFORM SET_ADDITIONAL_PARAMS2 0;
+		PERFORM NOTHING;
+	}
+}
+
+
+if (uclass==$CRUISER_CLASS && tclass==$MACROFAB_CLASS) {  //if this is a cruiser clicking on a macrofab
+    if (unit->Ammo==0  && (player->Advancements)[$HUMAN_ADV_WEAPONS]) {  //needs a nuke..
+        int ap = unit->AdditionalParameters;
+        ap[$UNIT_BIT] = 1;
+        ap[$STOREDUNIT] = target;
+        PERFORM SET_ADDITIONAL_PARAMS ap;
+        PERFORM SET_OBJECTIVE $OBJECTIVE_RELOAD;
+        PERFORM NOTHING;
+    }
+}
+
+int nextObjective = 0; //default next objective to being idle
+int temp2 = uclass;
+
+//recover units check to see if target needs recovering
+if ($IS_RECOVER_UNIT || (uclass>=$MFB_CLASS && uclass<=$TYR_MFB_CLASS) ) {
+	int tstatus = target->Status;
+
+	//see if target needs recovering, otherwise continue on with the script
+    if (target->IsAlive==1 && (tstatus[$COMMJAM_BIT] || tstatus[$FROZEN_BIT]) ) {
+		//check if target is a carrier
+		uclass = tclass;
+		if ($IS_CARRIER_UNIT) {  //target is a carrier unit that needs recovering
+			if(!(unit->IsStasis)) {
+				int ap = unit->AdditionalParameters;
+				ap[$OBJECTIVE] = $OBJECTIVE_PICKMEUP;    //set AP objective to pickme up
+				PERFORM SET_ADDITIONAL_PARAMS ap; // when done with recover, will try to be picked up				
+				PERFORM SET_OBJECTIVE $RECOVER_UNIT_OBJ;
+				PERFORM NOTHING;
+			}
+		}
+		uclass = temp2;
+		//set next objective to be recover the target 
+		nextObjective = $RECOVER_UNIT_OBJ;	
+	}
+	
+}
+
+if ($IS_CARRIER_UNIT) {  } //carriers continue with the script
+else {     //all othecs check if right-clicked on a carrier, if so, get picked up
+	uclass = tclass;
+	if ($IS_CARRIER_UNIT) {  //and target is a carrier unit
+		if(!(unit->IsStasis)) {
+			PERFORM SET_OBJECTIVE $OBJECTIVE_PICKMEUP;
+			PERFORM NOTHING;
+		}
+	}
+	uclass = temp2;
+
+}
+
+if ($IS_REPAIR_UNIT) {
+	int energy = 5;  //default to station or MFB (60 or 225) 
+	if (uclass==$SOP_CLASS) { //sop
+		energy = 1;
+	}
+
+	if (target->HP < target.MaxHP && unit->Energy >= energy) {
+		PERFORM SET_ADDITIONAL_PARAMS2 0;
+		nextObjective = $REPAIR_UNIT_OBJ;
+	}
+}
+
+
+
+int ap = 0;// unit->AdditionalParameters;
+int tRank = target.Rank;
+if (tRank==$ACHRON_RANK) {
+	//can't set Achrons as commanders, check to see if the Achron has a commander and then report to that unit instead
+	if((target->Commander)->IsAlive==1) {
+		target = target->Commander;
+	}
+	else {
+		PERFORM SET_OBJECTIVE 0;
+		PERFORM SET_ADDITIONAL_PARAMS 0;
+		PERFORM NOTHING;	
+	}
+}
+
+if ($IS_GREKIM && unit.Rank!=$ACHRON_RANK) {  
+	int chosenArcticus = 0;
+    if (tAlly==1 && $IS_GREKIM) {
+        //link to arcticus
+        if (tclass == $ARCTICUS_CLASS || tclass == $ARCTICUS_MOVE_CLASS ) {
+          PERFORM $ACTION_CHANGE_COMMANDER target;
+         // ap[$STOREDUNIT]=target;
+		  chosenArcticus = 1;
+        }
+        else { //another grekim unit
+			if (target==unit) {
+				PERFORM $ACTION_CHANGE_COMMANDER 0;
+				ap = 0;
+			} else {
+				object cap = target->Commander;
+				//link to their Arcticus base
+				int cclass = cap->Class;
+				if (cclass == $ARCTICUS_CLASS || cclass == $ARCTICUS_MOVE_CLASS) { 
+					PERFORM $ACTION_CHANGE_COMMANDER cap;
+					//ap[$STOREDUNIT]=cap;
+				} else {
+					$SAY_NO_COMMAND_ARCTICUS
+				}
+			}
+        }
+    }
+    PERFORM SET_OBJECTIVE nextObjective;
+	if (chosenArcticus) nextObjective = -1; //don't walk to the building if right-clicked an arcticus
+}
+else { //building have rank of <100, so anything above is a regular unit
+    if (tRank >= 100 && tAlly==1 && !(target->Status & $COMMJAM_BIT_Q)) {
+        PERFORM $ACTION_CHANGE_COMMANDER target; 
+        
+        if (target->AdditionalParameters[$OBJECTIVE]==$OBJECTIVE_SKIP) {
+            ap[$OBJECTIVE] = $OBJECTIVE_SKIP; //so i won't tport 
+            PERFORM SET_PARAM target->ObjectiveParameters;
+        }
+    }
+    PERFORM SET_OBJECTIVE nextObjective;
+}
+
+PERFORM SET_ADDITIONAL_PARAMS ap;
+
+if (nextObjective==0) { //if going back to idle, check if target is a building
+	//if right clicked on a building (rank <100 units are buildings), walk towards it
+	#include common/include/unit_walkToBuilding.ais
+}

@@ -1,0 +1,221 @@
+#include common/include/unit_common_header.aih
+
+int skip=256;  //for skiping over lookup/heal/recover requests if queue is busy
+               //used for rand number for autoheirarchy in this script
+int ap              = unit->AdditionalParameters;
+object myCommander  = unit->Commander;
+int myObjective     = unit->Objective;
+int AP_PLAYER       = ap[$PLAYER_BIT]; 
+int myStatus 		= unit->Status;  //store status for reuse
+int cap = 0;
+int setAdditionalParameters = 0;
+
+if (myObjective != 0) { //unit is not idle so
+	skip = 8192;        //increase the chance of checking for commander for autohierarchy
+}
+else {          //unit IS idle
+	if (AP_PLAYER) { //AP Player bit should not be set if idle
+		ap[$PLAYER_BIT] = 0;        
+		AP_PLAYER = 0;
+		setAdditionalParameters = 1;
+	}
+}
+
+
+//just teleported capbit is set (capbit 1)       
+if (myStatus[$CAP_BIT_1]) {  
+	if (myCommander->IsAlive == 1 && myCommander != unit) {
+		//the commander's objective is teleport, so store its objective into own OP
+		if ((myCommander->AdditionalParameters)[$OBJECTIVE]==$OBJECTIVE_SKIP) { 
+			int actP = unit->ActionParameters;
+			if (actP != 0) { //move ActionParameters to OP (ActParams stored by human_idle.ais)
+				PERFORM SET_PARAM actP; //should have the commander's OP stored in it
+			}
+			else {			
+				int comOp = myCommander->ObjectiveParameters;
+				if (comOp != 0 ) {
+					PERFORM SET_PARAM comOp;
+				}
+			}
+		 }
+	 }
+
+	PERFORM $ACTION_TELEPORTED; //clear the teleported capbit1
+	if (myObjective==0 || myObjective==$OBJECTIVE_SKIP || myObjective==$OBJECTIVE_SKIPTO) {
+		ap = 0;
+		setAdditionalParameters = 1;
+	}
+	PERFORM SET_ADDITIONAL_PARAMS2 0; 
+}
+
+
+if ( myCommander != 0 && myCommander->IsAlive != 1) {
+	//clear commander if commander is stored but not alive and 
+	//unit is not recovering from a chronoport (moving away)
+	//basically this means the commander JUST died - maybe he is even in the process of blowing up
+	object u = myCommander->Commander;
+	if (u->IsAlive == 1 && u != unit && u.Rank>$BUILDINGS_RANK) {
+		PERFORM $ACTION_CHANGE_COMMANDER u; //skip to commander's commander
+		myCommander = u;
+	}
+	else {
+		PERFORM $ACTION_CHANGE_COMMANDER 0;
+		myCommander = 0;
+		//set skip variable to rand's max value, guaranteeing that autohierarchy will be run
+		skip = $MAX_RAND_VALUE; 
+		
+	}
+}
+
+
+if (myCommander != 0 && myCommander != unit) {
+	//check captain's bits. follow captain's objectives
+	cap = myCommander->AdditionalParameters;
+
+
+	//if the commander is stopped, but this unit is not and 
+	//the unit is not following a recent player-issued order, stop this unit
+	if (cap[$OBJECTIVE]==$OBJECTIVE_STOP && ap[$OBJECTIVE]!=$OBJECTIVE_STOP && !AP_PLAYER) {	
+		#include common/stop.ais
+		PERFORM NOTHING;
+	}
+	
+	
+}
+else {      //no commander...
+
+	if ($AUTO_HEIRARCHY && !$AUTOPILOT) { 
+		if (AP_PLAYER==1 || ap[$OBJECTIVE] == $OBJECTIVE_CLEAR_COMMANDER) { skip = -1; }    
+		PERFORM RAND; //return 0-32k     
+		if (perf_ret <= skip) { // about once every 5 seconds (assuming 24tics/sec) if idle
+		  int temp2 = unit.Rank;
+		  int queryAP = 0;
+		  int temp1 = 0;
+		  if (temp2 >= $AIR_RANK) {
+			//air unit of higher or same rank but not subordinate
+			target = QUERY UNIT [unit] MAX [query.Rank] WHERE [ ( (temp1=query.Rank)>=temp2 && query->Commander != unit ) && temp1 >= $AIR_RANK &&  
+					(queryAP = query->AdditionalParameters)[$PLAYER_BIT]!=1 && queryAP[$OBJECTIVE]!=$OBJECTIVE_CLEAR_COMMANDER &&  //not requesting to be left out of command
+					!(query->Status & ($FROZEN_TSS_COMMJAM)) &&   //not commjammed or tss'ed
+					query->Owner == player ];  //look only for your own units					   
+		  } else { 
+			//look for ground unit of higher or same rank but not subordinate
+			target = QUERY UNIT [unit] MAX [query.Rank] WHERE [ ( (temp1=query.Rank)>=temp2 && query->Commander != unit ) && temp1 < $AIR_RANK && temp1 >= $BUILDINGS_RANK && 
+					(queryAP = query->AdditionalParameters)[$PLAYER_BIT]!=1 && queryAP[$OBJECTIVE]!=$OBJECTIVE_CLEAR_COMMANDER &&  //not requesting to be left out of command
+					!(query->Status & ($FROZEN_TSS_COMMJAM)) &&   //not commjammed or tss'ed
+					query->Owner == player ];  //look only for your own units					   			   
+		  }
+		  if (target > 0) {
+			object tempC = target;  //temp commander
+			object highestCommander = target;
+			int i=0;
+			int i_max = 0;
+			for (i=0; i<8; i=i+1) { //go up to a possible 8 levels
+				i_max = i;
+				PERFORM RAND;
+				if (perf_ret <= 19960 ) { //60% chance of looking for higher up commander
+					tempC = tempC->Commander;
+					if (tempC->IsAlive!=1) {
+						break;
+					}
+					highestCommander = tempC;
+				}
+				else { break; }
+			}
+
+			int normal = 1; //not a circular
+			tempC = highestCommander;
+			for (i=i_max; i<8; i=i+1) { //check if hierarchy loops anywhere in 8 levels
+				tempC = tempC->Commander; 
+				if (tempC->IsAlive==1) { 
+					if (tempC==unit) { //it does loop, break out
+						normal = 0; 	//this is a circular hierarchy, so it's NOT normal
+						break;
+					}
+				}
+				else { break; }
+			}
+			
+			if (normal) { //hierarchy does not loop		
+				target = highestCommander;
+				PERFORM $ACTION_CHANGE_COMMANDER target;
+				myCommander = target;				  
+			}
+		  }
+		  //else $print "loop in the hierarchy\n";
+		}
+	}
+}  //no commander
+
+//commander is teleporting somewhere, follow it if possible
+if (myCommander>0) {
+	int commanderObjective = myCommander->Objective;
+	
+	int temp2 = 0;
+	int temp1 = unit.Length;   //temp1 store the unit's length, used by the formation script
+	int unitPosition = unit->Position; //store unit's position , used by the formation script
+	if (cap[$OBJECTIVE]==$OBJECTIVE_SKIP && ( commanderObjective==0 || commanderObjective==$OBJECTIVE_SKIP || commanderObjective==$OBJECTIVE_SKIPTO ) ) {
+		int qrank = 0;
+		object tporter = QUERY UNIT [unit] MIN [ unit <=> query ] 
+					   WHERE [ ((qrank = query.Rank)>=$TELEPORTER_RANK && qrank<=$SLIPGATE_RANK) && query->IsAlly==1 && (query->Objective == 0) ]; 
+		//found one, so teleport there
+		//$print "tporter: ", tporter,"\n";
+		if (tporter->IsAlive==1 ) { //found teleporter or unit can skip self
+			//int unitPosition = unit->Position; //store unit's position , used by the formation script
+			
+			int commanderOP = myCommander->ObjectiveParameters;
+			
+			int location = commanderOP; //store commander's destination as the location to teleport, used by the formation script
+			
+			int X = 0;
+			int Y = 0;
+			//this will teleport the unit in formation relative to the commander
+			#include common/include/unit_common_formation.ais
+			if (temp2!=0) { //temp2 will be set to 0 in the formation script above if jumping to <6 spaces away
+				PERFORM SET_OBJECTIVE $OBJECTIVE_SKIP;
+				ap = 0;
+				ap[$OBJECTIVE] = $OBJECTIVE_SKIP;
+				PERFORM SET_ADDITIONAL_PARAMS ap;
+				PERFORM SET_ADDITIONAL_PARAMS2 0;
+				PERFORM NOTHING;
+			}
+		}
+	}
+
+
+
+	temp2 = unit<_>myCommander; //store distance to the commander
+	
+	//if commander is not defending, default the stay-close radius to  13-24 tiles based on unit's length
+	// if (commanderObjective!=$OBJECTIVE_UNIT_DEFEND) { I = 180 + (temp1-1) * 100; }
+	// else { I = 1600; } //if commander is patroling, increase the stay-close radius to 40 spaces
+    int I = 180 + (temp1-1) * 100; 		 
+	if (temp2 > I ) { //if distance to commander is greater than the stay-close radius
+		if (!ap[$STUCK_BIT] && !ap[$TIME_BIT] ) { //not stuck so try to stay close to commander	
+			int dir = 0;
+			int uclass = unit->Class;
+			int airunit = 0;
+			#include common/include/unit_common_stayCloseTo_Commander.ais
+		}						
+	} 
+	else if (ap[$APPROACH_BIT]) { //was approaching, and is now close enough
+		PERFORM SET_ADDITIONAL_PARAMS2 0; //clear the move counter
+		ap[$APPROACH_BIT] = 0;
+		setAdditionalParameters = 1;
+	}
+
+
+
+}
+
+
+PERFORM GET_CUR_TIME;
+if(perf_ret % 36==0) {
+	//if attacked, set the move counter and bits to go find who attacked 
+	int attackedVertical = unit->LastAttackedVDirection;
+	if (attackedVertical) {
+	PERFORM CLEAR_LAST_ATTACKED_DIRECTION;
+	}
+}
+
+
+$SET_AP

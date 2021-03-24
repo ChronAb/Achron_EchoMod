@@ -1,0 +1,95 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+
+//this script handles two scenarios:
+//error scenario: where a bit is set, but the corresponding field is 0
+//hung handshake scenario, ie: units die in mid-handshake
+
+flags = $FLAGS;
+
+PERFORM GET_CUR_TIME;
+if (perf_ret % 36 == 0 ) {
+
+
+	int CF1 = player->CustomField1;
+	object heal = CF1[0,16];
+	object recover = CF1[$STOREDUNIT];
+
+	int CF2 = player->CustomField2;
+	object tss = CF2[0,16];
+	object lookup = CF2[$STOREDUNIT];
+
+	//logic for when to clear out the recover smart idle field and bit
+	if (recover > 0) { //recover field has a unit stored in it 
+		if (recover->IsAlive != 1 ) { //clear if recover field unit is dead
+			CF1 = heal;
+			recover = 0;
+			flags[11] = 0; //recover bit 
+		} else { //unit is not dead, check that it's not a stray recover unit
+		
+			int uclass = recover->Class; //used by $IS_RECOVER_UNIT
+			//it's a recover unit 
+			if ($IS_RECOVER_UNIT) {
+				int robj = recover->Objective;
+				//clear fields if it isn't doing a recover objective, nor idling
+				if (robj!=$RECOVER_UNIT_OBJ && robj!=0) {
+					CF1 = heal;
+					recover = 0;
+					flags[11] = 0; //recover bit 
+				}
+			} else {  //it's not a recover unit
+				if (!(recover->Status & $FROZEN_COMMJAM)) { //but it's also not stopped nor commjamed
+					CF1 = heal;
+					recover = 0;
+					flags[11] = 0; //recover bit 
+				}
+			}
+		}
+	}
+
+	if (heal > 0 && heal->IsAlive != 1) {
+		CF1 = 0;
+		CF1[$STOREDUNIT] = recover;
+		flags[10] = 0; //heal 
+	}
+
+
+	if (lookup > 0 && lookup->IsAlive !=1) {
+		CF2 = tss;
+		lookup = 0;
+		flags[0,6] = 0; //lookup field
+		flags[7] = 0; //lookup
+	}
+	
+	if (tss > 0) {
+		if (tss->IsAlive != 1) { //clear if tss field unit is dead
+			CF2 = 0;
+			CF2[$STOREDUNIT] = lookup;
+			flags[12] = 0; //breaktss bit
+		} else { //unit is not dead, check it's not a stray breaktss unit
+			int uclass = tss->Class;
+			if ($IS_BREAKTSS_UNIT) { //it is an breaktss unit
+				int sobj = tss->Objective;
+				//clear fields if it's not doing breaktss nor idling
+				if (sobj!=$BREAKTSS_UNIT_OBJ && sobj!=0) {	
+					CF2 = 0;
+					CF2[$STOREDUNIT] = lookup;
+					flags[12] = 0; //breaktss bit	
+				}
+			} else { //it is not a breaktss unit, so it's a requestor
+				//check to see if there is a tssed enemy near this requestor
+				target =  QUERY UNIT [tss] MIN [ tss<=> query ] WHERE [ query->IsStasis && query->IsAlly!=1 ];
+				if (target<1) { //clear the fields if there is no tssed enemy near it
+					CF2 = 0;
+					CF2[$STOREDUNIT] = lookup;
+					flags[12] = 0; //breaktss bit	
+				}
+			}
+		}
+	}
+	
+	PERFORM SET_PLAYER_CUSTOM_FIELD_1 CF1; 
+	PERFORM SET_PLAYER_CUSTOM_FIELD_2 CF2;
+	PERFORM SET_PLAYER_CUSTOM_FIELD_3 flags;     
+}
+

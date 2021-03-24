@@ -1,0 +1,25 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+object next = unit->NextCarriedUnit;
+
+//if no carried units, means nothing to do or one hasn't been created yet
+if (!next) { 
+    int Ap = unit->AdditionalParameters; //check the 'first unit' bit, if it's set, there is a unit 
+    if (Ap[$OBJ_BLDG_INTERRUPTBIT]) {                   //even though it's not visible to this script
+        Ap[$OBJ_BLDG_INTERRUPTBIT] = 0;      
+        PERFORM SET_ADDITIONAL_PARAMS Ap; //so clear the bit out and rerun the deploy script
+        PERFORM NOTHING; 
+    }
+    PERFORM SET_OBJECTIVE 0;   //no units to deploy
+    PERFORM SET_ADDITIONAL_PARAMS (Ap & ~1); //clear out first bit
+    PERFORM NOTHING;
+}
+
+
+if (next->IsAlive!=1) { PERFORM NOTHING; }
+
+if (unit->Objective == $OBJ_BLDG_PREDEPLOY) { 
+    PERFORM SET_OBJECTIVE $OBJ_BLDG_DEPLOY;
+}

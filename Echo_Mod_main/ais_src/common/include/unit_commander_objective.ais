@@ -1,0 +1,225 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+
+//script to be included in the <race>_unit_common_header.ais files
+
+//run this code if objective or parameters do not match commander's
+if ( (myObjective != commanderObjective) || (unit->ObjectiveParameters != commanderOP) ) {
+
+	temp1 = unit.Length;
+	int distToCommanderOP = commanderOP <_> unit;
+    if ( ((commanderObjective == $OBJECTIVE_MOVE_DISPATCH || commanderObjective == $OBJECTIVE_UNIT_MOVE )) 
+         && (distToCommanderOP <= (temp1 * temp1 + 40)) && !cap[$TIME_BIT]) {
+             //$print "Already there\n";
+             ap = 0;
+			 setAdditionalParameters = 1;
+             PERFORM SET_PARAM 0;
+             if (myObjective != 0) { 
+				PERFORM SET_ADDITIONAL_PARAMS 0;
+				PERFORM SET_ADDITIONAL_PARAMS2 0;
+				PERFORM SET_ADDITIONAL_PARAMS3 0;
+				PERFORM SET_ADDITIONAL_PARAMS4 0;
+				PERFORM SET_OBJECTIVE 0; 
+				PERFORM NOTHING;
+			 }
+    }
+    else {            
+	
+        if ( commanderObjective == $OBJECTIVE_UNIT_MOVE ) {
+
+			//location holds commander's original destination
+			location = commanderOP; 			
+			//try to move to the destination in formation by staying the relative
+			//distance away from the commander while moving to the location
+			int unitPosition = unit->Position;
+			int objectiveParameters  = unit->ObjectiveParameters;
+			
+			if (!cap[$TIME_BIT]) {
+			
+				//updates OP if needed
+				#include common/include/unit_common_formation.ais
+				//temp2 is set to the new OP,  check if previous OP is noticeably different than the post-formation OP
+				//pythagoras FTW - can't use <_> on two ints			
+				int xdd = objectiveParameters[$Xpos]-temp2[$Xpos];
+				int ydd = objectiveParameters[$Ypos]-temp2[$Ypos];
+				
+				//check if unit is more than 5 spaces away 
+				if ( |/ (xdd * xdd + ydd * ydd) > 25 )  { 
+					myObjective = -1; //if so, force the next block of code to run	
+				}
+				
+			} 
+			else {
+				PERFORM SET_PARAM commanderOP;
+				if (ap[$TIME_BIT] != cap[$TIME_BIT]) { myObjective = -1; } //force the next block to run as it's a new issue
+			}
+			//don't bother setting the move counter and changing objectives unless
+			//it's a new objective, different OP as determined by the above calculation
+			//or the unit is currenty stuck
+			if (myObjective!=commanderObjective || ap[$STUCK_BIT]) {
+			
+				//if unit was defending, clear its queue so it stops
+				if (ap[$OBJECTIVE]==$OBJECTIVE_UNIT_DEFEND) { PERFORM CLEAR_QUEUE; }
+			
+				ap = 0;
+				ap[$MATCH_OTHER_BIT] = 1; //match speeds on next move
+				ap[$OBJECTIVE] = $OBJECTIVE_UNIT_MOVE;
+				
+				//same code as move dispatch
+				if (ap[$MOVE_COUNTER]==0) {
+					int speed = 20;
+					$SPEED_BY_CLASS;
+					ap[$MOVE_COUNTER] = 60 / speed; // 60 ticks since speeds are 3..10		
+				} 
+				
+				if (cap[$TIME_BIT]) { ap[$TIME_BIT] = 1; } //set the no-formation bit
+				
+				ap[$MOVE_BIT] = 1;
+				//commander is doing priority, i should propagate it
+				if (cap[$MOVE_BIT,2]==3) { 
+					ap[$ATTACK_BIT] = 1; 
+				}
+				//setAdditionalParameters = 1;			
+			
+				PERFORM SET_ADDITIONAL_PARAMS ap;
+				PERFORM SET_ADDITIONAL_PARAMS2 0;
+				PERFORM SET_ADDITIONAL_PARAMS3 0;
+				PERFORM SET_ADDITIONAL_PARAMS4 0;
+				PERFORM SET_OBJECTIVE $OBJECTIVE_UNIT_MOVE;
+				if ($IS_WEAPON_RAISED) {
+					PERFORM $ACTION_LOWER_WEAPON;
+				}
+				PERFORM NOTHING;
+			}
+        }
+       
+        if ( commanderObjective == $OBJECTIVE_ATTACKING || commanderObjective == $OBJECTIVE_ATTACKING_UNIT ) {
+			//the commander issued a normal attack-move to a position
+			if (!cap[$UNIT_BIT]) {
+				location = commanderOP; 			
+				//try to move to the destination in formation by staying the relative
+				//distance away from the commander while moving to the location
+				int unitPosition = unit->Position;
+				int objectiveParameters  = unit->ObjectiveParameters;
+				
+				#include common/include/unit_common_formation.ais
+				
+				//if final destination is closer than 1.25x formation-stay-close radius, just attack that specific location
+				if ( temp2 != location && distToCommanderOP < 1.25 * ( 250 + (temp1-1) * 100) ) { 
+					temp2 = location; 
+					PERFORM SET_PARAM temp2;
+				}
+				
+				//temp2 is set to the new OP,  check if previous OP is noticeably different than the post-formation OP
+				//pythagoras FTW - can't use <_> on two ints		
+				int xdd = objectiveParameters[$Xpos]-temp2[$Xpos];
+				int ydd = objectiveParameters[$Ypos]-temp2[$Ypos];
+				if ( |/ (xdd * xdd + ydd * ydd) > 25 )  { //more than 5 spaces away
+					myObjective = -1; //force the next block of code to run
+				}			
+			} 
+			else { //attacking a unit, so make sure to switch targets if the commanders switches targets
+				int objectiveParameters  = unit->ObjectiveParameters;
+				if (commanderOP != objectiveParameters) {
+					myObjective = 0; //change myObjective so that the block below gets called
+				}
+			}
+			
+			//don't bother setting the move counter and changing objectives unless
+			//it's a new objective, different OP as determined by the above calculation
+			//or the unit is currenty stuck
+
+			if (myObjective!=commanderObjective || ap[$STUCK_BIT]) {
+			
+				//if unit was defending, clear its queue so it stops
+				if (ap[$OBJECTIVE]==$OBJECTIVE_UNIT_DEFEND) { PERFORM CLEAR_QUEUE; }
+				ap = 0;
+				
+				int attackObjective = $OBJECTIVE_ATTACKING;
+				ap[$MATCH_OTHER_BIT] = 1; //match speeds on next move
+				ap[$OBJECTIVE] = $OBJECTIVE_ATTACKING;
+				
+				//same code as attack dispatch
+				if (ap[$MOVE_COUNTER]==0) {
+					int speed = 20;
+					$SPEED_BY_CLASS;
+					ap[$MOVE_COUNTER] = 60 / speed; // 60 ticks since speeds are 3..10
+				} 
+				
+				if (cap[$UNIT_BIT]) {
+					ap[$UNIT_BIT] = 1; 
+					attackObjective = $OBJECTIVE_ATTACKING_UNIT;
+					PERFORM SET_PARAM commanderOP;
+				}
+				
+				ap[$ATTACK_BIT] = 1;
+				//commander is doing priority, i should propagate it
+				if (cap[$MOVE_BIT,2]==3) { 
+					ap[$MOVE_BIT] = 1; 
+				}		
+			
+				PERFORM SET_ADDITIONAL_PARAMS ap;
+				PERFORM SET_ADDITIONAL_PARAMS2 0;
+				PERFORM SET_ADDITIONAL_PARAMS3 0;
+				PERFORM SET_ADDITIONAL_PARAMS4 0;
+				PERFORM SET_OBJECTIVE attackObjective;
+				PERFORM NOTHING;
+			}
+        }
+    }
+	
+		
+        if ( commanderObjective == $OBJECTIVE_UNIT_DEFEND ) {
+
+			//location holds commander's original destination
+			location = commanderOP; 			
+			//try to move to the destination in formation by staying the relative
+			//distance away from the commander while moving to the location
+			int unitPosition = unit->Position;
+			int objectiveParameters  = unit->ObjectiveParameters;
+			
+			//updates OP if needed
+			#include common/include/unit_common_formation.ais
+			//temp2 is set to the new OP,  check if previous OP is noticeably different than the post-formation OP
+			//pythagoras FTW - can't use <_> on two ints			
+			int xdd = objectiveParameters[$Xpos]-temp2[$Xpos];
+			int ydd = objectiveParameters[$Ypos]-temp2[$Ypos];
+			if ( |/ (xdd * xdd + ydd * ydd) > 25 )  { //more than 5 spaces away
+				myObjective = -1; //force the next block of code to run	
+			}
+			
+			//don't bother setting the move counter and changing objectives unless
+			//it's a new objective, different OP as determined by the above calculation
+			//or the unit is currenty stuck
+			if (myObjective!=commanderObjective) {
+			
+				//if unit was defending, clear its queue so it stops
+				if (ap[$OBJECTIVE]==$OBJECTIVE_UNIT_DEFEND) { PERFORM CLEAR_QUEUE; }
+			
+				ap = 0;
+				ap[$MATCH_OTHER_BIT] = 1; //match speeds on next move
+				ap[$OBJECTIVE] = $OBJECTIVE_UNIT_DEFEND;
+				
+				if (ap[$MOVE_COUNTER]==0) {
+					int speed = 20;
+					$SPEED_BY_CLASS;
+					ap[$MOVE_COUNTER] = 60 / speed; // 60-64 ticks since speeds are 3..10		
+				} 
+							
+				if (cap[$TIME_BIT] || unit<_>temp2<36) { //hold current position
+					PERFORM SET_PARAM unitPosition;
+					ap[$TIME_BIT] = 1; 
+					PERFORM CLEAR_QUEUE;
+				}
+				
+				PERFORM SET_ADDITIONAL_PARAMS ap;
+				PERFORM SET_ADDITIONAL_PARAMS2 0;
+				PERFORM SET_ADDITIONAL_PARAMS3 0;
+				PERFORM SET_ADDITIONAL_PARAMS4 0;
+				PERFORM SET_OBJECTIVE $OBJECTIVE_UNIT_DEFEND;
+				PERFORM NOTHING;
+			}
+        }
+	
+	
+}

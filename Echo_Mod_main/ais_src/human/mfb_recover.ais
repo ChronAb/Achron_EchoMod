@@ -1,0 +1,105 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.ais
+
+target = unit->ObjectiveParameters;
+if (target->IsAlive != 1) {
+    if ($CUSTOMFIELD_RECOVER==unit && AP_UNIT) { 
+        PERFORM SET_PLAYER_CUSTOM_FIELD_1 ($CUSTOMFIELD_HEAL ); //clear the recover field
+    }
+    PERFORM SET_ADDITIONAL_PARAMS 0;
+	PERFORM SET_ADDITIONAL_PARAMS2 0;
+    PERFORM SET_PARAM 0;
+    PERFORM SET_OBJECTIVE 0; 
+    PERFORM NOTHING; 
+}
+
+if (unit->Energy < 25) {
+	$SAY_ENERGY
+	PERFORM $ACTION_ERROR1;
+	PERFORM SET_ADDITIONAL_PARAMS2 0;
+	PERFORM SET_ADDITIONAL_PARAMS 0;
+	PERFORM SET_PARAM 0;
+	PERFORM SET_OBJECTIVE 0;
+	PERFORM NOTHING;
+}
+
+int tstatus = target->Status;
+if (tstatus[$TSS_BIT] ) {
+	$SAY_RECOVER
+	$SAY_TSSED
+	PERFORM $ACTION_ERROR2;
+	PERFORM SET_ADDITIONAL_PARAMS2 0;
+	PERFORM SET_ADDITIONAL_PARAMS 0;
+	PERFORM SET_PARAM 0;
+    PERFORM SET_OBJECTIVE 0;
+	PERFORM NOTHING;
+}
+
+
+
+object recover = $CUSTOMFIELD_RECOVER;
+
+if ($SMART_IDLE) {
+    if ( (recover != unit) && (recover->ObjectiveParameters == target) ) {
+        //Someone else responded
+        PERFORM SET_PARAM 0;
+        PERFORM SET_OBJECTIVE 0;
+		PERFORM SET_ADDITIONAL_PARAMS2 0;
+        PERFORM SET_ADDITIONAL_PARAMS 0;
+        PERFORM NOTHING;
+    }
+}
+
+if (target<_>unit <= 144) {
+    if ( target->IsAlly) {
+          PERFORM $ACTION_RECOVER target;
+          if (AP_UNIT) {
+            ap[$UNIT_BIT] = 0;
+            PERFORM SET_ADDITIONAL_PARAMS ap;
+          }
+		  PERFORM SET_ADDITIONAL_PARAMS2 0;
+          PERFORM SET_OBJECTIVE 0;
+          PERFORM SET_PARAM 0;
+          PERFORM NOTHING;
+    }
+}
+else {
+        PERFORM RAND;
+        if (perf_ret < $LAD_CLEAR) {
+            PERFORM CLEAR_LAST_ATTACKED_DIRECTION; 
+        }
+		int dir = 0;
+		int counter = unit->AdditionalParameters2; //move counter to move in the same direction
+		if (counter>0) {           //more than 0 means already moving in a direction
+			counter = counter - 1; //decrease the counter
+			PERFORM SET_ADDITIONAL_PARAMS2 counter;
+			int rot = unit->Rotation; //get the unit's current rotation
+			$DIR_FROM_ROT             //set the dir to move to based on that unit's rotation
+		}
+		else {  //no move counter stored, so query where to move to next
+			
+			ignore_collision_with_unit = target;
+			dir = QUERY BESTMOVE [unit, $ACTION_MOVE] MIN [ target <_> query ] WHERE [1];    
+			if (dir[0,8] >= 16) { counter = 0; } //moving up or down, so don't store counter
+			else {
+				counter = dir[16,8]; 			  //the counter is stored in the 3rd byte of dir
+				if (counter > 7) { counter = 7; } //cap it at 7 since AdditionalParameters2 only has 3 bits
+			}
+			PERFORM SET_ADDITIONAL_PARAMS2 counter;
+		}
+
+		dir[16,8] = 0; //clear out the 3rd byte that stores the counter
+		if (dir && dir != $QUERY_EXHAUSTED) {
+			PERFORM $ACTION_MOVE dir; 
+			if ( perf_ret!=1) { 
+				PERFORM SET_ADDITIONAL_PARAMS2 0;
+			}
+			$SET_AP
+			PERFORM NOTHING;
+		}   
+}
+
+PERFORM SET_ADDITIONAL_PARAMS2 0;
+PERFORM SET_PARAM 0;
+PERFORM SET_OBJECTIVE 0;

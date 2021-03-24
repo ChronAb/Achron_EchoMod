@@ -1,0 +1,21 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+//elders are busy concentrating on timeline manipulation, so they do very little in terms of 
+//battle-participation except for clearing nearby nanite-infected units 
+
+PERFORM GET_CUR_TIME;
+if (perf_ret % 19 != 0) { PERFORM NOTHING; }
+
+if (unit->Energy < 8) { PERFORM NOTHING; }
+
+object own = 0;
+
+//find a player's unit that's attacking one of their own
+target = QUERY UNIT [ unit ] MIN [query<_>unit] WHERE [ query->Owner==player && query->Objective==$OBJECTIVE_ATTACKING_UNIT && (own = query->ObjectiveParameters)->Owner==player ];
+
+if (target->IsAlive==1) {
+	PERFORM SET_PARAM target;
+	PERFORM SET_OBJECTIVE $OBJECTIVE_CLEAR_NANITE;
+}

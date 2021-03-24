@@ -1,0 +1,93 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+//lookup table for units. (1-63 total spots) 0 is unused
+// 1 - 25 are humans  
+// 29 - 40 are grekim
+// 41 - 62 are vecgir
+//   27 = everyone
+//lookupunit has to be declared in the caller script
+
+hash = (lookupunit->Class) / 5; //the unit 'hash' lookup table...
+
+// HUMAN
+
+if (hash < 10) { num = hash+1; } //all human land units, except mfb
+if (hash == 12) { num = 11; } //mfb
+if (hash == 18) { 
+    num = 12;
+    #define LOOKUP_BOUNDARY 10000
+} //macrofab
+if (hash == 20) { num = 13; } //armory
+if (hash == 30) { num = 14; } //factory
+//if (hash == 21) { num = 15; } //CommC
+
+if (hash>=24 && hash <= 27) {
+    num = hash - 24 + 16;
+}
+// if (hash == 24) { num = 16; } //importer
+// if (hash == 25) { num = 17; } //Cport
+// if (hash == 26) { num = 18; } //Slingshot
+// if (hash == 27) { num = 19; } //teleporter
+
+if (hash>=40 && hash<=45) {
+    num = hash - 40 + 20;
+}
+
+// if (hash == 41) { num = 21; } //lancer
+// if (hash == 42) { num = 22; } //frigate
+// if (hash == 43) { num = 23; } //tornade
+// if (hash == 44) { num = 24; } //heavyc
+// if (hash == 45) { num = 25; } //bbird
+
+
+
+/////////////
+
+//  GREKIM //
+/////////////
+if (hash >=200 && hash <= 205) {
+    num = hash - 200 + 29;
+}
+// if (hash == 200) { num = 29; } //octo
+// if (hash == 201) { num = 30; } //sepi
+// if (hash == 202) { num = 31; } //pharo
+// if (hash == 203) { num = 32; } //octo+
+// if (hash == 204) { num = 33; } //sepia+
+// if (hash == 205) { num = 34; } //pharao+
+if (hash == 210) { num = 35; } //arcticus
+if (hash == 212) { num = 36; } //mound
+if (hash == 214) { num = 36; } //mound
+if (hash == 213) { num = 37; } //dome
+if (hash == 220) { num = 38; } //octo++
+if (hash == 221) { num = 39; } //sepi++
+if (hash == 222) { num = 40; } //pharo++
+
+
+///////////
+// VECGIR//
+///////////
+if (hash>=400 && hash<=411) {
+    num = hash - 400 + 44;
+}
+// if (hash == 400) { num = 44; } //v1
+// if (hash == 401) { num = 45; } //v2
+// if (hash == 402) { num = 46; } //v3
+// if (hash == 403) { num = 47; } //tercher1
+// if (hash == 404) { num = 48; } //tercher2
+// if (hash == 405) { num = 49; } //tercher3
+// if (hash == 406) { num = 50; } //pulser1
+// if (hash == 407) { num = 51; } //pulser2
+// if (hash == 408) { num = 52; } //pulser3
+// if (hash == 409) { num = 53; } //halcyon1
+// if (hash == 410) { num = 54; } //halcyon2
+// if (hash == 411) { num = 55; } //halcyon3
+
+
+if (hash>=414 && hash<=418) {
+    num = hash - 414 + 59;
+}
+// if (hash == 414) { num = 59; } //foundation
+// if (hash == 415) { num = 60; } //slipgate
+// if (hash == 416) { num = 61; } //annex
+// if (hash == 417) { num = 62; } //bastion
+// if (hash == 418) { num = 63; } //depot

@@ -1,0 +1,73 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+int ap = 0;
+int skip = 0;
+
+PERFORM RAND;
+if (perf_ret > 16000) { // 0-32k
+   #include common/include/vecgir_building_idle.ais   
+   skip = 1;
+}
+
+target = 0;
+
+PERFORM GET_MAX_ACTION_RANGE_RADIUS $ACTION_ATTACK;
+int wrange = perf_ret;
+query_vis_distance = wrange;
+target = QUERY UNIT [unit] MAX [ query->HP / log(query.MaxHP) ]
+                    WHERE [ query->IsAlly == 1 && (query.Rank == $S_VIR_RANK ) && (query->Status[$CAP_BIT_3])];
+if (target != 0 ) {
+    $SAY_NEARBY
+    PERFORM $ACTION_SET_BIT target;
+}        
+
+target = QUERY UNIT [unit] MIN [ query->HP / log(query.MaxHP)] WHERE [!(query->IsAlly) && (query->IsStasis == 1) ];
+if (target->IsAlive==1  && unit->Energy >= 100  ) { 
+    PERFORM SET_PARAM target;
+    PERFORM SET_OBJECTIVE $OBJ_BLDG_BREAKTSS; //breaktss unit
+    PERFORM NOTHING;
+}
+
+if (!skip) { 
+	query_vis_distance  = -1;
+    #include common/include/vecgir_building_idle.ais    
+}   
+ 
+PERFORM RAND;
+if (perf_ret < 8192)     {
+    query_vis_distance  = wrange;
+	int qmaxHP = 0; //cache query.MaxHP
+    target = QUERY UNIT [unit] MIN [ query->HP / log(qmaxHP)] WHERE [!(query->IsAlly) && !(query->IsStasis) && (qmaxHP=query.MaxHP) > 0];
+    
+	
+
+	PERFORM GET_CLOSEST_TARGET_POSITION_WITHIN_RANGE $ACTION_ATTACK;
+	int position =  perf_ret; 
+	if (position!=-1 && position!=$INVALID_POSITION) { 
+		//check if close to target, ATTACK, else move , PERFORM NOTHING
+		if (!(target->IsStasis)) {
+			object enemy = target;
+			target = position;
+			PERFORM IS_POSITION_WITHIN_ACTION_ANGLE $ACTION_ATTACK;
+			if (perf_ret>0) { //target is attackable in this direction
+				target = enemy;
+
+				int targetOnGround = target->IsTerrainGround;
+
+				target_is_position = 1;
+				target = position;
+				if (targetOnGround) { PERFORM $ACTION_ATTACK position; }
+				else { PERFORM $ACTION_ATTACK_W2 position; }		//it actually usse w2 as w1
+				PERFORM NOTHING;
+			}
+			else {
+				PERFORM $ACTION_ROTATE enemy->BestAttackDirection;
+				PERFORM NOTHING;
+			}
+		}
+	}
+    
+ }
+ 

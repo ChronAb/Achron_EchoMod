@@ -1,0 +1,17 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+// unit_recover_request.ais - recover request function
+
+object recover = $CUSTOMFIELD_RECOVER;
+if (recover) { //field is taken already
+//		$print "recover field is in use by another unit, waiting...\n";
+}
+else { 
+	$SAY_HINDERED
+    //set unit that needs recovering into the queue to be recovered
+	PERFORM SET_PLAYER_CUSTOM_FIELD_1 ($CUSTOMFIELD_HEAL | (helper << 16 )); 
+	int flags = $FLAGS;
+	flags[$RECOVER_BIT] = 1;
+    PERFORM SET_PLAYER_CUSTOM_FIELD_3 flags;
+}
+

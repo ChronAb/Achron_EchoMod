@@ -1,0 +1,302 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+
+
+int uclass=unit->Class;
+if ( $IS_HUMAN ) {
+	if ( !player->Advancements[$HUMAN_ADV_GATE] ) {
+		PERFORM SET_OBJECTIVE 0;
+		PERFORM NOTHING;
+	}
+} else { //vecgir
+	if (!player->Advancements[$VECGIR_ADV_GATE] ) {
+		PERFORM SET_OBJECTIVE 0;
+		PERFORM NOTHING;
+	}
+}
+
+
+//tss'd units can't chronoport. don't waste time on it
+if (unit->IsStasis) { 
+    PERFORM SET_OBJECTIVE 0;
+    PERFORM SET_PARAM 0;
+	PERFORM SET_ADDITIONAL_PARAMS 0;
+	PERFORM SET_ADDITIONAL_PARAMS2 0;
+    PERFORM NOTHING;
+}
+
+int lc = 0;
+int qp = 0;
+
+if (uclass < 300) { //ceso
+	if (uclass < 45) { 
+		if (uclass<$TANK_CLASS) { 
+			if (uclass==$MARINE_CLASS||uclass==$MARINE_RAISED_CLASS||uclass==$WINTERS_CLASS||uclass==$WINTERS_RAISED_CLASS) { qp = $MARINE_CPORT_QP; }
+			if (uclass==$SOP_CLASS || uclass==$SOP_RAISED_CLASS||uclass==$HOLLOWAY_CLASS||uclass==$HOLLOWAY_RAISED_CLASS) { qp = $SOP_CPORT_QP; } 
+			else { qp = $MECH_CPORT_QP; }  
+		} 
+		else if (uclass==$TANK_CLASS) { qp = $TANK_CPORT_QP; } 
+		else if (uclass==$TANK2_CLASS) { qp = $TANK2_CPORT_QP; } 
+		else if (uclass==$MAR_CLASS) { qp = $MAR_CPORT_QP; } 
+		else if (uclass==$MAR2_CLASS) { qp = $MAR2_CPORT_QP; } 
+	} 
+	else { 
+		if (uclass==$ATHC_CLASS) { qp = $ATHC_CPORT_QP; } 
+		else if (uclass>=$MFB_CLASS && uclass <=$TYR_MFB_CLASS) { qp = $MFB_CPORT_QP; } 
+		else if (uclass==$LANCER_CLASS) { qp = $LANCER_CPORT_QP; } 
+		else if (uclass==$FRIGATE_CLASS) { qp = $FRIGATE_CPORT_QP; } 
+		else if (uclass==$TORNADE_CLASS) { qp = $TORNADE_CPORT_QP; } 
+		else if (uclass==$CRUISER_CLASS) { qp = $CRUISER_CPORT_QP; } 
+		else if (uclass==$BLACKBIRD_CLASS) { qp = $BLACKBIRD_CPORT_QP; } 
+	} 
+}  
+if (uclass > 2000 ) { //vecgir
+	if (uclass < 2030) { 
+		if (uclass==$VIR_ZAYIN_CLASS||uclass==$VIR_ZAYIN_RAISED_CLASS) { qp = $ZAYIN_CPORT_QP; } 
+		else if (uclass==$VIR_TETH_CLASS||uclass==$VIR_TETH_RAISED_CLASS) { qp = $TETH_CPORT_QP; }
+		else if (uclass==$VIR_SHIN_CLASS || uclass==$VIR_SHIN_RAISED_CLASS) { qp = $SHIN_CPORT_QP; }
+		else if (uclass==$TERCHER_Z_CLASS) { qp = $TERCHER_Z_CPORT_QP; } 
+		else if (uclass==$TERCHER_T_CLASS) { qp = $TERCHER_T_CPORT_QP; } 
+		else if (uclass==$TERCHER_S_CLASS) { qp = $TERCHER_S_CPORT_QP; } 
+	} else { 
+		if (uclass==$PULSER_Z_CLASS) { qp = $PULSER_Z_CPORT_QP; } 
+		else if (uclass==$PULSER_T_CLASS) { qp = $PULSER_T_CPORT_QP; } 
+		else if (uclass==$PULSER_S_CLASS) { qp = $PULSER_S_CPORT_QP; } 
+		else if (uclass==$HALCYON_Z_CLASS) { qp = $HALCYON_Z_CPORT_QP; } 
+		else if (uclass==$HALCYON_T_CLASS) { qp = $HALCYON_T_CPORT_QP; } 
+		else if (uclass==$HALCYON_S_CLASS) { qp = $HALCYON_S_CPORT_QP; } 
+		else if (uclass>=$DJELT_CLASS) { qp = $SHIN_CPORT_QP; } 
+	} 
+} else { 
+	if (uclass==$OCTO_CLASS) { qp = $OCTO_CPORT_QP; } 
+	else if (uclass>=$OCTOPOD_CLASS && uclass <= ($OCTOPOD_CLASS+4)) { qp = $OCTOPOD_CPORT_QP; } 
+	else if (uclass==$OCTOLIGO_CLASS) { qp = $OCTOLIGO_CPORT_QP; } 
+	else if (uclass==$SEPI_CLASS) { qp = $SEPI_CPORT_QP; } 
+	else if (uclass==$SEPIPOD_CLASS) { qp = $SEPIPOD_CPORT_QP; } 
+	else if (uclass==$SEPILIGO_CLASS) { qp = $SEPILIGO_CPORT_QP; } 
+	else if (uclass==$PHARO_CLASS) { qp = $PHARO_CPORT_QP; } 
+	else if (uclass==$PHAROPOD_CLASS) { qp = $PHAROPOD_CPORT_QP; } 
+	else if (uclass==$PHAROLIGO_CLASS) { qp = $PHAROLIGO_CPORT_QP; } 
+}
+
+
+if (player->$LCrystals < lc || player->$QPlasma < qp) {
+    $SAY_RESOURCES
+    PERFORM SET_OBJECTIVE 0;
+    PERFORM SET_PARAM 0;
+	PERFORM SET_ADDITIONAL_PARAMS 0;
+	PERFORM SET_ADDITIONAL_PARAMS2 0;
+    PERFORM $ACTION_ERROR1;
+    PERFORM NOTHING;
+}
+
+int timeSinceLastChronoport = unit->TimeSinceLastChronoport;
+PERFORM GET_RECHRONOPORT_DELAY;  //get the rechronoport delay in ticks
+if (timeSinceLastChronoport!=-1 && timeSinceLastChronoport<= perf_ret ) { //-1 means unit did not chronoport
+	int rechronoportRemaining = perf_ret - timeSinceLastChronoport;
+	//ticks per second - set in the scenario parameters    
+	PERFORM CONVERT_SECONDS_TO_TICKS 1;
+	int TPSOND = perf_ret;
+	int rechronoportSeconds = rechronoportRemaining / TPSOND; //used by the $SAY_RECHRONOPORT
+	if (rechronoportSeconds==0) { rechronoportSeconds = 1; } //prevent rounding down to 0 
+	$SAY_RECHRONOPORT
+	PERFORM SET_ADDITIONAL_PARAMS2 0;
+	PERFORM SET_ADDITIONAL_PARAMS 0;
+    PERFORM SET_OBJECTIVE 0;
+    PERFORM SET_PARAM 0;
+    PERFORM $ACTION_ERROR_CP;
+    PERFORM NOTHING;
+}
+
+//get the maximum chronoporting distance in ticks
+PERFORM GET_MAX_CHRONOPORT_DISTANCE;
+int cport_max = perf_ret;
+
+//get the current time in ticks
+PERFORM GET_CUR_TIME;
+int current = perf_ret;
+
+//get the destination time in ticks
+int op = unit->ObjectiveParameters;
+
+//print "curr:", current, " to: ", op, " lim: ", cport_max, " diff: ", abs(op-current),"\n";
+
+
+
+//if the destination time falls outside of chronoporting distance, unit is not allowed to chronoport
+if ( abs(op - current) >= cport_max ) {
+// UNCOMMENT THE FOLLOWING BLOCK TO PREVENT CPORT BEYOND MAX RANGE
+/*
+    $SAY_CHRONOPORT
+	PERFORM SET_ADDITIONAL_PARAMS 0;
+	PERFORM SET_ADDITIONAL_PARAMS2 0;
+    PERFORM SET_OBJECTIVE 0;
+    PERFORM SET_PARAM 0;
+    PERFORM $ACTION_ERROR_CP;
+    PERFORM NOTHING;
+*/
+
+	//if cporting beyond max range, cport TO the max range
+	if(op < current) {
+		op = current - cport_max + 5;
+	}
+	else {
+		op = current + cport_max;
+	}
+	PERFORM SET_PARAM op; 
+	
+}
+
+//going to the future and happens to be a hero unit, don't chronoport
+if (op > current) {
+
+	int tc = unit->Class;
+	if (tc==$HOLLOWAY_CLASS || tc==$HOLLOWAY_RAISED_CLASS || tc==$WINTERS_CLASS || tc==$WINTERS_RAISED_CLASS ||
+		tc==$TYR_MFB_CLASS || tc==$DJELT_CLASS || tc==$DJELT_RAISED_CLASS || 
+		tc==$KILDEN_CLASS || tc==$KILDEN_RAISED_CLASS || tc==$DAMATH_CLASS || tc==$DAMATH_RAISED_CLASS ) {
+		
+		say "Mission commanders should not abandon their troops";
+		PERFORM SET_ADDITIONAL_PARAMS 0;
+		PERFORM SET_ADDITIONAL_PARAMS2 0;
+		PERFORM SET_OBJECTIVE 0;
+		PERFORM SET_PARAM 0;
+		PERFORM $ACTION_ERROR_CP;
+		PERFORM NOTHING;
+	}
+}
+
+
+//this code attempts to store hirearchy to go with moveaway.ais
+int ap = unit->AdditionalParameters;
+if (ap[$OBJECTIVE] != $OBJECTIVE_CHRONOPORT) {
+	ap = 0;
+	ap[$OBJECTIVE] = $OBJECTIVE_CHRONOPORT;
+	object myCommander = unit->Commander;
+	if (myCommander->IsAlive==1 && myCommander!=unit) {
+		ap[$CPORT_STORED_COMMANDER] = 1; //has commander bit
+		ap[$STOREDUNIT] = myCommander;
+	} else {
+		ap[$CPORT_NO_COMMANDER] = 1; //no commander
+	}
+	PERFORM SET_ADDITIONAL_PARAMS ap;
+	
+	//if this is a carrier tank, store the carried soldiers' commanders for them into their AP
+	if (uclass==$TANK_CLASS||uclass==$TANK2_CLASS||uclass==$MAR2_CLASS) {
+		object carried = 0;
+		while (1) {
+			carried = unit->NextCarriedUnit;
+			if (carried>0) {
+				int oap = 0;
+				object ccom = carried->Commander;
+				if (ccom>0 && ccom!=carried) {
+					oap[$STOREDUNIT] = ccom;			
+				} 
+				target = carried;
+				PERFORM SET_OTHER_ADDITIONAL_PARAMS oap;
+			} 
+			else { break; }
+		 }
+	 }
+     
+}
+
+
+
+int qrank = 0;
+int qobj = 0;
+//look for closest chronoporter that is not busy recharging
+object closestcport = QUERY UNIT [unit] MIN [ unit <=> query ] WHERE [ ((qrank = query.Rank)==$SLIPGATE_RANK || qrank==$CHRONOPORTER_RANK) &&
+                                                                       query->IsAlly==1 && (qobj=query->Objective)!=$OBJ_BLDG_GATE_RECHARGE && qobj!=$OBJ_BLDG_CONSTRUCTION]; 
+
+if (closestcport->IsAlive==1) {
+
+//^^^ uncomment if we want to cport via commander
+	int numGates = QUERY VALUE [unit] SUM [ 1 ] WHERE [ ((qrank = query.Rank)==$SLIPGATE_RANK || qrank==$CHRONOPORTER_RANK) &&
+														query->IsAlly==1 && (qobj=query->Objective)!=$OBJ_BLDG_GATE_RECHARGE && qobj!=$OBJ_BLDG_CONSTRUCTION]; 
+		
+	object myCommander = unit->Commander;
+	int comRank = 0;
+	if (myCommander->IsAlive==1) {
+		comRank = myCommander.Rank;
+	}
+		
+	//can see more that 1 gate that can send me, try to only use one of them by seeing if another is already chosen to be used
+	if (numGates > 1) {
+		//I haven't chosen a gate yet since the commander is not a chronoporter
+		if ( comRank!=$CHRONOPORTER_RANK && comRank!=$SLIPGATE_RANK) { 
+			object tempCom = 0;
+			//find a unit who already chose a chronoporter that's close to me as their commander
+			target = QUERY UNIT [unit] MIN [ unit <=> query ] WHERE 
+											[ ((qrank = (tempCom = query->Commander).Rank)==$SLIPGATE_RANK || 
+												qrank==$CHRONOPORTER_RANK ) && tempCom <_> unit < 400 ];
+			if (target->IsAlive==1) { 
+				closestcport = target->Commander;
+			} 
+			else {
+				int temp = 0;
+				//find if one of the other visible chronoporters is already being selected to be used instead
+				object othercport = QUERY UNIT [unit] MIN [ unit <=> query ] WHERE [ ((qrank = query.Rank)==$SLIPGATE_RANK || 
+															qrank==$CHRONOPORTER_RANK) && query != closestcport && query->IsAlly==1 && 
+															(qobj=query->Objective)!=$OBJ_BLDG_GATE_RECHARGE && qobj!=$OBJ_BLDG_CONSTRUCTION && 
+															(query->NextSubordinate > 0 || (qrank==$CHRONOPORTER_RANK && (temp=query->Action) > 20 && temp < 29) ) ]; //already spinning chronoporter
+				if (othercport->IsAlive==1) {
+					closestcport = othercport;
+				}
+			
+			}
+		}
+		
+	}
+	//set my chosen Chronoporter as my commander
+	if (comRank!=$CHRONOPORTER_RANK && comRank!=$SLIPGATE_RANK) { PERFORM $ACTION_CHANGE_COMMANDER closestcport; } 
+
+	//preserve the parameter so that follow_unit_through time can follow this unit
+	PERFORM $ACTION_PREP_CHRONOPORT op; 
+	
+    //found a ready chronoporter, so just wait for it to spin up and tag me
+    //wait to be sent: once tagged (cap_bit_5 is set), each unit has a forced action to timeport to the preserved parameter
+    PERFORM NOTHING; 
+}
+
+
+//wait 31 ticks before giving up since cporter may be out of this unit's range
+//but the unit may be withith the cporter's range
+//the chronoporter spinup takes 24 ticks so this gives the unit 7 extra ticks to be sent
+
+//the counter starts at 0 since ap was set to 0 at the top of the script
+int counter = ap[1,5];
+if (counter == 31) { //waited 31 ticks and no cporter was found, give up
+	closestcport = QUERY UNIT [unit] MIN [ unit <=> query ] WHERE [((qrank = query.Rank)==$SLIPGATE_RANK || qrank==$CHRONOPORTER_RANK) && query->IsAlly==1]; 
+	int co = closestcport->Objective;
+	//chronoporter recently sent units, so check if it's busy recharging or attacking
+	if (closestcport->IsAlive==1) {
+		if (co==$OBJ_BLDG_GATE_RECHARGE) { $SAY_NOCPORT_READY }
+		else { $SAY_GATE }
+	} else {    //no gate found
+		$SAY_GATE
+	}
+	
+	//have original commander stored, restore it if it's still around
+	if (ap[$CPORT_STORED_COMMANDER] && ap[$STOREDUNIT]>0) {
+		target = ap[$STOREDUNIT];
+		if (target->IsAlive==1) {
+			PERFORM $ACTION_ERROR_CP target; //changes commander and does error sound
+		}
+	} else {
+		PERFORM $ACTION_ERROR_CP;
+	}	
+	
+	PERFORM SET_ADDITIONAL_PARAMS 0;
+	PERFORM SET_ADDITIONAL_PARAMS2 0;
+	PERFORM SET_OBJECTIVE 0;
+	PERFORM NOTHING;
+	
+}
+
+ap[1,5] = counter+1;
+PERFORM SET_ADDITIONAL_PARAMS ap;
+//preserve the parameter so that follow_unit_through time can follow this unit
+PERFORM $ACTION_PREP_CHRONOPORT op; 
+PERFORM NOTHING;

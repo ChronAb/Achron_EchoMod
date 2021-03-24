@@ -1,0 +1,23 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+//this forces a newly-created ACC or ANNEX to check for an existing adjacent depot and set its cap bit
+int uclass = unit->Class;
+while (1) { 
+	if (uclass == $ANNEX_CLASS) {
+		target = QUERY UNIT [unit] MIN [unit<_>query] WHERE [query->IsAlly==1 && query->Class==$DEPOT_CLASS &&
+																query<_>unit <= 144 && !(query->Status[$CAP_BIT_1]) ]; 
+	} else {
+		target = QUERY UNIT [unit] MIN [unit<_>query] WHERE [query->IsAlly==1 && query->Class==$DEPOT_CLASS &&
+																 query<_>unit <= 144 &&!(query->Status[$CAP_BIT_2]) ]; 
+	}															 													 
+
+	//acc or annex sets the depot's appropriate cap_bit, allowing it to create (if acc: aerospace) vehicles
+	if (target->IsAlive==1) {
+		PERFORM $ACTION_SET_DEPOT_BIT;
+	} else { break; }
+}
+
+PERFORM SET_OBJECTIVE 0;
+

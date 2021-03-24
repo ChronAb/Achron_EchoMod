@@ -1,0 +1,130 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_creator.aih
+
+/*
+	example (run by scenario monitor):  
+ap = 0;
+ap[$UC_AP_CHANGE_OWNER] = 1;		//change the owner
+ap[$UC_AP_OWNER] = 3;          		//the player we want to set as the owner
+ap[$UC_AP_CHANGE_COMMANDER] = 1; 	//change the commander
+ap[$UC_AP_TARGET] = sop;     		//the specific unit we want to release
+ap[$UC_AP_RELEASE_NEXT] = 0;		// set this to 1 to release the next carried unit whatever it is
+ap[$UC_AP_RELEASE_TELEPORT] = 0;    //do not do the teleport animation or sound
+target = unit_creator;  
+PERFORM SET_OTHER_OBJECTIVE_PARAMS location; //this is where we want to release the unit
+PERFORM SET_OTHER_ADDITIONAL_PARAMS ap;
+PERFORM SET_OTHER_OBJECTIVE $UC_OBJECTIVE_RELEASE_UNIT;
+
+*/
+
+#define WAYPOINT_CLASS 4030
+#define TORPEDO_BOMB_CLASS 2101
+
+object carried_unit = 0;
+int ap = unit->AdditionalParameters;
+
+if (ap==0) { //if not specified, default to release next by teleport
+	ap[$UC_AP_RELEASE_NEXT] = 1;
+	ap[$UC_AP_RELEASE_TELEPORT] = 1;
+}
+
+if ( ap[$UC_AP_RELEASE_NEXT]) { 			//release the next unit, whatever it is
+	while (carried_unit = unit->NextCarriedUnit) {
+		//waypoints have to be explicitly released, so keep looping until a non-waypoint is found
+		if (carried_unit<=0 || carried_unit->Class!=$WAYPOINT_CLASS) break;
+	}
+	
+} else {
+	carried_unit = ap[$UC_AP_TARGET];		//release the sepecific unit stored in the AP
+}
+
+
+if (carried_unit > 0) {
+	int waypoint = 0;
+	//waypoins and orpedos can be released anywhere instantly
+	if (carried_unit->Class==$WAYPOINT_CLASS || carried_unit->Class==$TORPEDO_BOMB_CLASS) { 
+		waypoint = 1; 
+	} 
+
+	int location = unit->ObjectiveParameters;
+	if (!waypoint) {
+		//this block of code attempts to release the unit at the specified coordinates
+		//and if the unit cannot go there, it will expand the search for a location to place the
+		//unit down in a clockwise manner based on the length of the unit
+		int distToLocation = unit<_>location;
+		if (distToLocation > 800) { 
+			PERFORM GET_MAP_NEXT_Z_POSITION_UP location;
+			int up_one = perf_ret;
+			PERFORM IS_MAP_POSITION_VALID perf_ret; //returs 0 if it's not valid
+			if (perf_ret==0) {
+				PERFORM $UC_TELEPORT_TO location;
+			} 
+			else {
+				PERFORM GET_MAP_NEXT_Z_POSITION_UP up_one;
+				int up_two = perf_ret;
+				PERFORM IS_MAP_POSITION_VALID perf_ret; //returs 0 if it's not valid
+				if (perf_ret==0) {
+					PERFORM $UC_TELEPORT_TO up_one;
+				} else {
+					PERFORM $UC_TELEPORT_TO up_two;
+				}
+			}
+			PERFORM NOTHING;
+		}
+		else if ( distToLocation == -1) { PERFORM SET_OBJECTIVE 0; } //invalid location specified
+		
+		int x = location[$Xpos];
+		int y = location[$Ypos];
+		int length = carried_unit.Length;
+		int mult = length;
+		int xoffset = length; 
+		int yoffset = 0;
+
+		target = carried_unit->Class;
+		PERFORM CAN_CLASS_FIT_AT location; //see if the unit fits
+		int spotClear = perf_ret; 
+		
+		
+	//player = 1; say "c: ", target, " p: ", spotClear, " x:",x, " y:",y," at X:", unit->XPosition , " Y:", unit->YPosition , " Z:", unit->ZPosition;
+
+		while (spotClear != 255) { //the unit does not fit, so calculate new offset coords
+			
+			location[$Xpos] = x + xoffset;
+			location[$Ypos] = y + yoffset;
+			PERFORM CAN_CLASS_FIT_AT location;
+			spotClear = perf_ret;   
+			
+			if (xoffset > 0 && yoffset < 0) { yoffset = 0; mult=mult+length; xoffset = mult; } 
+			else {
+				if (xoffset <= 0 && yoffset < 0) { xoffset = xoffset + mult;  }
+				if (xoffset < 0 && yoffset >= 0) { yoffset = yoffset - mult;  }
+				if (xoffset >= 0 && yoffset > 0) { xoffset = xoffset - mult;  }
+				if (xoffset > 0 && yoffset == 0) { yoffset = yoffset + mult;  } 
+			}
+			if (xoffset == 0 && yoffset == 0) { xoffset = xoffset + mult; }
+		}  
+	}
+	
+	target = carried_unit;
+	if (ap[$UC_AP_CHANGE_OWNER]) {
+		//change owner to what's specified in the AP
+		PERFORM $UC_SET_PLAYER ap[$UC_AP_OWNER]; 
+	}
+	
+	if (ap[$UC_AP_RELEASE_TELEPORT]) {
+		PERFORM $UC_RELEASE_ANYWHERE_TELEPORT location;
+	} else {
+		PERFORM $UC_RELEASE_ANYWHERE location;
+	}
+	
+	//clear the target's commander if it's this unit creator
+	if (target->Commander==unit) {
+		PERFORM $UC_CHANGE_COMMANDER 0;
+	}
+	
+}
+
+PERFORM SET_OBJECTIVE 0;
+PERFORM SET_PARAM 0;
+

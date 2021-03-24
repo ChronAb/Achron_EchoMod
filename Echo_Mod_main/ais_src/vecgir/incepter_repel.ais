@@ -1,0 +1,75 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+if (!player->Advancements[$VECGIR_ADV_EXTRAS]) {
+	PERFORM SET_OBJECTIVE 0;
+	PERFORM NOTHING;
+}
+
+if (unit->Ammo==0) {
+	PERFORM SET_OBJECTIVE 0;
+	PERFORM NOTHING;
+}
+
+int unitPosition = unit->Position;
+int x = unitPosition[$Xpos];
+int y = unitPosition[$Ypos];
+int randPosition = 0;
+int targetPosition = 0;
+int xadd = 0; //add or subtract the random X offset
+int yadd = 0; //add or subtract the random Y offset
+int Xrand = 0; 
+int Yrand = 0;
+int counter = 0;
+
+int class = 0;
+//find all mobile attack-capable units (normal units, domes, ignoring turrets and bastions)
+target = QUERY UNIT [unit] MIN [unit<=>query] WHERE [ !(query->IsAlly) && query.Rank>=$TURRET_RANK && (class=query->Class)!=$TURRET_CLASS && 
+													  class!=$TURRETU_CLASS && class!=$BASTION_CLASS && query->IsStasis!=1 ];
+if (target->IsAlive!=1) { 
+	PERFORM SET_OBJECTIVE 0;
+	PERFORM NOTHING;
+}
+int tz = target->ZPosition;
+
+while (1) {	
+	counter = counter + 1;
+
+	PERFORM RAND;
+	xadd = perf_ret % 2;
+	PERFORM RAND;
+	yadd = perf_ret % 2;
+	PERFORM RAND;
+	Xrand  = 25 + perf_ret % 21; //random 0-20 + 25 (25-45)
+	PERFORM RAND;
+	Yrand  = 25 + perf_ret % 21; //random 0-20 + 25 (25-45)
+	
+	randPosition = 0;
+
+	if (xadd) { randPosition[$Xpos] = x + Xrand; }
+	else { randPosition[$Xpos] = x - Xrand; }
+
+	if (yadd) { randPosition[$Ypos] = y + Yrand; }
+	else { randPosition[$Ypos] = y - Yrand; }
+
+	if (tz>0) { //target was in the air, tport it to an air spot
+		PERFORM GET_MAP_NEXT_Z_POSITION_UP randPosition;
+		randPosition = perf_ret;
+	}
+	
+	
+	PERFORM $ACTION_REPEL randPosition;
+	if (perf_ret==1) {
+		PERFORM $ACTION_POST_REPEL randPosition;
+		break;
+	}
+	
+	//failed 50 times, time to give up
+	if (counter==50) {
+		PERFORM $ACTION_POST_REPEL randPosition;
+		PERFORM SET_OBJECTIVE 0;
+		PERFORM NOTHING;
+	}
+}
+

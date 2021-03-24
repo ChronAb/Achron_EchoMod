@@ -1,0 +1,26 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+
+//code to resume whatever objective was stored in AP[$OBJECTIVE], otherwise returns to idle
+//this logic is needed because MOVE and ATTACK are only stored in ap[6,3]
+//so to resume either of those two objectives, we also check the appropriate
+//action bit to go with either the move or attack objective
+
+int ap = unit->AdditionalParameters;
+int OBJ = ap[$OBJECTIVE];
+
+if (ap[$ATTACK_BIT] && ap[6,3]==$OBJECTIVE_ATTACKING) { 
+	OBJ = $OBJECTIVE_ATTACKING; 
+	if (ap[$UNIT_BIT]) {
+		OBJ = $OBJECTIVE_ATTACKING_UNIT;
+	}
+}
+
+if (ap[$MOVE_BIT] && ap[6,3]==$OBJECTIVE_UNIT_MOVE) { OBJ = $OBJECTIVE_UNIT_MOVE; }
+
+if (OBJ >= $RESUMABLE_OBJECTIVE && OBJ != $OBJECTIVE_ATTACKING_UNIT) { 
+	OBJ = 0; 
+	PERFORM SET_ADDITIONAL_PARAMS 0; 
+}
+PERFORM SET_OBJECTIVE OBJ;
+PERFORM NOTHING;

@@ -1,0 +1,23 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include human/human_building_idle.ais
+
+PERFORM RAND;
+if (perf_ret < 1024) {
+	if (ap[$OBJ_BLDG_DEPLOYBIT]  || (unit->NextCarriedUnit)->IsAlive==1) { //couldn't deploy unit, so retry occasionally
+		PERFORM SET_OBJECTIVE $OBJ_BLDG_DEPLOY; 
+		$SET_AP
+		PERFORM NOTHING; 
+	}
+}
+if (ap[$OBJ_BLDG_CONTINUE_DEPLOYBIT] ) { 
+    $SAY_INTERRUPT
+    PERFORM SET_OBJECTIVE $OBJ_BLDG_DEPLOY; 
+	$SET_AP
+    PERFORM NOTHING; 
+}
+
+
+#include common/include/unit_autopilot_building.ais
+
+$SET_AP

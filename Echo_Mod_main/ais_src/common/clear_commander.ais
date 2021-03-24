@@ -1,0 +1,42 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+
+int ap = unit->AdditionalParameters;
+int OBJ = ap[$OBJECTIVE];
+
+if (unit->Commander!=0) {
+    PERFORM $ACTION_CHANGE_COMMANDER 0;
+}
+
+object sub=0;
+while (sub = unit->NextSubordinate) {
+    target = sub;
+    PERFORM $ACTION_DISCONNECT 0;
+}
+
+//if unit was not idling and not clearing commander and didn't just teleport
+//objective must be below 22 (RESUMABLE_OBJECTIVE)
+if (OBJ != 0 && OBJ != $OBJECTIVE_CLEAR_COMMANDER && OBJ != $OBJECTIVE_SKIP) { 
+	if (ap[$MOVE_BIT] && ap[6,3]==$OBJECTIVE_UNIT_MOVE) { OBJ = $OBJECTIVE_UNIT_MOVE; }	
+	
+	if (ap[$ATTACK_BIT] && ap[6,3]==$OBJECTIVE_ATTACKING) { 
+		OBJ = $OBJECTIVE_ATTACKING; 
+		if (ap[$UNIT_BIT]) {
+			OBJ = $OBJECTIVE_ATTACKING_UNIT;
+		}
+	}
+
+	if (OBJ >= $RESUMABLE_OBJECTIVE && OBJ != $OBJECTIVE_ATTACKING_UNIT) { 
+		OBJ = 0; 
+		ap[$OBJECTIVE] = $OBJECTIVE_CLEAR_COMMANDER;
+		PERFORM SET_ADDITIONAL_PARAMS ap; 
+	}
+    PERFORM SET_OBJECTIVE OBJ;
+}
+else {
+    ap[$OBJECTIVE] = $OBJECTIVE_CLEAR_COMMANDER;
+    PERFORM SET_ADDITIONAL_PARAMS ap;
+    PERFORM SET_OBJECTIVE 0;
+}

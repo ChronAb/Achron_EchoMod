@@ -1,0 +1,18 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_creator.aih
+
+/*
+	example (run by scenario monitor):  
+ap[16,16] = marine;  	//the unit we want teleported
+target = unit_creator;
+PERFORM SET_OTHER_ADDITIONAL_PARAMS ap;  	
+PERFORM SET_OTHER_OBJECTIVE_PARAMS _dest; // packed location to teleport to
+PERFORM SET_OTHER_OBJECTIVE $UC_OBJECTIVE_TELEPORT_UNIT;
+*/
+
+target = (unit->AdditionalParameters)[$UC_AP_TARGET];
+PERFORM $UC_TELEPORT_UNIT unit->ObjectiveParameters;
+PERFORM SET_ADDITIONAL_PARAMS 0;   
+PERFORM SET_OBJECTIVE 0;
+PERFORM NOTHING;

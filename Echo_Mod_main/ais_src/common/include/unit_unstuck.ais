@@ -1,0 +1,56 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+
+//include script used by move and attack when BESTMOVE query is exhausted (i.e., when a unit is moonwalking or is stuck)
+//so this checks if unit is stuck, and if it is,  stores least significant 2-5bits of current timestamp into the top 4bits 
+// of AP, in essence pausing this unit for 30 ticks before trying to move again
+
+if (ap[$STUCK_BIT]) {  //stuck bit is set
+
+    temp2 = ap[28,4]; 		//stored of timestamp
+	PERFORM GET_CUR_TIME;
+    if (temp2==perf_ret[1,4] && perf_ret[0]) {  //current timestamp matches stored timestamp
+		PERFORM CLEAR_LAST_ATTACKED_DIRECTION;  //clear last attack direction just in case
+		int numStuck = QUERY VALUE [unit] SUM [1] WHERE [ query->IsAlly && (query->AdditionalParameters)[$STUCK_BIT] && query->Objective==myObjective];
+//$print "number of stucks I see: ", numStuck, "\n";		
+		//if unit sees more than 3 stuck units, is top level commander and is within 28 spaces, stop 
+		if (numStuck > 3 && myCommander==0 && unit<_>op < 785) {
+			$STOP;
+		}
+		
+		if (ap[$SUBORDINATE_STUCK_BIT]) {  //subordinate stuck bit is set
+			if (myCommander>0) { //unit has a commander
+				
+				//if commander is idling, then stop
+				if (commanderObjective==0) {
+					$STOP;
+				}
+				
+				//see if commander is stuck, or is on way to being stuck (counter at 3+ of 8)
+				if (numStuck>3 || (commanderObjective==myObjective && (cap[$STUCK_BIT] || cap[28,4]>=3)))  { 
+					$SET_AP
+					PERFORM NOTHING;
+				}
+				else { //clear subordinateStuck bit
+					ap[$SUBORDINATE_STUCK_BIT]=0;
+				}
+			}
+			else { //no commander
+				ap[$SUBORDINATE_STUCK_BIT]=0; //clear out the subordinateStuck bit
+			}
+		}
+		
+		ap[$STUCK_BIT] = 0; 	//clear out the AP stuck bit
+		//check the reset counter bit, if it's set, reset the counter to 8
+		if (ap[$RESET_COUNTER_BIT]) { ap[28,4] = 8; } //this way the unit will stop moving sooner
+		else { ap[28,4] = 5;	}		//set the Stuck counter to 5 so that during attack move
+		                                //if it takes 3 more exhausted moves, it'll stop moving
+        ap[$RESET_COUNTER_BIT] = 0;									   
+		setAdditionalParameters = 1;
+		unstick = 1;
+		
+	} else { //wait until timestamps match up
+		$SET_AP
+		PERFORM NOTHING;
+	}
+}

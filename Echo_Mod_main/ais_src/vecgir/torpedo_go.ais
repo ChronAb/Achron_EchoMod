@@ -1,0 +1,143 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+int location=0; 
+int dir=0;
+int ap = unit->AdditionalParameters;
+int op = unit->ObjectiveParameters;
+
+int distToOp = unit <_> op;
+int unitPosition = unit->Position;
+
+if ( ap == 0 || op != ap) { //just got created or chronoported
+	op = (unit->Parent)->AdditionalParameters; //grab base's target
+	PERFORM SET_PARAM op;
+	PERFORM SET_ADDITIONAL_PARAMS op;
+//$print "getting target info: ", op, "\n";	
+	ap = op; //store the destination location into AP 
+	PERFORM GET_TERRAIN_GROUND_HEIGHT_AT unitPosition;
+	int groundHeight = perf_ret;
+	distToOp = unit <_> op;
+	if (unitPosition[$Zpos] == groundHeight && (distToOp  > 16)) {
+		PERFORM GET_MAP_NEXT_Z_POSITION_UP unitPosition;
+		int upone = perf_ret;
+		dir = QUERY BESTMOVE [unit, $ACTION_MOVE] MIN [ upone <=> query ] WHERE [1];
+		PERFORM $ACTION_MOVE dir;
+		PERFORM NOTHING;
+	}
+
+}
+int uZ = unitPosition[$Zpos];
+if (uZ==0) {
+	PERFORM GET_MAP_NEXT_Z_POSITION_UP unitPosition;
+	uZ = perf_ret[$Zpos];
+}
+
+//prefer a flight path enroute until within 5 spaces
+if (distToOp > 25 && op[$Zpos]==0) {
+	PERFORM GET_MAP_NEXT_Z_POSITION_UP op;
+	if ( uZ > perf_ret[$Zpos] ) { op[$Zpos] = uZ; }
+	else {
+		op = perf_ret;
+	}
+}
+
+
+
+//every move ups the ammo by one. so after 10+ moves, try to teleport to a random location
+if (distToOp > 169 && unit->Ammo == 30 ) {  
+
+    // int zdiff = 0;
+    int xdiff = 0;
+    int ydiff = 0;
+	
+    PERFORM RAND;
+    int num = perf_ret / 1650; // 0 - 20 spaces in the Y direction
+    int Y = unitPosition[$Ypos];
+    if ((op[$Ypos] - Y) >= 0) ydiff = num + Y;
+    else ydiff = Y - num;
+    //$print "y: ", num, " ";
+    
+    PERFORM RAND;
+    num = perf_ret / 1650; // 0 - 20 spaces in the X direction
+    int X = unitPosition[$Xpos];
+    if ((op[$Xpos] - X) >= 0) xdiff = num + X;
+    else xdiff = X - num;
+    //$print "X: ", num, "\n";
+    
+	num = 0;
+    num[$Xpos] = xdiff;
+    num[$Ypos] = ydiff;
+	//num[$Zpos] = zdiff;
+	PERFORM GET_MAP_NEXT_Z_POSITION_UP num;
+	num = perf_ret;
+	  
+    //check to see that the location is close enough
+    if (num<_>unit < 1600) { 
+
+		PERFORM $ACTION_SKIP num;
+		PERFORM NOTHING;
+    }
+}
+
+
+
+int counter = unit->AdditionalParameters2; //move counter to move in the same direction
+if (counter>0) {           //more than 0 means already moving in a direction
+	counter = counter - 1; //decrease the counter
+	PERFORM SET_ADDITIONAL_PARAMS2 counter;
+	int rot = unit->Rotation; //get the unit's current rotation
+	$DIR_FROM_ROT             //set the dir to move to based on that unit's rotation
+}
+else {  //no move counter stored, so query where to move to next
+	dir = QUERY BESTMOVE [unit, $ACTION_MOVE] MIN [ op <=> query ] WHERE [1]; 
+	if (dir[0,8] >= 16) { counter = 0; } //moving up or down, so don't store counter
+	else {
+		counter = dir[16,8]; 			  //the counter is stored in the 3rd byte of dir
+		if (counter > 6) { counter = 6; } //cap it at 7 since AdditionalParameters2 only has 3 bits
+	}
+}
+
+dir[16,8] = 0; //clear out the 3rd byte that stores the counter
+//something is in the way OR can't move AND not at destination yet
+if (dir == $QUERY_EXHAUSTED || dir==0) {
+    float direction = rottorad( unit->Rotation ) + 3.1415926;
+	int uY = unitPosition[$Ypos];
+	int uX = unitPosition[$Xpos];
+	int uZ = unitPosition[$Zpos];
+	
+	int y = uY - 10.0 * sin(direction);
+	int x = uX + 10.0 * cos(direction);
+	
+	y = uY + 10.0 * sin(direction);
+	x = uX - 10.0 * cos(direction);
+	int todir = 0;
+	todir[$Xpos] = x;
+	todir[$Ypos] = y;
+	PERFORM $ACTION_SKIP todir;
+	if (perf_ret < 1) { //failed to skip, blow up here
+		
+		PERFORM $ACTION_ATTACK;
+        PERFORM NOTHING;
+	}
+}
+else {
+    
+    if (distToOp < 16) { //within 3 spaces
+        target = $TORPEDO_CLASS;
+        PERFORM CAN_CLASS_FIT_AT op;
+        if (perf_ret <  1) { //can't fit, so blow up right there
+		   
+           PERFORM $ACTION_ATTACK;
+           PERFORM NOTHING;
+        }
+    }
+	
+	if (counter>2) {
+		dir[8,8] = 2;
+		counter = counter - 2;
+	}
+	PERFORM SET_ADDITIONAL_PARAMS2 counter;
+    PERFORM $ACTION_MOVE dir;
+}

@@ -1,0 +1,29 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+//self upgrade vecgir vehicles to have skip (self-teleport ability)
+//by setting cap_bit_2 on the unit
+
+
+	
+	//already upgraded, so return to idle
+	if (unit->Status[$CAP_BIT_2]) {
+		PERFORM SET_OBJECTIVE 0;
+		PERFORM NOTHING;
+	}
+
+	//verify resources and do the upgrade
+	if (player->$LCrystals>=$SKIP_UPGRADE_LC && player->$QPlasma>=$SKIP_UPGRADE_QP) {
+		PERFORM $ACTION_SELF_UPGRADE;
+	} else {
+		$SAY_RESOURCES
+		PERFORM SET_OBJECTIVE 0;
+		PERFORM $ACTION_ERROR1;
+	}
+	PERFORM NOTHING;
+
+
+
+PERFORM SET_OBJECTIVE 0;
+

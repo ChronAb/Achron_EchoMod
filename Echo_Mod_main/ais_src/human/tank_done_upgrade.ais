@@ -1,0 +1,9 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+//done upgrading go back to idle
+if (unit->Action!=$ACTION_SELF_UPGRADE) {
+    PERFORM SET_OBJECTIVE 0;
+    PERFORM NOTHING;
+}

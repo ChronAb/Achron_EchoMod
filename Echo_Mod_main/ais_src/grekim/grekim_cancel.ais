@@ -1,0 +1,15 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+//cancel out of progen mode
+
+PERFORM $ACTION_CLEAR_A; //clear connection (capbit) to first progenitor
+PERFORM $ACTION_CLEAR_B; //clear connection (capbit) to second progenitor
+PERFORM $ACTION_CHANGE_BACK; //change class back to base unit
+PERFORM SET_ADDITIONAL_PARAMS 0;
+PERFORM SET_ADDITIONAL_PARAMS2 0;
+PERFORM SET_ADDITIONAL_PARAMS3 0;
+PERFORM SET_ADDITIONAL_PARAMS4 0;
+PERFORM SET_PARAM 0;
+PERFORM SET_OBJECTIVE 0;

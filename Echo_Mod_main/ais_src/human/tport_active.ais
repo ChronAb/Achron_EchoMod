@@ -1,0 +1,187 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include human/human_building_idle.ais
+
+
+int myStatus = unit->Status;
+
+if (!ap[$ACTIVE_BIT]) {    
+    PERFORM $ACTION_SETACTIVE;
+    ap[$ACTIVE_BIT] = 1;
+    PERFORM SET_ADDITIONAL_PARAMS ap;
+}
+
+int x=0; int y=0; int z=0; int location=0;
+object blocked = ap[$STOREDUNIT]; 
+int counter=0;
+
+if (ap[$BLOCKED_BIT]) {  //if I have a blocked unit stored
+    if (!myStatus[$CAP_BIT_2]) {    //make sure tporter is spun up
+        PERFORM $ACTION_SPINUP; 
+        PERFORM NOTHING;
+    }
+    
+    counter = ap[6,4];
+    counter = counter + 1;  //up the counter
+	
+	if (blocked->IsAlive==1 && blocked<_>unit <= unit.SightHRange2) { 
+        //set relative exit location
+		int op = unit->ObjectiveParameters;
+		int unitPosition = unit->Position;
+		int blockedPosition = blocked->Position;
+        x = (op[$Xpos] - (unitPosition[$Xpos] - blockedPosition[$Xpos])); //12 bits, least sig
+        y = (op[$Ypos] - (unitPosition[$Ypos] - blockedPosition[$Ypos])); //12 bits
+        z = (op[$Zpos] - (unitPosition[$Zpos] - blockedPosition[$Zpos])); //5 bits
+                                                                       //3 bits at top, not used  
+        location[$Zpos] = z; location[$Xpos] = x; location[$Ypos] = y;
+        int newpos = 1;  
+        int xoffset = blocked.Length + ap[$EXTRA_BIT]; 
+        int mult = xoffset;
+        int yoffset = 0;
+
+        while (newpos < counter ) { //calculate new offset (expanding spiral based on the blocked unit's length)
+            
+            if (xoffset > 0 && yoffset < 0) { 
+                yoffset = 0; mult=mult+blocked.Length+ap[$EXTRA_BIT]; xoffset = mult; 
+            } 
+            else {
+                if (xoffset <= 0 && yoffset < 0) { xoffset = xoffset + mult;  }
+                if (xoffset < 0 && yoffset >= 0) { yoffset = yoffset - mult;  }
+                if (xoffset >= 0 && yoffset > 0) { xoffset = xoffset - mult;  }
+                if (xoffset > 0 && yoffset == 0) { yoffset = yoffset + mult;  } 
+            }
+            if (xoffset == 0 && yoffset == 0) { xoffset = xoffset + mult; }
+            newpos = newpos + 1;
+        }
+        
+        location[$Xpos] = x + xoffset;  location[$Ypos] = y + yoffset; location[$Zpos] = z;
+        
+		target = blocked;
+		
+		
+		PERFORM IS_MAP_POSITION_VALID location; //returs 0 if it's not valid
+		if (perf_ret==0) {		
+			if (target.Rank>=$AIR_RANK) { //air unit
+				PERFORM GET_MAP_NEXT_Z_POSITION_UP location; //get the next height above for air units
+				location = perf_ret;
+			}
+		}
+		
+        PERFORM $ACTION_TELEPORT location;
+        if (perf_ret == 0) {  //failed to teleport again
+            ap[6,4] = 0; //clear out ap[6,4];
+            if (counter == 16) { 
+                counter = 0; 
+                if (!ap[$EXTRA_BIT]) { ap[$EXTRA_BIT] = 1; }  //up the search radius by 1
+                else {
+                    ap[$NOTELEPORT_BIT] = 1;  //can't teleport this unit bit, have it cancel out
+                }
+            }
+            ap[6,4] = counter;
+            PERFORM SET_ADDITIONAL_PARAMS ap;
+        }
+        else {  //finally succesfully teleported that blocked unit
+            ap[$BLOCKED_BIT,2] = 0;  //clear both Blocked and Extra bits
+            ap[6,4] = 0; //clear out ap[6,4] and unit field
+            ap[$STOREDUNIT] = 0;
+            PERFORM SET_ADDITIONAL_PARAMS ap;
+			int oap = target->AdditionalParameters;
+			oap[$OBJECTIVE] = $OBJECTIVE_SLINGSHOT;
+			oap[$TIME_BIT] = 0;
+			oap[$DISTANCE_BIT] = 0;
+			oap[12,11] = 0;
+			PERFORM SET_OTHER_ADDITIONAL_PARAMS oap;			
+            PERFORM NOTHING;
+        }
+    }
+    else {
+        ap[$BLOCKED_BIT,2] = 0;  //clear both Blocked and Extra bits
+        ap[6,4] = 0; //clear out ap[6,4] and unit field
+        ap[$STOREDUNIT] = 0;
+        PERFORM SET_ADDITIONAL_PARAMS ap;
+    }
+}
+
+int trank = 0;
+int qobj = 0;
+int activeRange = unit.SightHRange2;
+if (!ap[$BLOCKED_BIT]) { //no blocking unit is stored
+    //don't allow buildings (rank of < 100)  to be teleported except RPs
+    target = QUERY UNIT [unit] MIN [unit <=> query] WHERE [((trank = query.Rank)>=$BUILDINGS_RANK || trank==$RP_RANK) && trank!=$CARRIER_RANK && !(query->IsStasis) && query->IsAlly==1 &&  //Resource Processors have rank of 10
+		( (qobj = query->Objective)==0 || //found unit is idle or it's moving or attacking a spot within active range of the gate
+		  ((qobj==$OBJECTIVE_UNIT_MOVE || qobj==$OBJECTIVE_ATTACKING_UNIT || qobj==$OBJECTIVE_ATTACKING) && query->ObjectiveParameters<_>unit < activeRange)
+		)
+	]; 
+}
+else {
+    target = QUERY UNIT [unit] MIN [unit <=> query] WHERE [((trank = query.Rank)>=$BUILDINGS_RANK || trank==$RP_RANK) && trank!=$CARRIER_RANK && !(query->IsStasis) &&  query->IsAlly==1 && (query != blocked) && 
+		( (qobj = query->Objective)==0 || //found unit is idle or it's moving or attacking a spot within active range of the gate
+		  ((qobj==$OBJECTIVE_UNIT_MOVE || qobj==$OBJECTIVE_ATTACKING_UNIT || qobj==$OBJECTIVE_ATTACKING) && query->ObjectiveParameters<_>unit < activeRange)
+		)
+	];
+}
+if (target->IsAlive==1) {
+    if (!myStatus[$CAP_BIT_2] ) {
+        PERFORM $ACTION_SPINUP; 
+        PERFORM NOTHING;
+    }
+
+   //set relative exit location														   
+	int op = unit->ObjectiveParameters;
+	int unitPosition = unit->Position;
+	int targetPosition = target->Position;
+	x = (op[$Xpos] - (unitPosition[$Xpos] - targetPosition[$Xpos])); //12 bits, least sig
+	y = (op[$Ypos] - (unitPosition[$Ypos] - targetPosition[$Ypos])); //12 bits
+	z = (op[$Zpos] - (unitPosition[$Zpos] - targetPosition[$Zpos])); //5 bits
+																   
+    location[$Zpos] = z; location[$Xpos] = x; location[$Ypos] = y;
+  
+	PERFORM IS_MAP_POSITION_VALID location; //returs 0 if it's not valid
+	if (perf_ret==0) {		
+		if (target.Rank>=$AIR_RANK) { //air unit
+			PERFORM GET_MAP_NEXT_Z_POSITION_UP location; //get the next height above for air units
+			location = perf_ret;
+		}
+	}
+  
+  //teleport unit to that relative spot
+    object T = target;
+    PERFORM $ACTION_TELEPORT location;
+    if (perf_ret == 0) {
+        if (!ap[$BLOCKED_BIT]) {
+                ap[6,4] = 0; //clear out ap[6,4] and unit field
+                ap[$STOREDUNIT] = T;  //failed to tport, store unit 
+                ap[$BLOCKED_BIT] = 1;    //set the blocked bit
+                PERFORM SET_ADDITIONAL_PARAMS ap; 
+        }
+        //else { $print "already found another unit that can't teleport as well\n"; }
+        PERFORM $ACTION_FAKE_TELEPORT;
+    }
+    int oap = target->AdditionalParameters;
+	oap[$OBJECTIVE] = $OBJECTIVE_SLINGSHOT;
+	oap[$TIME_BIT] = 0;
+	oap[$DISTANCE_BIT] = 0;
+	oap[12,11] = 0;
+	PERFORM SET_OTHER_ADDITIONAL_PARAMS oap;
+    PERFORM NOTHING;
+}
+else {
+    if (!ap[$BLOCKED_BIT] ) {  //no blocked unit stored
+        if (myStatus[$CAP_BIT_2]) {
+            PERFORM $ACTION_SPINDOWN; 
+            PERFORM NOTHING;
+        }
+        
+        if (myStatus[$CAP_BIT_5]) { 
+            PERFORM $ACTION_CLEAR_TBIT;
+        }
+    }
+    else {  //blocked unit is stored
+        PERFORM $ACTION_FAKE_TELEPORT;
+    }
+   
+}
+
+
+PERFORM $ACTION_ACTIVEGATE;
+

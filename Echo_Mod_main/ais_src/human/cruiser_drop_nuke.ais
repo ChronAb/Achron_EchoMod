@@ -1,0 +1,10 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+int location = unit->Position;
+PERFORM GET_TERRAIN_GROUND_HEIGHT_AT location;
+location[$Zpos] = perf_ret;
+PERFORM SET_PARAM location;
+PERFORM SET_OBJECTIVE $OBJECTIVE_NUKE;
+

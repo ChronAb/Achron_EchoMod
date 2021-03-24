@@ -1,0 +1,13 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+//moving arcticus
+
+PERFORM RAND;
+if (perf_ret > 8192) { PERFORM NOTHING; }
+
+#define IS_REAPH 0
+
+int ap = unit->AdditionalParameters;
+#include common/include/grekim_building_idle.ais

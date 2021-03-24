@@ -1,0 +1,37 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+int uclass = unit->Class;
+
+if (uclass==$TURRETU_CLASS || uclass == $DOME_BEAM_CLASS) { 
+	PERFORM SET_OBJECTIVE 0;
+	PERFORM NOTHING;
+}
+
+
+if (uclass == $DOME_CLASS ) {
+	if (player->$LCrystals >= $DOME_UPGRADE_LC && player->$QPlasma>=$DOME_UPGRADE_QP) {
+		PERFORM $ACTION_SELF_UPGRADE;
+		PERFORM SET_ADDITIONAL_PARAMS 0;
+	}
+	PERFORM NOTHING;	
+}
+
+
+
+
+//advanced go back to idle
+if (!(player->Advancements[$HUMAN_ADV_BASIC]) || unit->IsCommjam ) { 
+    if (unit->IsCommjam) $SAY_JAMMED
+	PERFORM SET_ADDITIONAL_PARAMS 0;
+    PERFORM SET_OBJECTIVE 0;
+    PERFORM NOTHING;
+}
+
+
+
+if (player->$LCrystals >= $TURRET_UPGRADE_LC && player->$QPlasma>=$TURRET_UPGRADE_QP) {
+	PERFORM $ACTION_SELF_UPGRADE;
+	PERFORM SET_ADDITIONAL_PARAMS 0;
+}

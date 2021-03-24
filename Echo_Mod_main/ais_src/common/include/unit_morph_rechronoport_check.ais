@@ -1,0 +1,23 @@
+
+$INIT_GLOBAL_CHRONAL_PROPERTIES
+
+if ( !($MORPH_DURING_RECHRONOPORT)  ) {
+
+	//don't allow morphing during rechronoport delay
+	int timeSinceLastChronoport = unit->TimeSinceLastChronoport;
+	PERFORM GET_RECHRONOPORT_DELAY;  //get the rechronoport delay in ticks
+	if (timeSinceLastChronoport!=-1 && timeSinceLastChronoport<= perf_ret ) { //-1 means unit did not chronoport
+		int rechronoportRemaining = perf_ret - timeSinceLastChronoport;
+		//ticks per second - set in the scenario parameters    
+		PERFORM CONVERT_SECONDS_TO_TICKS 1;
+		int TPSOND = perf_ret;
+		int rechronoportSeconds = rechronoportRemaining / TPSOND; //used by the $SAY_RECHRONOPORT
+		if (rechronoportSeconds==0) { rechronoportSeconds = 1; } //prevent rounding down to 0 
+		$SAY_RECHRONOPORT
+		PERFORM SET_ADDITIONAL_PARAMS2 0;
+		PERFORM SET_ADDITIONAL_PARAMS 0;
+		PERFORM SET_OBJECTIVE 0;
+		PERFORM SET_PARAM 0;
+		PERFORM NOTHING;
+	}
+}

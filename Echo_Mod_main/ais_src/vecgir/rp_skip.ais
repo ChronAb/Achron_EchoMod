@@ -1,0 +1,382 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+// FOLLOWS THE SAME LOGIC AS unit_halcyon_skip.ais except when the RP is within range of an RP
+// it will first try to teleport to the 4 spots around the RP (n, e, s, w) based on whichever is closer
+
+if (unit->Class==$VECGIR_RP_CLASS) {
+	int ap = unit->AdditionalParameters;
+	object myCommander = unit->Commander;
+	if (myCommander->IsAlive==1 && !ap[$RP_PATCH_BIT]) {
+		PERFORM $ACTION_CLEAR_COMMANDER 0; //if player issued teleport and there's a resource box, get rid of it
+	}
+	PERFORM $ACTION_STARTMOVE;
+	PERFORM NOTHING;
+}
+
+//radian angle values for 22,-22,45 and -45 degrees =  pi / 8 and pi / 4
+#define n22 -0.39269908 
+#define p22 0.39269908
+#define n45 -0.78539816
+#define p45 0.78539816
+
+//macro to calculate and a skip to a position specified by _angle offset with distance specified by _dist
+#define CUSTOM_ANGLE_DIST_SKIP op = 0;\
+		int ux = unitPosition[$Xpos];\
+        int uy = unitPosition[$Ypos];\
+        int xd = destX - ux;\
+        int yd = destY - uy;\
+        float a = yd atan2 xd;\
+		a = a + _angle;\
+        yd = _dist * sin a;\
+        xd = _dist * cos a;\
+        op[$Xpos] = (ux + xd);\
+		op[$Ypos] = (uy + yd);\
+		if (op!=unitPosition) { PERFORM $ACTION_TPORT_FAILED; PERFORM $ACTION_SKIP op; tported = perf_ret; }
+
+
+//pythagoras FTW - can't use <_> on two ints
+//#define OP_NEWPOS_DIST |/( (unitPosition[$Xpos]-newPos[$Xpos])**2 + (unitPosition[$Ypos]-newPos[$Ypos])**2 );
+
+int ap = unit->AdditionalParameters;
+
+if (unit->Status[$CAP_BIT_1]) {  //just teleported capbit is set (capbit 1)       
+	PERFORM $ACTION_TELEPORTED; //clear the teleported capbit1
+	PERFORM NOTHING;
+} 
+else {
+	//only look for gates if not tss'ed
+	if (!(unit->IsStasis)) {
+		int qrank=0;
+		target = QUERY UNIT [unit] MIN [ unit <=> query ] 
+						   WHERE [ ((qrank = query.Rank)>=$TELEPORTER_RANK && qrank<=$SLIPGATE_RANK) && query->IsAlly==1 && (query->Objective == 0) ]; 
+		if (target->IsAlive==1) {
+			int tap = target->AdditionalParameters;
+			if (tap[$STOREDUNIT]==unit && tap[$NOTELEPORT_BIT] ) { } //failed to teleport me, ignore the gate, skip on own accord
+			else {
+				object myCommander = unit->Commander;
+				if (myCommander->IsAlive==1 && !ap[$RP_PATCH_BIT]) {
+					PERFORM $ACTION_CLEAR_COMMANDER 0; //if player issued teleport and there's a resource box, get rid of it
+				}
+
+				PERFORM NOTHING;
+			}
+		}
+	}
+}
+
+
+if (unit->Energy < 25) {
+	if (ap[$MOVE_BIT]) { PERFORM NOTHING; }
+    //if (!ap[$RP_PATCH_BIT]) $SAY_ENERGY
+	//PERFORM $ACTION_ERROR1;
+	ap[$MOVE_BIT] = 1;
+	PERFORM SET_ADDITIONAL_PARAMS ap;
+    PERFORM NOTHING;
+}
+
+
+
+ap[$MOVE_BIT] = 0;
+object myCommander = unit->Commander;
+if (myCommander->IsAlive==1 && !ap[$RP_PATCH_BIT]) {
+	PERFORM $ACTION_CLEAR_COMMANDER 0; //if player issued teleport and there's a resource box, get rid of it
+}
+
+
+int op = unit->ObjectiveParameters;
+int originalOP = op;
+op[$Zpos] = 0; //GROUND HEIGHT override - rp can't go into the air
+int x = op[$Xpos];
+int y = op[$Ypos];
+int destX = x;
+int destY = y;
+int unitPosition = unit->Position;
+int goal_dist = unit <_> op;
+
+if (goal_dist > 625) { //max of 25 spaces
+	
+	int ux = unitPosition[$Xpos];
+	int uy = unitPosition[$Ypos];
+
+	int xd = x - ux;
+	int yd = y - uy;
+	
+	
+	float a = yd atan2 xd;
+	yd = 25 * sin a;
+	xd = 25 * cos a;
+	  
+	op[$Xpos] = (ux + xd);
+	op[$Ypos] = (uy + yd);
+	op[$Zpos] = 0;
+	
+	x = op[$Xpos];
+	y = op[$Ypos];
+	goal_dist = 25;
+} 
+else {
+	//PERFORM SET_OBJECTIVE 0;
+	goal_dist = |/goal_dist;
+}
+
+
+int checkTarget = 0;
+PERFORM GET_PLAYER_VISIBLE_UNIT_AT op;
+target = perf_ret;  
+if (target > 0) {
+	if (target.Rank==$RESOURCE_RANK) { checkTarget = 1; }
+}
+
+//find a patch next to the destination
+if (!checkTarget) {
+	target = QUERY UNIT [ unit ] MIN [query<_>op] WHERE [ query<_>op < $RP_PROCESS_DISTANCE  && query.Rank==$RESOURCE_RANK ];
+}
+
+//there is a patch at destination or within processing distance of it
+//try teleporting to the 4 spots n,s,e,w of it - closest to the unit
+if (target->IsAlive==1) { 
+
+	object originalBox = target;
+	int tp = target->Position;
+	op = tp;
+		
+    //try the 5 spots among the 4 different sides: above, below, left and right of the resource ( center, +1, -1, +2, -2)
+	int newpos = tp;
+	int failed = 0;
+	PERFORM $ACTION_SKIP tp; //skip to the closest spot
+	if (perf_ret<1) { 
+		PERFORM $ACTION_TPORT_FAILED;
+		failed = 1;
+		int attempt = 0;
+		while(failed) {
+			attempt = attempt + 1;
+			
+			if(attempt == 1) { 
+				newpos[$Ypos] = tp[$Ypos] - 3;  //above
+			}
+			else if(attempt == 2) { newpos[$Xpos] = tp[$Xpos] - 1; }
+			else if(attempt == 3) { newpos[$Xpos] = tp[$Xpos] + 1; }
+			else if(attempt == 4) { newpos[$Xpos] = tp[$Xpos] - 2; }						
+			else if(attempt == 5) { newpos[$Xpos] = tp[$Xpos] + 2; }
+									
+			else if(attempt == 6) {
+				newpos[$Ypos] = tp[$Ypos] + 3; //below
+				newpos[$Xpos] = tp[$Xpos];
+			}						
+			else if(attempt == 7) { newpos[$Xpos] = tp[$Xpos] - 1; }
+			else if(attempt == 8) { newpos[$Xpos] = tp[$Xpos] + 1; }
+			else if(attempt == 9) { newpos[$Xpos] = tp[$Xpos] - 2; }						
+			else if(attempt == 10) { newpos[$Xpos] = tp[$Xpos] + 2; }
+			
+			else if(attempt == 11) {
+				newpos[$Ypos] = tp[$Ypos];
+				newpos[$Xpos] = tp[$Xpos] - 3; //left
+			}						
+			else if(attempt == 12) { newpos[$Ypos] = tp[$Ypos] - 1; }
+			else if(attempt == 13) { newpos[$Ypos] = tp[$Ypos] + 1; }
+			else if(attempt == 14) { newpos[$Ypos] = tp[$Ypos] - 2; }
+			else if(attempt == 15) { newpos[$Ypos] = tp[$Ypos] + 2; }
+			
+			else if(attempt == 16) {
+				newpos[$Ypos] = tp[$Ypos];
+				newpos[$Xpos] = tp[$Xpos] + 3; //right
+			}						
+			else if(attempt == 17) { newpos[$Ypos] = tp[$Ypos] - 1; }
+			else if(attempt == 18) { newpos[$Ypos] = tp[$Ypos] + 1; }
+			else if(attempt == 19) { newpos[$Ypos] = tp[$Ypos] - 2; }
+			else if(attempt == 20) { newpos[$Ypos] = tp[$Ypos] + 2; }
+			
+			else {  break;  }
+			
+			PERFORM $ACTION_SKIP newpos;
+			if(perf_ret < 1) {
+				PERFORM $ACTION_TPORT_FAILED;
+			}
+			else {
+				failed = 0;
+			}
+		}
+	}
+		
+		
+	//all that failed, so look for another patch to teleport to
+	if (failed) {
+		if (!ap[$RP_PATCH_BIT]) {  $SAY_FAILED_TPORT }
+		else { //find another patch to teleport to
+			
+			object patch = ap[$STOREDUNIT];
+
+			if (patch==0) { //nothing stored yet, find a 2nd patch to skip to
+				target =  QUERY UNIT [unit] MIN [ unit <=> query ] WHERE 
+												[query!=originalBox && query.Rank==$RESOURCE_RANK && query->Energy>0];
+															
+				if (target->IsAlive==1) { //2nd patch found, store the 1st and skip
+					ap[$STOREDUNIT] = originalBox;					
+					PERFORM SET_ADDITIONAL_PARAMS ap;	
+					PERFORM SET_PARAM target->Position;
+					PERFORM $ACTION_CHANGE_COMMANDER target;
+					PERFORM SET_OBJECTIVE $OBJ_BLDG_MOVE; //skip to this newly found patch
+					PERFORM NOTHING;
+				}
+			} else { //patch is stored, means already failed at least twice
+				//this was the 3rd patch attempt which also failed so stop trying
+				//since the destination is a third patch since it's not the 1st (stored) and not the 2nd (current commander)
+				if (originalBox!=myCommander && originalBox!=patch) { 			
+					PERFORM SET_OBJECTIVE 0;
+					PERFORM NOTHING;
+				}
+				
+				//find a 3rd patch to jump to that isn't the currently selected one not the previously stored one
+				target =  QUERY UNIT [unit] MIN [ unit <=> query ] WHERE 
+											    [query!=originalBox && query!=patch && query.Rank==$RESOURCE_RANK && query->Energy>0];
+																
+				if (target->IsAlive==1) {
+					PERFORM SET_PARAM target->Position;
+					PERFORM SET_OBJECTIVE $OBJ_BLDG_MOVE; //skip to this newly found patch without setting it as commander
+					PERFORM NOTHING;
+				}							
+			}
+		
+			ap[$STOREDUNIT] = originalBox;					
+			PERFORM SET_ADDITIONAL_PARAMS ap;
+		}
+		PERFORM SET_OBJECTIVE 0; //stop trying since no alternatives found
+		PERFORM NOTHING;	
+	}
+	
+	ap[$RP_PATCH_BIT] = 0;
+	ap[$STOREDUNIT] = 0;
+	PERFORM SET_ADDITIONAL_PARAMS ap;
+	PERFORM $ACTION_POST_SKIP tp; 
+	PERFORM $ACTION_CHANGE_COMMANDER originalBox;
+	PERFORM SET_OBJECTIVE 0;
+	PERFORM NOTHING;	
+} 
+
+	
+
+
+int mult = 3;
+int xoffset = 3; 
+int yoffset = 0;
+int tportCounter = 0;
+
+if (originalOP==unitPosition) { //following queued teleports, return to idle to grab next waypoint
+	if (unit->Status[$CAP_BIT_2]) { PERFORM $ACTION_TPORT_FAILED; }
+	PERFORM SET_ADDITIONAL_PARAMS 0;
+	PERFORM SET_OBJECTIVE 0;
+	PERFORM NOTHING;
+}
+
+PERFORM $ACTION_SKIP op;
+int tported = perf_ret;  
+
+
+while (tported < 1 || unit<_>op > 900) { //really the true max of RP skip is 30 to allow some flexibility
+	tportCounter = tportCounter + 1;
+	if (tportCounter==9 ) { break; } //ran a full circle around spot
+    op[$Xpos] = x + xoffset;
+    op[$Ypos] = y + yoffset;
+	
+	if (op != unitPosition) {
+		PERFORM $ACTION_TPORT_FAILED;
+		PERFORM $ACTION_SKIP op;
+		tported = perf_ret;
+	}
+	
+    if (xoffset > 0 && yoffset < 0) { yoffset = 0; mult=mult+3; xoffset = mult; } 
+    else {
+        if (xoffset <= 0 && yoffset < 0) { xoffset = xoffset + mult;  }
+        if (xoffset < 0 && yoffset >= 0) { yoffset = yoffset - mult;  }
+        if (xoffset >= 0 && yoffset > 0) { xoffset = xoffset - mult;  }
+        if (xoffset > 0 && yoffset == 0) { yoffset = yoffset + mult;  } 
+    }
+    if (xoffset == 0 && yoffset == 0) { xoffset = xoffset + mult; }
+}   
+   
+//didn't fit into immediate area around destination
+//try skipping out at 22 and 45 degree angles to the destination
+//then try skipping half the distance
+if (tportCounter==9) { 		
+
+	int _dist = 0;
+	float _angle = 0;
+	_dist = goal_dist;
+
+	if (1) { //max dist @ 22 degrees
+		_angle = $p22; $CUSTOM_ANGLE_DIST_SKIP
+	} 
+	if (tported<1) { //max dist @ -22 degrees
+		_angle = $n22; $CUSTOM_ANGLE_DIST_SKIP
+	} 
+	if (tported<1) { //max dist @ 45 degrees
+		_angle = $p45; $CUSTOM_ANGLE_DIST_SKIP
+	} 
+	if (tported<1) { //max dist @ -45 degrees
+		_angle = $n45; $CUSTOM_ANGLE_DIST_SKIP	
+	} 
+	
+	if (tported<1 ) {
+		_dist = goal_dist * 2 / 3; //jump two-thirds distance
+		
+		if (1) { //two-thirds, straight
+			_angle = 0; $CUSTOM_ANGLE_DIST_SKIP
+		}
+		
+		if (tported<1) { //two-thirds @ 22 degrees
+			_angle = $p22; $CUSTOM_ANGLE_DIST_SKIP
+		} 
+		if (tported<1) { //two-thirds @ -22 degrees
+			_angle = $n22; $CUSTOM_ANGLE_DIST_SKIP
+		} 
+		if (tported<1) { //two-thirds @ 45 degrees
+			_angle = $p45; $CUSTOM_ANGLE_DIST_SKIP
+		} 
+		if (tported<1) { //two-thirds @ -45 degrees
+			_angle = $n45; $CUSTOM_ANGLE_DIST_SKIP
+		} 
+	}
+	
+	
+	if (tported<1) {
+		_dist = goal_dist / 3; //jump one-thirds distance
+		
+		if (1) { //one-thirds, straight
+			_angle = 0; $CUSTOM_ANGLE_DIST_SKIP
+		}
+		
+		if (tported<1) { //one-thirds @ 22 degrees
+			_angle = $p22; $CUSTOM_ANGLE_DIST_SKIP
+		} 
+		if (tported<1) { //one-thirds @ -22 degrees
+			_angle = $n22; $CUSTOM_ANGLE_DIST_SKIP
+		} 
+		if (tported<1) { //one-thirds @ 45 degrees
+			_angle = $p45; $CUSTOM_ANGLE_DIST_SKIP
+		} 
+		if (tported<1) { //one-thirds @ -45 degrees
+			_angle = $n45; $CUSTOM_ANGLE_DIST_SKIP
+		} 
+	}
+	
+}   
+   
+if (tportCounter == 9 && tported<1) { 
+	if (!ap[$RP_PATCH_BIT]) $SAY_FAILED_TPORT
+	PERFORM CLEAR_LAST_ATTACKED_DIRECTION;
+	PERFORM SET_OBJECTIVE 0;
+	PERFORM $ACTION_TPORT_FAILED; //clear skip cap bit
+	PERFORM NOTHING;
+}   
+
+
+ap[$RP_PATCH_BIT] = 0;
+ap[$STOREDUNIT] = 0;
+PERFORM SET_ADDITIONAL_PARAMS ap;
+PERFORM $ACTION_POST_SKIP op; 
+
+if (originalOP==unit->Position) { //arrived at final destination
+	PERFORM SET_OBJECTIVE 0;
+}

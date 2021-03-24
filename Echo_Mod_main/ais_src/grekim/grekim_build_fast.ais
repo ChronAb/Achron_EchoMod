@@ -1,0 +1,167 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+//switch grekim unit into progen-mode
+
+int uclass = unit->Class;
+int unitPosition = unit->Position;
+//PERFORM GET_TERRAIN_GROUND_HEIGHT_AT unitPosition;
+int groundHeight = 0; //perf_ret;
+
+if((uclass == $SEPIPOD_CLASS || uclass == $PHAROPOD_CLASS) && unitPosition[$Zpos] != groundHeight ) {
+    
+	PERFORM GET_MAP_NEXT_Z_POSITION_DOWN unitPosition;
+	int location = perf_ret;
+	
+	int x = location[$Xpos];
+	int y = location[$Ypos];
+	int length = unit.Length;
+	int mult = length;
+	int xoffset = length; 
+	int yoffset = 0;
+	target = uclass;
+	PERFORM CAN_CLASS_FIT_AT location; //see if the unit fits
+	int spotClear = perf_ret; 
+	int counter = 0;
+	while (spotClear != 255) { //the unit does not fit, so calculate new offset coords
+		counter = counter + 1;
+		if (counter == 24) { break; }
+		location[$Xpos] = x + xoffset;
+		location[$Ypos] = y + yoffset;
+
+		PERFORM CAN_CLASS_FIT_AT location;
+		spotClear = perf_ret;   
+		
+		if (xoffset > 0 && yoffset < 0) { yoffset = 0; mult=mult+length; xoffset = mult; } 
+		else {
+			if (xoffset <= 0 && yoffset < 0) { xoffset = xoffset + mult;  }
+			if (xoffset < 0 && yoffset >= 0) { yoffset = yoffset - mult;  }
+			if (xoffset >= 0 && yoffset > 0) { xoffset = xoffset - mult;  }
+			if (xoffset > 0 && yoffset == 0) { yoffset = yoffset + mult;  } 
+		}
+		if (xoffset == 0 && yoffset == 0) { xoffset = xoffset + mult; }
+	}  
+	
+	if (counter==24) {
+		$SAY_FAILED_LAND;
+		PERFORM $ACTION_ERROR2;
+		PERFORM SET_OBJECTIVE 0; 
+        PERFORM NOTHING; 
+	}
+	
+    int dir = 0;
+	if (counter==0) { //spot below is clear, can move vertically
+		dir = QUERY BESTMOVE [unit, $ACTION_MOVE] MIN [ location <=> query ] WHERE [1];
+	} else { //move horizontally
+		dir = QUERY BESTMOVE [unit, $ACTION_MOVE] MIN [ location <_> query ] WHERE [1];
+	}
+    dir[16,8]=0; //clear out the 3rd byte that stores the counter
+	if (dir == 0 || dir == $QUERY_EXHAUSTED) {  //can't land, so do nothing
+		$SAY_FAILED_LAND;
+		PERFORM $ACTION_ERROR2;
+        PERFORM SET_OBJECTIVE 0; 
+        PERFORM NOTHING; 
+    } else {
+      PERFORM $ACTION_MOVE dir;
+      PERFORM NOTHING;
+    }
+}
+
+PERFORM $ACTION_CHANGE_PROGEN;
+
+//tell other units of the same progen type under same arcticus that are close enough to turn into factories
+if($AUTO_HEIRARCHY) {
+	object myArcticus = unit->Commander;
+	if (myArcticus->IsAlive==1) {
+		
+		query_vis_distance = 9; //limit query to within progeneration range
+		
+		int m1rank = 0;  //ranks of necessary mates
+		int m2rank = 0;
+		int p1class = 0; //classes of existing progen mates
+		int p2class = 0;
+		
+		
+		if (uclass==$OCTO_CLASS) {
+			m1rank = $SEPI_RANK;
+			m2rank = $PHARO_RANK;
+			p1class = $SEPI_FACTORY_CLASS;
+			p2class = $PHARO_FACTORY_CLASS;
+		} 
+		if (uclass==$OCTOPOD_CLASS) {
+			m1rank = $SEPIPOD_RANK;
+			m2rank = $PHAROPOD_RANK;
+			p1class = $SEPIPPOD_FACTORY_CLASS;
+			p2class = $PHAROPOD_FACTORY_CLASS;
+		}
+		if (uclass==$SEPI_CLASS) {
+			m1rank = $OCTO_RANK;
+			m2rank = $PHARO_RANK;
+			p1class = $OCTO_FACTORY_CLASS;
+			p2class = $PHARO_FACTORY_CLASS;
+		}
+		if (uclass==$SEPIPOD_CLASS) {
+			m1rank = $OCTOPOD_RANK;
+			m2rank = $PHAROPOD_RANK;
+			p1class = $OCTOPOD_FACTORY_CLASS;
+			p2class = $PHAROPOD_FACTORY_CLASS;
+		}
+		if (uclass==$PHARO_CLASS) {
+			m1rank = $OCTO_RANK;
+			m2rank = $SEPI_RANK;
+			p1class = $OCTO_FACTORY_CLASS;
+			p2class = $SEPI_FACTORY_CLASS;
+		}
+		if (uclass==$PHAROPOD_CLASS) {
+			m1rank = $OCTOPOD_RANK;
+			m2rank = $SEPIPOD_RANK;
+			p1class = $OCTOPOD_FACTORY_CLASS;
+			p2class = $SEPIPPOD_FACTORY_CLASS;
+		}
+		
+		//find an already existing pregeneration unit , and if it doesn't exist, look for the necessary mate
+		//alternatively it may be a unit that's in the middle of its 'morph into progen-mode' action
+		target = QUERY UNIT [unit] MIN [1] WHERE [query->Owner==player && ( query->Class == p1class || 
+											( query.Rank == m1rank && query->Action == $ACTION_CHANGE_PROGEN ) ) ];
+		if (target->IsAlive!=1) {
+			target = QUERY UNIT [unit] MIN [1] WHERE [query->Commander==myArcticus && query.Rank == m1rank];
+			if (target->IsAlive==1) {
+				PERFORM SET_OTHER_OBJECTIVE $OBJECTIVE_PROGENERATE;
+			}
+		}
+		
+		target = QUERY UNIT [unit] MIN [1] WHERE [query->Owner==player && ( query->Class == p2class ||
+											( query.Rank == m2rank && query->Action == $ACTION_CHANGE_PROGEN ) ) ];
+		if (target->IsAlive!=1) {
+			target = QUERY UNIT [unit] MIN [1] WHERE [query->Commander==myArcticus && query.Rank == m2rank];
+			if (target->IsAlive==1) {
+				PERFORM SET_OTHER_OBJECTIVE $OBJECTIVE_PROGENERATE;
+			}
+		}
+			
+		query_vis_distance = -1;
+	}
+
+}
+
+int urank = unit.Rank;
+if (urank < $OCTOPOD_RANK) {
+	urank = $GREKIM_PROGENERATION_RANK; //base level progenerators
+} else {
+	urank = $GREKIM_POD_PROGENERATION_RANK;  //pod-level progenerators
+}
+
+//set the rally point
+target = QUERY UNIT [unit] MIN [query<_>unit] WHERE [ query->Owner==player && urank==query.Rank && 
+													 query->ObjectiveParameters!=$INVALID_POSITION ];
+if (target->IsAlive==1) {
+	PERFORM SET_PARAM target->ObjectiveParameters;
+} else {
+	PERFORM SET_PARAM $INVALID_POSITION;
+}
+
+PERFORM SET_ADDITIONAL_PARAMS 0;
+PERFORM SET_ADDITIONAL_PARAMS2 0;
+PERFORM SET_ADDITIONAL_PARAMS4 0;
+PERFORM SET_OBJECTIVE 0;

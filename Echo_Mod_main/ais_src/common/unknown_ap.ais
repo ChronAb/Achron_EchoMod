@@ -1,0 +1,4 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+PERFORM SET_ADDITIONAL_PARAMS 0;
+PERFORM SET_OBJECTIVE 0;

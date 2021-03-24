@@ -1,0 +1,200 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+// unit_common_speed_match.ais - keeps units tight to their commander when it's not a priority attack/move
+// and if the subordinate is not occupied, it will attack its commander's targets
+
+
+//Units store into AdditionalParameters the matching speed and their preferred speed.
+//A unit without subordinates will have the preferred speed set to its own max speed.
+//Commanders will cycle (every other move) through all their subordinates and store
+// as their matching speed the speed of slowest sub they find, looking at the subs' 
+// preferred values if available and then looking at the subs' matching speed value.
+//Final step is to see what the matching speed of this unit's commander is and match it
+// if the commander's speed is slower, otherwise use unit's own stored matching speed.
+
+int storedSpeed = ap[20,4]; //store the matching speed from the AP
+
+//store this unit's default speed into the 'speed' variable
+int speed = 20;
+$SPEED_BY_CLASS
+int preferred = 1;  //flag whether to update the preferred speed or not, default to update
+
+int moveCommanderSlowly = 0; //slow down the commander to 1/3rd its normal speed, allowing subordinates to race ahead
+
+if (myCommander==unit) { //self set as commander - remove self so there is no commander
+	PERFORM $ACTION_CHANGE_COMMANDER 0;
+	myCommander = 0;
+	cap = 0;
+}
+
+//cycle through subordinates every 4th move - if the MATCH every other bit and DISTANCE bit are both clear
+if (!ap[$MATCH_OTHER_BIT] && !ap[$DISTANCE_BIT]) {
+	ap[$MATCH_OTHER_BIT] = 1; 
+	ap[$DISTANCE_BIT] = 1;
+	
+	object sub = unit->NextSubordinate;  //get the first subordinate
+	if (sub>0) {  						 //this unit has at least one subordinate
+	
+		//count the subordinates around the commander  that are falling behind
+		//and if the commander is racing ahead of his subs, slow down so that they have a chance to overtake him
+		int DOP = unit <_> op; //distance to OP
+		
+		//subtract 1 for every sub that's behind and add 1 for every sub that's even or ahead
+		int commanderSlowdown = QUERY VALUE [unit] SUM [ (query<_>op > DOP) * -1 + (query<_>op <= DOP) ] 
+								WHERE [query->Commander == unit];
+						
+		//the total sum is negative, meaning there are more subs that are falling behind
+		if (commanderSlowdown < 1) { 
+			moveCommanderSlowly = 1;
+		}
+
+	
+		int subordinateAP = 0;
+		int subordinateObj = 0;
+		int slowestSubSpeed = 0; //stores the slowest subordinate's speed 
+		
+		//commander exists, so clear out unit's preferred speed
+		if (myCommander > 0) {
+			ap[24,4] = 0;
+		}
+
+		//cycle through subordinates and get the slowest subordinate speed
+		while (sub>0) { //AP of -1 means sub doesn't exist, meaning looped through all subordinates
+			subordinateAP = sub->AdditionalParameters;
+			subordinateObj = sub->Objective;	
+			
+			if (subordinateObj == myObjective) { //subordinate is also moving (or also attacking)
+				//subordinate has no subordinates of it's own, so get its preferred speed
+				if (subordinateAP[24,4]>0) {
+					slowestSubSpeed = slowestSubSpeed |> subordinateAP[24,4];
+				}
+				else { //found a possibly slower unit that doesn't have their own preferred speed stored
+					   //store the max value of stored slowestSubSpeed and current subordinate's matching Speed
+					slowestSubSpeed =  subordinateAP[20,4] |> slowestSubSpeed;  
+					
+					//clear out preferred speed if there's a subordinate without their own preferred
+					//because this means this unit will mostl likely be slowing down to match the subordinate
+					ap[24,4] = 0; 
+					preferred = 0; //do not set the preferred speed regardless whether unit has commander or not
+				}
+			} 
+
+			sub = unit->NextSubordinate;  //get the next subordinate's information
+		}		
+		
+		//if no subordinates exist at all or no slower subordinates exist,	store own default speed
+		storedSpeed = speed |> slowestSubSpeed; //store the slowest overall speed into storedSpeed
+		ap[20,4] = storedSpeed;     //store the slowest overal speed into the AP
+		
+		if (preferred) {
+			ap[24,4] = storedSpeed;  //update the preferred speed to this slowest overall if flag is set
+		}
+		
+	}
+	else { //this unit has no subordinates, so set the preferred speed to default unit speed
+		ap[24,4] = speed;
+		storedSpeed = speed;	 //and default the storedSpeed to be unit's default speed
+		ap[20,4] = storedSpeed;
+	}	
+} 
+else {
+	if (storedSpeed==0) {    //unit's speed is not stored into AP
+		storedSpeed = speed; //set this unit's speed as the matching speed
+		ap[20,4] = speed;
+	} 
+	
+	if (ap[$MATCH_OTHER_BIT] && !ap[$DISTANCE_BIT]) { ap[$MATCH_OTHER_BIT] = 0;  } //run match on following move
+	else if (!ap[$MATCH_OTHER_BIT] && ap[$DISTANCE_BIT]) { ap[$MATCH_OTHER_BIT] = 1; ap[$DISTANCE_BIT] = 0; }
+	else if (ap[$MATCH_OTHER_BIT] && ap[$DISTANCE_BIT]) { ap[$MATCH_OTHER_BIT] = 0; }
+		
+	
+	//do not set the preferred speed regardless whether unit has commander or not
+	//because we always want to cycle through subordinates first before changing the preferred speed
+	preferred = 0; 
+}
+
+//this unit has a commander other than self, so see if it needs assistance attacking a unit
+//otherwise match commander's speed
+if ( myCommander>0) { 
+
+	//if this unit is either moving or attacking (non priority) and is following
+	//a commander unit (not a player-issued command)
+	if (!AP_PLAYER && ( (AP_ATTACK && !AP_MOVE) || (!AP_ATTACK && AP_MOVE) || myObjective==$OBJECTIVE_UNIT_DEFEND) ){
+		
+		//calculate closeness radius based on the unit's and commander's length
+		temp1 = unit.Length;
+		//temp2 = myCommander.Length;
+		
+		// exactly 1/4th of the default formation-stay-close radius from unit_common_formation
+		int radius = 62 + ( temp1 - 1) * 25; 
+		int MatchSpeed = 1;			 //default to always try to match speeds
+		int distToCommander = unit<_>myCommander; //distance to commander
+
+		if ( distToCommander > radius ) {    //if distance to commander is bigger than the closeness radius (outside the radius)
+			
+			//int distToOP = unit <_> op;  			    //unit's distance to the ObjectiveParameters
+			int commanderDistToOP = myCommander <_> commanderOP; //commander's distance to the ObjectiveParameters
+			
+			//check if doing the same objective with same parameter as commander
+			if ( myObjective == commanderObjective && op[0,24] == commanderOP[0,24] ) {  
+				//and if this unit closer to the objective
+				 if (distToOP < commanderDistToOP) {
+					//if the objective is to attack (AP attack bit is set), look for enemy units
+					//near the commander
+					if (AP_ATTACK) {
+						object u = QUERY UNIT [myCommander] MIN [myCommander<=>query] WHERE [!(query->IsAlly) ];
+						//found an enemy unit near the commander, so go attack it
+						if (u->IsAlive==1) {
+							ap=0;
+							ap[$OBJECTIVE] = $OBJECTIVE_ATTACKING;
+							ap[$UNIT_BIT] = 1;
+							ap[$ATTACK_BIT] = 1;
+							PERFORM SET_ADDITIONAL_PARAMS ap;
+							PERFORM SET_PARAM u;
+							PERFORM SET_OBJECTIVE $OBJECTIVE_ATTACKING_UNIT;
+							PERFORM NOTHING;
+						} 
+					}		
+				}
+				// if unit is far away from commander (1.2x the formation-stay-close radius)
+				if (distToCommander > radius * 3) { 
+					//if this unit is further from the objective by the formation-stay-close radius, get there as fast as possible
+					if (distToOP > (commanderDistToOP + 2 * radius)) {	
+						MatchSpeed = 0; 
+					}
+				}
+			} 
+		}
+		//default to always match speed, unless unit is too far away, in which case go as fast as possible
+
+		if (MatchSpeed) {  
+			#include common/include/unit_common_speed.ais
+		}
+	
+		
+	}
+} 
+else { 		//no commander
+	if (preferred) {  //preferred is set, meaning no subordinates or all subordinates have a preferred speed
+		//no commander, so set preferred speed to storedSpeed which holds either unit's default speed 
+		//if it has no subordinates or to the slowest preferred speed of its subordinates
+		ap[24,4] = storedSpeed; 
+	}
+	//match speed of slowest subordinate
+	#include common/include/unit_common_speed.ais
+}
+//$print "My Speed:", speed , " vs stored: ", storedSpeed,"\n";
+//units that are slowed down by 2x or more, decrease their override counter an additional amount
+if (speed*2 <= storedSpeed && ap[$MOVE_COUNTER] > 0 ) { ap[$MOVE_COUNTER] = ap[$MOVE_COUNTER]-1; }
+
+//store the changes into AP
+setAdditionalParameters = 1;
+
+if (moveCommanderSlowly) {
+	min_action_ticks = storedSpeed + storedSpeed / 2; //slow down the commander by 50%
+	matchSpeedMoveAction = $ACTION_MOVE_SLOW; 
+	ap[$MATCH_OTHER_BIT] = 0;  //force speed match to run on next cycle, since we're already moving at a slower speed
+	ap[$DISTANCE_BIT] = 0;
+}
+
+

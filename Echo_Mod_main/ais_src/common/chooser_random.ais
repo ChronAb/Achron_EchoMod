@@ -1,0 +1,17 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+
+PERFORM RAND; //choose random
+
+if (perf_ret < 10923) {
+    PERFORM SET_OBJECTIVE 50;         //human
+    PERFORM NOTHING;
+}
+
+if ( perf_ret < 21856) {
+    PERFORM SET_OBJECTIVE 51;  //grekim
+}
+else {
+    //PERFORM SET_OBJECTIVE 52;  //vecgir - are not ready yet :(
+    PERFORM SET_OBJECTIVE 50;         //human
+}

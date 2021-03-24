@@ -1,0 +1,23 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+int op = unit->Position;
+op[$Zpos] = 0;
+
+int dir = QUERY BESTMOVE [unit, $ACTION_MOVE] MIN [ query <=> op ] WHERE [1];    //move directly below the unit
+
+//only allow moving down.
+if (dir[0,8]==$TERRAIN_DOWN) { 
+	PERFORM $ACTION_MOVE dir; 
+} 
+
+//if the unit doesn't move, it dies mid-air
+
+PERFORM SET_ADDITIONAL_PARAMS 0;
+PERFORM SET_ADDITIONAL_PARAMS2 0;
+PERFORM NOTHING;
+
+
+
+

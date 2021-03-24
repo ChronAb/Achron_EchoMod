@@ -1,0 +1,206 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+// human_idle.ais - the common idle script for most human units. Always executed while a unit is idle
+
+#include common/include/unit_common_idle.ais
+
+/* 
+  Stay close to commander and follow the commander if commander is not doing high-priority objectives
+  Teleport after the commander if the commander teleports
+ */
+if (myCommander != 0) {
+    int cclass = myCommander->Class; 
+	//cap = myCommander->AdditionalParameters;
+	temp1 = unit.Length;
+	skip = 0; //skip=0 means default to staying close to the commander
+	
+	int myCommanderOP = commanderOP; //myCommander->ObjectiveParameters;
+	
+	//this unit is not doing anything (Distance and Unit bits are not set)
+	//and wasn't issued a stop command
+	if (!AP_DISTANCE && !AP_UNIT && ap[$OBJECTIVE]!=$OBJECTIVE_STOP) {    
+
+		//run script to check if commander teleported, if so, follow it
+		#include common/include/unit_subordinate_teleport.ais
+	
+		//check if commander is moving, but this unit is already within a close distance to
+		//the commander's destination (within 6 tiles + unit's length)
+		if ( ((commanderObjective == $OBJECTIVE_MOVE_DISPATCH || commanderObjective == $OBJECTIVE_UNIT_MOVE )) 
+			 && (myCommanderOP <_> unit <= (temp1 * temp1 + 40)) ) {
+				 //$print "Already there\n";
+				 //don't bother staying close, this unit already beat the commander to the spot
+				 skip = 1; 
+		}
+		else { //check what the commander is doing
+			if ( commanderObjective == $OBJECTIVE_ATTACKING || commanderObjective == $OBJECTIVE_ATTACKING_UNIT) { //if the commander is attacking
+				int attackObjective = $OBJECTIVE_ATTACKING;
+				ap = 0;
+				ap[$OBJECTIVE] = $OBJECTIVE_ATTACKING;				//set AP objective to attack
+				ap[$ATTACK_BIT] = 1;							//set the AP Attack bit
+				//int speed = 20; //uncomment if you want subordinates to immediatelly follow the commander
+				//$SPEED_BY_CLASS;
+				//ap[$MOVE_COUNTER] = 60 / speed + 1; // 60-64 ticks since speeds are 3..10
+				//commander is doing priority, i should propagate it
+				if (cap[$MOVE_BIT,2]==3) { 
+					ap[$MOVE_BIT] = 1; 
+				}
+				
+				int follow = 1;
+				
+				//set the AP Unit bit if attacking a
+				//specific unit, otherwise clear it
+				if ( cap[$UNIT_BIT] ) { 
+					ap[$UNIT_BIT] = 1; 
+					PERFORM SET_PARAM commanderOP;
+					attackObjective = $OBJECTIVE_ATTACKING_UNIT;
+				}
+				else { 
+					ap[$UNIT_BIT] = 0; 
+					setAdditionalParameters = 1;
+					//location holds commander's original destination
+					location = commanderOP; 			
+					//try to move to the destination in formation by staying the relative
+					//distance away from the commander while moving to the location
+					#include common/include/unit_common_formation.ais
+					
+					//don't follow commander in formation if already close enough
+					//temp2 holds the OP as set inside unit_common_formation
+					if (unit<_>temp2 > temp1 * temp1 + 40) {				
+						follow = 0;
+					}
+				}                    
+				
+				if (follow) {
+					PERFORM SET_ADDITIONAL_PARAMS ap;
+					PERFORM SET_ADDITIONAL_PARAMS2 0;
+					PERFORM SET_ADDITIONAL_PARAMS3 0;
+					PERFORM SET_ADDITIONAL_PARAMS4 0;
+					PERFORM SET_OBJECTIVE attackObjective;      //set actual objective to attack
+					PERFORM NOTHING;    
+				}
+			}
+			
+			if ( commanderObjective == $OBJECTIVE_UNIT_MOVE) { //if the commander is moving
+				ap = 0;
+				ap[$OBJECTIVE] = $OBJECTIVE_UNIT_MOVE;					//set the AP objective to move
+				ap[$MOVE_BIT] = 1;								//set the AP Move bit
+				
+				//int speed = 20; //uncomment if you want subordinates to immediatelly follow the commander
+				//$SPEED_BY_CLASS;
+				//ap[$MOVE_COUNTER] = 60 / speed + 1; // 60-64 ticks since speeds are 3..10
+
+				//commander is doing priority, i should propagate it
+				if (cap[$MOVE_BIT,2]==3) { 
+					ap[$ATTACK_BIT] = 1; 
+				}
+				setAdditionalParameters = 1;
+				//location holds commander's original destination
+				location = myCommanderOP; 
+				int follow = 1;
+				
+				if (!cap[$TIME_BIT]) { //the no-formation bit is clear
+					//try to move to the destination in formation by staying the relative
+					//distance away from the commander while moving to the location
+					#include common/include/unit_common_formation.ais
+					
+					//don't follow commander in formation if already close enough
+					//temp2 holdes the OP as set inside unit_common_formation
+					if (unit<_>temp2 > temp1 * temp1 + 40) {				
+						follow = 0;
+					}
+
+				} else {
+					PERFORM SET_PARAM commanderOP;
+				}
+				
+				if (follow) {
+					if (cap[$TIME_BIT]) { ap[$TIME_BIT] = 1; } //set the no-formation bit
+		
+					PERFORM SET_ADDITIONAL_PARAMS ap;
+					PERFORM SET_ADDITIONAL_PARAMS2 0;
+					PERFORM SET_ADDITIONAL_PARAMS3 0;
+					PERFORM SET_ADDITIONAL_PARAMS4 0;
+					PERFORM SET_OBJECTIVE $OBJECTIVE_UNIT_MOVE;
+					if ($IS_WEAPON_RAISED) {
+						PERFORM $ACTION_LOWER_WEAPON;
+					}
+					PERFORM NOTHING;    
+				}
+			}  
+			
+			//commander is defending a path and is attacking a unit (it's AP tempunit bit is set)
+			if ( commanderObjective == $OBJECTIVE_UNIT_DEFEND && cap[$TEMPUNIT_BIT]) {
+				//find closest enemy to my commander, and set objective to attack it 
+				target = QUERY UNIT [myCommander] MIN [query<_>myCommander] WHERE [!(query->IsAlly)];
+				if (target->IsAlive==1) {
+					ap = 0;
+					ap[$OBJECTIVE] = $OBJECTIVE_ATTACKING; //set the AP objective to attack
+					ap[$ATTACK_BIT] = 1; //set the AP attack bit
+					ap[$UNIT_BIT] = 1; 	//there is a specific unit to attack, so set the AP unit bit
+					PERFORM SET_ADDITIONAL_PARAMS ap;
+					PERFORM SET_ADDITIONAL_PARAMS2 0;
+					PERFORM SET_PARAM target;
+					PERFORM SET_OBJECTIVE $OBJECTIVE_ATTACKING_UNIT; 
+					PERFORM NOTHING;    
+				}
+			}
+			
+			//commander must be attacking something while idle
+			if ( commanderObjective==0 && cap[$ATTACK_BIT] ) {
+			
+				target = commanderOP;  //get its target
+
+				int tisAlive = target->IsAlive;
+				if (tisAlive!=1 || (tisAlive==1 && target->IsAlly==1) ) {
+					//don't look for buildings except turrets
+					target = QUERY UNIT [ myCommander ] MIN [ myCommander <=> query] WHERE [!(query->IsAlly) ];  
+					tisAlive = 0;
+					if ( target->IsAlive==1 ) { tisAlive = 1; }
+				}
+				
+				if (tisAlive==1) {
+					if (!AP_DISTANCE) { //store original position
+						PERFORM SET_PARAM unitPosition;
+						ap[$DISTANCE_BIT] = 1;
+					}
+
+					ap[$HOLDATTACK_BIT] = 1; //moving to help out heirarchy personel
+					ap[$HOLD_COMMANDER_BIT] = 1; //moving to help out commander and not a subordinate
+					PERFORM GET_BEST_POSITION_ATTACK_DIRECTION target->Position;
+					ap[$HOLD_LAHD] = perf_ret; //store directon of buddy's enemy
+					ap[$HOLD_COUNTER] = 7;  //max counter to move that direction
+					ap[$HOLDMOVE_BIT] = 0;  //don't return yet
+					ap[$HOLD_TARGET_BIT] = 1; //found the target
+					PERFORM SET_ADDITIONAL_PARAMS ap;
+					PERFORM NOTHING;
+				}
+
+			}
+		}   
+
+
+		if (skip!=1) {  //skip=0 means default to staying close to the commander
+			temp2 = unit<_>myCommander; //store distance to the commander
+			
+			//if commander is not defending, default the stay-close radius to  13-24 tiles based on unit's length
+			// if (commanderObjective!=$OBJECTIVE_UNIT_DEFEND) { I = 180 + (temp1-1) * 100; }
+			// else { I = 1600; } //if commander is patroling, increase the stay-close radius to 40 spaces
+			 int I = 180 + (temp1-1) * 100; 		 
+			if (temp2 > I ) { //if distance to commander is greater than the stay-close radius
+			
+				if (!ap[$STUCK_BIT] && !ap[$TIME_BIT] ) { //not stuck so try to stay close to commander
+					if ($IS_WEAPON_RAISED) {
+						PERFORM $ACTION_LOWER_WEAPON;
+					}				
+					#include common/include/unit_common_stayCloseTo_Commander.ais
+				}						
+			} 
+			else if (ap[$APPROACH_BIT]) { //was approaching, and is now close enough
+				PERFORM SET_ADDITIONAL_PARAMS2 0; //clear the move counter
+				ap[$APPROACH_BIT] = 0;
+				setAdditionalParameters = 1;
+			}
+		}
+	}
+    
+}

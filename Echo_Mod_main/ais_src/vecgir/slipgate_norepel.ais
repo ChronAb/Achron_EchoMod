@@ -1,0 +1,6 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+PERFORM SET_OBJECTIVE 0;
+PERFORM $ACTION_NO_DEFEND;

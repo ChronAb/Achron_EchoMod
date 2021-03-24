@@ -1,0 +1,42 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+    //used by autopilot
+    //returns 'location' in the quadrant AWAY from most stuff as visible by unit 'u'
+    //with a random offset distance + 'quaddist'
+    //to not have a random offset, set quaddist to be a negative value
+
+    int dx=0; int dy=0;
+	int uXPosition = u->Position;
+	int uYPosition = uXPosition[$Ypos];
+	uXPosition[12,17] = 0; //clear out everything that's not the X position
+	
+	int qposition = 0;
+    //1 - bot right,   2-top right,   3-top left,   4-bot left
+    int quad1 = QUERY VALUE [u] SUM [query.Length] WHERE [(qposition = query->Position) && qposition[$Xpos] >= uXPosition && qposition[$Ypos] >= uYPosition && query!=u];
+    int quad2 = QUERY VALUE [u] SUM [query.Length] WHERE [(qposition = query->Position) && qposition[$Xpos] >= uXPosition && qposition[$Ypos] < uYPosition && query!=u];
+    int quad3 = QUERY VALUE [u] SUM [query.Length] WHERE [(qposition = query->Position) && qposition[$Xpos] < uXPosition && qposition[$Ypos] < uYPosition && query!=u];
+    int quad4 = QUERY VALUE [u] SUM [query.Length] WHERE [(qposition = query->Position) && qposition[$Xpos] < uXPosition && qposition[$Ypos] >= uYPosition && query!=u];                    
+
+//$print "br: ", quad1, " tr: ", quad2, " tl: ", quad3," bl: ", quad4,"\n";
+    
+    //store the smallest quadrant into temp1
+    temp1 = quad1 <| quad2;
+    temp1 = quad3 <| temp1;
+    temp1 = quad4 <| temp1;
+
+    PERFORM RAND;
+    if (quaddist < 0) {
+        perf_ret = 0;
+        quaddist = abs(quaddist);
+    }
+    
+    //go to where the minimum value is
+    if (temp1 == quad1) { dx = quaddist + perf_ret[0,2]; dy = quaddist + perf_ret[2,2]; }
+    if (temp1 == quad2) { dx = quaddist + perf_ret[0,2]; dy = -quaddist - perf_ret[2,2];  }
+    if (temp1 == quad3) { dx = -quaddist - perf_ret[0,2]; dy = -quaddist - perf_ret[2,2];  }
+    if (temp1 == quad4) { dx = -quaddist - perf_ret[0,2]; dy = quaddist + perf_ret[2,2];  }                   
+    
+    pX = u->XPosition + dx;
+    pY = uYPosition + dy;
+    location = 0; location[$Xpos] = pX; location[$Ypos] = pY;
+    

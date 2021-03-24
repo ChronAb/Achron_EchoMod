@@ -1,0 +1,119 @@
+//Contributed by Dallas "ChronAberant" Joder
+#include include/monitorHeader.rsh
+
+int PLAYER_DEAD_MODE 	= $NON_PRODUCING;
+int END_GAME_MODE		= $TOTAL_DEFEAT;
+
+PERFORM CONVERT_SECONDS_TO_TICKS 1;
+int TICKS_PER_SECOND = perf_ret;
+
+PERFORM GET_ENABLED_PLAYERS;
+int enabled = perf_ret;
+
+PERFORM GET_PRESENT_TIME;
+int present = perf_ret;    
+    
+PERFORM GET_CUR_TIME;
+int current = perf_ret;
+
+#include include/commonStatsAndPlayerUpdates.rsi
+//#include include/nonPlayer.rsi
+
+//----------------------------------------------
+// Credits Bulletin
+//----------------------------------------------
+
+if(current == present && present == 1){
+	int x = 0;
+	for(x=0;x<15;x=x+1){
+		if((enabled>>x)&1){
+			player = x;
+			say "Echo Mod Observer Monitor v1.0.0";
+			say_to_var "";
+			say "By ChronAberant, Shadowfury333, & IphStich";
+		}
+	}
+}
+
+//----------------------------------------------
+// Timeline Setup
+//----------------------------------------------
+
+/***********************************************
+    Slow Timeline:
+        Set the timeline speed to 0.5 (because Echo Mod is really busy)
+***********************************************/
+if(current == present && present == 1){
+    PERFORM GET_PRESENT_TIME_WAVE_TIME_RATE;
+    int presentRate = perf_ret_float;
+        
+    if(presentRate >0.5) {
+        perf_ret_float=0.5;
+        PERFORM SET_PRESENT_TIME_WAVE_TIME_RATE;
+    }
+}
+//**********************************************
+
+/***********************************************
+    Static Timeline Option:
+        Causes the timeline to stop just as the UPP edge enters the
+        left edge of the timeline
+        >> Currently disabled
+**********************************************
+if(pre_game_settings[$MP_ASSASSIN_MODE] && presentRate > 0){
+	PERFORM GET_META_TIME;
+	int metaTimeNow = perf_ret;
+	
+	PERFORM GET_PRESENT_TIME_WAVE_FIXED_TIME;
+	int pastLength = perf_ret;
+
+	PERFORM GET_UNPLAYABLE_PAST_DURATION;
+	int uppLength = perf_ret;
+
+	if(metaTimeNow == pastLength-uppLength){
+		perf_ret_float=0.0;
+		PERFORM SET_PRESENT_TIME_WAVE_TIME_RATE;
+	}
+}
+**********************************************/
+
+//----------------------------------------------
+// Game and Player Setup
+//----------------------------------------------
+
+/***********************************************
+    Ally Vision Sharing:
+        Share vision between allies
+***********************************************/
+if(current == 1){
+	int allymask = 0;
+	int x = 0;
+	
+	for (x = 0; x < 15; x=x+1) {
+		player = x;
+		if ( (enabled>>x)&1) {
+			allymask = player->Allies;
+			PERFORM SET_PLAYER_VISIBILITY_SHARING allymask;
+		}
+	}
+}
+//**********************************************
+
+// Observer Alliances
+
+//----------------------------------------------
+// Victory Conditions
+//----------------------------------------------
+
+// Assassin Mode
+
+// Award victory when a player achieves temporal supremacy in the playable past
+
+// Warn players when a player is at 11 supremacy points
+
+//----------------------------------------------
+// Light-footed Observers
+//----------------------------------------------
+
+
+// #include include/EXMPObsMonitor.rsi

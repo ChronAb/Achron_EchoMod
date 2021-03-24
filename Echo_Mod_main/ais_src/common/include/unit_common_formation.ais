@@ -1,0 +1,75 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+
+//try to move to the destination in formation by staying the relative
+//distance away from the commander while moving to the location if starting somewhat close to the commander
+//used by human_idle and vecgir_idle when following commander's non-priority orders
+	
+//'location' should hold commander's ObjectiveParameters
+	
+//get the map boundaries
+PERFORM GET_MAP_WIDTH;
+int mapwidth = perf_ret;
+PERFORM GET_MAP_LENGTH;
+int maplength = perf_ret;
+PERFORM GET_MAP_HEIGHT;
+int mapheight = perf_ret;
+
+temp2 = 0;   //temp2 holds the relative-to-commander location (formation-destination)
+
+//calculate the unit's x,y,z offsets relative to the commander
+int myCommanderPosition = myCommander->Position;
+int x = myCommanderPosition[$Xpos] - unitPosition[$Xpos];
+int y = myCommanderPosition[$Ypos] - unitPosition[$Ypos];
+int z = myCommanderPosition[$Zpos] - unitPosition[$Zpos];
+
+//store the X, Y, Z destination coords
+X = location[$Xpos] - x;
+Y = location[$Ypos] - y;
+int Z = location[$Zpos] - z; 
+
+//keep the new X, Y, Z coords within the map boundary
+if (Z >= mapheight)  Z = mapheight - 1;  
+if (Y > (maplength-temp1))  Y = maplength - temp1;  //boundary edge minus unit's length
+if (X > (mapwidth-temp1))  X = mapwidth - temp1; 
+
+if (X <= 0) X = temp1/2 + 1;
+if (Y <= 0) Y = temp1/2 + 1;
+if (Z < 0) Z = 0;
+
+
+//pack the new formation-destination into temp2
+temp2[$Xpos] = X;
+temp2[$Ypos] = Y;
+temp2[$Zpos] = Z;
+
+
+PERFORM IS_MAP_POSITION_VALID temp2; //returs 0 if it's not valid
+if (perf_ret==0) {
+	temp2[$Zpos] = 0; //default to ground for that position
+	if ($IS_AIR_UNIT) {
+		PERFORM GET_MAP_NEXT_Z_POSITION_UP temp2; //get the next height above for air units
+		temp2 = perf_ret;
+	}
+}
+
+
+if (unitPosition == temp2 && cap[$OBJECTIVE]!=$OBJECTIVE_SKIP) { 
+	$print "Already there - in formation\n";
+	$SET_AP
+	PERFORM NOTHING; 
+}
+
+//if unit is further than  a little more than the 'formation-stay-close' radius of commander 
+//set original destination as op (i.e., was busy with something further away)
+//this formation-stay-close is a little bigger (15..27 tiles) than the idle-stay-close radius (13..26) to 
+//forgive units that may fall behind by a few tiles when moving in formation and speed matching
+if (x*x + y*y > ( 250 + (temp1-1) * 100)) { temp2 = location; }
+
+//if trying to skip to < 6 spaces away, don't even bother
+if (cap[$OBJECTIVE]==$OBJECTIVE_SKIP && (unit<_>temp2 < 36 || unit<_>location<36)) {
+	temp2 = 0; //overwrite with OP of 0, and don't store it
+} else {
+	PERFORM SET_PARAM temp2; //myCommander->ObjectiveParameters;
+
+}

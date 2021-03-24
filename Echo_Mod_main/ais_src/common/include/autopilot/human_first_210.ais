@@ -1,0 +1,134 @@
+            if (uclass<=$MARINE_RAISED_CLASS) {
+                object br  = QUERY UNIT [unit] MIN [query<_>unit] WHERE [query->Class == $IMPORTER_CLASS];
+				if (br<1 && player->CustomField4>0) { br = player->CustomField4; }
+				
+                if (br->IsAlive==1) { //there is a barrack already
+                    skip = 0;
+                    
+					object otherMarine = QUERY UNIT [unit] MIN [ query<_>unit] WHERE [ query.Rank == $MARINE_RANK ];
+					if(otherMarine >= unit) { skip = 1; } 
+					
+                    if (!skip) {
+                        object cc = QUERY UNIT [unit] MIN [query<_>unit] WHERE [(temp2=query->Class) == $COMM_C_OFF_CLASS || temp2== $COMM_C_CLASS];
+                        if (cc->IsAlive==1) { //commc has been built already
+                                object br2  = QUERY UNIT [br] MIN [query<_>br] WHERE [query->Class == $IMPORTER_CLASS && query != br];
+                                int I = 0;
+								if (br2->IsAlive!=1) { //make a second IMPORTER
+                                    X = unitPosition[$Xpos];
+                                    pX = br->XPosition;
+                                    I = pX - X;
+                                    location = 0; location[$Ypos] = br->YPosition;
+                                    if (I>=0) { location[$Xpos] = pX + 5; }  //build the IMPORTER further out on the same Y-coord
+                                    else { location[$Xpos] = pX - 5; }
+                                        
+                                    ap[$OBJECTIVE] = $OBJECTIVE_BUILD_IMPORTER;
+                                    PERFORM SET_ADDITIONAL_PARAMS ap;
+                                    PERFORM SET_PARAM location;
+                                    PERFORM SET_OBJECTIVE $OBJECTIVE_BUILD_IMPORTER;
+                                    PERFORM NOTHING;
+                                }
+                                else {    //two IMPORTERs have been built, make a factory (or two)
+									object factory = QUERY UNIT [br] MIN [ query<_>br] WHERE [ query->Class == $FACTORY_CLASS ];
+									if(factory->IsAlive != 1) {
+										X = unitPosition[$Xpos];
+										pX = br->XPosition;
+										I = pX - X;
+										location = 0; location[$Ypos] = br->YPosition;
+										if (I>=0) { location[$Xpos] = pX + 11; }  
+										else { location[$Xpos] = pX - 11; }
+									
+										ap[$OBJECTIVE] = $OBJECTIVE_BUILD_FACTORY;
+										PERFORM SET_ADDITIONAL_PARAMS ap;
+										PERFORM SET_PARAM location;
+										PERFORM SET_OBJECTIVE $OBJECTIVE_BUILD_FACTORY;
+										PERFORM NOTHING;
+									}
+									else {
+										object patch = QUERY UNIT [unit] MIN [query <_> unit] WHERE [query->Class==$LC_CLASS]; //look for LC visible to any unit
+										if (patch) {
+											PERFORM SET_PARAM patch->Position;
+											PERFORM SET_OBJECTIVE $OBJECTIVE_BUILD_RP;
+											PERFORM NOTHING;
+										}
+									
+									}
+                                }
+                            PERFORM NOTHING;
+                            
+                            
+                        }
+                        else {
+                            //build a commcenter here
+                            if (player->$LCrystals >= $COMMC_LC && !$COMM_CENTER_ALIVE) {
+								Y = unitPosition[$Ypos];
+                                pY = br->YPosition;
+                                //I = pY - Y;
+                                location = 0; location[$Xpos] = br->XPosition;                             
+                                PERFORM GET_MAP_LENGTH;
+                                int map_length = perf_ret;
+                                int top = map_length / 4;
+                                if (Y <= top) { temp1 = -5; } //place it CLOSER to the base (assuming bases are near the edges of the map)
+                                else {  temp1 = 5; }                            
+                                location[$Ypos] = pY + temp1;
+                                ap[$OBJECTIVE] = $OBJECTIVE_BUILD_COMMC;
+                                PERFORM SET_ADDITIONAL_PARAMS ap;
+                                PERFORM SET_PARAM location;
+                                PERFORM SET_OBJECTIVE $OBJECTIVE_BUILD_COMMC;
+                                PERFORM NOTHING;
+                            }
+                            else { PERFORM NOTHING; }  //wait until there is enough materials to build a commcenter
+                        }     
+                    }
+                }
+                
+                
+                if (player->$QPlasma==20 && curtime > 140 $seconds ) { //commc was just placed, so make RPs on QP patches
+                    object u = QUERY UNIT [unit] MIN [query<_>unit] WHERE [(temp2=query->Class)==$QP_CLASS || temp2==$ARMORY_CLASS];
+                    if (u->IsAlive==1) {
+                        object patch = u;
+                        if (u->Class == $ARMORY_CLASS) { 
+                            patch = QUERY UNIT [u] MIN [query <_> u] WHERE [query->Class==$QP_CLASS]; //look for material visible to the armory
+                        }
+                        
+                        if (patch->IsAlive==1) {
+                            PERFORM GET_UNIT_AT unit->ObjectiveParameters;
+                            object old = perf_ret;
+                            if (old->IsAlive==1 && old->Class==$QP_CLASS) {
+                                patch = QUERY UNIT [unit] MIN [query <_> unit] WHERE [query->Class==$QP_CLASS && query!=old]; 
+                            }
+                            if (patch) {
+                                PERFORM SET_PARAM patch->Position;
+                                PERFORM SET_OBJECTIVE $OBJECTIVE_BUILD_RP;
+                                PERFORM NOTHING;
+                            }
+                        }
+                    }
+                    object patch = ap[$STOREDUNIT];
+                    if (patch && patch->Class==$QP_CLASS) {
+                        PERFORM SET_PARAM patch->Position;
+                        PERFORM SET_OBJECTIVE $OBJECTIVE_BUILD_RP;
+                        PERFORM NOTHING;
+                    }
+                }
+
+                if ( curtime > 180$seconds) { //>3mins and <3:30, build more mines if possible on LC
+                    
+                    object patch = QUERY UNIT [unit] MIN [query<_>unit] WHERE [query.Rank==$RESOURCE_RANK];
+                                            
+					if (patch->IsAlive==1) {
+						PERFORM GET_UNIT_AT unit->ObjectiveParameters;
+						object old = perf_ret;
+						if (old->IsAlive==1 && old->Class==$LC_CLASS) {
+							patch = QUERY UNIT [unit] MIN [query <_> unit] WHERE [query->Class==$LC_CLASS && query!=old]; 
+						}
+						if (patch->IsAlive==1) {
+							PERFORM SET_PARAM patch->Position;
+							PERFORM SET_OBJECTIVE $OBJECTIVE_BUILD_RP;
+							PERFORM NOTHING;
+						}
+					}
+				
+                }
+                                
+                PERFORM NOTHING; //marines dont go out in the first 3:30 of a game
+            }

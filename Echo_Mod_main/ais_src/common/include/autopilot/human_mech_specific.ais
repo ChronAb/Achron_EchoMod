@@ -1,0 +1,105 @@
+
+            if (curtime < 360$seconds) {  //first 6:00  of a game, try to make a macrofab 
+                skip = -1;
+            }
+            else {
+                skip = 1;
+            }
+            
+            object br  = QUERY UNIT [unit] MIN [query<_>unit] WHERE [query->Class == $IMPORTER_CLASS && query->IsAlly==1];
+            object mf = 0;
+            if (br->IsAlive==1) { //there is an importer already
+                mf = QUERY UNIT [br] MIN [query<_>br] WHERE [query->Class == $MACROFAB_CLASS && query->IsAlly==1];
+                if (mf->IsAlive==1) { //macrofab has been built already
+                    skip = 2; 
+                }
+                else {
+                    PERFORM RAND;
+                    if (perf_ret < 8192 || skip == -1) { //25% making a macrofab or 100% if in the first 6:00 of a game
+                        X = unitPosition[$Xpos];
+						Y = unitPosition[$Ypos];
+                        pY = br->YPosition;
+						//I = pY - Y;
+                        location = 0; location[$Xpos] = br->XPosition; 
+                        PERFORM GET_MAP_LENGTH;
+                        int map_length = perf_ret;
+                        int top = map_length / 4;
+						PERFORM RAND;
+                        if (Y <= top) { temp1 = 9 + perf_ret[0,2]; }
+                        else  { temp1 = -9 - perf_ret[0,2] ; }
+                        location[$Ypos] = pY + temp1;
+                        ap[$OBJECTIVE] = $OBJECTIVE_BUILD_MACROFAB;
+                        PERFORM SET_ADDITIONAL_PARAMS ap;
+                        PERFORM SET_PARAM location;
+                        PERFORM SET_OBJECTIVE $OBJECTIVE_BUILD_MACROFAB;
+                        PERFORM NOTHING;
+                    }
+                }        
+            }    
+            
+            if (player->$LCrystals >= $MFB_LC && player->$QPlasma >= $MFB_QP) {
+                object bldg = QUERY UNIT [unit] MIN [query<_>unit] WHERE [ query->IsAlly==1 && query.Rank < $BUILDINGS_RANK ];
+                if ((bldg->IsAlive==1 && bldg->Class!= $MACROFAB_CLASS) || skip==2) { //found a building or near a macrofab
+                    if (skip==2) { bldg = mf; }     //the building is the macrofab
+                    object turret = QUERY UNIT [bldg] MIN [query<_>bldg] WHERE [query->IsAlly==1 && query.Rank==$TURRET_RANK]; //look for a turret
+                    if (turret->IsAlive != 1) { 
+                        turret = QUERY UNIT [unit] MIN [query<_>unit] WHERE [query->IsAlly==1 && query.Rank==$TURRET_RANK]; //look for a turret
+                        if (turret->IsAlive != 1) { 
+                             
+                           //make turret (or chronoporter)
+                            PERFORM RAND;
+                            int xsign = perf_ret[5];
+                            int ysign = perf_ret[6];
+                            int tempo = 7 - perf_ret[0,4];
+                            int bx = bldg->XPosition;
+                            int by = bldg->YPosition;
+                            
+                            location = 0; 
+							target = $TURRET_CLASS;
+                            if (xsign==1 && ysign==1) { //top row
+                                location[$Ypos] = by -  (bldg.Length + 1);
+                                location[$Xpos] = bx + tempo;
+								PERFORM CAN_CLASS_FIT_AT location;
+								if (perf_ret < 255) { xsign = 0; }
+                            }
+                            if (xsign==0 && ysign==1) { //bottom row
+                                location[$Ypos] = by + bldg.Length + 1; 
+                                location[$Xpos] = bx + tempo;
+								PERFORM CAN_CLASS_FIT_AT location;
+								if (perf_ret < 255) { xsign = 1; ysign = 0; }
+                            }
+                            if (xsign==1 && ysign==0) { // right column
+                                location[$Xpos] = bx + bldg.Length + 1; 
+                                location[$Ypos] = by + tempo;
+								PERFORM CAN_CLASS_FIT_AT location;
+								if (perf_ret < 255) { xsign = 0; }
+                            }
+                            if (xsign==0 && ysign==0) { //left column
+                                location[$Xpos] = bx -  (bldg.Length + 1);
+                                location[$Ypos] = by + tempo;
+                            }
+                            else { // ??
+                                location[$Ypos] = by -  (bldg.Length + 1);
+                                location[$Xpos] = bx + tempo;
+                            }
+							
+							PERFORM RAND;
+							if (perf_ret < 8192) {
+								if (player->Advancements[$HUMAN_ADV_GATE]) {
+									ap[$OBJECTIVE] = $OBJECTIVE_BUILD_CHRONOPORTER;
+									PERFORM SET_OBJECTIVE $OBJECTIVE_BUILD_CHRONOPORTER;
+								}
+							}
+							else {
+								ap[$OBJECTIVE] = $OBJECTIVE_BUILD_TURRET;
+								PERFORM SET_OBJECTIVE $OBJECTIVE_BUILD_TURRET;
+							}
+                            
+							
+                            PERFORM SET_ADDITIONAL_PARAMS ap;
+                            PERFORM SET_PARAM location;
+                            PERFORM NOTHING;
+                        }
+                    }
+                }
+            }

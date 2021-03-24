@@ -1,0 +1,57 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+// unit_recover_response.ais - recover response function
+//                             takes int RECOVER as the caller unit's OBJECTIVE # to recover the unit
+
+skip = 0;
+//recover = $CUSTOMFIELD_RECOVER;
+int flags = $FLAGS;
+ if (flags[$RECOVER_BIT]) {
+	if (recover==unit) {	 //this unit is the responder
+		$SAY_RESPOND_RECOVER
+		
+		PERFORM SET_PARAM ap[$STOREDUNIT];
+		PERFORM SET_OBJECTIVE $RECOVER_UNIT_OBJ;
+		ap = 0;
+        ap[$OBJECTIVE] = $RECOVER_UNIT_OBJ;
+		PERFORM SET_ADDITIONAL_PARAMS ap;
+		PERFORM SET_ADDITIONAL_PARAMS2 0;
+        PERFORM NOTHING;
+	}
+
+	int hindered = recover->Status & $FROZEN_COMMJAM;
+	//the hindered unit is in the queue
+	if (hindered) {
+//		$print "hindered unit needs help\n";
+		ap = 0;
+		ap[$STOREDUNIT] = recover;
+		ap[$UNIT_BIT] = 1;
+		ap[$PRIORITY_BIT] = 1;
+		PERFORM SET_ADDITIONAL_PARAMS ap;
+		PERFORM SET_PLAYER_CUSTOM_FIELD_1 ($CUSTOMFIELD_HEAL | (unit << 16 )); //set unit in the recover field
+		PERFORM NOTHING;
+	}
+   //someone else responded first
+	int otherObjective = recover->Objective;
+	if (otherObjective==0) {
+		object requestor = recover->AdditionalParameters[$STOREDUNIT];
+		int otherdist = recover <_> requestor;
+		int dist = unit <_> requestor;
+		if ((dist > ($LOOKUP_BOUNDARY * 7)) || (dist > otherdist)) {  //too far away
+//				$print "i (",unit,") am further: ", dist, " other guy (",$CUSTOMFIELD_RECOVER,") is: ", otherdist,"\n";
+		}
+		else { //closer
+//				$print "i (",unit,") am closer: ", dist, " other guy (",$CUSTOMFIELD_RECOVER,") is: ", otherdist,"\n";			
+			ap = 0;
+			ap[$STOREDUNIT] = requestor;
+			ap[$UNIT_BIT] = 1;
+			ap[$PRIORITY_BIT] = 1;
+			PERFORM SET_ADDITIONAL_PARAMS ap;
+			PERFORM SET_PLAYER_CUSTOM_FIELD_1 ($CUSTOMFIELD_HEAL | (unit << 16 )); //set unit in the recover field
+			PERFORM NOTHING;
+		}
+	}
+	
+}
+
+

@@ -1,0 +1,34 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.ais
+#include common/include/vecgir_idle.ais
+
+//carrier unit
+
+PERFORM GET_CUR_TIME;
+//if carrier is tssed, since carried units can't tell the carrier to drop them off themselves
+//this will check once a second if any carried units want to be dropped off
+if (myStatus[$TSS_BIT] &&  (perf_ret % $TPS==0) ) {
+	target = unit->NextCarriedUnit;
+    while (target->IsAlive==1) { 
+		if (target->Objective==$OBJECTIVE_UNIT_MOVE || target->Objective==$OBJECTIVE_RELEASEUNIT) {
+			PERFORM SET_OBJECTIVE $OBJECTIVE_RELEASEUNIT;
+			$SET_AP
+			PERFORM NOTHING;
+		}
+        target = unit->NextCarriedUnit;
+    }
+}
+
+
+if (perf_ret % 90==0) { //heal every 5 seconds    
+    target = unit->NextCarriedUnit;
+    while (target->IsAlive==1) { 
+        PERFORM $ACTION_HEAL target;		
+        target = unit->NextCarriedUnit;
+    }
+}
+
+#include common/include/unit_autopilot.ais
+                
+$SET_AP				

@@ -1,0 +1,34 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+
+int adv = player->Advancements;
+if (!adv[$HUMAN_ADV_WEAPONS] ) {
+	PERFORM SET_OBJECTIVE 0;
+	PERFORM NOTHING;
+}
+
+if ( player->$LCrystals < $NUKE_LC || player->$QPlasma < $NUKE_QP) {
+  $SAY_RESOURCES
+  PERFORM $ACTION_ERROR1;
+  PERFORM SET_OBJECTIVE 0;
+  PERFORM NOTHING;
+}
+
+target = QUERY UNIT [unit] MIN [ query<_>unit ] WHERE [ query->IsAlly==1 && query->Class==$CRUISER_CLASS && query->Ammo==0 ];
+
+if (target->IsAlive==1) { 
+	if (target->IsStasis) {
+		PERFORM $ACTION_RELOAD_TSSED target;  //specifically for tssed units
+	}
+	else {
+		PERFORM $ACTION_RELOAD target;
+	}
+}
+else {
+	$SAY_NO_CRUISER
+}
+
+PERFORM SET_OBJECTIVE 0;
+PERFORM NOTHING;

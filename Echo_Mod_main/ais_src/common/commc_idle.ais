@@ -1,0 +1,15 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+object closestenemy=0;  
+int flags=0; int lookupUseBit=0; int temp1=0;int temp2=0;
+int ap = unit->AdditionalParameters;
+int cnt = 0;
+object temp=0;
+
+#include common/include/unit_field_reset.ais
+
+int uclass = unit->Class;
+
+#include common/include/unit_autopilot_building.ais

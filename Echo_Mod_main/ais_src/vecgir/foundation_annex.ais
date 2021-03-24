@@ -1,0 +1,10 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+int lc = $ANNEX_LC;
+int qp = $ANNEX_QP;
+int building_class = $ANNEX_CLASS;
+#include common/include/unit_foundation_build.ais
+
+PERFORM $ACTION_ANNEX $FOUNDATION_CLASS;    

@@ -1,0 +1,387 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+//unit_move.ais
+//General movement script
+
+//if  being carried, request to be dropped off
+object myCarrier = unit->Carrier;
+//I am being carried
+if (myCarrier->IsAlive==1) {
+	//check to see if carrier is already planning to drop me off
+	//if not, then tell it to drop me off by setting its objective to releaseunit
+	if ( myCarrier.Rank==$CARRIER_RANK && myCarrier->Objective!=$OBJECTIVE_RELEASEUNIT) { 
+		target = myCarrier;
+		PERFORM $ACTION_SET_OBJECTIVE_RELEASE target;
+		$SET_AP
+		PERFORM NOTHING;
+	}
+	else {  //otherwise do nothing
+		$SET_AP
+		PERFORM NOTHING;
+	}
+}
+
+//don't teleport after commander if executing a recent player-issued order
+if (!AP_PLAYER || ap[$MOVE_COUNTER]==0) { 
+	#include common/include/unit_teleport_after_commander.ais
+}
+
+int op = unit->ObjectiveParameters;
+
+dir = -1;
+#define STOP PERFORM SET_ADDITIONAL_PARAMS ($PLAY_B);  PERFORM SET_ADDITIONAL_PARAMS2 0; PERFORM SET_OBJECTIVE 0;  PERFORM CLEAR_LAST_ATTACKED_DIRECTION; PERFORM NOTHING;
+int FORCE_AUTOPILOT = 0;
+int unstick = 0;
+#include common/include/unit_unstuck.ais
+
+#include common/include/unit_priority_override.ais
+
+location = unit->Position;
+PERFORM GET_TERRAIN_GROUND_HEIGHT_AT location; //perf_ret holds the ground height at unit's location
+int groundHeight = perf_ret;
+
+int dist_to_op = 0;
+int airunit = 0;
+if ($IS_AIR_UNIT) {
+	airunit = 1;
+	//if unit is on the ground but is going to a place more than 10 spaces away, take the air route
+	dist_to_op = op <_> unit;
+	if (location[$Zpos] == groundHeight  && dist_to_op > 100)  {
+		PERFORM GET_MAP_NEXT_Z_POSITION_UP location;  //move to the spot above the position
+		temp1 = perf_ret; //overwrite the Z coord with the +1 of the air coordinate
+		target = uclass;
+		PERFORM CAN_CLASS_FIT_AT temp1;
+		if (perf_ret==255) {  //only move up if it can fit there			
+			dir = QUERY BESTMOVE [unit, $ACTION_MOVE] MIN [ temp1 <=> query ] WHERE [1];
+			dir[16,8]=0; //clear out the 3rd byte that stores the counter
+			if (dir && dir != $QUERY_EXHAUSTED) {
+				PERFORM $ACTION_MOVE dir;
+				$SET_AP
+				PERFORM SET_ADDITIONAL_PARAMS2 0;
+				PERFORM NOTHING;
+			}
+		}
+	}
+}
+
+//$print "to x: ", op[$Xpos], " y: ", op[$Ypos],"  z: ", op[$Zpos] , " at ", unit->XPosition, ",", unit->YPosition,"\n";
+
+//check if the wait conter is set
+//wait timestamp if bumped into something while moving in a straight link
+int ap3 = unit->AdditionalParameters3;
+if (ap3 > 0) {
+	PERFORM GET_CUR_TIME;
+	if (ap3==perf_ret[0,3]) {
+		PERFORM SET_ADDITIONAL_PARAMS3 0;
+	}
+	else {
+		PERFORM NOTHING; //wait
+	}
+
+}
+
+
+//specifically for air units when the destination is a ground location
+if (airunit && op[$Zpos] == groundHeight) {
+	//subordinates stay in air or just more than 3 spaces away
+	if (!AP_PLAYER ||  dist_to_op > 9) { 
+		PERFORM GET_MAP_NEXT_Z_POSITION_UP op;  //move to the spot above the position
+		if (perf_ret[$Zpos] >= location[$Zpos]) { op[$Zpos] = perf_ret[$Zpos]; }
+		else {
+			PERFORM GET_MAP_NEXT_Z_POSITION_UP perf_ret; //get the spot above the previous spot
+			op[$Zpos] = perf_ret[$Zpos]; 
+		}
+	}
+} 
+
+
+//print "at: ", location[$Zpos], " going to: ", op[$Zpos],"\n";
+//store current distance to the destination stored in op
+int distToOP = unit<_>op;
+//^^^print "dop: ", distToOP, "\n";
+
+
+//match speed with slowest unit in hierarchy
+//match speeds if not grekim, not doing priority
+int matchSpeedMoveAction = $ACTION_MOVE;
+if (!$IS_GREKIM && cap[$MOVE_BIT,2]!=3 && !(AP_MOVE && AP_ATTACK) ) {
+	#include common/include/unit_common_speed_match.ais
+}
+else if ($IS_GREKIM) { 
+	#include common/include/unit_grekim_speed_match.ais
+}
+
+
+//if distance to destination is closer than 30 tiles, so no longer ignore moving units when searching for the next
+//tile to move to - help prevents 'bouncy' units that can't settle down because they falsely think they can move
+if (myCommander==0 && distToOP <= 145) { ignore_moving_units_dist = $LARGE_VALUE; }
+else { 
+	ignore_moving_units_dist = 0; 
+}
+
+//counter to not ignore other moving units for the next 3 moves 
+int ap4 = unit->AdditionalParameters4;
+if (ap4) {
+	ap4 = ap4 - 1;
+	PERFORM SET_ADDITIONAL_PARAMS4 ap4;
+	if (!ignore_moving_units_dist) {
+		ignore_moving_units_dist = unit.Length;
+	}
+}
+
+int BANK_TURNING = 0;
+
+//if commander recently issued an order, then ignore moving units regardless of distance to destination
+int counter = unit->AdditionalParameters2; //move counter to move in the same direction
+
+if (counter>0) {           //more than 0 means already moving in a direction
+	counter = counter - 1; //decrease the counter
+	int rot = unit->Rotation; //get the unit's current rotation
+	$DIR_FROM_ROT             //set the dir to move to based on that unit's rotation
+}
+else {  //no move counter stored, so query where to move to next
+
+	int rot = unit->Rotation;
+	$DIR_FROM_ROT;
+	int old_dir = dir;
+	int old_rot = rot;
+	
+	//prevent landing on the ground if not reached destination yet, and destination is below the unit
+	if (airunit) {
+		if (dist_to_op > 16 && op[$Zpos] < location[$Zpos]) {
+			op[$Zpos] = location[$Zpos]; //overwrite with current height
+		}
+		
+		//since air units can move around freely, we trade a little intelligence for better performance 
+		dir = QUERY BESTMOVE [unit, matchSpeedMoveAction] MIN [ (op <=> query) * 2] WHERE [1]; 	
+	}	
+	else {
+		dir = QUERY BESTMOVE [unit, matchSpeedMoveAction] MIN [ (op <_> query) * 1.2 ] WHERE [1]; 
+	}
+	
+	if (dir[0,8] >= 16) { counter = 0;} //moving up or down, so don't store counter
+	else {
+		counter = dir[16,8]; 			  //the counter is stored in the 3rd byte of dir
+		//cap counter at 7 since AdditionalParameters2 only has 3 bits
+		//or 6 for fast units that can move 2 tiles in a move
+		if (counter > 7) { $MAX_COUNTER_VALUE } 
+	}
+	
+	//check to see if the unit is rotating
+	if(old_dir != dir[0,8]) { 
+		int new_dir = dir; //backup new value
+		dir = dir[0,8]; 
+		$ROT_FROM_DIR;
+		dir = new_dir; //restore value
+		
+		
+		
+		int diff = rot - old_rot;
+		if(diff > 0) {
+			if(diff <= 4) { 
+				BANK_TURNING = 1; //left
+			}
+			else {
+				BANK_TURNING = 2; //right
+			}
+		}
+		else if(diff < 0) {
+			if(diff >= -4) {
+				BANK_TURNING = 2; //right
+			}
+			else {
+				BANK_TURNING = 1; //left
+			}
+		}
+	}
+	
+}
+dir[16,8] = 0; //clear out the 3rd byte that stores the counter
+
+//something is in the way OR can't move AND not at destination yet
+if (dir == $QUERY_EXHAUSTED || (dir==0 && distToOP > 5)) {  
+
+	PERFORM SET_ADDITIONAL_PARAMS2 counter;
+	if (counter>0) PERFORM SET_ADDITIONAL_PARAMS2 0;
+    if (!AP_PLAYER && !airunit) {
+        op[$Zpos]=groundHeight; //default the Z param to 0 for non airunits who are following commanders
+    }
+
+	//acquire the unit at the destination
+	PERFORM GET_UNIT_AT op;
+    object u = perf_ret;
+	//if there is an ally unit there 
+    if (u!=0 && u->IsAlly) {
+		//$print "can't get any closer\n";
+		//subordinates will declare themeselves as stuck subordinates instead of stopping
+		//because if their commander is still moving, going to idle will make the subordinate
+		//move again, resetting the stuck counter
+		if (myCommander>0) { 
+			#include common/include/unit_stuck_subordinate.ais
+		}
+		//top level commanders will just stop moving
+        $STOP
+    }
+	//no units there, so declare self as stuck, assuming the unstuck script did not set the unstick flag
+	if (!unstick) {
+		if (distToOP < 25) { $STOP } //less than 5 spaces away, just stop
+		#include common/include/unit_stuck.ais
+	}
+}
+
+PERFORM RAND;
+if (perf_ret < $LAD_CLEAR) {
+	PERFORM CLEAR_LAST_ATTACKED_DIRECTION; 
+}
+
+
+// at the destination, stop moving
+if (dir == 0) { 
+    $STOP;
+}
+
+if (counter>1) {
+	$UPDATE_SPEED_FOR_FAST_UNITS
+}
+//store the updated move counter
+PERFORM SET_ADDITIONAL_PARAMS2 counter;
+
+
+//prevent landing on the ground if not reached destination yet
+//helps units get further off the ground initially
+if (airunit && dir[0,8]==$TERRAIN_DOWN && dist_to_op > 9 ) {
+	PERFORM GET_MAP_NEXT_Z_POSITION_DOWN location;
+	if (perf_ret[$Zpos]==0) {    //ground tile
+		dir[0,8] = $TERRAIN_UP; //don't allow moving down before reaching the destination
+	}
+}
+
+
+if(BANK_TURNING && $IS_BANKING_FLYER  && distToOP > 4) {
+	dir[8,8] = 2; //2 extra tiles per move
+	if(BANK_TURNING == 1) { PERFORM $ACTION_BANK_RIGHT dir; } 
+	else { PERFORM $ACTION_BANK_LEFT dir; } 
+
+	//if failed to bank-move because of obstacle or something, attempt to move normally
+	if(!perf_ret) {
+		if (matchSpeedMoveAction==$ACTION_MOVE) { PERFORM $ACTION_MOVE dir;}
+		else { PERFORM $ACTION_MOVE_SLOW dir; }
+	}
+
+}
+else {
+	//run the actual move action; always go full speed when changing height levels
+	if (matchSpeedMoveAction==$ACTION_MOVE) { PERFORM $ACTION_MOVE dir;}
+	else { PERFORM $ACTION_MOVE_SLOW dir; }
+}
+if ( perf_ret!=1) { 
+	PERFORM SET_ADDITIONAL_PARAMS2 0; //^^
+	if (counter > 1) { //only wait if going straight
+		PERFORM GET_CUR_TIME;
+		int stord = perf_ret + 4;
+		if (stord[0,3] == 0) { stord = 1; }
+		PERFORM SET_ADDITIONAL_PARAMS3 stord[0,3];
+		PERFORM SET_ADDITIONAL_PARAMS4 0;
+		PERFORM NOTHING;
+	} 
+	else {
+		if (!ap4) { //set ap4 field, to not ignore moving units
+			PERFORM SET_ADDITIONAL_PARAMS4 3;
+			PERFORM NOTHING;
+		}
+	}
+}
+
+
+//store the new distance to the destination after the move 
+int newdistToOP = unit<_>op; 
+	//$print "distToOP: ",distToOP, " new: ", newdistToOP, "\n";
+
+PERFORM GET_UNIT_AT op;
+//within visibility range if we can see a unit at the destination
+object u = perf_ret;
+
+//print u, " ", dir[$BESTMOVE_GAVE_UP], " ", distToOP, " ", newdistToOP, "\n";
+	
+//query is exhausted (something is in the way?), unit is not stuck, and already within 30 spaces
+if (dir[$BESTMOVE_GAVE_UP] && !ap[$STUCK_BIT] && distToOP < 901) {
+	//distance to OP is now further (unit is walking further away), so increase the exhaust counter
+	if (distToOP < (newdistToOP+4)) {
+		int exhaustCount = ap[28,4];
+		int distCheck = 11;
+		//see if the unit at destination is a building (rank of <100), if so, increase the distanceCheck
+		if (u && u.Rank<100) { distCheck=14; }
+		
+		if (exhaustCount>=distCheck) { //if exhaust counter is at 8, stop moving
+			//$print "Move query keeps exhausting, can't get any closer\n";
+			//subordinates will declare themeselves as stuck subordinates instead of stopping
+			//because if their commander is still moving, going to idle will make the subordinate
+			//move again, resetting the stuck counter
+			if (myCommander>0) {
+				#include common/include/unit_stuck_subordinate.ais
+			}
+			//top level commanders will just stop moving
+			$STOP;	
+			
+		} 
+		
+		
+		exhaustCount = exhaustCount + 1;
+		ap[28,4] = exhaustCount;
+		setAdditionalParameters = 1;
+	
+	}
+}
+
+
+if (u) {
+	int bldgLength = u.Length;
+	temp1 = unit.Length;
+	if (distToOP <= (temp1 + bldgLength) * (temp1 + bldgLength ) / 2) {
+		if (newdistToOP > distToOP || u==unit) {
+			if (u!=unit || !$IS_CARRIER_UNIT) { //carriers do not stop moving if they seethemselves
+				$STOP;
+			}
+		}
+	}
+	
+	//since unit is within visibility range, check the exhaust counter
+	if (u != unit && !ap[$STUCK_BIT]) {
+		int distCheck = 11;
+		if (u.Rank<100) { distCheck = 14; } //loosen the distCheck to more moves for buldings 
+		
+		int exhaustCount = ap[28,4];
+		if (exhaustCount>=distCheck) { //if exhaust counter is at 8, stop moving
+			//$print "Not going to try to get closer.\n";
+			//subordinates will declare themeselves as stuck subordinates instead of stopping
+			//because if their commander is still moving, going to idle will make the subordinate
+			//move again, resetting the stuck counter
+			if (myCommander>0) {
+				#include common/include/unit_stuck_subordinate.ais
+			}
+			//top level commanders will just stop moving
+			$STOP;	
+		} 	
+		
+		
+		exhaustCount = exhaustCount + 1;
+		if (newdistToOP > distToOP && (myCommander==0 || myCommander==unit)) { 
+			exhaustCount = exhaustCount + 1;  //increase it by another if going the wrong direction
+		}
+		ap[28,4] = exhaustCount;
+		setAdditionalParameters = 1;
+		
+		
+		if (distCheck==12) { //if unit at destination is a building, see if unit is already close enough
+			if (distToOP < (bldgLength*bldgLength / 2 + (temp1+1)*(temp1+1))) {
+				$STOP;
+			}
+		}
+
+	}
+}
+
+
+$SET_AP
+    
+

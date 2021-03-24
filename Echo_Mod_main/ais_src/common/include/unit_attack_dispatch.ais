@@ -1,0 +1,84 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+//unit_attack_dispatch.ais - general attack dispatch script used by both attack dispatches
+
+ap = 0;
+ap[$MATCH_OTHER_BIT] = 1; //match speeds on next move
+ap[$OBJECTIVE] =  $OBJECTIVE_ATTACKING;
+ap[$PLAYER_BIT] = 1;
+ap[$ATTACK_BIT] = 1;
+
+//calculate and store a move counter for this unit based on how fast it moves. the faster the unit, the higher the counter
+//since it'll take more moves in a set amount of time than a slower unit
+//this is used by unit_priority_override and unit_common_header.ais to see whether subordinates need to follow their commander
+int speed = 20;
+int uclass=unit->Class;
+$SPEED_BY_CLASS;
+if (speed<=3) { speed = speed * 2; } //fast units move twice per move action
+int moves = 60 / speed; // how many moves in a 60 tick period
+ap[$MOVE_COUNTER] = moves;  //store the move counter into the override field
+
+int op = unit->ObjectiveParameters;
+
+if ($CLICK == 0) {  //if attack was not by right-clicking
+    if (AP_UNIT==0) {  //unit already not stored in OP and UNIT_B already set
+		if (op!=$INVALID_POSITION && op[$Zpos]==31) {
+            ap[$UNIT_BIT] = 1; //attacking a specific unit
+        }
+        else {
+		
+			//prevent big units from trying to walk off the map
+			int length = unit.Length;
+			if (length >= 3) {
+				//get the map boundaries
+				PERFORM GET_MAP_WIDTH;
+				int mapwidth = perf_ret;
+				PERFORM GET_MAP_LENGTH;
+				int maplength = perf_ret;
+
+				int X = op[$Xpos];
+				int Y = op[$Ypos];
+				//boundary edge minus unit's length
+				if (Y > (maplength-length))  Y = maplength - length + 1;  
+				if (X > (mapwidth-length))  X = mapwidth - length + 1; 
+				if (X <= length / 2) X = length / 2 ;
+				if (Y <= length / 2) Y = length / 2 ;
+				op[$Xpos] = X;
+				op[$Ypos] = Y;
+				PERFORM SET_PARAM op;
+			}
+
+		
+			PERFORM IS_MAP_POSITION_VALID op; //returs 0 if it's not valid
+			if (perf_ret==0) {
+				op[$Zpos] = 0; //default to ground for that position
+				if ($IS_AIR_UNIT) {
+					PERFORM GET_MAP_NEXT_Z_POSITION_UP op; //get the next height above for air units
+					op = perf_ret;
+				}
+				PERFORM SET_PARAM op;
+			}
+			
+           ap[$UNIT_BIT] = 0;  //attacking an area      
+        }
+    }
+    else {
+        ap[$UNIT_BIT] = 1; //attacking a specific unit
+    }
+}
+else {
+    ap[$UNIT_BIT] = 1; //attacking a specific unit
+}
+
+PERFORM SET_ADDITIONAL_PARAMS ap;
+PERFORM SET_ADDITIONAL_PARAMS2 0;
+PERFORM SET_ADDITIONAL_PARAMS3 0;
+PERFORM SET_ADDITIONAL_PARAMS4 0;
+if (ap[$UNIT_BIT]) {
+	PERFORM SET_PARAM op[0,16]; //set just the unit as the op
+	PERFORM SET_OBJECTIVE $OBJECTIVE_ATTACKING_UNIT;
+}
+else {
+	PERFORM SET_OBJECTIVE $OBJECTIVE_ATTACKING;
+}
+

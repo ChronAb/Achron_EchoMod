@@ -1,0 +1,13 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+target = unit->Commander;
+int tclass = target->Class;
+if (target->IsAlive==1 && (tclass==$ARCTICUS_CLASS || tclass==$ARCTICUS_MOVE_CLASS)) {
+	PERFORM $ACTION_SET_COMMANDER_TO unit; //set arcticus's commander to myself
+}
+
+PERFORM SET_OBJECTIVE 0;
+PERFORM SET_ADDITIONAL_PARAMS 0;
+PERFORM NOTHING;

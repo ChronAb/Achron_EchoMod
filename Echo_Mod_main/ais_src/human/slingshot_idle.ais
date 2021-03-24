@@ -1,0 +1,27 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include human/human_building_idle.ais
+
+PERFORM RAND;
+if (perf_ret < 8192) {
+    $SET_AP
+	PERFORM NOTHING;
+}
+
+if (ap[$ACTIVE_BIT]) {    
+    PERFORM $ACTION_CLEARACTIVE;
+    ap[$ACTIVE_BIT] = 0;
+    PERFORM SET_ADDITIONAL_PARAMS ap;
+    if (unit->Status[$CAP_BIT_2]) { PERFORM $ACTION_SPINDOWN; }
+    PERFORM NOTHING;
+}
+
+if ((unit->Status)[$CAP_BIT_1]) {  //was moving, so plant here
+    PERFORM SET_OBJECTIVE $OBJ_BLDG_PLANT;
+    $SET_AP
+	PERFORM NOTHING;
+}
+
+#include common/include/unit_autopilot_building.ais
+
+$SET_AP

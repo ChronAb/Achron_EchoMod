@@ -1,0 +1,27 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+PERFORM SET_OBJECTIVE 0;
+
+int energy = 100;
+
+target = unit->ObjectiveParameters;
+
+if (target->IsStasis==1  && unit->Energy >= energy ) { // tssed
+    if (target<_>unit <= 1089 && target<^>unit <= 2916 ) {
+	  PERFORM $ACTION_BLDG_BREAKTSS target;
+	}
+    else $SAY_TOOFAR
+    PERFORM NOTHING;
+}
+
+
+PERFORM $ACTION_ERROR1;
+if (!(target->IsStasis)) { } // not tssed
+else if (unit->Energy < energy) { 
+    $SAY_BREAKTSS 
+    $SAY_ENERGY
+}
+
+

@@ -1,0 +1,26 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+
+//include script used by move and attack when BESTMOVE query is exhausted (i.e., when a unit is moonwalking or is stuck)
+//so this sets the AP 'stuck' bit
+
+PERFORM GET_CUR_TIME;
+temp2 =  perf_ret[1,4]; //set the stuck timestamp to the 2-5 least sig bits of current timestamp
+
+//store the tick 'before 'if the least sig bit isn't set 
+//because the unstuck script check when that bit is set and we want to avoid checking on the next tick
+if (!perf_ret[0]) { 
+	if (temp2 == 0) { temp2 = 15; }
+	else { temp2 = temp2 - 1;}
+}
+
+ap[28,4] = temp2;
+
+ap[$STUCK_BIT]=1; //set the stuck bit               
+setAdditionalParameters = 1;
+
+FORCE_AUTOPILOT = 1; // force autopilot so unit might get unstuck by acquiring new objectives
+#include common/include/unit_autopilot.ais
+
+$SET_AP
+PERFORM NOTHING;   

@@ -1,0 +1,15 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+if (!player->Advancements[$VECGIR_ADV_AUTODEFENCE]) {
+	PERFORM SET_OBJECTIVE 0;
+	PERFORM NOTHING;
+}
+
+int lc = $BASTION_LC;
+int qp = $BASTION_QP;
+int building_class = $BASTION_CLASS;
+#include common/include/unit_foundation_build.ais
+
+PERFORM $ACTION_BASTION $FOUNDATION_CLASS;    

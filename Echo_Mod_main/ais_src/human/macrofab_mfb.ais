@@ -1,0 +1,13 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+if (!player->Advancements[$HUMAN_ADV_HEAVY]) {
+	PERFORM SET_OBJECTIVE 0;
+	PERFORM NOTHING;
+}
+
+#define OBJECT 60
+#define CREATE_ACTION $ACTION_MFB;
+#define CREATE_TIME 720
+#include common/include/unit_human_create.ais

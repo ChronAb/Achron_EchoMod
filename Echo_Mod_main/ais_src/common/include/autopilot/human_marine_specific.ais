@@ -1,0 +1,62 @@
+	//find another patch that isn't being processed by this RP
+	patch = QUERY UNIT [rp] MAX [ query<_>rp ] WHERE [ query.Rank==$RESOURCE_RANK && query != rp->Commander ];
+	
+	if (patch->IsAlive==1) {
+		//find a second RP that is not the first RP that's also mining this patch (limit 2 per patch)
+		object u = QUERY UNIT [rp] MIN [ query<_>rp ] WHERE [ query->Class==$HUMAN_RP_CLASS && query!=unit && query->Commander == patch && query->IsAlly==1];
+		if (u->IsAlive!=1) { //no such second RP found, so it's ok to place another one on this patch
+			PERFORM SET_PARAM patch->Position;;
+			PERFORM SET_OBJECTIVE $OBJECTIVE_BUILD_RP; //place an RP on that patch
+			PERFORM NOTHING;           
+		}
+		else { //found a second RP on this one patch
+			
+			
+			//look for a macrofab or armory
+			object factory = QUERY UNIT [unit] MIN [query<_>unit]  WHERE [((temp2=query->Class)==$MACROFAB_CLASS || temp2==$ARMORY_CLASS)  && query->IsAlly==1 ];
+			if (factory->IsAlive!=1) {
+				int quaddist = 3;
+				#include common/include/unit_auto_quadbuild.ais
+				
+				PERFORM GET_MAP_WIDTH;
+				int map_width = perf_ret;
+				PERFORM GET_MAP_LENGTH;
+				int map_length = perf_ret;
+				if (pX < 7 || pX > (map_width-7) || pY < 7 || pY > (map_length-7) ) {}  //don't build too close to edge of map
+				else {
+					ap[$OBJECTIVE] = $OBJECTIVE_BUILD_FACTORY;
+					PERFORM SET_ADDITIONAL_PARAMS ap;
+					PERFORM SET_PARAM location;
+					PERFORM SET_OBJECTIVE $OBJECTIVE_BUILD_FACTORY;
+					PERFORM NOTHING;
+				}
+			}
+			else { //found a factory, so build either an armory or an importer next to it
+			
+				int objnum  = $OBJECTIVE_BUILD_ARMORY; 
+				PERFORM RAND;
+				if (perf_ret > 20474 || factory->Class==$ARMORY_CLASS) {  // 62.5% chance of making importer, 100% if the other bldg is an armory
+					objnum = $OBJECTIVE_BUILD_IMPORTER;
+					temp1 = $IMPORTER_CLASS;
+				} else {                 //making an armory
+					temp1 = $ARMORY_CLASS;
+				}
+				//before making the armory or the importer, first check if the factory can already see one, if so, don't make anymore
+				object ops = QUERY UNIT [factory] MIN [query<_>factory] WHERE [query->Class==temp1 && query->IsAlly==1 ];
+				if (ops->IsAlive!=1) {
+					X = unitPosition[$Xpos];
+					pX = factory->XPosition;
+					int I = pX - X;
+					location = 0; location[$Ypos] = factory->YPosition;
+					if (I>=0) { location[$Xpos] = pX + 9; }  
+					else { location[$Xpos] = pX - 9; }
+				
+					ap[$OBJECTIVE] = objnum;
+					PERFORM SET_ADDITIONAL_PARAMS ap;
+					PERFORM SET_PARAM location;
+					PERFORM SET_OBJECTIVE objnum;
+					PERFORM NOTHING;
+				}                                
+			}
+		}
+	}

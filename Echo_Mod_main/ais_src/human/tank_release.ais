@@ -1,0 +1,110 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+//see if a marine is being carried
+object carried = unit->NextCarriedUnit;
+if (!carried) { 
+	//return to what it was doing before
+	#include common/include/unit_common_resume.ais
+}
+
+//check to see if this tank is inside a carrier
+object myCarrier = unit->Carrier;
+//I am being carried
+if (myCarrier->IsAlive==1) {
+    //check to see if carrier is already planning to drop me off
+    //if not, then tell it to drop me off by setting its objective to releaseunit
+    if ( myCarrier->Objective!=$OBJECTIVE_RELEASEUNIT) { 
+        int loc = 0; loc[$Xpos] = myCarrier->XPosition; loc[$Ypos]= myCarrier->YPosition;
+        PERFORM SET_PARAM loc;
+        PERFORM SET_ADDITIONAL_PARAMS 0;
+        target = unit->Carrier;
+        PERFORM $ACTION_SET_OBJECTIVE_RELEASE target;
+        PERFORM NOTHING;
+    }
+    else {  //otherwise do nothing
+        PERFORM NOTHING;
+    }
+}
+
+int carriedObjective = carried->Objective;
+int carriedObjective2 = 0;
+object carried2 = unit->NextCarriedUnit;
+if (carried2->IsAlive==1) {
+	carriedObjective2 = carried2->Objective;
+}
+
+int uclass = unit->Class;
+
+//check if either soldier is being released because it was an order issued to the tank and not a request to be 
+//dropped off by the soldier - if the carried unit's objective is move, that means it's requesting to be dropped off
+if (carriedObjective != $OBJECTIVE_UNIT_MOVE && carriedObjective2 != $OBJECTIVE_UNIT_MOVE) {
+	//this order was issued to the tank directly
+	//loop through subordinates, and if they are tanks carrying soldiers, tell them to release those too
+	target = unit->NextSubordinate;
+	while (target->IsAlive==1) {
+		if ($IS_CARRIER_TANK) { //troop-carrying capable tanks
+			if (target->NextCarriedUnit) { //are carrying a unit
+				PERFORM SET_OTHER_OBJECTIVE $OBJECTIVE_RELEASEUNIT;
+			}
+		}
+		target = unit->NextSubordinate;
+	}
+}
+
+//the second unit is the one that wants to be dropped off
+if (carriedObjective2==$OBJECTIVE_UNIT_MOVE) {
+	carried = carried2;
+}
+
+//check to see if the marine has enough space to jump out
+target = carried->Class;
+PERFORM CAN_PUT_CLASS target;
+if (perf_ret==0) {   //can't put the marine, so return to what it was doing before
+    $SAY_DEPLOY_FIT;  
+	#include common/include/unit_common_resume.ais
+}
+    
+//marine will fit, so release it	
+target = carried;
+PERFORM $ACTION_RELEASE_UNIT;
+
+//if dumping out idle marines, have them set the same objective as what the tank was doing
+if ( $IS_CARRIER_TANK) {
+
+	int ap = unit->AdditionalParameters;
+	int OBJ = ap[$OBJECTIVE];
+
+	if (ap[$ATTACK_BIT] && ap[6,3]==$OBJECTIVE_ATTACKING) { 
+		OBJ = $OBJECTIVE_ATTACKING; 
+		if (ap[$UNIT_BIT]) {
+			OBJ = $OBJECTIVE_ATTACKING_UNIT;
+		}
+		
+		PERFORM SET_OTHER_OBJECTIVE_PARAMS unit->ObjectiveParameters;
+	}
+	else {
+		OBJ = 0;
+		PERFORM SET_OTHER_OBJECTIVE_PARAMS unit->Position;
+	}
+
+	PERFORM SET_OTHER_OBJECTIVE OBJ;
+	PERFORM SET_OTHER_ADDITIONAL_PARAMS ap;
+
+}
+
+
+//if the soldier being dropped off was not by his own request
+//then check to see if a second soldier should be dropped off as well
+if (carriedObjective != $OBJECTIVE_UNIT_MOVE && carriedObjective2 != $OBJECTIVE_UNIT_MOVE) {
+	if (carried2) {  //if so, rerun this script
+		PERFORM NOTHING;
+	}
+}
+
+
+//return to what it was doing before
+#include common/include/unit_common_resume.ais
+	
+	

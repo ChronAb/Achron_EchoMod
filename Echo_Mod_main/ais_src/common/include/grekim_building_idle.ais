@@ -1,0 +1,48 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+
+
+
+if ($SMART_IDLE) { //do the following if smart idle is on
+    
+    /* Check if this unit is being requested by another, do handshake and distance calculations */
+	int healUseBit=0; 
+	int healTaskBit=0; 
+	int lookupUseBit=0;
+	int flags = 0;
+	int skip=0;  //for skiping over lookup/heal/recover requests if queue is busy
+	
+    object lookupunit = unit;
+	int hash = 0;
+	int num = 0;
+    int find = $FLAGS[$LOOKUP_UNIT];
+	object lookup = 0;
+    //the unit 'hash' lookup table...
+    #include common/include/unit_lookup.ais
+    //$print "NUM: ", num, " find: ", find ,"\n";
+    if (num == find) {    //somebody in field 'lookup' wants this unit...
+       #include common/include/unit_lookup_response.ais
+    }
+    
+    PERFORM RAND;
+    if (perf_ret < 4096) { // 0-32K
+        target = QUERY UNIT [unit] MIN [ unit <=> query ] WHERE [!(query->IsAlly) && (query->IsStasis == 1)];
+		object tss=0;
+        #include common/include/unit_tss_request.ais
+    }
+
+    
+    if (!$IS_REAPH) {
+        PERFORM RAND;
+        if (perf_ret < 2048) { // 0-32K
+			int qstatus = 0;
+            object helper = QUERY UNIT [unit] MIN [ unit <=> query ] WHERE 
+						[ query->IsAlly==1 && ((qstatus=query->Status)&$FROZEN_COMMJAM ) && !qstatus[$TSS_BIT] && query.Rank >= $RP_RANK];
+            /* Check status - request recover if comm jammed */
+            if (helper->IsAlive==1 && (helper->Status & $FROZEN_COMMJAM)) {
+                    #include common/include/unit_recover_request.ais
+            }
+        }
+    }
+    
+} //smart idle 

@@ -1,0 +1,56 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+int energy = 25;
+if (uclass==$PHAROPOD_CLASS) { //pharao2
+    energy = 4;
+}
+
+object buddy=0;
+int distance=0; int otherdistance=0;
+
+temp1 = unit->Energy;
+if (temp1 >= energy) {
+    
+    if (smart==0) {
+        PERFORM RAND; 
+		if (perf_ret > 4096) { 
+			$SET_AP
+			PERFORM NOTHING; 
+		}
+    }
+    
+    if (myCommander->IsAlive==1) {
+        temp2 = myCommander->Status;
+        if (temp2[$COMMJAM_BIT] || temp2[$FROZEN_BIT])  { 
+            buddy = myCommander;
+        } else {
+			int qstatus = 0;
+			buddy =  QUERY UNIT [unit] MIN [ unit <=> query ] WHERE 
+				[ query->IsAlly==1 && ((qstatus=query->Status)&$FROZEN_COMMJAM ) && !qstatus[$TSS_BIT] && query.Rank >= $RP_RANK];
+		}
+    }
+    else {
+		int qstatus = 0;
+        buddy =  QUERY UNIT [unit] MIN [ unit <=> query ] WHERE 
+				[ query->IsAlly==1 && ((qstatus=query->Status)&$FROZEN_COMMJAM ) && !qstatus[$TSS_BIT] && query.Rank >= $RP_RANK];
+    }
+  
+    if  (buddy && !(buddy->IsStasis) ) { //ignore if buddy is a statis'd ally
+        ap[$UNIT_BIT] = 0;
+        ap[$STOREDUNIT] = 0;
+        PERFORM SET_ADDITIONAL_PARAMS ap;
+		PERFORM SET_ADDITIONAL_PARAMS2 0;
+        PERFORM SET_PARAM buddy; //set unit->ObjectiveParameters to the buddy
+        PERFORM SET_OBJECTIVE $RECOVER_UNIT_OBJ; //5 is the recover script
+        PERFORM NOTHING;
+    }
+}
+
+if (smart && temp1 >= energy  && !myStatus[$COMMJAM_BIT]) {
+    object recover = $CUSTOMFIELD_RECOVER;
+    if  (recover->IsAlive == 1) {
+/* check recover field */ 
+         //$print "checking recover field...\n";
+        #include common/include/unit_recover_response.ais
+    }    
+}

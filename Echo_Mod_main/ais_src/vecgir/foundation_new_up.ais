@@ -1,0 +1,13 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+// build up
+#include common/include/unit_foundation_check.ais
+
+int location = 0;
+y = y - 10;  
+
+PERFORM SET_ADDITIONAL_PARAMS2 $FOUNDATION_DIR_UP;
+
+#include common/include/unit_foundation_new.ais

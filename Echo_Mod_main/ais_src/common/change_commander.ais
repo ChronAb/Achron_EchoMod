@@ -1,0 +1,98 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+//common change commander script for all units
+#include common/include/unit_common_header.aih
+
+
+int uclass = unit->Class;
+
+target = unit->ObjectiveParameters;
+int tclass = target->Class;
+int tAlly = target->IsAlly;
+
+PERFORM SET_ADDITIONAL_PARAMS2 0;
+
+//if unit is Vecgir and target is an own Depot, go repair in the depot
+if (uclass>=$TERCHER_Z_CLASS && uclass<=$HALCYON_S_CLASS && tAlly==1 && tclass==$DEPOT_CLASS) {
+    if(unit->HP!=unit.MaxHP) {
+		PERFORM SET_OBJECTIVE $OBJECTIVE_DEPOT_REPAIR;
+		PERFORM SET_ADDITIONAL_PARAMS 0;
+		PERFORM SET_ADDITIONAL_PARAMS2 0;
+		PERFORM NOTHING;
+	}
+}
+
+
+if (uclass==$CRUISER_CLASS && tclass==$MACROFAB_CLASS) {  //if this is a cruiser clicking on a macrofab
+    if (unit->Ammo==0  && (player->Advancements)[$HUMAN_ADV_WEAPONS]) {  //needs a nuke..
+        int ap = unit->AdditionalParameters;
+        ap[$UNIT_BIT] = 1;
+        ap[$STOREDUNIT] = target;
+        PERFORM SET_ADDITIONAL_PARAMS ap;
+        PERFORM SET_OBJECTIVE $OBJECTIVE_RELOAD;
+        PERFORM NOTHING;
+    }
+}
+
+int ap = 0;
+int tRank = target.Rank;
+if (tRank==$ACHRON_RANK) {
+	//can't set Achrons as commanders, check to see if the Achron has a commander and then report to that unit instead
+	if((target->Commander)->IsAlive==1) {  
+		target = target->Commander;
+	}
+	else {
+		PERFORM SET_OBJECTIVE 0;
+		PERFORM SET_ADDITIONAL_PARAMS 0;
+		PERFORM NOTHING;	
+	}
+}
+
+if ($IS_GREKIM && unit.Rank!=$ACHRON_RANK) { 
+	if (uclass==$ARCTICUS_CLASS) { //this is an arcticus
+		if (target->Class==$ARCTICUS_CLASS || tRank>=100) {
+			PERFORM $ACTION_CHANGE_COMMANDER target;
+		}
+		PERFORM SET_OBJECTIVE 0;
+		PERFORM SET_ADDITIONAL_PARAMS 0;
+		PERFORM NOTHING;	
+	}
+	
+    if (tAlly==1 && $IS_GREKIM) {
+        uclass =  target->Class;
+        //link to arcticus
+        if (uclass == $ARCTICUS_CLASS || uclass == $ARCTICUS_MOVE_CLASS) {
+          PERFORM $ACTION_CHANGE_COMMANDER target;
+         
+        }
+        else { //another grekim unit
+			if (target==unit) {
+				PERFORM $ACTION_CHANGE_COMMANDER 0;
+				ap = 0;
+			} else {
+				object cap = target->Commander;
+				//link to their Arcticus base
+				int cclass = cap->Class;
+				if (cclass == $ARCTICUS_CLASS || cclass == $ARCTICUS_MOVE_CLASS) { 
+					PERFORM $ACTION_CHANGE_COMMANDER cap;
+				} else {
+					$SAY_NO_COMMAND_ARCTICUS
+				}
+			}
+        }
+    }
+    PERFORM SET_OBJECTIVE 0;
+}
+else { //building have rank of <100, so anything above is a regular unit
+    if (tRank >= 100 && tAlly==1 && !(target->Status & $COMMJAM_BIT_Q)) {
+        PERFORM $ACTION_CHANGE_COMMANDER target; //unit->ObjectiveParameters;
+        if (target->AdditionalParameters[$OBJECTIVE]==$OBJECTIVE_SKIP) {
+            int ap = unit->AdditionalParameters;  //if commander just tported
+            ap[$OBJECTIVE] = $OBJECTIVE_SKIP; //so i won't tport 
+            PERFORM SET_PARAM target->ObjectiveParameters;
+        }        
+    }
+    PERFORM SET_OBJECTIVE 0;
+}
+
+PERFORM SET_ADDITIONAL_PARAMS ap;

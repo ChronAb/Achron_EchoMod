@@ -1,0 +1,9 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_creator.aih
+
+
+PERFORM SET_OBJECTIVE 0;
+PERFORM SET_ADDITIONAL_PARAMS unit->ObjectiveParameters;  //store the location
+PERFORM $UC_CREATE_LAUNCH_TORPEDO;
+PERFORM NOTHING;

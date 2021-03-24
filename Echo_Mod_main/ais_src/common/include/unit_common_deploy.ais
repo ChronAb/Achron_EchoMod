@@ -1,0 +1,61 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+
+//this sets the proper commanders and figures out which unit to deploy next
+#include common/predeploy.ais
+
+int tclass = next->Class;
+int ap = unit->AdditionalParameters;
+
+target = tclass;
+
+PERFORM CAN_PUT_CLASS target;
+if (perf_ret==0) {
+    if (ap[$OBJ_BLDG_DEPLOYBIT]) { //still blocked
+		if (ap[$OBJ_BLDG_CONTINUE_DEPLOYBIT]) { //another unit enqueued in mean time while first one was blocked
+			ap[$OBJ_BLDG_CONTINUE_DEPLOYBIT] = 0;  //clear deploy bit
+			PERFORM SET_ADDITIONAL_PARAMS ap;
+		}
+        PERFORM SET_OBJECTIVE 0;
+        PERFORM NOTHING;
+    }
+    $SAY_DEPLOY_FIT;
+    ap[$OBJ_BLDG_DEPLOYBIT] = 1;  //set deployment interrupt bit 
+    ap[$OBJ_BLDG_CONTINUE_DEPLOYBIT] = 0;  //clear deploy bit
+    PERFORM SET_ADDITIONAL_PARAMS ap;
+    PERFORM SET_OBJECTIVE 0;
+    PERFORM $ACTION_ERROR1;
+    PERFORM NOTHING;
+}
+else {
+	ap[$OBJ_BLDG_DEPLOYBIT] = 0; //ap = ap & ~$OBJ_BLDG_INTERRUPTBIT;
+}
+
+target = next;
+ap[$OBJ_BLDG_CONTINUE_DEPLOYBIT] = 1; //ap = ap | $OBJ_BLDG_DEPLOYBIT;
+
+PERFORM SET_ADDITIONAL_PARAMS ap;
+
+//PERFORM $ACTION_RELEASE_UNIT;  //DEPLoY THE UNIT, preserve ActionParameters for ETA
+int eta = unit->ActionParameters;
+
+if (tclass== $MARINE_CLASS||tclass==$MARINE_RAISED_CLASS) { PERFORM $ACTION_REL_MAR eta; $SAY_DEPLOY_MARINE }
+if (tclass== $SOP_CLASS||tclass==$SOP_RAISED_CLASS) { PERFORM $ACTION_REL_SOP eta; $SAY_DEPLOY_SOP }
+if (tclass== $MECH_CLASS) { PERFORM $ACTION_REL_MECH eta; $SAY_DEPLOY_MECH }
+if (tclass== $MAR_CLASS) { PERFORM $ACTION_REL_AMG eta; $SAY_DEPLOY_AMG }
+if (tclass== $ATHC_CLASS) { PERFORM $ACTION_REL_ATHC eta; $SAY_DEPLOY_ATHC }
+if (tclass== $LANCER_CLASS) { PERFORM $ACTION_REL_LANC eta; $SAY_DEPLOY_LANCER }
+if (tclass== $FRIGATE_CLASS) { PERFORM $ACTION_REL_FRIGATE eta; $SAY_DEPLOY_FRIGATE }
+if (tclass== $TANK_CLASS) { PERFORM $ACTION_REL_TANK eta; $SAY_DEPLOY_TANK }
+if (tclass== $MFB_CLASS) { PERFORM $ACTION_REL_MFB eta; $SAY_DEPLOY_MFB }
+if (tclass== $TORNADE_CLASS) { PERFORM $ACTION_REL_TORNADE eta; $SAY_DEPLOY_TORNADE }
+if (tclass== $CRUISER_CLASS) { PERFORM $ACTION_REL_HC eta; $SAY_DEPLOY_HC }
+if (tclass== $BLACKBIRD_CLASS) { PERFORM $ACTION_REL_DOCK eta; $SAY_DEPLOY_BLACKBIRD }
+if (tclass == $VIR_ZAYIN_CLASS||tclass==$VIR_ZAYIN_RAISED_CLASS) { PERFORM $ACTION_REL_ZAYIN eta; $SAY_DEPLOY_ZAYIN }
+if (tclass == $VIR_TETH_CLASS||tclass==$VIR_TETH_RAISED_CLASS) { PERFORM $ACTION_REL_TETH eta; $SAY_DEPLOY_TETH }
+if (tclass == $VIR_SHIN_CLASS||tclass==$VIR_SHIN_RAISED_CLASS) { PERFORM $ACTION_REL_SHIN eta; $SAY_DEPLOY_SHIN }
+
+if(unit->TotalCarriedSize == 0) {
+    PERFORM SET_OBJECTIVE 0; 
+    PERFORM SET_ADDITIONAL_PARAMS (ap & ~1); //clear out first bit
+}

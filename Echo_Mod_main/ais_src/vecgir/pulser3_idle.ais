@@ -1,0 +1,8 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.ais
+#include common/include/vecgir_idle.ais
+int energy = 200;
+#include common/include/breaktss_idle.ais
+#include common/include/unit_autopilot.ais
+$SET_AP

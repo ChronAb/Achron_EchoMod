@@ -1,0 +1,16 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_creator.aih
+
+/*
+	example (run by scenario monitor):  
+ap = 0;
+target = unit_creator;
+PERFORM SET_OTHER_OBJECTIVE_PARAMS location;  	//the location to move the unit creator to
+PERFORM SET_OTHER_OBJECTIVE $UC_OBJECTIVE_RELOCATE;
+*/
+
+PERFORM SET_OBJECTIVE 0;
+PERFORM $UC_TELEPORT_TO unit->ObjectiveParameters;
+PERFORM SET_PARAM 0;
+

@@ -1,0 +1,58 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.ais
+
+object closestDepot = unit->ObjectiveParameters;
+
+
+//recover capable unit first checks if depot needs to be recovered
+if (uclass==$TERCHER_T_CLASS) {
+	int tstatus = closestDepot->Status;
+	if (tstatus[$FROZEN_BIT] || tstatus[$COMMJAM_BIT]) {
+		PERFORM SET_OBJECTIVE $RECOVER_UNIT_OBJ;
+		PERFORM NOTHING;
+	}
+}
+
+
+if (closestDepot->Class != $DEPOT_CLASS || unit->HP==unit.MaxHP ) {   
+    PERFORM SET_PARAM 0;
+	PERFORM SET_OBJECTIVE 0;
+	PERFORM NOTHING;
+}
+
+
+if (closestDepot->TotalCarriedSize + unit.Size > closestDepot.CarryingCapacity) {  // has no room for me
+    PERFORM SET_PARAM 0;
+	PERFORM SET_OBJECTIVE 0;
+	PERFORM NOTHING;
+}
+
+
+if (unit->Carrier > 0) { 
+	PERFORM SET_PARAM 0;
+	PERFORM SET_OBJECTIVE 0;
+	PERFORM NOTHING;
+}
+
+  
+if (closestDepot) {
+    int dist = unit <_> closestDepot;
+    if (|/(dist) >= (closestDepot.SightHRange - 2)) { 
+		
+		ignore_collision_with_unit = closestDepot;
+        int adir = QUERY BESTMOVE [unit, $ACTION_MOVE] MIN [ closestDepot <_> query ] WHERE [1];    
+        PERFORM $ACTION_MOVE adir; 
+        PERFORM NOTHING;
+
+    }
+
+    PERFORM NOTHING;    
+}
+else {
+    PERFORM SET_PARAM 0;
+	PERFORM SET_OBJECTIVE 0;
+	PERFORM NOTHING;
+}
+
+

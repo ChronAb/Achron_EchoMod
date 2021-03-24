@@ -1,0 +1,103 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+//
+// vecgir_building_idle.ais - the common idle script for most vecgir buildings, 
+//                             only works if smart idle is on
+
+
+//$PRINT_C3;
+//$PRINT_C5;
+//$PRINT_AP;
+
+int setAdditionalParameters = 0;
+
+object helper = player->CustomField5;
+
+if (helper != 0) {
+	int ap2 = helper->AdditionalParameters2;
+	if (ap2 > 0) {
+		int foundationLocation = helper->Position;
+		
+		if (ap2==$FOUNDATION_DIR_UP) { //north
+			foundationLocation[$Ypos] = foundationLocation[$Ypos] - 10;
+		}
+		else if (ap2==$FOUNDATION_DIR_UP_RIGHT) { //nE
+			foundationLocation[$Xpos] = foundationLocation[$Xpos] + 9;
+			foundationLocation[$Ypos] = foundationLocation[$Ypos] - 5;
+		}
+		else if (ap2==$FOUNDATION_DIR_DOWN_RIGHT) { //SE
+			foundationLocation[$Xpos] = foundationLocation[$Xpos] + 9;
+			foundationLocation[$Ypos] = foundationLocation[$Ypos] + 5;
+		}
+		else if (ap2==$FOUNDATION_DIR_DOWN) { //S
+			foundationLocation[$Ypos] = foundationLocation[$Ypos] + 10;
+		}
+		else if (ap2==$FOUNDATION_DIR_DOWN_LEFT) { //SW
+			foundationLocation[$Xpos] = foundationLocation[$Xpos] - 9;
+			foundationLocation[$Ypos] = foundationLocation[$Ypos] + 5;
+		}
+		else if (ap2==$FOUNDATION_DIR_UP_LEFT) { //nW
+			foundationLocation[$Xpos] = foundationLocation[$Xpos] - 9;
+			foundationLocation[$Ypos] = foundationLocation[$Ypos] - 5;
+		}
+	
+		if (unit <_> foundationLocation < 90 ) { //building too close to request build location
+			int flags = $FLAGS;
+			flags[$FOUNDATION_FAIL_BIT] = 1;
+			PERFORM SET_PLAYER_CUSTOM_FIELD_3 flags;
+		}
+	}
+}
+
+
+if (unit->Commander !=0) { PERFORM $ACTION_CLEAR_COMMANDER 0 ;  }
+
+
+ap = unit->AdditionalParameters;
+int hash = 0;
+if ($SMART_IDLE) { //do the following if smart idle is on
+    
+    /* Check if this unit is being requested by another, do handshake and distance calculations */
+   	int healUseBit=0; 
+	int healTaskBit=0; 
+	int lookupUseBit=0;
+	int flags = 0;
+
+    object lookupunit = unit;
+
+	int num = 0;
+    int find = $FLAGS[$LOOKUP_UNIT];
+	object lookup = 0;
+
+    //the unit 'hash' lookup table...
+    #include common/include/unit_lookup.ais
+	
+    if (num == find) {    //somebody in field 'lookup' wants this unit...
+       #include common/include/unit_lookup_response.ais
+    }
+
+   
+    PERFORM RAND;
+    if (perf_ret < 4096) { // 0-32K
+		int qstatus = 0;
+        helper = QUERY UNIT [unit] MIN [ unit <=> query ] WHERE 
+						[ query->IsAlly==1 && ((qstatus=query->Status)&$FROZEN_COMMJAM ) && !qstatus[$TSS_BIT] && query.Rank >= $RP_RANK];
+        /* Check status - request recover if comm jammed */
+        if (helper->IsAlive==1 && (helper->Status & $FROZEN_COMMJAM)) {
+                #include common/include/unit_recover_request.ais
+        }
+    }
+
+    PERFORM RAND;
+    if (perf_ret < 4096) { // 0-32K
+		object tss = 0;
+        target = QUERY UNIT [unit] MIN [ unit <=> query ] WHERE [query->IsAlly != 1 && (query->IsStasis == 1)];
+        #include common/include/unit_tss_request.ais
+    }
+} //smart idle 
+
+
+//^^^ remove this, should be in each building's individual idle script
+$SET_AP

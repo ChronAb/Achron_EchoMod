@@ -1,0 +1,64 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+	if (myArcticus>0 && !bap[$ARCTICUS_COMMAND]) { //has an arcticus, and it didn't issue its own order
+		int speed = 20; 
+		$SPEED_BY_CLASS
+		//arcticus's stored match speed is slower than this units, match it if need-be
+		if (bap[$ARCTICUS_SPEED_MATCH] > speed) {
+			int MatchSpeed = 1;
+			//player issued orders to stragglers always go full speed
+			if (!AP_PLAYER) { 
+				temp1 = unit.Length;
+				object ordinate = bap[$STOREDUNIT];	
+				// exactly 1/4th of the default formation-stay-close radius from unit_common_formation
+				int radius = 62 + ( temp1 - 1) * 25;
+				// if unit is far away from commander (1.2x the formation-stay-close radius)
+				if (unit<_>ordinate > radius * 3) {
+					//if this unit is further from the objective by more than the formation-stay-close radius, get there as fast as possible
+					if (distToOP > (ordinate <_> OrdinateOp + 2 * radius)) {	
+						MatchSpeed = 0; 
+					}
+				}
+
+				if (MatchSpeed) {
+					min_action_ticks = bap[$ARCTICUS_SPEED_MATCH];
+					matchSpeedMoveAction = $ACTION_MOVE_SLOW;
+				}
+			} 
+			else { //I may be the leader, if so, always speed match - cycle through subs to find the arcticus
+				
+				object arx = unit->NextSubordinate; 
+				while (arx->IsAlive==1) {
+					if ( arx->Class==$ARCTICUS_CLASS) {
+						min_action_ticks = bap[$ARCTICUS_SPEED_MATCH];
+						matchSpeedMoveAction = $ACTION_MOVE_SLOW;
+						break;
+					}			
+					arx = unit->NextSubordinate;
+				}
+	
+			}
+		}
+	}
+	else {
+		//no commander arcticus, check if i'm the leader, and if so, always speed match
+		if (myArcticus <= 0) {
+			
+			object arx = unit->NextSubordinate; 
+			while (arx->IsAlive==1) {
+				if ( arx->Class==$ARCTICUS_CLASS) {
+					bap = arx->AdditionalParameters;
+					int speed = 20; 
+					$SPEED_BY_CLASS
+					//arcticus's stored match speed is slower than this units, match it if need-be
+					if (bap[$ARCTICUS_SPEED_MATCH] > speed) {
+						min_action_ticks = bap[$ARCTICUS_SPEED_MATCH];
+						matchSpeedMoveAction = $ACTION_MOVE_SLOW;
+					}
+					break;
+				}			
+				arx = unit->NextSubordinate;
+			}
+
+		}
+	}

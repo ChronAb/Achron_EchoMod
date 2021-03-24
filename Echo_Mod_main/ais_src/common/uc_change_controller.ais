@@ -1,0 +1,55 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_creator.aih
+
+/*
+	example (run by scenario monitor):  
+ap = 0;
+ap[$UC_AP_CHANGE_OWNER] = 1;		//change the owner
+ap[$UC_AP_OWNER] = 3;          		//the player we want to set as the owner
+ap[$UC_AP_CHANGE_COMMANDER] = 1; 	//change the commander
+ap[$UC_AP_TARGET] = 0;     			//the unit we want to set as the commander (clear it in this case)
+ap[$UC_AP_CHANGE_ALL] =  1;        //change all carried units
+target = unit_creator;  
+PERFORM SET_OTHER_OBJECTIVE_PARAMS marine; //this is the unit we want to change
+PERFORM SET_OTHER_ADDITIONAL_PARAMS ap;
+PERFORM SET_OTHER_OBJECTIVE $UC_OBJECTIVE_CHANGE_CONTROLLER;
+
+*/
+
+int ap = unit->AdditionalParameters;
+int LoopThroughAll = ap[$UC_AP_CHANGE_ALL];
+
+if (LoopThroughAll) { 			
+	target = unit->NextCarriedUnit;
+}
+else { //don't change all the carried units
+	target = unit->ObjectiveParameters; //only change the specified one
+}
+
+while (target) {	
+	if (ap[$UC_AP_CHANGE_OWNER]) {
+		//change owner to what's specified in the AP
+		PERFORM $UC_SET_PLAYER ap[$UC_AP_OWNER]; 
+	}
+
+	if (ap[$UC_AP_CHANGE_COMMANDER]) {
+		//change commander to what's specified in the AP
+		PERFORM $UC_CHANGE_COMMANDER ap[$UC_AP_TARGET]; 
+	}
+	
+	
+	if (!LoopThroughAll) {
+		target = 0; //stop this loop
+	}
+	else {
+		target = unit->NextCarriedUnit;
+	}
+	
+}
+
+
+PERFORM SET_PARAM 0;
+PERFORM SET_ADDITIONAL_PARAMS 0;   
+PERFORM SET_OBJECTIVE 0;
+PERFORM NOTHING;

@@ -1,0 +1,33 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+//sets the unit back to idle, but also sets a timestamp of when the stop
+//command was issued in order to clear the ap completely
+//while the timestamp is set, the objective field in the AP will be set to 
+//OBJECTIVE_STOP, thus commanders have a 63 tick time window to tell their 
+//subordinates to stop doing what they are doing also
+
+int ap = unit->AdditionalParameters;
+//if unit was defending, clear its queue so it stops
+if (ap[$OBJECTIVE] == $OBJECTIVE_UNIT_DEFEND) {
+	PERFORM CLEAR_QUEUE;
+}
+
+ap=0;
+ap[$OBJECTIVE] = $OBJECTIVE_STOP; //set the AP's objective bits to STOP
+ap[$PLAYER_BIT] = 1;       //this was a player-issued command
+ap[$TIME_BIT] = 1;    
+PERFORM GET_CUR_TIME;
+int time = perf_ret[0,6] ; //if 18tics per second, 63/18 = ~3.5 seconds
+if (time == 0) { time = 63; }
+ap[$TIMESTAMP] = time;  //store the timestamp into the AP
+PERFORM SET_ADDITIONAL_PARAMS ap;
+PERFORM SET_ADDITIONAL_PARAMS2 0;
+PERFORM SET_PARAM 0;     //clear the parameter
+PERFORM SET_OBJECTIVE 0; //go back to idle
+int uclass = unit->Class;
+if ($IS_WEAPON_RAISED) {
+	PERFORM $ACTION_LOWER_WEAPON;
+}
+

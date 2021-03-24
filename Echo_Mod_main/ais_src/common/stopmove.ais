@@ -1,0 +1,185 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+//used by flying buildings to stop and land
+
+int uclass = unit->Class;
+if (uclass==$VECGIR_RP_OFF_CLASS) {
+	PERFORM $ACTION_TELEPORTED; //clear cap bit just in case
+	PERFORM SET_ADDITIONAL_PARAMS2 0;
+	PERFORM SET_OBJECTIVE 0;
+	PERFORM $ACTION_PLANT;
+	PERFORM NOTHING;
+}
+
+int op = unit->ObjectiveParameters;
+int unitPosition = unit->Position;
+	
+
+
+if (unitPosition[0,24] != op[0,24]) {
+
+	int dir = 0;
+	int distToOP = unit <_> op;
+	if (distToOP <= 4) {
+			int opx = op[$Xpos];
+			int opy = op[$Ypos];
+			int _qy = 0;
+			int _qx = 0;	
+			int qp = 0;
+			//adjust for tOP left corner of the unit
+			dir = QUERY BESTMOVE [unit, $ACTION_MOVE] MIN [ 
+							((_qx=((qp=query->Position)[$Xpos])) - opx) * (_qx - opx) +
+								((_qy=qp[$Ypos]) - opy) * (_qy - opy) 		
+							] WHERE [1];
+	
+	} else {	
+		int counter = unit->AdditionalParameters2; //move counter to move in the same direction
+		if (counter>0) {           //more than 0 means already moving in a direction
+			counter = counter - 1; //decrease the counter
+			PERFORM SET_ADDITIONAL_PARAMS2 counter;
+			int rot = unit->Rotation; //get the unit's current rotation
+			$DIR_FROM_ROT             //set the dir to move to based on that unit's rotation
+		}
+		else {  //no move counter stored, so query where to move to next
+			dir = QUERY BESTMOVE [unit, $ACTION_MOVE] MIN [ op <=> query ]  WHERE [1];    
+			if (dir[0,8] >= 16) { counter = 0; } //moving up or down, so don't store counter
+			else {
+				counter = dir[16,8]; 			  //the counter is stored in the 3rd byte of dir
+				if (counter > 7) { counter = 7; } //cap it at 7 since AdditionalParameters2 only has 3 bits
+			}
+			PERFORM SET_ADDITIONAL_PARAMS2 counter;
+		}
+
+		dir[16,8] = 0; //clear out the 3rd byte that stores the counter
+	}
+	
+	if (dir && dir != $QUERY_EXHAUSTED) {
+		//move faster vertically
+		if (dir[$DIR_UP_BIT]) { PERFORM $ACTION_MOVE_UP dir; }
+		else if (dir[$DIR_DOWN_BIT]) { PERFORM $ACTION_MOVE_DOWN dir; }
+		else {
+			PERFORM $ACTION_MOVE dir; 
+		}
+		if ( perf_ret!=1) { 
+			PERFORM SET_ADDITIONAL_PARAMS2 0;
+		}
+		PERFORM NOTHING;
+	}
+	else {
+		$SAY_FAILED_LAND;
+		PERFORM $ACTION_ERROR2;
+		PERFORM SET_ADDITIONAL_PARAMS2 0;
+		PERFORM SET_OBJECTIVE 0;
+		PERFORM NOTHING;
+	}
+
+}
+
+
+
+
+
+
+
+int xpos = unitPosition[$Xpos];
+int ypos = unitPosition[$Ypos];
+int zpos = unitPosition[$Zpos];
+int location = 0;
+PERFORM GET_TERRAIN_GROUND_HEIGHT_AT unitPosition;
+int groundHeight = perf_ret;
+if(zpos != groundHeight)  {
+	PERFORM GET_MAP_NEXT_Z_POSITION_DOWN unitPosition;
+	location = perf_ret;
+	
+	int x = location[$Xpos];
+	int y = location[$Ypos];
+	int length = unit.Length;
+	int mult = length;
+	int xoffset = length; 
+	int yoffset = 0;
+	target = uclass;
+	PERFORM CAN_CLASS_FIT_AT location; //see if the unit fits
+	int spotClear = perf_ret; 
+	int counter = 0;
+	while (!spotClear[$ROT_S]) { //the unit does not fit, so calculate new offset coords
+		counter = counter + 1;
+		if (counter == 24) { break; }
+		location[$Xpos] = x + xoffset;
+		location[$Ypos] = y + yoffset;
+
+		PERFORM CAN_CLASS_FIT_AT location;
+		spotClear = perf_ret;   
+		
+		if (xoffset > 0 && yoffset < 0) { yoffset = 0; mult=mult+length; xoffset = mult; } 
+		else {
+			if (xoffset <= 0 && yoffset < 0) { xoffset = xoffset + mult;  }
+			if (xoffset < 0 && yoffset >= 0) { yoffset = yoffset - mult;  }
+			if (xoffset >= 0 && yoffset > 0) { xoffset = xoffset - mult;  }
+			if (xoffset > 0 && yoffset == 0) { yoffset = yoffset + mult;  } 
+		}
+		if (xoffset == 0 && yoffset == 0) { xoffset = xoffset + mult; }
+	}  
+	
+	if (counter==24) {
+		$SAY_FAILED_LAND;
+		PERFORM $ACTION_ERROR2;
+		PERFORM SET_OBJECTIVE 0; 
+        PERFORM NOTHING; 
+	}
+	
+	if (location != op ) { PERFORM SET_PARAM location; }
+    
+	int dir = 0;
+	if (counter==0) { //spot below is clear, can move vertically
+		dir = QUERY BESTMOVE [unit, $ACTION_MOVE] MIN [ location <=> query ] WHERE [1];
+	} else { //only move horizontally
+		dir = QUERY BESTMOVE [unit, $ACTION_MOVE] MIN [ location <_> query ] WHERE [1];
+	}
+    
+	if (dir == 0 || dir == $QUERY_EXHAUSTED) {  //can't land, so do nothing
+		$SAY_FAILED_LAND;
+		PERFORM $ACTION_ERROR2;
+		PERFORM SET_ADDITIONAL_PARAMS2 0;
+		PERFORM SET_OBJECTIVE 0;
+		PERFORM NOTHING;
+    }
+    else {
+		//non-rp buildings must be oriented south
+		if (uclass!=$HUMAN_RP_OFF_CLASS && uclass!=$GREKIM_RP_OFF_CLASS && unit->Rotation != $ROT_S ) {
+			PERFORM $ACTION_ROTATE $ROT_S;
+			if (perf_ret!=1) { //failed to rotate
+				$SAY_FAILED_LAND;
+				PERFORM $ACTION_ERROR2;
+				PERFORM SET_ADDITIONAL_PARAMS2 0;
+				PERFORM SET_OBJECTIVE 0;
+				PERFORM NOTHING;
+			}
+		}
+	
+		//move faster vertically
+		if (dir[$DIR_UP_BIT]) { PERFORM $ACTION_MOVE_UP dir; }
+		else if (dir[$DIR_DOWN_BIT]) { PERFORM $ACTION_MOVE_DOWN dir; }
+		else {
+			PERFORM $ACTION_MOVE dir; 
+		}
+		PERFORM NOTHING;
+    }
+}
+
+//non-rp buildings must be oriented south
+if (uclass!=$HUMAN_RP_OFF_CLASS && uclass!=$GREKIM_RP_OFF_CLASS && unit->Rotation != $ROT_S ) {
+	target = uclass;
+	PERFORM CAN_CLASS_FIT_AT location; //see if the unit fits facing south
+	if (perf_ret[$ROT_S]) {
+		PERFORM $ACTION_ROTATE $ROT_S;
+		PERFORM NOTHING;
+	}
+}
+
+PERFORM SET_ADDITIONAL_PARAMS2 0;
+PERFORM SET_OBJECTIVE 0;
+PERFORM $ACTION_PLANT;
+
+//if (unit->Class!=146) { PERFORM $ACTION_PLANT; } //Closed RPs do not plant, but rather just go back to idle

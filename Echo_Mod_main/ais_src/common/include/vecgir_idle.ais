@@ -1,0 +1,9 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+//all scripts including this scripts MUST first including the following - 
+//#include common/include/vecgir_unit_common_header.ais
+// vecgir_idle.ais - the common idle script for most vecgir units 
+
+//same as humans, who'd guess that? silly bipeds
+#include common/include/human_idle.ais 
+

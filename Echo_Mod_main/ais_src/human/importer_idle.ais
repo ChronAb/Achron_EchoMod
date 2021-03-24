@@ -1,0 +1,10 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+target = player->CustomField4; //CF4 stores the current siphoning importer for factories
+//this importer has more than the one stored, stored as the 'main' siphoning importer
+if (unit->Ammo > target->Ammo) {
+	PERFORM $ACTION_SET_SIPHON; //stores self into CustomField4
+}
+

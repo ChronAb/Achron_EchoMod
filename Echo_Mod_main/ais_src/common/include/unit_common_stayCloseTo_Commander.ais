@@ -1,0 +1,305 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+//calculate percent of health if it hasn't been calculated yet                  
+
+PERFORM RAND;
+//if <75% health, look for a helper/repair unit (half the time)
+if (perf_ret < 16384) {
+	int percent = (unit->HP * 100 / unit.MaxHP);  
+	if (percent < 75) {
+		object helper = QUERY UNIT [unit] MIN [unit<=>query] 
+				 WHERE [(query->IsAlly && query->Objective==$REPAIR_UNIT_OBJ
+						&& query->ObjectiveParameters==unit )];
+		if (helper) { 
+			$SET_AP
+			PERFORM NOTHING; //sit and wait for helper to repair me
+		}
+	}
+}
+
+if (!ap[$RETURN_BIT]) { //not returning to stored spot, so keep moving towards commander
+
+	int BANK_TURNING = 0;
+	
+	//try to move closer to the commander		
+	int counter = unit->AdditionalParameters2; //move counter to move in the same direction
+	if (counter>0) {           //more than 0 means already moving in a direction
+		counter = counter - 1; //decrease the counter
+		int rot = unit->Rotation; //get the unit's current rotation
+		$DIR_FROM_ROT             //set the dir to move to based on that unit's rotation
+	}
+	else {  //no move counter stored, so query where to move to next
+	
+		int rot = unit->Rotation;
+		$DIR_FROM_ROT;
+		int old_dir = dir;
+		int old_rot = rot;
+		
+		//temp2 is the <_> to commander calculated in human_idle.ais
+		ignore_collision_with_unit = myCommander;
+		if (airunit && temp2 > 100) { 
+			int pos = myCommander->Position;
+			int tempZ = pos;
+			tempZ[$Zpos] = pos[$Zpos] |> unitPosition[$Zpos]; //highest Z of unit and commander
+
+			PERFORM IS_MAP_POSITION_VALID tempZ;
+			if (perf_ret > 0) {
+				pos = tempZ; //store the higher of the Z positions			
+			}
+
+			dir = QUERY BESTMOVE [unit, $ACTION_MOVE] MIN [ pos <=> query ] WHERE [1];
+		} else {
+			dir = QUERY BESTMOVE [unit, $ACTION_MOVE] MIN [ myCommander <=> query ] WHERE [1];
+		}
+		
+		if (dir[0,8] >= 16) { 
+			counter = 0; //moving up or down, so don't store counter
+			//prevent air units from going on the ground to get closer
+			if (airunit && dir[0,8] == $TERRAIN_DOWN) { //air unit that wants to move down
+				PERFORM GET_MAP_NEXT_Z_POSITION_DOWN unitPosition;
+				if (perf_ret[$Zpos] == 0) {
+					dir[0,8] = $TERRAIN_UP; //tell it to move up instead because it's ground below
+				}
+				
+			}
+		} 
+		else {
+			counter = dir[16,8]; 			  //the counter is stored in the 3rd byte of dir
+			if (counter > 7) { $MAX_COUNTER_VALUE; } //cap it at 7 since AdditionalParameters2 only has 3 bits
+		}
+		
+		//check to see if the unit is rotating
+		if(old_dir != dir[0,8]) { 
+			int new_dir = dir; //backup new value
+			dir = dir[0,8]; 
+			$ROT_FROM_DIR;
+			dir = new_dir; //restore value
+			
+			
+			
+			int diff = rot - old_rot;
+			if(diff > 0) {
+				if(diff <= 4) { 
+					BANK_TURNING = 1; //left
+				}
+				else {
+					BANK_TURNING = 2; //right
+				}
+			}
+			else if(diff < 0) {
+				if(diff >= -4) {
+					BANK_TURNING = 2; //right
+				}
+				else {
+					BANK_TURNING = 1; //left
+				}
+			}
+		}
+	}
+
+	dir[16,8] = 0; //clear out the 3rd byte that stores the counter
+	int ap2 = counter;
+	if (dir && dir != $QUERY_EXHAUSTED) {
+		if (counter>1) {
+			$UPDATE_SPEED_FOR_FAST_UNITS
+		}
+		//store the updated move counter
+		ap2 = counter;
+		if(BANK_TURNING && $IS_BANKING_FLYER ) {
+			dir[8,8] = 2; //2 extra tiles per move
+			if(BANK_TURNING == 1) { PERFORM $ACTION_BANK_RIGHT dir; } 
+			else { PERFORM $ACTION_BANK_LEFT dir; }
+
+			//if failed to bank-move because of obstacle or something, attempt to move normally
+			if(!perf_ret) {
+				PERFORM $ACTION_MOVE dir;
+			}
+		}
+		else {
+			PERFORM $ACTION_MOVE dir;
+		}
+		if ( perf_ret!=1) { 
+			ap2 = 0;
+		}
+	} 
+
+	//within 30 tiles of commander not doing a smart idle activity, nor getting off into the air
+	//temp2 is the <_> to commander calculated in human_idle.ais
+	if (temp2 < 900 && ap[1,5]==0) { 
+		
+		int nextPosition = unit->Position;
+	
+		if (!ap[$APPROACH_BIT] ) { //not started the approach counter
+			ap[$APPROACH_BIT] = 1;     //set the 'approaching' commander bit
+			ap[19,5] = 0;   //clear out the approach counter
+
+			// op[$Xpos] = unitPosition[$Xpos]; //store units current X position into OP
+			// op[$Ypos]= unitPosition[$Ypos]; //store units current Y position into OP
+			PERFORM SET_PARAM unitPosition;
+			setAdditionalParameters = 1;
+		}
+		else { //already approaching commander with a counter
+			int nextDistance = nextPosition<_>myCommander;									
+			
+			//check if nextDistance is not smaller to commander than the current one
+			//if so, increase approach counter
+
+			if (nextDistance >= temp2) { 
+				int approachCounter = ap[19,5];
+				approachCounter = approachCounter + 1; //increase approach counter
+				
+				//counter should be 18 for memory pool of 512+
+				if (approachCounter==11) {  //counter maxed out, stop moving
+					ap[19,5]=0;  //clear out counter
+					ap[$RETURN_BIT]=1;    //set the return to closest bit
+					ap2 = 0;
+				} 
+				else {
+					ap[19,5] = approachCounter;  //store the new counter
+				}
+				setAdditionalParameters = 1;
+			}
+			else { //unit is moving closer, store new closer position into op and don't up the counter
+				// op[$Xpos] = nextPosition[$Xpos]; //store units current X position into OP
+				// op[$Ypos]= nextPosition[$Ypos]; //store units current Y position into OP	
+				PERFORM SET_PARAM nextPosition;
+			}
+		}
+
+	}
+	PERFORM SET_ADDITIONAL_PARAMS2 ap2;
+	$SET_AP
+	PERFORM NOTHING;
+} 
+else { //return to closest bit is set, so return to closest stored spot 
+	int op = unit->ObjectiveParameters;
+	
+	int storedClosest = op[0,24]; //pull the closest stored spot from the OP
+	storedClosest[$Zpos] = unitPosition[$Zpos];      //store unit's current Z position into it
+	int returnCounter = ap[19,2];
+	
+	//already arrived at storedClosest spot, or maxed out on the return counter so declare self as stuck
+	if (unitPosition == storedClosest || returnCounter==3) {
+		ap[16,8]=0; //clear out the counter
+		ap[$STUCK_BIT] = 1; //set the stuck idle bit
+		PERFORM SET_PARAM 0;  //clear out the OP
+		PERFORM SET_ADDITIONAL_PARAMS ap;
+		PERFORM SET_ADDITIONAL_PARAMS2 0;
+		PERFORM NOTHING;
+	}
+	
+	int BANK_TURNING = 0;
+	
+	//try to move closer to the storedClosest spot
+	int counter = unit->AdditionalParameters2; //move counter to move in the same direction
+	if (counter>0) {           //more than 0 means already moving in a direction
+		counter = counter - 1; //decrease the counter
+		int rot = unit->Rotation; //get the unit's current rotation
+		$DIR_FROM_ROT             //set the dir to move to based on that unit's rotation
+	}
+	else {  //no move counter stored, so query where to move to next	
+		int rot = unit->Rotation;
+		$DIR_FROM_ROT;
+		int old_dir = dir;
+		int old_rot = rot;
+		
+		dir = QUERY BESTMOVE [unit, $ACTION_MOVE] MIN [ storedClosest <=> query ] WHERE [1];
+		if (dir[0,8] >= 16) { counter = 0; } //moving up or down, so don't store counter
+		else {
+			counter = dir[16,8]; 			  //the counter is stored in the 3rd byte of dir
+			if (counter > 7) { $MAX_COUNTER_VALUE } //cap it at 7 since AdditionalParameters2 only has 3 bits
+		}
+		
+		//check to see if the unit is rotating
+		if(old_dir != dir[0,8]) { 
+			int new_dir = dir; //backup new value
+			dir = dir[0,8]; 
+			$ROT_FROM_DIR;
+			dir = new_dir; //restore value
+			
+			
+			
+			int diff = rot - old_rot;
+			if(diff > 0) {
+				if(diff <= 4) { 
+					BANK_TURNING = 1; //left
+				}
+				else {
+					BANK_TURNING = 2; //right
+				}
+			}
+			else if(diff < 0) {
+				if(diff >= -4) {
+					BANK_TURNING = 2; //right
+				}
+				else {
+					BANK_TURNING = 1; //left
+				}
+			}
+		}
+		
+	}
+	
+
+
+	dir[16,8] = 0; //clear out the 3rd byte that stores the counter
+	
+	if (dir==0) { //arrived at storedClosest spot
+		ap[16,8]=0;  //clear out the counter
+		ap[$STUCK_BIT] = 1; //set the stuck idle bit
+		PERFORM SET_PARAM 0;  //clear out the OP
+		PERFORM SET_ADDITIONAL_PARAMS ap;
+		PERFORM SET_ADDITIONAL_PARAMS2 0;
+		PERFORM NOTHING;
+	}
+	
+	//can't move for some reason, increase the returncounter
+	if (dir == $QUERY_EXHAUSTED) {
+		returnCounter = returnCounter + 1;
+		ap[19,2] = returnCounter;
+		setAdditionalParameters = 1;
+		PERFORM SET_ADDITIONAL_PARAMS2 counter;
+	}
+	else {
+	
+		if (counter>1) {
+			$UPDATE_SPEED_FOR_FAST_UNITS
+		}
+		//store the updated move counter
+		int ap2 = counter;
+	
+		if(BANK_TURNING && $IS_BANKING_FLYER ) {
+			dir[8,8] = 2; //2 extra tiles per move
+			if(BANK_TURNING == 1) { PERFORM $ACTION_BANK_RIGHT dir; } 
+			else { PERFORM $ACTION_BANK_LEFT dir; } 
+			//if failed to bank-move because of obstacle or something, attempt to move normally
+			if(!perf_ret) {
+				PERFORM $ACTION_MOVE dir;
+			}
+		}
+		else {
+			//do the move
+			PERFORM $ACTION_MOVE dir;
+		}
+		if ( perf_ret!=1) { 
+			ap2 = 0;
+		}
+		
+		PERFORM SET_ADDITIONAL_PARAMS2 ap2;
+		
+		//see if there is a unit an the destination
+		PERFORM GET_UNIT_AT storedClosest;
+		//within visibility range of closestSpot but another unit is there already
+		if (perf_ret>0) {
+			//increase the returnCounter if query was exhausted
+			if (dir[$BESTMOVE_GAVE_UP]) {
+				returnCounter = returnCounter + 1;
+				ap[19,2] = returnCounter;
+				setAdditionalParameters = 1;
+			}
+		}
+	}
+	
+	$SET_AP
+	PERFORM NOTHING;
+}

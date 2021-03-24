@@ -1,0 +1,22 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+if (target->IsAlive==1) {
+/* request to breaktss this unit via the 'tss' field */  
+    object tss = $CUSTOMFIELD_TSS;
+    if (tss) { //field is taken already
+        if (tss == unit) { //this requestor unit is still requesting, so noone responded yet
+            //Waiting for BREAKTSS to respond
+            PERFORM RAND;
+            if (perf_ret < 4096) $SAY_SEE_TSSED
+        }
+        else { //another unit is in the field
+		
+        }
+    }
+    else { //tss field is empty
+        PERFORM SET_PLAYER_CUSTOM_FIELD_2 (unit | ($CUSTOMFIELD_LOOKUP << 16)); 
+        int flags = $FLAGS;
+		flags[$TSSFLAG_BIT] = 1;
+		PERFORM SET_PLAYER_CUSTOM_FIELD_3 flags;
+    }
+}

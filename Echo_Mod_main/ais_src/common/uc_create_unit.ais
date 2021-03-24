@@ -1,0 +1,54 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_creator.aih
+
+/*
+	example (run by scenario monitor):  
+ap = 0;
+ap[$UC_AP_CREATE] = $UC_CREATE_MECH; 		//make a mech
+target = unit_creator;
+PERFORM SET_OTHER_ADDITIONAL_PARAMS ap;
+PERFORM SET_OTHER_OBJECTIVE $UC_OBJECTIVE_CREATE_UNIT;
+*/
+int action = (unit->AdditionalParameters)[$UC_AP_CREATE];
+PERFORM SET_ADDITIONAL_PARAMS 0;   
+PERFORM SET_OBJECTIVE 0;
+
+if (action==10) { PERFORM 10; }
+else if (action==11) { PERFORM 11; }
+else if (action==12) { PERFORM 12; }
+else if (action==13) { PERFORM 13; }
+else if (action==14) { PERFORM 14; }
+else if (action==15) { PERFORM 15; }
+else if (action==16) { PERFORM 16; }
+else if (action==17) { PERFORM 17; }
+else if (action==18) { PERFORM 18; }
+else if (action==19) { PERFORM 19; }
+else if (action==20) { PERFORM 20; }
+else if (action==21) { PERFORM 21; }
+else if (action==22) { PERFORM 22; }
+else if (action==23) { PERFORM 23; }
+else if (action==24) { PERFORM 24; }
+else if (action==25) { PERFORM 25; }
+else if (action==26) { PERFORM 26; }
+else if (action==27) { PERFORM 27; }
+else if (action==28) { PERFORM 28; }
+else if (action==29) { PERFORM 29; }
+else if (action==30) { PERFORM 30; }
+else if (action==31) { PERFORM 31; }
+else if (action==32) { PERFORM 32; }
+else if (action==33) { PERFORM 33; }
+else if (action==34) { PERFORM 34; }
+else if (action==35) { PERFORM 35; }
+else if (action==36) { PERFORM 36; }
+else if (action==37) { PERFORM 37; }
+else if (action==38) { PERFORM 38; }
+else if (action==39) { PERFORM 39; }
+else if (action==40) { PERFORM 40; }
+else if (action==41) { PERFORM 41; }
+else if (action==42) { PERFORM 42; }
+else if (action==47) { PERFORM 47; } //lc
+else if (action==48) { PERFORM 48; } //qp
+else if (action==49) { PERFORM 49; } //large qp
+else if (action==50) { PERFORM 50; } //waypoint
+PERFORM NOTHING;

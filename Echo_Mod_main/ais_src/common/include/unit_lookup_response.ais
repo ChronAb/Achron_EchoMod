@@ -1,0 +1,58 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+// unit_lookup_response.ais - the response function for unit lookup
+int flags = $FLAGS;
+if (flags[$LOOKUP_BIT]){
+    object lookup = $CUSTOMFIELD_LOOKUP;
+    if (lookup->IsAlive == 1 ) {
+		hash = lookup->AdditionalParameters;
+		int otherdist = 20000000;
+		if ( lookup.Rank == unit.Rank ) { //same general type of unit as me responded
+			if (hash[$UNIT_BIT]) {             //someone else responded already ...
+				object temp = lookup;                                  //store 'them' as temp
+				lookup = hash[$STOREDUNIT];                            //they have the requester stored
+				otherdist = lookup <_> temp;                    //their distance to the requester
+			}
+			else {
+				//^^^ this should be removed in production
+				//lookup response error
+			}
+		}
+		
+		int dist = unit <_> lookup;      //calculate distance to unit
+
+
+		if (dist > $LOOKUP_BOUNDARY  || dist > otherdist) { //marine or not closest
+//			$print "i'm too far: ", dist, "\n";//too far away
+		}
+		else {
+			if (unit.Rank==$MARINE_RANK && $AUTOPILOT) { //AUTOPILOT and the lookup is for a  Resource Patch looking for Marine - expansion
+				//I AM THE RESPONDING MARINE. stand back while I get to work
+				flags[$LOOKUP_UNIT] = 0;
+				flags[$LOOKUP_BIT] = 0;
+				PERFORM SET_PLAYER_CUSTOM_FIELD_3 flags;
+				
+				//attack move towards the patch, since ya never know what's enroute
+				int location = 0; location[$Xpos] = lookup->XPosition; location[$Ypos] = lookup->YPosition;
+				ap[$OBJECTIVE] = $OBJECTIVE_ATTACKING;
+				ap[$ATTACK_BIT] = 1;
+				ap[$PLAYER_BIT] = 1;
+				ap[$UNIT_BIT] = 0;
+				PERFORM SET_ADDITIONAL_PARAMS ap;
+				PERFORM SET_ADDITIONAL_PARAMS2 0;
+				PERFORM SET_PARAM location;
+				PERFORM SET_OBJECTIVE $OBJECTIVE_ATTACKING;
+				PERFORM $ACTION_CHANGE_COMMANDER 0;
+				PERFORM NOTHING;                            
+			}
+			
+			if (unit!=lookup) { //don't store self as the responder to the request o_O, duh
+				ap[$STOREDUNIT] = lookup;
+				ap[$UNIT_BIT] = 1; 
+				PERFORM SET_ADDITIONAL_PARAMS ap;
+				PERFORM SET_PLAYER_CUSTOM_FIELD_2 ($CUSTOMFIELD_TSS | (unit << 16 ));
+				PERFORM NOTHING;
+			}
+		}
+	}
+}

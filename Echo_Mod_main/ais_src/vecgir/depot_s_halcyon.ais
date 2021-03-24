@@ -1,0 +1,23 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+PERFORM SET_OBJECTIVE 0;
+
+if (!player->Advancements[$VECGIR_ADV_HALCYON]) { PERFORM NOTHING; }
+
+int unitStatus = unit->Status;
+if (!unitStatus[$CAP_BIT_1]) { PERFORM NOTHING; } //no nearby annex
+if (!unitStatus[$CAP_BIT_2]) { PERFORM NOTHING; } //no nearby acc
+
+if ($HALCYON_S_CLASS::Size + unit->TotalCarriedSize > unit.CarryingCapacity) {    
+	$SAY_ENQUEUE
+	PERFORM NOTHING;
+}
+
+if (player->$LCrystals< ($SHIN_VIR_LC + $SHIN_HALCYON_LC) || player->$QPlasma < $SHIN_HALCYON_QP) {
+    $SAY_RESOURCES
+    PERFORM NOTHING;
+}
+
+PERFORM $ACTION_S_HALCYON;

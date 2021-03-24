@@ -1,0 +1,71 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+// unit_tss_response.ais - tss response function
+
+//tss = $CUSTOMFIELD_TSS;
+
+int flags = $FLAGS;
+if (flags[$TSSFLAG_BIT]) {
+	if (tss==unit) { //this unit is the responder
+		$SAY_RESPOND_BREAKTSS
+		target = unit->ObjectiveParameters; //get requestor from OP
+		PERFORM SET_PARAM ap[$STOREDUNIT];  //get tssed enemy from AP
+		PERFORM SET_OBJECTIVE $BREAKTSS_UNIT_OBJ; 
+		if (target->IsAlive==1) { //see if requestor is still alive
+			if ($IS_GREKIM && (target->Commander != myCommander)) {  //grekim units 
+				PERFORM $ACTION_CHANGE_COMMANDER (target->Commander); //change commander to arcticus of request unit
+			}
+			else {
+				PERFORM $ACTION_CHANGE_COMMANDER target; //change commander to requesting unit
+			}
+		}
+		ap = 0;
+        ap[$OBJECTIVE] = $BREAKTSS_UNIT_OBJ;
+		PERFORM SET_ADDITIONAL_PARAMS ap;
+        PERFORM NOTHING;
+	}
+
+	int tssAP = tss->AdditionalParameters;
+	int tempuclass = uclass;
+	uclass = tss->Class;
+	//another breaktss responder unit 
+	if ($IS_BREAKTSS_UNIT && tssAP[$UNIT_BIT] && tssAP[$PRIORITY_BIT]) {
+		target = tssAP[$STOREDUNIT];
+		int otherdist = tss <_> target;
+		int dist = unit <_> target;
+		if ((dist > ($LOOKUP_BOUNDARY * 7)) || (dist > otherdist)) {  //too far away
+		} 
+		else { //this unit is closer
+			ap = 0;
+			ap[$STOREDUNIT] = target; //store the enemy into the AP
+			ap[$UNIT_BIT] = 1;
+			ap[$PRIORITY_BIT] = 1;
+			PERFORM SET_ADDITIONAL_PARAMS ap;
+			PERFORM SET_PARAM tss->ObjectiveParameters; //store the requestor into the OP
+			PERFORM SET_PLAYER_CUSTOM_FIELD_2 (unit | ($CUSTOMFIELD_LOOKUP << 16));  //store self into tss field                    
+			PERFORM NOTHING;
+		}
+	}
+	else {
+		//the unit there is another breaktss unit that's already enroute to do it's job, so ignore it
+		if ($IS_BREAKTSS_UNIT && tssAP[$OBJECTIVE]==$BREAKTSS_UNIT_OBJ) { }
+		else {
+			//this unit is the first to respond since noone has responded yet
+			//look for the tssed enemy near the requestor
+			target = QUERY UNIT [tss] MIN [ tss <=> query ] WHERE [!(query->IsAlly) && query->IsStasis];
+			if (target) {    //found the enemy            
+				ap = 0;
+				ap[$UNIT_BIT] = 1;
+				ap[$PRIORITY_BIT] = 1;
+				ap[$STOREDUNIT] = target; //store enemy into the AP
+				PERFORM SET_ADDITIONAL_PARAMS ap;
+				PERFORM SET_PARAM tss; //store requestor into OP
+				PERFORM SET_PLAYER_CUSTOM_FIELD_2 (unit | ($CUSTOMFIELD_LOOKUP << 16));  //store self into tss field                    
+				PERFORM NOTHING;
+			}
+		}
+	}
+
+	uclass = tempuclass;
+	
+}

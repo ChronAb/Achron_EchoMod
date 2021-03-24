@@ -1,0 +1,17 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_creator.aih
+
+/*
+	example (run by scenario monitor):  
+_uc_ap[$UC_AP_TARGET] = mech;
+_dest = $TERRAIN_EAST;
+$UC_ROTATE_UNIT;
+*/
+
+PERFORM SET_OBJECTIVE 0;
+target = (unit->AdditionalParameters)[$UC_AP_TARGET];
+PERFORM $UC_ROTATE_UNIT unit->ObjectiveParameters;
+PERFORM SET_PARAM 0;
+PERFORM SET_ADDITIONAL_PARAMS 0;
+

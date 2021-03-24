@@ -1,0 +1,36 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+if (unit->Energy < 20 ) {
+    $SAY_ENERGY
+    PERFORM $ACTION_ERROR1;
+    PERFORM SET_OBJECTIVE 0;
+    PERFORM NOTHING;
+}
+
+
+int unitPosition = unit->Position;
+PERFORM GET_TERRAIN_GROUND_HEIGHT_AT unitPosition;
+int groundHeight = perf_ret;
+if( unitPosition[$Zpos] == groundHeight) {
+  PERFORM SET_ADDITIONAL_PARAMS 0;
+  PERFORM SET_ADDITIONAL_PARAMS2 0;
+  PERFORM SET_OBJECTIVE 0;
+  PERFORM $ACTION_SPLIT_DOWN 0; //$UNITCREATOR_CLASS;
+}
+else {
+    int location = unitPosition;
+	location[$Zpos] = groundHeight;  //landing
+    int dir = QUERY BESTMOVE [unit, $ACTION_MOVE] MIN [ location <=> query ] WHERE [1];      
+    dir[16,8]=0; //clear out the 3rd byte that stores the counter
+	if (dir == 0 || dir == $QUERY_EXHAUSTED) {  //can't land, so do nothing
+        PERFORM SET_OBJECTIVE 0; 
+        PERFORM NOTHING; 
+    } else {
+      PERFORM $ACTION_MOVE dir;
+      PERFORM NOTHING;
+    }
+}
+
+

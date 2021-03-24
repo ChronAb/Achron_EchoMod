@@ -1,0 +1,33 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+object buddy = 0;
+int mydist = 0;
+
+if (unit->Energy >= energy) {
+
+    if (!smart) {
+        PERFORM RAND;
+        if (perf_ret > 4096) { 
+			$SET_AP
+            PERFORM NOTHING;
+        }
+    }
+
+    buddy =  QUERY UNIT [unit] MIN [ unit <=> query ] WHERE [ query->IsStasis && !(query->IsAlly) ];
+
+    if (buddy) {
+        PERFORM SET_PARAM buddy;
+        PERFORM SET_OBJECTIVE $BREAKTSS_UNIT_OBJ;
+		PERFORM SET_ADDITIONAL_PARAMS2 0;
+		$SET_AP
+        PERFORM NOTHING;
+    }
+              
+    if (smart){
+/* check tss field */
+        object tss = $CUSTOMFIELD_TSS;
+        if (tss->IsAlive == 1) {
+            #include common/include/unit_tss_response.ais
+        }
+    }
+}

@@ -1,0 +1,71 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_creator.ais
+
+//used by unit creator to create a carried_unit for player0 at a location specified in the OP
+//this script is run 3 times (for 3 ticks): 
+// 1: create unit    2:wait a tick  3:change owner to player0 and release unit
+
+int ap = unit->AdditionalParameters;
+
+//ap is 0, means this script was just called so create the carried unit
+if (ap[$STOREDUNIT]==0) {
+    ap[$STOREDUNIT]=1;  //increase the ap by 1 and rerun this script
+    PERFORM SET_ADDITIONAL_PARAMS ap;
+    PERFORM $CREATE_UNIT;
+    PERFORM NOTHING;
+}
+
+//ap is 1, unit was just created, so wait one more tick
+if (ap[$STOREDUNIT]==1) {
+    ap[$STOREDUNIT]=2; //set ap to 2 and rerun this script again
+    PERFORM SET_ADDITIONAL_PARAMS ap;
+    PERFORM NOTHING;
+}
+
+target = unit->NextCarriedUnit;
+//get the recently created carried unit and see if it's alive. if not, try to re-create it
+if (target->IsAlive!=1) { //this would only happen if the original create failed
+    PERFORM SET_ADDITIONAL_PARAMS 0; //setting ap back to 0 means retrying this objective
+    PERFORM NOTHING;
+}
+
+object carried_unit = target;
+
+//this block of code attempts to release the unit at the specified coordinates
+//and if the unit cannot go there, it will expand the search for a location to place the
+//unit down in a clockwise manner based on the length of the unit
+int location = unit->ObjectiveParameters;
+int x = location[$Xpos];
+int y = location[$Ypos];
+int length = target.Length;
+int mult = length;
+int xoffset = length; 
+int yoffset = 0;
+
+target= carried_unit->Class;
+PERFORM CAN_CLASS_FIT_AT location; //see if the unit fits
+int spotClear = perf_ret; 
+while (spotClear != 255) { //the unit does not fit, so calculate new offset coords
+
+    location[$Xpos] = x + xoffset;
+    location[$Ypos] = y + yoffset;
+        
+    PERFORM CAN_CLASS_FIT_AT location;
+    spotClear = perf_ret;   
+    if (xoffset > 0 && yoffset < 0) { yoffset = 0; mult=mult+length; xoffset = mult; } 
+    else {
+        if (xoffset <= 0 && yoffset < 0) { xoffset = xoffset + mult;  }
+        if (xoffset < 0 && yoffset >= 0) { yoffset = yoffset - mult;  }
+        if (xoffset >= 0 && yoffset > 0) { xoffset = xoffset - mult;  }
+        if (xoffset > 0 && yoffset == 0) { yoffset = yoffset + mult;  } 
+    }
+    if (xoffset == 0 && yoffset == 0) { xoffset = xoffset + mult; }
+}  
+
+target=carried_unit;
+PERFORM $RELEASE_ANYWHERE location;
+
+PERFORM SET_PARAM 0;
+PERFORM SET_OBJECTIVE 0;
+PERFORM SET_ADDITIONAL_PARAMS 0;   

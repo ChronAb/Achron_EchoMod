@@ -1,0 +1,209 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+
+//carrier units classes: 215 , 1030, 2105
+
+int ap = unit->AdditionalParameters;
+if (ap[$STOREDUNIT]==0 || ap[$OBJECTIVE]!=$OBJECTIVE_RELEASEUNIT && unit->TotalCarriedSize != 0) {    
+    object u = unit->NextCarriedUnit;
+    int tempu=0;
+    while (u->IsAlive==1) {
+        //carried unit is a tank carrying someone or just a regular unit requesting drop-off
+		tempu = u->Objective;
+        if (tempu==$OBJECTIVE_UNIT_MOVE || tempu==$OBJECTIVE_RELEASEUNIT) {
+            ap = 0;
+            ap[$STOREDUNIT] = u;
+            ap[$UNIT_BIT] = 1;
+            ap[$OBJECTIVE] = $OBJECTIVE_RELEASEUNIT;
+            PERFORM SET_ADDITIONAL_PARAMS2 0;
+			PERFORM SET_ADDITIONAL_PARAMS ap;
+            tempu = u->ObjectiveParameters;
+			PERFORM GET_TERRAIN_GROUND_HEIGHT_AT tempu; //perf_ret holds the ground height at unit's OP
+			if (tempu[$Zpos]==perf_ret) {
+				PERFORM GET_MAP_NEXT_Z_POSITION_UP tempu;
+				PERFORM SET_PARAM perf_ret;
+			} else {
+				PERFORM SET_PARAM tempu;
+			}
+            PERFORM SET_OBJECTIVE $OBJECTIVE_RELEASEUNIT;
+            PERFORM NOTHING;
+        }
+        u = unit->NextCarriedUnit; 
+    }
+}
+
+if (ap[$STOREDUNIT]==0) {
+	PERFORM SET_ADDITIONAL_PARAMS2 0;
+    PERFORM SET_ADDITIONAL_PARAMS 0;
+    PERFORM SET_OBJECTIVE 0;
+    PERFORM NOTHING;    
+}
+
+int destination = unit->ObjectiveParameters;
+
+int unitPosition = unit->Position;
+PERFORM GET_TERRAIN_GROUND_HEIGHT_AT unitPosition; //perf_ret holds the ground height at unit's location
+int groundHeight = perf_ret;
+int unitZ = unitPosition[$Zpos];
+
+int distToOP = destination<_>unit;
+if (distToOP <= 16) {
+	object o = ap[$STOREDUNIT];
+	destination[$Zpos] = groundHeight; //default the Z-coord to be the ground
+	int airunit = 0;
+	if ((o.Flags)[0]) { //air capable unit
+		destination[$Zpos] = unitZ; 
+		airunit = 1;
+	}
+	
+	//carrying a land unit, try to get closer to the ground to relesea it
+    if (unit<^>destination > 900 && !airunit) {
+	
+		PERFORM GET_MAP_NEXT_Z_POSITION_DOWN unitPosition;
+		int location = perf_ret;
+		
+		int x = location[$Xpos];
+		int y = location[$Ypos];
+		int length = 3;
+		int mult = length;
+		int xoffset = length; 
+		int yoffset = 0;
+		target = unit->Class;
+		PERFORM CAN_CLASS_FIT_AT location; //see if the unit fits
+		int spotClear = perf_ret; 
+		int counter = 0;
+		while (spotClear != 255) { //the unit does not fit, so calculate new offset coords
+			counter = counter + 1;
+			if (counter == 9) { break; }
+			location[$Xpos] = x + xoffset;
+			location[$Ypos] = y + yoffset;
+
+			PERFORM CAN_CLASS_FIT_AT location;
+			spotClear = perf_ret;   
+			
+			if (xoffset > 0 && yoffset < 0) { yoffset = 0; mult=mult+length; xoffset = mult; } 
+			else {
+				if (xoffset <= 0 && yoffset < 0) { xoffset = xoffset + mult;  }
+				if (xoffset < 0 && yoffset >= 0) { yoffset = yoffset - mult;  }
+				if (xoffset >= 0 && yoffset > 0) { xoffset = xoffset - mult;  }
+				if (xoffset > 0 && yoffset == 0) { yoffset = yoffset + mult;  } 
+			}
+			if (xoffset == 0 && yoffset == 0) { xoffset = xoffset + mult; }
+		}  
+		
+		if (counter==9) {
+			$SAY_OBSTACLE;
+			PERFORM $ACTION_ERROR2;
+			PERFORM SET_ADDITIONAL_PARAMS2 0;
+			PERFORM SET_ADDITIONAL_PARAMS 0;
+			PERFORM SET_OBJECTIVE 0; 
+			PERFORM NOTHING; 
+		}
+		
+		//don't land
+		if (location[$Zpos]==0) {
+			PERFORM GET_MAP_NEXT_Z_POSITION_UP location;
+			location = perf_ret;
+		}
+		
+		int dir = 0;
+		if (counter==0) { //spot below is clear, can move vertically
+			dir = QUERY BESTMOVE [unit, $ACTION_MOVE] MIN [ (location <=> query) * 2 ] WHERE [1];
+		} else { //move horizontally
+			dir = QUERY BESTMOVE [unit, $ACTION_MOVE] MIN [ (location <_> query) * 2 ] WHERE [1];
+		}
+		dir[16,8]=0; //clear out the 3rd byte that stores the counter
+		if (dir == 0 || dir == $QUERY_EXHAUSTED) {  //can't land, so do nothing
+			$SAY_OBSTACLE;
+			PERFORM $ACTION_ERROR2;
+			PERFORM SET_ADDITIONAL_PARAMS2 0;
+			PERFORM SET_ADDITIONAL_PARAMS 0;
+			PERFORM SET_OBJECTIVE 0; 
+			PERFORM NOTHING; 
+		} else {
+		  PERFORM $ACTION_MOVE dir;
+		  PERFORM NOTHING;
+		}
+	
+    }
+    else {
+        target = o->Class;
+        PERFORM SET_OBJECTIVE 0;
+		PERFORM SET_ADDITIONAL_PARAMS2 0;
+		PERFORM CAN_CLASS_FIT_AT destination;
+        //if(!perf_ret) {
+        if (perf_ret != 255) { //all rotations fit. to check if fits in general use: if (perf_ret>0 && perf_ret[0]) { //to check for any rotations fits
+            $SAY_PUT
+            target = o;
+			PERFORM SET_OTHER_ADDITIONAL_PARAMS 0;
+            PERFORM SET_OTHER_OBJECTIVE 0;
+			//PERFORM $ACTION_SET_OBJECTIVE_IDLE target;
+			PERFORM SET_ADDITIONAL_PARAMS 0;
+            PERFORM $ACTION_ERROR1;
+            PERFORM NOTHING;
+        }
+		
+        target = o;
+        PERFORM SET_ADDITIONAL_PARAMS 0;
+        PERFORM $ACTION_SET_OBJECTIVE_IDLE target;
+		if (airunit) { 
+			PERFORM $ACTION_RELEASE_AIRUNIT destination; 
+		}
+		else {
+			PERFORM $ACTION_RELEASE_UNIT destination;
+		}
+		PERFORM SET_OTHER_ADDITIONAL_PARAMS 0;
+        PERFORM NOTHING;
+    }
+
+}
+else {
+
+	int dir = 0;
+	int counter = unit->AdditionalParameters2; //move counter to move in the same direction
+	if (counter>0) {           //more than 0 means already moving in a direction
+		counter = counter - 1; //decrease the counter
+		PERFORM SET_ADDITIONAL_PARAMS2 counter;
+		int rot = unit->Rotation; //get the unit's current rotation
+		$DIR_FROM_ROT             //set the dir to move to based on that unit's rotation
+	}
+	else {  //no move counter stored, so query where to move to next
+	
+			//don't land
+		if (destination[$Zpos]==0) {
+			PERFORM GET_MAP_NEXT_Z_POSITION_UP destination;
+			destination = perf_ret;
+		}
+	
+		dir = QUERY BESTMOVE [unit, $ACTION_MOVE] MIN [ (destination <_> query) * 2 ] WHERE [1];
+		if (dir[0,8] >= 16) { counter = 0; } //moving up or down, so don't store counter
+		else {
+			counter = dir[16,8]; 			  //the counter is stored in the 3rd byte of dir
+			if (counter > 7) { counter = 7; } //cap it at 7 since AdditionalParameters2 only has 3 bits
+		}
+		PERFORM SET_ADDITIONAL_PARAMS2 counter;
+	}
+
+	dir[16,8] = 0; //clear out the 3rd byte that stores the counter
+
+	//if unit is one above ground but wants to move down, change direction to go up instead
+	if (dir==$TERRAIN_DOWN) {
+		PERFORM GET_MAP_NEXT_Z_POSITION_DOWN unitPosition;
+		if (perf_ret[$Zpos]==0) { dir = $TERRAIN_UP; } 
+	}
+	
+    if (dir == $QUERY_EXHAUSTED || (dir==0 && distToOP > 4)) {  //something is in the way OR can't move AND not at destination yet
+		PERFORM SET_ADDITIONAL_PARAMS 0;
+		PERFORM SET_ADDITIONAL_PARAMS2 0;
+        PERFORM SET_OBJECTIVE 0;
+        PERFORM NOTHING;
+    } 
+    else {
+        PERFORM $ACTION_MOVE dir;
+		if (perf_ret!=1) {
+			PERFORM SET_ADDITIONAL_PARAMS2 0;
+		}
+        PERFORM NOTHING;
+    }
+
+}

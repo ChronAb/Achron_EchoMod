@@ -1,0 +1,7 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+#define OBJECT 205
+#define CREATE_ACTION $ACTION_FRIGATE;
+#define CREATE_TIME 432
+#include common/include/unit_human_create.ais

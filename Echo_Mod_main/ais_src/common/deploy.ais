@@ -1,0 +1,137 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+//if running this while in the middle of deploying a unit 
+if(unit->UnitAIServiceTime > 0) { 
+
+	PERFORM GET_CUR_TIME; //run the check for depot that cleared it's annex ping bit
+	if (perf_ret%$DEPOT_CHECK==0 && unit->Class == $ANNEX_CLASS) { 
+		while(1) { 
+			target = QUERY UNIT [unit] MIN [unit<_>query] WHERE [query->IsAlly && query->Class==$DEPOT_CLASS &&
+																	 query<_>unit <= 144 &&!(query->Status[$CAP_BIT_3]) ]; 
+																														 
+			//annex sets the depot's cap_bit_1, allowing it to create vehicles directly
+			if (target->IsAlive==1) {
+				PERFORM $ACTION_SET_DEPOT_BIT;
+			} else { break; }
+		}
+	}
+
+    PERFORM NOTHING; 
+}
+
+//vecgir annex checks for an adjacent depot after every unit release
+if (unit->Class == $ANNEX_CLASS) { //run the check for depot that cleared it's annex ping bit
+	while(1) { 
+		target = QUERY UNIT [unit] MIN [unit<_>query] WHERE [query->IsAlly && query->Class==$DEPOT_CLASS &&
+																 query<_>unit <= 144 &&!(query->Status[$CAP_BIT_3]) ]; 
+																													 
+		//annex sets the depot's cap_bit_1, allowing it to create vehicles directly
+		if (target->IsAlive==1) {
+			PERFORM $ACTION_SET_DEPOT_BIT;
+		} else { break; }
+	}
+}
+
+
+int ue = unit->Ammo; //unit to release 
+if (ue > 0) {
+    object next = unit->NextCarriedUnit; //does isAlive check already
+    object que = next;
+    while (que->IsAlive==1) { //loop to get the oldest unit
+        if  (que->Age > next->Age)  { 
+            next = que;
+        }
+        que = unit->NextCarriedUnit;
+    }
+
+    target = next;
+    int eta = unit->ActionParameters;
+	int released = 0;
+    if (ue==1) { PERFORM $ACTION_RELEASE_1 eta; released = 1; }
+    if (ue==2) { PERFORM $ACTION_RELEASE_2 eta; released = 1;  }
+    if (ue==3) { PERFORM $ACTION_RELEASE_3 eta; released = 1;  }
+    if (ue==4) { PERFORM $ACTION_RELEASE_4 eta; released = 1;  }
+    if (ue==5) { PERFORM $ACTION_RELEASE_5 eta; released = 1;  }
+
+	if (released) {
+		int op = unit->ObjectiveParameters;
+		//factory has congregation point set and the unit is idle
+		if (op!=$INVALID_POSITION && next->Objective==0) {
+			if (op[$Zpos] == 31) {  //rally point is set to a unit
+				object rally = op[0,16];
+				PERFORM $ACTION_SET_COMMANDER_TO rally;
+				
+				//if the rally target unit is attacking or moving somewhere, tell the deploying unit to do the same
+				int commanderObj = rally->Objective;
+				if(commanderObj == $OBJECTIVE_ATTACKING || commanderObj == $OBJECTIVE_ATTACKING_UNIT || commanderObj == $OBJECTIVE_UNIT_MOVE) {
+					int cap = rally->AdditionalParameters;
+					int ap = 0;
+					ap[$MATCH_OTHER_BIT] = 1; //match speeds on next move					
+					int speed = 20;
+					int uclass = target->Class;
+					$SPEED_BY_CLASS;
+					ap[$MOVE_COUNTER] = 60 / speed; // 60 ticks since speeds are 3..10		
+				 
+					
+					if(commanderObj == $OBJECTIVE_UNIT_MOVE) {
+						ap[$OBJECTIVE] = $OBJECTIVE_UNIT_MOVE;
+						if (cap[$TIME_BIT]) { ap[$TIME_BIT] = 1; } //set the no-formation bit
+						ap[$MOVE_BIT] = 1;
+						//commander is doing priority, i should propagate it
+						if (cap[$MOVE_BIT,2]==3) { 
+							ap[$ATTACK_BIT] = 1; 
+						}	
+						
+						PERFORM SET_OTHER_ADDITIONAL_PARAMS ap;
+						PERFORM SET_OTHER_OBJECTIVE $OBJECTIVE_UNIT_MOVE;
+					}
+					
+					if (commanderObj == $OBJECTIVE_ATTACKING || commanderObj == $OBJECTIVE_ATTACKING_UNIT ) {
+						int attackObjective = $OBJECTIVE_ATTACKING;
+						ap[$OBJECTIVE] = $OBJECTIVE_ATTACKING;
+						if (cap[$UNIT_BIT]) {
+							ap[$UNIT_BIT] = 1; 
+							attackObjective = $OBJECTIVE_ATTACKING_UNIT;
+						}
+
+						ap[$ATTACK_BIT] = 1;
+						//commander is doing priority, i should propagate it
+						if (cap[$MOVE_BIT,2]==3) { 
+							ap[$MOVE_BIT] = 1; 
+						}		
+
+						PERFORM SET_OTHER_ADDITIONAL_PARAMS ap;
+						PERFORM SET_OTHER_OBJECTIVE attackObjective;
+					 }
+					 PERFORM SET_OTHER_OBJECTIVE_PARAMS rally->ObjectiveParameters;
+				}
+				PERFORM NOTHING;
+			}
+			
+			int ap              = 0;
+			ap[$ATTACK_BIT] = 1;
+			ap[6,3]         = $OBJECTIVE_ATTACKING;
+			//calculate and store a move counter for this unit based on how fast it moves. the faster the unit, the higher the counter
+			//since it'll take more moves in a set amount of time than a slower unit
+			//this is used by unit_priority_override and unit_common_header.ais to see whether subordinates need to follow their commander
+			int speed = 20;
+			int uclass = target->Class;
+			$SPEED_BY_CLASS;
+			int moves = 60 / speed; // how many moves in a 60 tick period
+			ap[$MOVE_COUNTER] = moves;  //store the move counter into the override field
+			if (op[$Zpos]==0 && target.Rank>=$AIR_RANK) { //airunit and rally is on a ground tile
+				PERFORM GET_MAP_NEXT_Z_POSITION_UP op;
+				op = perf_ret;
+			}
+			PERFORM SET_OTHER_OBJECTIVE_PARAMS op;
+			PERFORM SET_OTHER_ADDITIONAL_PARAMS ap;
+			PERFORM SET_OTHER_OBJECTIVE $OBJECTIVE_ATTACKING;
+		}
+		PERFORM NOTHING;
+	}
+	
+}
+
+#include common/include/unit_common_deploy.ais

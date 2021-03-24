@@ -1,0 +1,118 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+int ap = 0;
+int op = unit->ObjectiveParameters;
+
+
+ap = 0;
+ap[$MATCH_OTHER_BIT] = 1; //match speeds on next move
+ap[$OBJECTIVE] =  $OBJECTIVE_UNIT_DEFEND;
+
+
+//calculate and store a move counter for this unit based on how fast it moves. the faster the unit, the higher the counter
+//since it'll take more moves in a set amount of time than a slower unit
+//this is used by unit_priority_override and unit_common_header.ais to see whether subordinates need to follow their commander
+int speed = 20;
+int uclass=unit->Class;
+$SPEED_BY_CLASS;
+if (speed<=3) { speed = speed * 2; } //fast units move twice per move action
+int moves = 60 / speed; // how many moves in a 60 tick period
+ap[$MOVE_COUNTER] = moves;  //store the move counter into the override field
+
+int clickedOnUnit = 0;
+if (op!=$INVALID_POSITION && op[$Zpos]==31) {
+	target = op[0,16];
+	if (target->Owner==player) { //clicked on own unit, hold current position
+		op = unit->Position;
+		clickedOnUnit = 1;
+	} else {
+		op = target->Position;
+	}
+}
+
+if (!clickedOnUnit) {
+	//prevent big units from trying to walk off the map
+	int length = unit.Length;
+	if (length >= 3) {
+		//get the map boundaries
+		PERFORM GET_MAP_WIDTH;
+		int mapwidth = perf_ret;
+		PERFORM GET_MAP_LENGTH;
+		int maplength = perf_ret;
+
+		int X = op[$Xpos];
+		int Y = op[$Ypos];
+		//boundary edge minus unit's length
+		if (Y > (maplength-length))  Y = maplength - length + 1;  
+		if (X > (mapwidth-length))  X = mapwidth - length + 1; 
+		if (X <= length / 2) X = length / 2 ;
+		if (Y <= length / 2) Y = length / 2 ;
+		op[$Xpos] = X;
+		op[$Ypos] = Y;
+		PERFORM SET_PARAM op;
+	}
+
+}
+
+int airunit = 0;
+//get the next height above for air units
+if ($IS_AIR_UNIT) {
+	airunit = 1;
+	if (op[$Zpos] == 0) {
+		PERFORM GET_MAP_NEXT_Z_POSITION_UP op; 
+		op = perf_ret;
+	}
+}
+else {
+	op[$Zpos] = 0; //ground units always default to the ground tile
+}
+
+
+PERFORM IS_MAP_POSITION_VALID op; //returs 0 if it's not valid
+if (perf_ret==0) {
+	//op[$Zpos] = 0; //default to ground for that position
+	if (airunit) {
+		PERFORM GET_MAP_NEXT_Z_POSITION_UP op; //get the next height above for air units
+		op = perf_ret;
+	}
+	
+}
+
+//hold current position if specifying a pos < 4 spaces away and have no more positions queued up
+if (unit<_>op < 17 && unit->NumQueuedObjectives==0) {
+	op = unit->Position;
+	ap[$TIME_BIT] = 1; 
+	PERFORM CLEAR_QUEUE;
+}
+
+ap[$PLAYER_BIT] = 1;
+
+PERFORM SET_PARAM op;
+PERFORM SET_ADDITIONAL_PARAMS ap;
+PERFORM SET_ADDITIONAL_PARAMS2 0;
+PERFORM SET_OBJECTIVE $OBJECTIVE_UNIT_DEFEND;
+
+
+
+if ($IS_AIR_UNIT) {
+	int location = unit->Position;
+    if (location[$Zpos]==0)  {
+		PERFORM GET_MAP_NEXT_Z_POSITION_UP location;  //move to the spot above the position
+		location = perf_ret;
+        int dir = QUERY BESTMOVE [unit, $ACTION_MOVE] MIN [ location <=> query ] WHERE [1];
+        PERFORM $ACTION_MOVE dir;
+        PERFORM NOTHING;
+    }
+}
+
+
+
+if(1) { //prevent already-initialized var errors
+	#include common/include/unit_common_header.ais
+	#include common/include/unit_patrol.ais
+}
+
+
+

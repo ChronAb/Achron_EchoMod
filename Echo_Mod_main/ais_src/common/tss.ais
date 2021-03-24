@@ -1,0 +1,45 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+
+// if (player.ScenarioConstraints[2] || player.ScenarioConstraints[4]) {
+	// PERFORM SET_OBJECTIVE 0;
+    // PERFORM NOTHING;
+// }
+
+if ( !(player->Advancements[$HUMAN_ADV_EXTRAS])) { 
+	PERFORM SET_OBJECTIVE 0;
+	PERFORM NOTHING;
+}
+
+
+
+target = unit->ObjectiveParameters;
+if (target->IsAlly!=1 || target.Rank==$ACHRON_RANK || (target.Rank <= $BUILDINGS_RANK && target->Class >= 1000)) {
+    PERFORM SET_OBJECTIVE 0;
+    PERFORM NOTHING;
+}
+
+
+if (unit->Energy < 110 || player->$QPlasma < 34) {
+  if (unit->Energy < 110) $SAY_ENERGY
+  else if (player->$QPlasma < 80) $SAY_QP
+  PERFORM $ACTION_ERROR1;
+  PERFORM SET_OBJECTIVE 0;
+  PERFORM NOTHING;
+}
+
+PERFORM SET_OBJECTIVE 0;
+
+if (target<_>unit > 500 || target<^>unit > 961 ) { //max tss range is 23/31
+    $SAY_TOOFAR
+    PERFORM $ACTION_ERROR2;
+    PERFORM NOTHING;
+}
+else {
+    if (target->IsStasis<1) { //not already tssed
+    	  PERFORM $ACTION_TSS target;
+    }
+}
+

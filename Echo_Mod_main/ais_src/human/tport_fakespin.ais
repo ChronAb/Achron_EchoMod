@@ -1,0 +1,12 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+
+if (! (unit->Status[$CAP_BIT_2])) {    //make sure tporter is spun up
+    PERFORM $ACTION_SPINUP; 
+	PERFORM NOTHING;
+}
+
+PERFORM $ACTION_FAKE_TELEPORT;  //fake spin
+PERFORM SET_OBJECTIVE 0;

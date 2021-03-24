@@ -1,0 +1,168 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+int ap = 0;
+int skip = 0;
+
+PERFORM RAND;
+if (perf_ret > 16000) { // 0-32k
+   #include common/include/vecgir_building_idle.ais    
+   	//the depot always answers lookup requests
+	if (!hash) { //hash will be 0 if smart idle was not run
+	    /* Check if this unit is being requested by another, do handshake and distance calculations */
+		object lookupunit = unit;
+		int num = 0;
+		int find = $FLAGS[$LOOKUP_UNIT];
+		object lookup = 0;
+		//the unit 'hash' lookup table...
+		#include common/include/unit_lookup.ais
+		
+		if (num == find) {    //somebody in field 'lookup' wants this unit...
+		   #include common/include/unit_lookup_response.ais
+		}
+	}
+   
+   skip = 1; //don't rerun the vecgir_building_idle script below
+}
+
+target = QUERY UNIT [unit] MAX [ unit <=> query ] WHERE [ query.Rank == $S_VIR_RANK && query->Status[$CAP_BIT_3] && query->IsAlly==1];
+if (target != 0) {
+    $SAY_NEARBY
+    PERFORM $ACTION_SET_BIT target;
+}        
+
+#define PULSER_SIZE 9
+int TOTAL_CARRIED_SIZE = unit->TotalCarriedSize;
+
+
+//run the check to pilot vir units every other tick; this allows a picked-up vir to consume resources for the vehicle, 
+//which it does on the following tick (once it's inside the depot), this way if there is more than one vir request 
+//to pilot, if there are not enough resources, the following request will be rejected
+//otherwise if both virs get picked up by the depot, but only resources for one vehicle, the other gets stuck inside
+PERFORM GET_CUR_TIME;
+if (perf_ret%2==1) {
+	//only look for units to pickup if there's enough space for the smallest unit (a pulser)
+	if (TOTAL_CARRIED_SIZE + $PULSER_SIZE <= $DEPOT_CARRYING_CAPACITY) 	{
+		int temp1 = 0;
+		target = QUERY UNIT [unit] MAX [ query->Ammo ] //MIN [unit <=> query] 
+				 WHERE [((temp1=query->Objective) >= $OBJECTIVE_PILOT_PULSER && temp1 <= $OBJECTIVE_DEPOT_REPAIR ) && 
+						query->Class >= 2000 && query->IsAlly==1 ];
+									
+		if (target!=0) {
+			if (target->TotalSize + TOTAL_CARRIED_SIZE <= $DEPOT_CARRYING_CAPACITY) {        
+				int t_obj = target->Objective;
+				int t_ammo = target->Ammo;
+				if ((t_obj == $OBJECTIVE_PILOT_PULSER && t_ammo == 1) ||   //pulser
+					(t_obj == $OBJECTIVE_PILOT_TERCHER && t_ammo == 2) ||   //tercher
+					(t_obj == $OBJECTIVE_PILOT_HALCYON && t_ammo == 3) ||   //halcyon
+					(t_obj == $OBJECTIVE_DEPOT_REPAIR && target->HP != target.MaxHP)      //repair vehicle
+					) {
+					PERFORM $ACTION_TAKE_UNIT target;
+					PERFORM SET_OTHER_OBJECTIVE 0;
+					PERFORM SET_OTHER_OBJECTIVE_PARAMS 0;
+					PERFORM SET_OTHER_ADDITIONAL_PARAMS 0;
+					PERFORM NOTHING;
+				}
+				else { //found a vehicle that doesn't need repair or has already been piloted
+					if(t_ammo == 0 && t_obj >= $OBJECTIVE_PILOT_PULSER && t_obj <= $OBJECTIVE_PILOT_HALCYON) {
+						//vir pilot is doing some action and hasn't run its pilot script yet to tell the depot which vehicle
+						//it wants to pilot (ammo hasn't been set), therefore do nothing with it
+					}
+					else {
+						PERFORM SET_OTHER_OBJECTIVE 0;
+						PERFORM SET_OTHER_OBJECTIVE_PARAMS 0;
+						PERFORM SET_OTHER_ADDITIONAL_PARAMS 0;
+						PERFORM NOTHING;
+					}
+				}
+				
+			}
+		}    
+	}
+}
+else { //release next unit and send it to rally point
+	if(TOTAL_CARRIED_SIZE != 0) { 
+		while (1) {
+			target = unit->NextCarriedUnit;
+			if (target==0) { break; }
+			else if (!(target->Status[$CAP_BIT_4]) && target->UnitAIServiceTime <= 0) { //cleared pilot bit and not running a long-action
+				PERFORM $ACTION_RELEASE_UNIT target;
+				
+
+				int op = unit->ObjectiveParameters;
+				//factory has congregation point set and the unit is idle
+				int targetObjective = target->Objective;
+				if (op!=$INVALID_POSITION && targetObjective==0) {
+					if (op[$Zpos] == 31) {  //rally point is set to a unit
+						object rally = op[0,16];
+						PERFORM $ACTION_SET_COMMANDER_TO rally;
+						PERFORM SET_OTHER_ADDITIONAL_PARAMS 0;
+						PERFORM NOTHING;
+					}
+					
+					int ap              = 0;
+					ap[$ATTACK_BIT] = 1;
+					ap[6,3]         = $OBJECTIVE_ATTACKING;
+					//calculate and store a move counter for this unit based on how fast it moves. the faster the unit, the higher the counter
+					//since it'll take more moves in a set amount of time than a slower unit
+					//this is used by unit_priority_override and unit_common_header.ais to see whether subordinates need to follow their commander
+					int speed = 20;
+					int uclass = target->Class;
+					$SPEED_BY_CLASS;
+					int moves = 60 / speed; // how many moves in a 60 tick period
+					ap[$MOVE_COUNTER] = moves;  //store the move counter into the override field
+					if (op[$Zpos]==0 && target.Rank>=$AIR_RANK) { //airunit and rally is on a ground tile
+						PERFORM GET_MAP_NEXT_Z_POSITION_UP op;
+						op = perf_ret;
+					}
+					PERFORM SET_OTHER_OBJECTIVE_PARAMS op;
+					PERFORM SET_OTHER_ADDITIONAL_PARAMS ap;
+					PERFORM SET_OTHER_OBJECTIVE $OBJECTIVE_ATTACKING;
+				}
+			
+				
+				PERFORM NOTHING;
+			} 
+		}
+	}    
+}
+
+if (!skip) {   
+    #include common/include/vecgir_building_idle.ais    
+	//the depot always answers lookup requests
+	if (!hash) { //hash will be 0 if smart idle was not run
+	    /* Check if this unit is being requested by another, do handshake and distance calculations */
+		object lookupunit = unit;
+		
+		int num = 0;
+		int find = $FLAGS[$LOOKUP_UNIT];
+		object lookup = 0;
+
+		//the unit 'hash' lookup table...
+		#include common/include/unit_lookup.ais
+		
+		if (num == find) {    //somebody in field 'lookup' wants this unit...
+		   #include common/include/unit_lookup_response.ais
+		}
+	}
+}
+    
+PERFORM RAND;
+if (perf_ret < 8192)     {
+    if (player->Advancements[$VECGIR_ADV_AUTODEFENCE]) {
+	
+		PERFORM GET_MAX_ACTION_RANGE_RADIUS $ACTION_ATTACK;
+		query_vis_distance = perf_ret;
+		
+		target = QUERY UNIT [unit] MIN [ unit <=> query ] WHERE [!(query->IsAlly) && !(query->IsStasis) && query.MaxHP > 0];
+		PERFORM GET_CLOSEST_TARGET_POSITION_WITHIN_RANGE $ACTION_ATTACK;
+		int position =  perf_ret; 
+		if (position!=-1 && position!=$INVALID_POSITION) { 
+			target_is_position = 1;
+			target = position;
+			PERFORM $ACTION_ATTACK position;
+			PERFORM NOTHING;
+		}
+	}
+ }

@@ -1,0 +1,106 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+//unit_move_dispatch.ais - general move dispatch script, called by the common move dispatch script
+
+
+
+ap = 0;
+ap[$MATCH_OTHER_BIT] = 1; //match speeds on next move
+ap[$OBJECTIVE] =  $OBJECTIVE_UNIT_MOVE; 
+ap[$PLAYER_BIT] = 1;
+ap[$MOVE_BIT] = 1;
+
+//calculate and store a move counter for this unit based on how fast it moves. the faster the unit, the higher the counter
+//since it'll take more moves in a set amount of time than a slower unit
+//this is used by unit_priority_override and unit_common_header.ais to see whether subordinates need to follow their commander
+int speed = 20;
+int uclass=unit->Class;
+$SPEED_BY_CLASS;
+if (speed<=3) { speed = speed * 2; } //fast units move twice per move action
+int moves = 60 / speed; // how many moves in a 60 tick period
+ap[$MOVE_COUNTER] = moves;  //store the move counter into the override field
+
+
+int op = unit->ObjectiveParameters;
+
+
+//prevent big units from trying to walk off the map
+int length = unit.Length;
+if (length >= 3) {
+	//get the map boundaries
+	PERFORM GET_MAP_WIDTH;
+	int mapwidth = perf_ret;
+	PERFORM GET_MAP_LENGTH;
+	int maplength = perf_ret;
+
+	int X = op[$Xpos];
+	int Y = op[$Ypos];
+	//boundary edge minus unit's length
+	if (Y > (maplength-length))  Y = maplength - length + 1;  
+	if (X > (mapwidth-length))  X = mapwidth - length + 1; 
+	if (X <= length / 2) X = length / 2 ;
+	if (Y <= length / 2) Y = length / 2 ;
+	op[$Xpos] = X;
+	op[$Ypos] = Y;
+	PERFORM SET_PARAM op;
+}
+
+PERFORM IS_MAP_POSITION_VALID op; //returs 0 if it's not valid
+if (perf_ret==0) {
+	op[$Zpos] = 0; //default to ground for that position
+	if ($IS_AIR_UNIT) {
+		PERFORM GET_MAP_NEXT_Z_POSITION_UP op; //get the next height above for air units
+		op = perf_ret;
+	}
+	PERFORM SET_PARAM op;
+}
+
+
+//*** figure out whether to bunch up subordinates (no-formation) or move elsewhere in formation ***//
+//ordering the commander to move somewhere in-between its subordinates will bunch up the hierarchy together
+int formation = 1;
+int unitPosition = unit->Position;
+int i = 0;
+int ux = unitPosition[$Xpos];
+int uy = unitPosition[$Ypos];
+int tx = 0;
+int ty = 0;
+int op_x = op[$Xpos];
+int op_y = op[$Ypos];
+for (i=0; i < 30; i=i+1) { //loop through the first 30 subordinates, should be enough
+	target = unit->NextSubordinate;
+	if (target<=0) { break; }  //no subordinates, stop looping through
+	if (target == unit || target->IsAlive!=1 ) { continue; } //skip to the next subordinate
+	
+	int targetPosition = target->Position;
+	tx = targetPosition[$Xpos];
+	ty = targetPosition[$Ypos];
+	//determine the x/y coordinates of the virtual 'box' between the unit and this subordinate 
+	int minX =  ux <| tx;
+	int minY =  uy <| ty;
+	int maxX =  ux |> tx;
+	int maxY =  uy |> ty;
+	
+	//check if destination is between, if it is, don't move in formation and stop looping
+	if (op_x >= minX && op_x <= maxX && op_y >= minY && op_y <= maxY) {
+		formation = 0; 
+		break; 
+	}
+		
+}
+if (!formation) { ap[$TIME_BIT] = 1; } //set the NO_FORMATION bit
+//*** ***//
+
+PERFORM SET_ADDITIONAL_PARAMS ap;
+PERFORM SET_ADDITIONAL_PARAMS2 0;
+PERFORM SET_ADDITIONAL_PARAMS3 0;
+PERFORM SET_ADDITIONAL_PARAMS4 0;
+PERFORM SET_OBJECTIVE $OBJECTIVE_UNIT_MOVE;
+
+if ($IS_WEAPON_RAISED) {
+	PERFORM $ACTION_LOWER_WEAPON;
+	PERFORM NOTHING;
+}
+
+								
+								

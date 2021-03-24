@@ -1,0 +1,223 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+/*
+Purpose:
+Enables units to request or perform teleportation
+
+Logic flow:
+    1. Verify that you are permitted to teleport and the destination is within range
+    2. Check if there is a teleporter or slipgate nearby
+    3. If a 'porter is NOT available
+        1. attempt to self skip
+        2. return to idle
+    4. If 'porter is available, ask it to teleport you
+*/
+
+// 1. Verify that you are permitted to teleport
+//********************************************************************
+//TSSed units can't teleport. Don't waste time on it.
+if (unit->IsStasis) { 
+    $SAY_TELEPORT_TSS;
+	PERFORM SET_ADDITIONAL_PARAMS2 0;
+	PERFORM SET_ADDITIONAL_PARAMS 0; //^^^
+    PERFORM SET_OBJECTIVE 0;
+    PERFORM SET_PARAM 0;
+    PERFORM NOTHING;
+}
+
+//Max Teleport distance is 150 and Min is 10
+int pos = unit->ObjectiveParameters;
+int goal_dist = unit <_> pos;
+if (goal_dist > 22500) { 
+    $SAY_TELEPORT;
+	PERFORM SET_ADDITIONAL_PARAMS2 0;
+	PERFORM SET_ADDITIONAL_PARAMS 0;
+    PERFORM SET_OBJECTIVE 0;
+    PERFORM SET_PARAM 0;
+    PERFORM NOTHING;
+}
+
+if (goal_dist < 64) { //if closer than 8 there's no point in teleporting
+    say "Already at destination";
+	PERFORM SET_ADDITIONAL_PARAMS2 0;
+	PERFORM SET_ADDITIONAL_PARAMS 0;
+    PERFORM SET_OBJECTIVE 0;
+    PERFORM SET_PARAM 0;
+    PERFORM NOTHING;
+}
+
+// 2. Check if there is a Teleporter or Slipgate nearby 
+//********************************************************************
+#include common/include/unit_common_header.ais
+object closesttport =  0;
+
+if (AP_UNIT) { //already have a unit stored
+    closesttport = ap[$STOREDUNIT];
+    if (closesttport->IsAlive==1) {
+		int ctr = closesttport.Rank;
+		//clear it if the stored unit isn't a teleporter or slipgate or it's too far away
+		if (!(ctr >=$TELEPORTER_RANK && ctr<= $SLIPGATE_RANK) ) { 
+			ap[$UNIT_BIT] = 0;
+			ap[$STOREDUNIT] = 0; //clear out the unit field
+			PERFORM SET_ADDITIONAL_PARAMS ap;
+			closesttport = 0;        
+		}
+	} else {//clear if the unit is dead
+		ap[$UNIT_BIT] = 0;
+		ap[$STOREDUNIT] = 0; //clear out the unit field
+		PERFORM SET_ADDITIONAL_PARAMS ap;
+		closesttport = 0;        
+	}
+}
+
+//Look for a new 'porter
+//int commanderOP = unit->ActionParameters;
+int qrank = 0;
+if (closesttport==0) {   
+	query_vis_distance = 24; // teleport radius
+    closesttport = QUERY UNIT [unit] MIN [ unit <=> query ] 
+                   WHERE [ ((qrank = query.Rank)>=$TELEPORTER_RANK && qrank<=$SLIPGATE_RANK) && query->IsAlly==1 && (query->Objective == 0) && !(query->Status & $FROZEN_COMMJAM) ];
+	query_vis_distance = -1;
+}
+
+// 3. If there isn't a 'porter nearby -> Attempt to self skip, then return to idle
+//********************************************************************
+if (closesttport==0 && ( player->Advancements[$HUMAN_ADV_GATE] || $IS_GREKIM ) ) {
+            
+    if (player->$Power > 0) {
+        #include common/include/unit_skip_teleport_new.ais
+        PERFORM SET_ADDITIONAL_PARAMS2 0;
+        PERFORM SET_ADDITIONAL_PARAMS 0;
+        PERFORM SET_OBJECTIVE 0;
+        PERFORM SET_PARAM 0;
+        PERFORM NOTHING;
+    }
+    
+    else {
+        $SAY_POWER
+        say " to skip teleport";
+        PERFORM SET_ADDITIONAL_PARAMS2 0;
+        PERFORM SET_ADDITIONAL_PARAMS 0;
+        PERFORM SET_OBJECTIVE 0;
+        PERFORM SET_PARAM 0;
+        PERFORM NOTHING;
+    }
+}
+
+// 4. If there is a 'porter nearby -> Ask it to teleport you
+//********************************************************************
+int dist = 0; 
+if (closesttport) {
+
+    int cpAP =  closesttport->AdditionalParameters;
+    if ( cpAP[$STOREDUNIT]==unit && !cpAP[$UNIT_BIT] && cpAP[11]) {  //stored me to not teleport and not because of lookup response
+          if ( cap[$OBJECTIVE]!=$OBJECTIVE_SKIP ) {  //commander is not teleporting, i'm the only one who wants to tport
+            $SAY_OBSTACLE
+            PERFORM $ACTION_ERROR2;
+          }
+		  PERFORM SET_ADDITIONAL_PARAMS2 0;
+		  PERFORM SET_ADDITIONAL_PARAMS 0; //^^^
+          PERFORM SET_OBJECTIVE 0; //can't teleport me
+          PERFORM NOTHING;
+    }
+        
+    dist = unit <_> closesttport;
+
+	//print closesttport, " dist: ", dist , " ss: ", closesttport.SightHRange2, "\n";
+
+    if (dist >= closesttport.SightHRange2 ) { 
+		int dir = 0;
+		int counter = unit->AdditionalParameters2; //move counter to move in the same direction
+		if (counter>0) {           //more than 0 means already moving in a direction
+			counter = counter - 1; //decrease the counter
+			int rot = unit->Rotation; //get the unit's current rotation
+			$DIR_FROM_ROT             //set the dir to move to based on that unit's rotation
+		}
+		else {  //no move counter stored, so query where to move to next
+			dir =  QUERY BESTMOVE [unit, $ACTION_MOVE] MIN [ closesttport <_> query ]  WHERE [1];    
+			if (dir[0,8] >= 16) { counter = 0; } //moving up or down, so don't store counter
+			else {
+				counter = dir[16,8]; 			  //the counter is stored in the 3rd byte of dir
+				if (counter > 7) { $MAX_COUNTER_VALUE; } //cap it at 7 since AdditionalParameters2 only has 3 bits
+			}
+		}
+
+		dir[16,8] = 0; //clear out the 3rd byte that stores the counter
+		if (dir && dir != $QUERY_EXHAUSTED) {
+			if (counter>1) {
+				$UPDATE_SPEED_FOR_FAST_UNITS
+			}
+			//store the updated move counter
+			PERFORM SET_ADDITIONAL_PARAMS2 counter;		
+			PERFORM $ACTION_MOVE dir; 
+			if ( perf_ret!=1) { 
+				PERFORM SET_ADDITIONAL_PARAMS2 0;
+			}
+		} else {
+			PERFORM SET_ADDITIONAL_PARAMS2 counter;
+			PERFORM SET_ADDITIONAL_PARAMS 0; //^^^
+			PERFORM SET_OBJECTIVE 0; //can't teleport me
+		}
+		PERFORM NOTHING;	
+
+    }
+     
+
+    if (AP_UNIT) {
+		ap[$UNIT_BIT] = 0;
+		ap[$STOREDUNIT] = 0;
+        PERFORM SET_ADDITIONAL_PARAMS ap;   
+    }
+	
+    PERFORM NOTHING;
+}
+else {
+
+    
+    if ($SMART_IDLE ) {
+        int LOOKUP = 0;
+        if ($IS_HUMAN) { LOOKUP = $TGATE; }
+        else { LOOKUP = $SLIPGATE; }
+        object lookup=0;
+        #include common/include/unit_lookup_request.ais
+        if (waiting == 1 && unit != lookup) { //lookup failed
+            PERFORM NOTHING;                  //because it was busy
+        }
+        
+    }  
+    
+    $SAY_GATE;
+    PERFORM SET_OBJECTIVE 0;
+    PERFORM SET_ADDITIONAL_PARAMS2 0;
+    if (cap[$OBJECTIVE]==$OBJECTIVE_SKIP) {
+        PERFORM $ACTION_CHANGE_COMMANDER 0;
+    }
+    
+    PERFORM $ACTION_ERROR2;
+}
+
+//********************************************************************
+//********************************************************************
+
+/*vecgir vehicles can skip on their own once they are upgrade (their cap_bit 2 is set)
+int UC = unit->Class;
+if  (( UC >= 2015 && UC < 2060) || UC==$INCEPTER_CLASS || UC==$TYR_CARRIER_CLASS ) {
+    if ( UC==$INCEPTER_CLASS || UC==$TYR_CARRIER_CLASS || unit->Status[$CAP_BIT_2] ){ //the vehicle is upgraded or its an incepter-class unit
+        #include common/include/unit_halcyon_skip.ais
+    }
+}*/
+
+//tss'd units can't chronoport. don't waste time on it
+/*if (unit->IsStasis) { 
+	PERFORM SET_ADDITIONAL_PARAMS2 0;
+	PERFORM SET_ADDITIONAL_PARAMS 0; //^^^
+    PERFORM SET_OBJECTIVE 0;
+    PERFORM SET_PARAM 0;
+    PERFORM NOTHING;
+}*/
+
+
+
+

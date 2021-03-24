@@ -1,0 +1,165 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+
+
+//unit_create_at.ais - create_at functionality, to be used by other scripts
+//UNIT_CLASS and ACTION_CREATE_AT must be defined prior to calling this script
+
+//get length of parent and unit being created
+int plength = unit.Length;
+int length = $UNIT_CLASS::Length;
+
+//get target position
+//int OP = unit->ObjectiveParameters;  //pulled in unit_created_check.ais
+int x = OP[$Xpos];
+int y = OP[$Ypos];
+
+//need to adjust target position to upper left corner
+x = x - (length-1)/2;
+y = y - (length-1)/2;
+
+//if close enough
+if(
+	(
+			(	abs( (2*unit->XCorner+plength) - (2*x+length))	)
+		|>
+			(	abs( (2*unit->YCorner+plength) - (2*y+length))	)
+	) == plength + length)
+{
+
+	//if placing down an rp, auto-correct its location if "accidentally" placing or clipping on top of the resource container
+	if ($ACTION_CREATE_AT == $ACTION_MAKE_RP) {
+		#include common/include/unit_rp_autocorrect.ais
+	}
+	
+
+	//check for resources just before placing down the structure
+	if (player->$LCrystals < $LC_COST || player->$QPlasma < $QP_COST ) {
+		if ($QP_COST==0) { 
+			$SAY_LC
+		} else {
+			$SAY_RESOURCES
+		}
+		PERFORM SET_ADDITIONAL_PARAMS 0;
+		PERFORM SET_OBJECTIVE 0;
+		PERFORM $ACTION_ERROR1;
+		PERFORM NOTHING;
+	}
+	
+	//create unit at the position
+    target = $UNIT_CLASS;
+    PERFORM CAN_CLASS_FIT_AT OP;
+    if (perf_ret>0 && perf_ret[0]) { //if (perf_ret == 255) to check for all rotations, more limiting
+		//units with raised weapons must lower them first
+		int uclass= unit->Class;
+		if ($IS_WEAPON_RAISED) {
+			PERFORM $ACTION_LOWER_WEAPON;
+			PERFORM NOTHING;
+		}	
+		
+		//if shin vir  is trying to make a foundation, always check that there aren't foundations nearby first
+		if ($ACTION_CREATE_AT == $ACTION_MAKE_FOUNDATION) {
+			object foundation = QUERY UNIT [unit] MIN [ query <_> unit ] WHERE [ query->Class>=2065 && query->Class<2095 && query->IsAlly];
+			if (foundation->IsAlive==1) { 
+				$SAY_NEARBY
+				ap[$OBJECTIVE] = 0;
+				PERFORM SET_ADDITIONAL_PARAMS ap;
+				PERFORM SET_ADDITIONAL_PARAMS2 0;
+				PERFORM SET_OBJECTIVE 0;
+				PERFORM NOTHING;
+			}
+		}
+		ap[$PLAYER_BIT] = 1;
+		ap[$OBJECTIVE] = $OBJECTIVE_BUILD;
+		PERFORM SET_ADDITIONAL_PARAMS ap;
+		PERFORM SET_ADDITIONAL_PARAMS2 0;
+        PERFORM $ACTION_CREATE_AT OP;
+        if (perf_ret == 0) { 
+			PERFORM SET_ADDITIONAL_PARAMS 0; //ap;
+            PERFORM SET_OBJECTIVE 0;
+			$SAY_BUILD		
+			PERFORM NOTHING;
+        }
+		
+    }
+    else {
+		PERFORM SET_ADDITIONAL_PARAMS 0; //ap;
+		PERFORM SET_ADDITIONAL_PARAMS2 0;
+		PERFORM SET_OBJECTIVE 0;
+		$SAY_BUILD
+		PERFORM NOTHING;
+	}
+	//$print "looks like it built fine\n";
+	PERFORM NOTHING;
+}
+
+
+int dir = 0;
+
+
+int counter = unit->AdditionalParameters2; //move counter to move in the same direction
+if (counter>0) {           //more than 0 means already moving in a direction
+	counter = counter - 1; //decrease the counter
+	PERFORM SET_ADDITIONAL_PARAMS2 counter;
+	int rot = unit->Rotation; //get the unit's current rotation
+	$DIR_FROM_ROT             //set the dir to move to based on that unit's rotation
+}
+else {  //no move counter stored, so query where to move to next
+	int distToOP = unit<_>OP;
+	int tl = length + plength;
+	if (|/distToOP <= tl / 2 ) { //too close to the location, move away
+
+		if (
+			(	abs( (2*unit->XCorner+plength) - (2*x+length))	)
+		<|
+			(	abs( (2*unit->YCorner+plength) - (2*y+length))	)
+		< plength + length) {
+			dir = QUERY BESTMOVE [unit, $ACTION_MOVE] MIN [
+					abs(
+							(
+									(	abs( (2*query->XCorner+plength) - (2*x+length))	)
+								|>
+									(	abs( (2*query->YCorner+plength) - (2*y+length))	)
+							)
+							-
+							(plength + length)
+						)
+						] WHERE [1];
+		} 	else {
+			dir = QUERY BESTMOVE [unit, $ACTION_MOVE] MIN [ query <_> OP ] WHERE [1];
+		}
+	
+	}  
+	else {
+		dir = QUERY BESTMOVE [unit, $ACTION_MOVE] MIN [ query <_> OP ] WHERE [1];
+	}
+
+	if (dir[0,8] >= 16) { counter = 0; } //moving up or down, so don't store counter
+	else {
+		counter = dir[16,8]; 			  //the counter is stored in the 3rd byte of dir
+		if (counter > 7) { counter = 7; } //cap it at 7 since AdditionalParameters2 only has 3 bits
+	}
+	PERFORM SET_ADDITIONAL_PARAMS2 counter;
+}
+									
+dir[16,8] = 0; //clear out the 3rd byte that stores the counter
+
+if(dir && dir != $QUERY_EXHAUSTED) {
+
+	PERFORM $ACTION_MOVE dir;
+	if (perf_ret!=1) {
+		PERFORM SET_ADDITIONAL_PARAMS2 0;
+	}		
+    PERFORM RAND;
+    if (perf_ret < $LAD_CLEAR) {
+         PERFORM CLEAR_LAST_ATTACKED_DIRECTION; 
+    }
+}    
+else
+{
+	//can't get to where we need to go, so give up!
+	PERFORM SET_ADDITIONAL_PARAMS2 0;
+	PERFORM SET_OBJECTIVE 0;
+}
+PERFORM NOTHING;
+

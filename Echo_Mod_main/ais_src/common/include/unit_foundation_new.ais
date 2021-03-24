@@ -1,0 +1,79 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+
+
+PERFORM GET_MAP_WIDTH;
+int map_width = perf_ret;
+PERFORM GET_MAP_LENGTH;
+int map_length = perf_ret;
+
+if (y<=4 || y >= (map_length-4 )|| x<=4 || x>=(map_width-4)) {
+    $SAY_EDGE
+    $STOP;
+}
+
+location[$Xpos] = x;
+location[$Ypos] = y;
+location[$Zpos] = z;
+
+int cf5 = player->CustomField5;
+
+if (cf5 == 0) {
+    PERFORM SET_PLAYER_CUSTOM_FIELD_5 unit;
+    PERFORM NOTHING;
+}
+int cf3 = player->CustomField3;
+if (cf5 == unit) {
+    if (cf3[$FOUNDATION_FAIL_BIT]) {
+		$SAY_OVERLAY
+        PERFORM SET_PLAYER_CUSTOM_FIELD_5 0;
+        cf3[$FOUNDATION_BIT,2]=0;
+        PERFORM SET_PLAYER_CUSTOM_FIELD_3 cf3; 
+		PERFORM $ACTION_ERROR2;
+        $STOP;
+    }
+    if (cf3[$FOUNDATION_BIT]) {
+        PERFORM SET_PLAYER_CUSTOM_FIELD_5 0;
+        cf3[8,2]=0;
+        PERFORM SET_PLAYER_CUSTOM_FIELD_3 cf3; 
+    }
+    else {
+        cf3[$FOUNDATION_BIT]=1;
+        PERFORM SET_PLAYER_CUSTOM_FIELD_3 cf3; 
+        PERFORM NOTHING;
+    }
+}
+else { 
+	target = cf5;
+	if (target->IsAlive!=1) { //original requested died, replace with self
+		PERFORM SET_PLAYER_CUSTOM_FIELD_5 unit;
+	} 
+	else { //it is alive, make sure it's actually still trying to make a foundation
+		int obj = target->Objective;
+		if (obj == 0 || obj > 6) { //it's idle or not making a foundation
+			PERFORM SET_PLAYER_CUSTOM_FIELD_5 unit; //replace with self
+		}
+	}
+	PERFORM NOTHING; 
+}
+
+
+target = $FOUNDATION_CLASS;
+PERFORM CAN_CLASS_FIT_AT location;
+if (perf_ret == 255) { 
+    PERFORM SET_OBJECTIVE 0;  
+    PERFORM $ACTION_NEW location;
+    if (perf_ret == 0) { //this should only happen when ground is too bumpy
+        $SAY_EDGE
+        $STOP;
+    }    
+	PERFORM SET_ADDITIONAL_PARAMS2 0;
+}
+else {
+    if (perf_ret >= 0 ) $SAY_SOMETHING
+    else $SAY_AREA
+    PERFORM $ACTION_ERROR2;
+	PERFORM SET_ADDITIONAL_PARAMS2 0;
+    PERFORM SET_OBJECTIVE 0;
+}
+

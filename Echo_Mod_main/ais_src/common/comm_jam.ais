@@ -1,0 +1,61 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.aih
+
+#define STOP_JAMMING 20
+
+
+if (!player->Advancements[$VECGIR_ADV_EXTRAS]) { 
+	PERFORM SET_OBJECTIVE 0;
+	PERFORM NOTHING;
+}
+
+int energy = 50;
+
+if (unit->Energy != energy) {
+    PERFORM SET_OBJECTIVE 0;
+    $SAY_ENERGY
+    PERFORM $ACTION_ERROR1;
+    PERFORM NOTHING;
+}
+
+PERFORM SET_ADDITIONAL_PARAMS4 0; 
+//will be set to 7 if a target is comm jammed by the action
+//once the objective is complete, it'll drain this unit of energy via forced action
+
+int count = 0;
+int ap = unit->AdditionalParameters;
+int tc = 0;
+//run this in batches of 10 units per tick (to go easy on the cpu and not max out on ai cycles)
+while ( count < 10 ) {
+    target = QUERY UNIT [unit] MIN [unit<=>target] WHERE [!(query->IsAlly) && !(query->IsCommjam) && !(query->IsStasis) && (tc = query->Class)<4000 && 
+															tc!=$HUMAN_ACHRON_CLASS && tc!=$GREKIM_ACHRON_CLASS && tc!=$VECGIR_ACHRON_CLASS];
+	if (target->IsAlive==1) {
+		PERFORM $ACTION_JAM target;
+		count = count + 1;
+		
+		//set the additional prameters objective field. once set, that means at least one unit was comm-jammed
+		if (ap[$OBJECTIVE] != $OBJECTIVE_JAM) {
+			ap[$OBJECTIVE] = $OBJECTIVE_JAM;
+			PERFORM SET_ADDITIONAL_PARAMS ap;
+		}
+	} else {
+		if ( count == 0 && ap[$OBJECTIVE] != $OBJECTIVE_JAM ) { //no units found to jam, and none were comm-jammed 
+			$SAY_NO_ENEMIES
+		}
+		count = $STOP_JAMMING;
+		break;
+	}
+}
+
+if (count != $STOP_JAMMING) { //run this script again until there are no more units to jam
+	PERFORM NOTHING; 
+}
+
+
+PERFORM SET_PARAM 0;
+PERFORM SET_ADDITIONAL_PARAMS 0;
+PERFORM SET_ADDITIONAL_PARAMS2 0;
+PERFORM SET_OBJECTIVE 0;
+PERFORM NOTHING;
+    
