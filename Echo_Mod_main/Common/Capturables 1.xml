@@ -3,15 +3,15 @@
     <AIScripts>
         <AIScript>
             <Name>Script308_amp_morph</Name>
-            <Path>./ais/simple_morph.abn</Path>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/simple_morph.abn</Path>
         </AIScript>
         <AIScript>
             <Name>Script414_vendor_idle</Name>
-            <Path>./ais/vendor_idle.abn</Path>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/vendor_idle.abn</Path>
         </AIScript>
         <AIScript>
             <Name>Script418_freeze_beam</Name>
-            <Path>./ais/stopfreezebeam.abn</Path>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/stopfreezebeam.abn</Path>
         </AIScript>
     </AIScripts>
     <Sounds />

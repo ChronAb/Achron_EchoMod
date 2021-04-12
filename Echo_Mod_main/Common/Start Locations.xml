@@ -3,7 +3,7 @@
     <AIScripts>
 		<AIScript>
             <Name>Script426</Name>
-            <Path>./ais/change_team.abn</Path>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/change_team.abn</Path>
         </AIScript>
     </AIScripts>
     <Sounds />

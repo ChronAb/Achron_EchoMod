@@ -3,23 +3,23 @@
     <AIScripts>
         <AIScript>
             <Name>Script373_pick_human</Name>
-            <Path>./ais/chooser_human.abn</Path>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/chooser_human.abn</Path>
         </AIScript>
         <AIScript>
             <Name>Script374_pick_vecgir</Name>
-            <Path>./ais/chooser_vecgir.abn</Path>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/chooser_vecgir.abn</Path>
         </AIScript>
         <AIScript>
             <Name>Script375_pick_grekim</Name>
-            <Path>./ais/chooser_grekim.abn</Path>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/chooser_grekim.abn</Path>
         </AIScript>
         <AIScript>
             <Name>Script376_pick_random</Name>
-            <Path>./ais/chooser_random.abn</Path>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/chooser_random.abn</Path>
         </AIScript>
         <AIScript>
             <Name>Script423_g_vanguard_tech</Name>
-            <Path>./ais/annex_weapons.abn</Path>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/annex_weapons.abn</Path>
         </AIScript>
     </AIScripts>
     <Sounds />
