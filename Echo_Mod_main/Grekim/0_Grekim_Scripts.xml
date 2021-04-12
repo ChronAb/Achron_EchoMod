@@ -1,0 +1,145 @@
+<?xml version="1.0" ?>
+<ResequenceObjectClassSet>
+    <AIScripts>
+        <!-- general scripts -->
+        <AIScript>
+            <Name>cs000_basic_idle</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/general_idle.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs010_move</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/move_dispatch.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs020_moving</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/move.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs030_atk_move</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/attack_dispatch.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs040_atk_target</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/attackU_dispatch.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs050_atking</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/attack.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs060_atking_target</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/attack_unit.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs070_stop</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/stop.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs080_ptrl</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/patrol_dispatch.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs090_ptrling</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/patrol.abn</Path>
+        </AIScript>
+        
+        <AIScript>
+            <Name>cs100_tport</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/teleportme.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs110_cport</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/chronoportme.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs111_g_cport</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/grekim_cast.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs120_cport_na</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs130_make_room</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/moveaway.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs140_rclick_ally</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/change_commander_carry.abn</Path>
+        </AIScript>
+        
+        <!-- progeny rallying -->
+        <AIScript>
+            <Name>gs150_rally_to</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/offspring_dispatch.abn</Path>
+        </AIScript>
+        
+        <!-- octo buildings -->
+        <AIScript>
+            <Name>gs161_octo_rp</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/octo_rp.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gs181_go_morph_rp</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/octo_hole_morph.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gs201_octo_dome</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/octo_dome.abn</Path>
+        </AIScript>
+        
+        <!-- sepi buildings -->
+        <AIScript>
+            <Name>gs162_sepi_reaph</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/sepi_reaph.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gs202_sepi_mound</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/sepi_mound.abn</Path>
+        </AIScript>
+        
+        <!-- pharo buildings -->
+        <AIScript>
+            <Name>gs163_pharo_arct</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/pharo_arcticus.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gs203_pharo_spyre</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/pharo_spyre.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gs213_pharo_spyre_na</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown.abn</Path>
+        </AIScript>
+        
+        <!-- base class progen -->
+        <AIScript>
+            <Name>gs240_progen</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/grekim_build.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gs250_group_progen</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/grekim_build_fast.abn</Path>
+        </AIScript>
+        
+        <!-- spider probe -->
+        <AIScript>
+            <Name>gs400_sp_probe</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/simple_morph.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gs410_sp_probe_na</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown.abn</Path>
+        </AIScript>
+        
+        <!-- attack ground -->
+        
+    </AIScripts>
+    <Sounds />
+    <EffectsResources />
+    <GlobalGameResources />
+    <TimelineStatistics />
+    <UnitLists />
+    <ActionStepModifiers />
+    <ObjectClasses />
+</ResequenceObjectClassSet>
