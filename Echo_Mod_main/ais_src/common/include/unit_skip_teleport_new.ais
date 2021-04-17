@@ -8,17 +8,24 @@
 Purpose:
 Permits units who are not near a teleporter to self-teleport (i.e. skip)
 
+Design:
+    1. Units skipping to a location > 16 sq distant require LOS
+    2. Units skipping to a location <= 16 sq distant may Skip blind
+    3. Units skipping to a unit may Skip blind out to their LOS radius + 8 
+    4. The skip can only fire if currentTime%9 = 5 or 6
+    5. if currentTime%9 = 6 then the skip is free
+
 Logic flow:
     (Already done by parent script)
         * Verify that you are permitted to teleport
         * Check if there is a teleporter or slipgate nearby
         
-    1. Define macros
-    2. Determine skip parameters
-        i. Set QP and Power cost
-        ii. Set range to LOS
-    x. Test that teleport criteria are met, and terminate order if not
-    x. If criteria are met, 
+    0. Define macros
+    1. Determine skip parameters
+        i. Set QP, Power, HP cost
+        ii. Check range limitations
+    2. Attempt to skip
+    3. If unable to skip, move toward destination
 
     (old)
 	see if there is a teleporter/slingshot nearby, if there is use it instead of self-skipping.
@@ -32,7 +39,7 @@ Logic flow:
 	if that fails change objective to Move there.
 */
 
-// 1. Define Macros
+// 0. Define Macros
 //********************************************************************
 // object closesttport inherited from parent
 int ap = unit->AdditionalParameters;
@@ -61,9 +68,10 @@ int ap = unit->AdditionalParameters;
 		}\
 		if (pos!=unitPosition) { PERFORM CAN_CLASS_FIT_AT pos; can_skip = perf_ret; }
         
-// 2. Determine skip parameters
+// 1. Determine skip parameters
 //********************************************************************
-int can_skip = 0;
+int can_skip = 0; //0 - undetermined, 1 - destination found, 2 - out of range
+int blind_skip = 0;
 int airunit = 0;
 int pos = unit->ObjectiveParameters;
 if ($IS_AIR_UNIT) {
@@ -85,12 +93,26 @@ int z = pos[$Zpos];
 int goal_dist = unit <_> pos;
 goal_dist = |/goal_dist;
 
-//check that you have a line-of-sight to destination and can fit 
-PERFORM CAN_CLASS_FIT_AT pos; 
-if( perf_ret >= 1 ){
-    can_skip = 1;
-} 
-else { //destination is blocked, see if we can find a spot nearby that works
+// check whether distance to goal is within the skip range limit
+if ( goal_dist > (unit.SightHRange+8)**2 ) {
+    can_skip = 2;
+}
+if ( goal_dist < 256 ) {
+    blind_skip = 1;
+}
+
+// 2. Attempt to Skip
+//********************************************************************
+// check if you have a line-of-sight to destination and can fit 
+if ( can_skip < 1 ){
+    PERFORM CAN_CLASS_FIT_AT pos; 
+    if ( perf_ret >= 1 ){
+        can_skip = 1;
+    } 
+}
+
+// destination is blocked, see if we can find a spot nearby that works
+if ( can_skip < 1 ){ 
     int ulength = 3; //unit.Length;
     int mult = ulength+1;
     int xoffset = mult; 
@@ -134,7 +156,7 @@ else { //destination is blocked, see if we can find a spot nearby that works
         if (xoffset == 0 && yoffset == 0) { xoffset = xoffset + mult; }
     }
 
-    //Try skipping out at 22 and 45 degree angles to the destination
+    //Try skipping out at 22 degree angles to the destination
     if (tportCounter==9) {
         int _dist = 0;
         float _angle = 0;
@@ -146,12 +168,6 @@ else { //destination is blocked, see if we can find a spot nearby that works
         if (can_skip<1) { //max dist @ -22 degrees
             _angle = $n22; $CUSTOM_ANGLE_DIST_SKIP
         } 
-        if (can_skip<1) { //max dist @ 45 degrees
-            _angle = $p45; $CUSTOM_ANGLE_DIST_SKIP
-        } 
-        if (can_skip<1) { //max dist @ -45 degrees
-            _angle = $n45; $CUSTOM_ANGLE_DIST_SKIP	
-        } 
     }
 }
 
@@ -161,7 +177,7 @@ else { //destination is blocked, see if we can find a spot nearby that works
 int op = pos;
 
 // 3.1. move towards destination until skip conditions are met
-if (can_skip<1) {
+if ( can_skip != 1 ) {
     pos = unit->ObjectiveParameters;
     if ($IS_AIR_UNIT) {
         airunit = 1;
@@ -202,6 +218,11 @@ if (can_skip<1) {
 
 
 // 3.2. Perform skip teleport
+PERFORM GET_CUR_TIME;
+int current = perf_ret;
+say "delay: ", current%18;
+say " action: ", unit->Action;
+
 PERFORM $ACTION_SKIP pos;
 //$print "at X:", unitPosition[$Xpos], " Y:",  unitPosition[$Ypos]," final dist:", unit<_>pos,"\n";
 

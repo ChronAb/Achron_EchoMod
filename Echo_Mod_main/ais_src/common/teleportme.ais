@@ -6,6 +6,16 @@
 Purpose:
 Enables units to request or perform teleportation
 
+Design:
+    1. Units not near a teleporter must try to Skip-port
+    2. Units near a Slipgate may teleport anywhere in a 200 sq radius
+        or to any other Tport gate on the map at 0 cost
+    3. Units near a Teleporter may teleport anywhere in a 60 sq radius
+        or to any other Tport gate on the map at 0 cost
+    4. Units near a Spyre may teleport to other Tport gates in a 120 sq radius
+        at 0 cost
+    5. An Anchor can act as destination gate only
+
 Logic flow:
     1. Verify that you are permitted to teleport and the destination is within range
     2. Check if there is a teleporter or slipgate nearby
@@ -39,7 +49,7 @@ if (goal_dist > 22500) {
     PERFORM NOTHING;
 }
 
-if (goal_dist < 64) { //if closer than 8 there's no point in teleporting
+if (goal_dist < 25) { //if closer than 5 there's no point in teleporting
     say "Already at destination";
 	PERFORM SET_ADDITIONAL_PARAMS2 0;
 	PERFORM SET_ADDITIONAL_PARAMS 0;
