@@ -2768,7 +2768,7 @@
             <ClassNumber>1200</ClassNumber>
             <Name>Octo (Wreckage)</Name>
             <Description>This Octo is dead&#x0D;&#x0A;Duration: 5 s &#x0D;&#x0A; &#x0D;&#x0A;Beware of antimatter core detonation</Description>
-            <Model>./grekim/octo.mdl</Model>
+            <Model>./Achron_EchoMod/Echo_Mod_main/New_Models/octo.mdl</Model>
             <Rank>122</Rank>
             <Type>2</Type>
             <PrioritySelectionRank>0</PrioritySelectionRank>

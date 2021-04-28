@@ -61,7 +61,7 @@
             <ClassNumber>1015</ClassNumber>
             <Name>Octopod</Name>
             <Description>OCTOPOD:&#x0D;&#x0A;Biological main ground-assault armor&#x0D;&#x0A;Hard hitting AG sniper; No AA&#x0D;&#x0A;Long reload on AG cannon [8s]&#x0D;&#x0A;Advanced shield regeneration</Description>
-            <Model>./grekim/octopod.mdl</Model>
+            <Model>./Achron_EchoMod/Echo_Mod_main/New_Models/octopod.mdl</Model>
             <Rank>165</Rank>
             <Type>2</Type>
             <PrioritySelectionRank>0</PrioritySelectionRank>

@@ -3588,7 +3588,7 @@
             <ClassNumber>1210</ClassNumber>
             <Name>Pharo (Wreckage)</Name>
             <Description>This Pharo is dead&#x0D;&#x0A;Beware of internal explosions&#x0D;&#x0A; &#x0D;&#x0A;Duration: 40 s&#x0D;&#x0A;Explosive for 22 s, 120 damage</Description>
-            <Model>./grekim/pharo.mdl</Model>
+            <Model>./Achron_EchoMod/Echo_Mod_main/New_Models/pharo.mdl</Model>
             <Rank>132</Rank>
             <Type>2</Type>
             <PrioritySelectionRank>0</PrioritySelectionRank>

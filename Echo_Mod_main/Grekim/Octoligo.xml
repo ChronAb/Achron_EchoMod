@@ -210,7 +210,7 @@
             <ClassNumber>1100</ClassNumber>
             <Name>Cthulhu (Octoligo)</Name>
             <Description>CTHULHU/OCTOLIGO:&#x0D;&#x0A;Biological heavy-support armor&#x0D;&#x0A;Slow, high-impact brawler&#x0D;&#x0A;Devastating vs aircraft and groups&#x0D;&#x0A;Critically vulnerable to burst damage&#x0D;&#x0A; &#x0D;&#x0A;Can Subvert enemies (req. Specials tech) &#x0D;&#x0A;Can progenerate (req. Loligo tech)</Description>
-            <Model>./grekim/octoligo.mdl</Model>
+            <Model>./Achron_EchoMod/Echo_Mod_main/New_Models/octoligo.mdl</Model>
             <Rank>197</Rank>
             <Type>2</Type>
             <PrioritySelectionRank>0</PrioritySelectionRank>

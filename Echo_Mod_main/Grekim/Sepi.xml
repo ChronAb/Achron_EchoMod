@@ -2687,7 +2687,7 @@
             <ClassNumber>1205</ClassNumber>
             <Name>Sepi (Wreckage)</Name>
             <Description>This Sepi is dead&#x0D;&#x0A;Duration: 15 s &#x0D;&#x0A; &#x0D;&#x0A;Beware of antimatter core detonation</Description>
-            <Model>./grekim/sepi.mdl</Model>
+            <Model>./Achron_EchoMod/Echo_Mod_main/New_Models/sepi.mdl</Model>
             <Rank>124</Rank>
             <Type>2</Type>
             <PrioritySelectionRank>0</PrioritySelectionRank>
