@@ -1,0 +1,189 @@
+<?xml version="1.0" ?>
+<ResequenceObjectClassSet>
+    <AIScripts>
+        <!-- general unit scripts -->
+        <AIScript>
+            <Name>cs000_basic_idle</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/general_idle.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs010_move</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/move_dispatch.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs020_moving</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/move.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs030_atk_move</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/attack_dispatch.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs040_atk_target</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/attackU_dispatch.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs050_atking</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/attack.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs060_atking_target</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/attack_unit.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs070_stop</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/stop.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs080_ptrl</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/patrol_dispatch.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs090_ptrling</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/patrol.abn</Path>
+        </AIScript>
+        
+        <AIScript>
+            <Name>cs100_tport</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/teleportme.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs110_cport</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/chronoportme.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs111_g_cport</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/grekim_cast.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs120_cport_na</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs130_make_room</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/moveaway.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs140_rclick_ally</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/change_commander_carry.abn</Path>
+        </AIScript>
+        
+        <!-- Species Selection -->
+        <AIScript>
+            <Name>cs001_chooser_idle</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/chooser_idle.abn</Path>
+        </AIScript>
+        
+        <AIScript>
+            <Name>cs170_cloak</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/cloak.abn</Path>
+        </AIScript>
+        
+        <AIScript>
+            <Name>cs500_pick_human</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/chooser_human.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs510_pick_grekim</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/chooser_grekim.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs520_pick_vecgir</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/chooser_vecgir.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs530_pick_random</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/chooser_random.abn</Path>
+        </AIScript>
+        
+        <AIScript>
+            <Name>cs200_nanite</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/nanite.abn</Path>
+        </AIScript>
+		<AIScript>
+            <Name>cs220_change_team</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/change_team.abn</Path>
+        </AIScript>
+
+        <!-- general building scripts -->
+        <AIScript>
+            <Name>cs00b_turret_idle</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/turret_defend.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs09b_relocate</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/startmove.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs50b_morphing</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown.abn</Path>
+        </AIScript>
+
+        <!-- resource processor scripts -->
+        <AIScript>
+            <Name>cs00r_rp_idle</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/mine_idle.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs01r_rp_mine</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/mine_mine.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs02r_rp_pickmine</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/mine_pickmine.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs09r_rp_move</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/simple_move_dispatch.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs10r_rp_moving</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/simple_move.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs011r_rp_plant</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/rp_plant.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs13r_rp_convert</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/convert_qp.abn</Path>
+        </AIScript>
+        
+        <AIScript>
+            <Name>cs09r_rp_move</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/simple_move_dispatch.abn</Path>
+        </AIScript>
+        
+        
+    </AIScripts>
+    <Sounds>
+        <!-- general -->
+        <Sound>
+            <Name>Sound25_tport</Name>
+            <FileName>./sfx/Teleport_Skip.ogg</FileName>
+            <NumLoops>0</NumLoops>
+            <Is3DSound>1</Is3DSound>
+            <ReferenceDistanceHeard>20</ReferenceDistanceHeard>
+        </Sound>
+        <Sound>
+            <Name>Sound27_cport</Name>
+            <FileName>./sfx/Chronoport.ogg</FileName>
+            <NumLoops>0</NumLoops>
+            <Is3DSound>1</Is3DSound>
+            <ReferenceDistanceHeard>20</ReferenceDistanceHeard>
+        </Sound>
+        <Sound>
+            <Name>Sound34_g_hatch</Name>
+            <FileName>./sfx/BORN.ogg</FileName>
+            <NumLoops>0</NumLoops>
+            <Is3DSound>1</Is3DSound>
+            <ReferenceDistanceHeard>10</ReferenceDistanceHeard>
+        </Sound>
+    </Sounds>
+    <EffectsResources />
+    <GlobalGameResources />
+    <TimelineStatistics />
+    <UnitLists />
+    <ActionStepModifiers />
+    <ObjectClasses />
+</ResequenceObjectClassSet>

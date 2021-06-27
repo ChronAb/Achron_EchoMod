@@ -2,22 +2,6 @@
 <ResequenceObjectClassSet>
     <AIScripts>
         <AIScript>
-            <Name>Script373_pick_human</Name>
-            <Path>./Achron_EchoMod/Echo_Mod_main/ais/chooser_human.abn</Path>
-        </AIScript>
-        <AIScript>
-            <Name>Script374_pick_vecgir</Name>
-            <Path>./Achron_EchoMod/Echo_Mod_main/ais/chooser_vecgir.abn</Path>
-        </AIScript>
-        <AIScript>
-            <Name>Script375_pick_grekim</Name>
-            <Path>./Achron_EchoMod/Echo_Mod_main/ais/chooser_grekim.abn</Path>
-        </AIScript>
-        <AIScript>
-            <Name>Script376_pick_random</Name>
-            <Path>./Achron_EchoMod/Echo_Mod_main/ais/chooser_random.abn</Path>
-        </AIScript>
-        <AIScript>
             <Name>Script423_g_vanguard_tech</Name>
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/annex_weapons.abn</Path>
         </AIScript>
@@ -350,31 +334,31 @@
             <Objectives>
                 <Objective>
                     <ObjectiveNumber>0</ObjectiveNumber>
-                    <Script>Script30_chooser_idle</Script>
+                    <Script>cs001_chooser_idle</Script>
                     <Name></Name>
                     <Details></Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>50</ObjectiveNumber>
-                    <Script>Script373_pick_human</Script>
+                    <Script>cs500_pick_human</Script>
                     <Name>Human</Name>
                     <Details>Play as the Humans:\Versatile masters of offense\Favor highly efficient, flexible ground forces\ \Easy to learn for new players</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>51</ObjectiveNumber>
-                    <Script>Script375_pick_grekim</Script>
+                    <Script>cs510_pick_grekim</Script>
                     <Name>Grekim</Name>
                     <Details>Play as the Grekim:\Devious masters of timetravel\Rely on self-chronoportation and air power\ \Hardest to learn for new players</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>52</ObjectiveNumber>
-                    <Script>Script374_pick_vecgir</Script>
+                    <Script>cs520_pick_vecgir</Script>
                     <Name>Vecgir</Name>
                     <Details>Play as the Vecgir:\Insular masters of teleportation\Exploit hypermobile self-teleporting vehicles\Powerful defensive structures and abilities\Intermediate difficulty for new players</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>53</ObjectiveNumber>
-                    <Script>Script376_pick_random</Script>
+                    <Script>cs530_pick_random</Script>
                     <Name>Random</Name>
                     <Details> \Randomly select a species</Details>
                 </Objective>
@@ -1441,21 +1425,21 @@
             <Objectives>
                 <Objective>
                     <ObjectiveNumber>50</ObjectiveNumber>
-                    <Script>Script373_pick_human</Script>
+                    <Script>cs500_pick_human</Script>
                     <Name>Human</Name>
                     <Details></Details>
                     <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>51</ObjectiveNumber>
-                    <Script>Script375_pick_grekim</Script>
+                    <Script>cs510_pick_grekim</Script>
                     <Name>Grekim</Name>
                     <Details></Details>
                     <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>52</ObjectiveNumber>
-                    <Script>Script374_pick_vecgir</Script>
+                    <Script>cs520_pick_vecgir</Script>
                     <Name>Vecgir</Name>
                     <Details></Details>
                     <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
@@ -2383,28 +2367,28 @@
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>38</ObjectiveNumber>
-                    <Script>Script261</Script>
+                    <Script>gs38p_progen_octo</Script>
                     <Name>Produce Octo</Name>
                     <Details>Biological melee assault trooper\Effective against ground targets\Good at absorbing enemy fire\Morphs into R.P or Dome\Invisible in Fog of War</Details>
                     <Resource8>1</Resource8>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>39</ObjectiveNumber>
-                    <Script>Script263</Script>
+                    <Script>gs39p_progen_sepi</Script>
                     <Name>Produce Squiddy/Sepi</Name>
                     <Details>Biological support shock trooper\High damage against air and ground units\Cloaks while moving\Morphs into Mound or Reaph\Invisible in Fog of War</Details>
                     <Resource8>1</Resource8>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>40</ObjectiveNumber>
-                    <Script>Script265</Script>
+                    <Script>gs40p_progen_pharo</Script>
                     <Name>Produce Pharo</Name>
                     <Details>Biological armored shock grenadier\Slow close-range splash anti-ground brawler\Cloak detector\Morphs into Spyre or Arcticus\Invisible in Fog of War</Details>
                     <Resource8>1</Resource8>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>41</ObjectiveNumber>
-                    <Script>Script268</Script>
+                    <Script>gs41p_progen_opod</Script>
                     <Name>Produce Octopod</Name>
                     <Details>Biological main ground-assault armor\Mobile anti-ground heavy sniper\Progenerates advanced units\Morphs into Ghost</Details>
                     <Resource8>2</Resource8>

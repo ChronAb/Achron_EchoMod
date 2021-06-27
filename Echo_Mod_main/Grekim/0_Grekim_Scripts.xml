@@ -1,77 +1,20 @@
 <?xml version="1.0" ?>
 <ResequenceObjectClassSet>
     <AIScripts>
-        <!-- general scripts -->
-        <AIScript>
-            <Name>cs000_basic_idle</Name>
-            <Path>./Achron_EchoMod/Echo_Mod_main/ais/general_idle.abn</Path>
-        </AIScript>
-        <AIScript>
-            <Name>cs010_move</Name>
-            <Path>./Achron_EchoMod/Echo_Mod_main/ais/move_dispatch.abn</Path>
-        </AIScript>
-        <AIScript>
-            <Name>cs020_moving</Name>
-            <Path>./Achron_EchoMod/Echo_Mod_main/ais/move.abn</Path>
-        </AIScript>
-        <AIScript>
-            <Name>cs030_atk_move</Name>
-            <Path>./Achron_EchoMod/Echo_Mod_main/ais/attack_dispatch.abn</Path>
-        </AIScript>
-        <AIScript>
-            <Name>cs040_atk_target</Name>
-            <Path>./Achron_EchoMod/Echo_Mod_main/ais/attackU_dispatch.abn</Path>
-        </AIScript>
-        <AIScript>
-            <Name>cs050_atking</Name>
-            <Path>./Achron_EchoMod/Echo_Mod_main/ais/attack.abn</Path>
-        </AIScript>
-        <AIScript>
-            <Name>cs060_atking_target</Name>
-            <Path>./Achron_EchoMod/Echo_Mod_main/ais/attack_unit.abn</Path>
-        </AIScript>
-        <AIScript>
-            <Name>cs070_stop</Name>
-            <Path>./Achron_EchoMod/Echo_Mod_main/ais/stop.abn</Path>
-        </AIScript>
-        <AIScript>
-            <Name>cs080_ptrl</Name>
-            <Path>./Achron_EchoMod/Echo_Mod_main/ais/patrol_dispatch.abn</Path>
-        </AIScript>
-        <AIScript>
-            <Name>cs090_ptrling</Name>
-            <Path>./Achron_EchoMod/Echo_Mod_main/ais/patrol.abn</Path>
-        </AIScript>
-        
-        <AIScript>
-            <Name>cs100_tport</Name>
-            <Path>./Achron_EchoMod/Echo_Mod_main/ais/teleportme.abn</Path>
-        </AIScript>
-        <AIScript>
-            <Name>cs110_cport</Name>
-            <Path>./Achron_EchoMod/Echo_Mod_main/ais/chronoportme.abn</Path>
-        </AIScript>
-        <AIScript>
-            <Name>cs111_g_cport</Name>
-            <Path>./Achron_EchoMod/Echo_Mod_main/ais/grekim_cast.abn</Path>
-        </AIScript>
-        <AIScript>
-            <Name>cs120_cport_na</Name>
-            <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown.abn</Path>
-        </AIScript>
-        <AIScript>
-            <Name>cs130_make_room</Name>
-            <Path>./Achron_EchoMod/Echo_Mod_main/ais/moveaway.abn</Path>
-        </AIScript>
-        <AIScript>
-            <Name>cs140_rclick_ally</Name>
-            <Path>./Achron_EchoMod/Echo_Mod_main/ais/change_commander_carry.abn</Path>
-        </AIScript>
-        
         <!-- progeny rallying -->
         <AIScript>
             <Name>gs150_rally_to</Name>
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/offspring_dispatch.abn</Path>
+        </AIScript>
+        
+        <!-- elder/guardian abilities -->
+        <AIScript>
+            <Name>gs160_recover</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/mfb_recover.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gs200_convert</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/convert_qp.abn</Path>
         </AIScript>
         
         <!-- octo buildings -->
@@ -132,7 +75,156 @@
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown.abn</Path>
         </AIScript>
         
+        <!-- pod/ligo abilities -->
+        <AIScript>
+            <Name>gs194_self_heal</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/sop_heal.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gs204_chronobomb</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/stopfreeze.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gs214_chronobomb_na</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown.abn</Path>
+        </AIScript>
+        
         <!-- attack ground -->
+        
+        <!-- ************* -->
+        <!-- progeneration -->
+        <!-- ************* -->
+        <AIScript>
+            <Name>gs00p_progen_idle</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/grekim_factory_idle.abn</Path>
+        </AIScript>
+        
+        <!-- octo -->
+        <AIScript>
+            <Name>gs38p_progen_octo</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/grekim_octo.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gs44p_progen_octo_na</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown.abn</Path>
+        </AIScript>
+        <!-- sepi -->
+        <AIScript>
+            <Name>gs39p_progen_sepi</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/grekim_sepia.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gs45p_progen_sepi_na</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown.abn</Path>
+        </AIScript>
+        <!-- pharo -->
+        <AIScript>
+            <Name>gs40p_progen_pharo</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/grekim_pharao.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gs46p_progen_pharo_na</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown.abn</Path>
+        </AIScript>
+        <!-- unprogen all -->
+        <AIScript>
+            <Name>gs13p_unprogen_all</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/grekim_cancel_all.abn</Path>
+        </AIScript>
+        
+        <!-- octopod -->
+        <AIScript>
+            <Name>gs41p_progen_opod</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/grekim_octo2.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gs47p_progen_opod_na</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown.abn</Path>
+        </AIScript>
+        <!-- sepipod -->
+        <AIScript>
+            <Name>gs42p_progen_spod</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/grekim_sepia2.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gs48p_progen_spod_na</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown.abn</Path>
+        </AIScript>
+        <!-- pharopod -->
+        <AIScript>
+            <Name>gs43p_progen_ppod</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/grekim_pharao2.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gs49p_progen_ppod_na</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown.abn</Path>
+        </AIScript>
+        <!-- unprogen -->
+        <AIScript>
+            <Name>gs14p_unprogen</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/grekim_cancel.abn</Path>
+        </AIScript>
+        
+        <!-- dispatch RP -->
+        <AIScript>
+            <Name>gs52p_progen_RP</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/grekim_octoRP.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gs36p_gsend_RP</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/grekim_octoRPdispatch.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gs50p_progen_RP_na</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown.abn</Path>
+        </AIScript>
+        
+        
+        <!-- octoligo -->
+        <AIScript>
+            <Name>gs41q_progen_oligo</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/grekim_octo3.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gs52q_progen_oligo_na</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown.abn</Path>
+        </AIScript>
+        <!-- sepiligo -->
+        <AIScript>
+            <Name>gs42q_progen_sligo</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/grekim_sepia3.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gs53q_progen_sligo_na</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown.abn</Path>
+        </AIScript>
+        <!-- pharoligo -->
+        <AIScript>
+            <Name>gs43q_progen_pligo</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/grekim_pharao3.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gs54q_progen_pligo_na</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown.abn</Path>
+        </AIScript>
+        
+        <!-- progen rally/repeat/cancel -->
+        <AIScript>
+            <Name>gs18p_g_rally</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/building_common_relocate.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gs20p_g_unit_rally</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/rally_on_unit.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gs15p_repeat_progen</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/repeat_progen.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gs16p_clear_progen</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/set_idle.abn</Path>
+        </AIScript>
         
     </AIScripts>
     <Sounds />
