@@ -24,29 +24,6 @@
             <Is3DSound>1</Is3DSound>
             <ReferenceDistanceHeard>10</ReferenceDistanceHeard>
         </Sound>
-        
-        <!-- general -->
-        <Sound>
-            <Name>Sound25_tport</Name>
-            <FileName>./sfx/Teleport_Skip.ogg</FileName>
-            <NumLoops>0</NumLoops>
-            <Is3DSound>1</Is3DSound>
-            <ReferenceDistanceHeard>20</ReferenceDistanceHeard>
-        </Sound>
-        <Sound>
-            <Name>Sound27_cport</Name>
-            <FileName>./sfx/Chronoport.ogg</FileName>
-            <NumLoops>0</NumLoops>
-            <Is3DSound>1</Is3DSound>
-            <ReferenceDistanceHeard>20</ReferenceDistanceHeard>
-        </Sound>
-        <Sound>
-            <Name>Sound34_g_hatch</Name>
-            <FileName>./sfx/BORN.ogg</FileName>
-            <NumLoops>0</NumLoops>
-            <Is3DSound>1</Is3DSound>
-            <ReferenceDistanceHeard>10</ReferenceDistanceHeard>
-        </Sound>
     </Sounds>
     <EffectsResources />
     <GlobalGameResources />
@@ -368,9 +345,9 @@
                     </Conditions>
                 </Animation>
                 <Animation>
-                    <Identifier>ACTION_SKIP</Identifier>
+                    <Identifier>ACTION_POST_SKIP</Identifier>
                     <AnimationNum>0</AnimationNum>
-                    <Sound>Sound25_tport</Sound>
+                    <Sound>Sound25</Sound>
                     <AnimationTime>0</AnimationTime>
                     <ShowProgress>1</ShowProgress>
                     <MorphFromActionParameterClass>0</MorphFromActionParameterClass>
@@ -380,7 +357,7 @@
                         <Condition>
                             <Resource>U_ACTION</Resource>
                             <Comparison>EQUAL</Comparison>
-                            <Value>21</Value>
+                            <Value>22</Value>
                         </Condition>
                     </Conditions>
                 </Animation>
@@ -1197,7 +1174,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>0</Value>
+                            <Value>20</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -1222,6 +1199,27 @@
                 <Action>
                     <ActionNumber>21</ActionNumber>
                     <Identifier>ACTION_SKIP</Identifier>
+                    <TimeTaken>0</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>TELEPORT</PrimitiveAction>
+                            <Target>SELF</Target>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>22</ActionNumber>
+                    <Identifier>ACTION_POST_SKIP</Identifier>
                     <TimeTaken>12</TimeTaken>
                     <ForceObjectAction>0</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
@@ -1243,7 +1241,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>0</Value>
+                            <Value>20</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -1252,34 +1250,13 @@
                             <ValueEval>ONE</ValueEval>
                             <Value>40</Value>
                         </Step>
-                        <Step>
+                        <!--Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>U_HP</Type>
                             <ValueEval>ONE</ValueEval>
                             <Value>20</Value>
-                        </Step>
-                    </Steps>
-                </Action>
-                <Action>
-                    <ActionNumber>22</ActionNumber>
-                    <Identifier>ACTION_TELEPORTED</Identifier>
-                    <TimeTaken>0</TimeTaken>
-                    <ForceObjectAction>0</ForceObjectAction>
-                    <InterruptCurrentAction>0</InterruptCurrentAction>
-                    <MutexAction>0</MutexAction>
-                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
-                    <PreserveParameter>1</PreserveParameter>
-                    <AIScriptCanRun>0</AIScriptCanRun>
-                    <SetParamZeroTicks>0</SetParamZeroTicks>
-                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <Conditions />
-                    <Steps>
-                        <Step>
-                            <PrimitiveAction>CLEAR_STATUS</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>STATUS_CAPABILITY_1</Type>
-                        </Step>
+                        </Step-->
                     </Steps>
                 </Action>
                 <Action>
@@ -2015,10 +1992,10 @@
                     <ObjectiveNumber>10</ObjectiveNumber>
                     <Script>cs100_tport</Script>
                     <Name>Teleport</Name>
-                    <Details>Teleport to a specified location\ \Self-skipping requires line of sight\Using a Teleporter negates costs\Must not have a TSS</Details>
+                    <Details>Teleport to a unit / location \or self-teleport within LOS range\Teleporters extend range and negate cost\ \Blocked by Temporal Soliton Shield (TSS)</Details>
                     <Resource1>40</Resource1>
-                    <Resource4>0</Resource4>
-                    <Resource5>20</Resource5>
+                    <Resource4>20</Resource4>
+                    <!--Resource5>20</Resource5-->
                     <ObjectiveControlShortcutNumber>5</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
@@ -2027,7 +2004,7 @@
                     <Name>Chronoport</Name>
                     <Details>Chronoport to a specified point in time\ \Recharges Shields 50%\Must not have a TSS</Details>
                     <Resource1>40</Resource1>
-                    <Resource4>0</Resource4>
+                    <Resource4>20</Resource4>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>12</ObjectiveNumber>
@@ -2048,7 +2025,7 @@
                     <Details></Details>
                 </Objective>
                 <Objective>
-                    <ObjectiveNumber>40</ObjectiveNumber>
+                    <ObjectiveNumber>15</ObjectiveNumber>
                     <Script>gs150_rally_to</Script>
                     <Name>Offspring Dispatch</Name>
                     <Details></Details>
@@ -2231,7 +2208,7 @@
                 <ControlShortcut>
                     <ControlNumber>5</ControlNumber>
                     <ControlObjectiveNumber>10</ControlObjectiveNumber>
-                    <ParameterType>POSITION</ParameterType>
+                    <ParameterType>POSITION_OR_UNIT</ParameterType>
                     <Parameter>0</Parameter>
                     <KeyboardShortcut>$AchronKBTeleport</KeyboardShortcut>
                     <Flags>

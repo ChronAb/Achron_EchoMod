@@ -269,7 +269,7 @@
                     </Conditions>
                 </Animation>
                 <Animation>
-                    <Identifier>ACTION_SKIP</Identifier>
+                    <Identifier>ACTION_POST_SKIP</Identifier>
                     <AnimationNum>0</AnimationNum>
                     <Sound>Sound25</Sound>
                     <AnimationTime>0</AnimationTime>
@@ -281,7 +281,7 @@
                         <Condition>
                             <Resource>U_ACTION</Resource>
                             <Comparison>EQUAL</Comparison>
-                            <Value>21</Value>
+                            <Value>22</Value>
                         </Condition>
                     </Conditions>
                 </Animation>
@@ -985,7 +985,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>0</Value>
+                            <Value>20</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -1010,6 +1010,27 @@
                 <Action>
                     <ActionNumber>21</ActionNumber>
                     <Identifier>ACTION_SKIP</Identifier>
+                    <TimeTaken>0</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>TELEPORT</PrimitiveAction>
+                            <Target>SELF</Target>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>22</ActionNumber>
+                    <Identifier>ACTION_POST_SKIP</Identifier>
                     <TimeTaken>36</TimeTaken>
                     <ForceObjectAction>0</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
@@ -1029,38 +1050,24 @@
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
+                            <Type>P_Q_PLASMA</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>20</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
                             <Value>80</Value>
                         </Step>
-                        <Step>
+                        <!--Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>U_HP</Type>
                             <ValueEval>ONE</ValueEval>
                             <Value>40</Value>
-                        </Step>
-                    </Steps>
-                </Action>
-                <Action>
-                    <ActionNumber>22</ActionNumber>
-                    <Identifier>ACTION_TELEPORTED</Identifier>
-                    <TimeTaken>0</TimeTaken>
-                    <ForceObjectAction>0</ForceObjectAction>
-                    <InterruptCurrentAction>0</InterruptCurrentAction>
-                    <MutexAction>0</MutexAction>
-                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
-                    <PreserveParameter>1</PreserveParameter>
-                    <AIScriptCanRun>0</AIScriptCanRun>
-                    <SetParamZeroTicks>0</SetParamZeroTicks>
-                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <Conditions />
-                    <Steps>
-                        <Step>
-                            <PrimitiveAction>CLEAR_STATUS</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>STATUS_CAPABILITY_1</Type>
-                        </Step>
+                        </Step-->
                     </Steps>
                 </Action>
                 <Action>
@@ -1712,7 +1719,7 @@
                     <ObjectiveNumber>3</ObjectiveNumber>
                     <Script>cs030_atk_move</Script>
                     <Name>Attack</Name>
-                    <Details>Attack target or Attack-Move to location \ \[Weapons Avg Damage/10secs ]\Gnd: 30,  R 10,  SR 5,  Sta C\Air: 0</Details>
+                    <Details>Attack target or Attack-Move to location \ \[Weapons Avg Damage/10secs ]\Gnd: 30,  R 10,  SR 5,  Sta C</Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
                     <ParameterType>POSITION</ParameterType>
                 </Objective>
@@ -1765,10 +1772,10 @@
                     <ObjectiveNumber>10</ObjectiveNumber>
                     <Script>cs100_tport</Script>
                     <Name>Teleport</Name>
-                    <Details>Teleport to a specified location\ \Self-skipping requires line of sight\Using a Teleporter negates costs\Must not have a TSS</Details>
+                    <Details>Teleport to a specified location\or self-teleport within LOS range\Teleporters extend range and negate cost\ \Blocked by Temporal Soliton Shield (TSS)</Details>
                     <Resource1>80</Resource1>
-                    <Resource4>0</Resource4>
-                    <Resource5>40</Resource5>
+                    <Resource4>20</Resource4>
+                    <!--Resource5>40</Resource5-->
                     <ObjectiveControlShortcutNumber>5</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
@@ -1777,7 +1784,7 @@
                     <Name>Chronoport</Name>
                     <Details>Chronoport to a specified point in time\ \Recharges Shields 50%\Must not have a TSS</Details>
                     <Resource1>30</Resource1>
-                    <Resource4>0</Resource4>
+                    <Resource4>20</Resource4>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>12</ObjectiveNumber>
@@ -1798,7 +1805,7 @@
                     <Details></Details>
                 </Objective>
                 <Objective>
-                    <ObjectiveNumber>40</ObjectiveNumber>
+                    <ObjectiveNumber>15</ObjectiveNumber>
                     <Script>gs150_rally_to</Script>
                     <Name>Offspring Dispatch</Name>
                     <Details></Details>
@@ -1979,7 +1986,7 @@
                 <ControlShortcut>
                     <ControlNumber>5</ControlNumber>
                     <ControlObjectiveNumber>10</ControlObjectiveNumber>
-                    <ParameterType>POSITION</ParameterType>
+                    <ParameterType>POSITION_OR_UNIT</ParameterType>
                     <Parameter>0</Parameter>
                     <KeyboardShortcut>$AchronKBTeleport</KeyboardShortcut>
                     <Flags>
