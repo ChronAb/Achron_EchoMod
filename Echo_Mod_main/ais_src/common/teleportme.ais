@@ -9,12 +9,13 @@ Enables units to request or perform teleportation
 Design:
     1. Units not near a teleporter must try to Skip-port
     2. Units near a Slipgate may teleport anywhere in a 200 sq radius
-        or to any other Tport gate on the map at 0 cost
-    3. Units near a Teleporter may teleport anywhere in a 60 sq radius
-        or to any other Tport gate on the map at 0 cost
-    4. Units near a Spyre may teleport to other Tport gates in a 120 sq radius
+        or to any other Tport gate on the map, at 0 cost
+    3. Units near a Teleporter may teleport anywhere in a 70 sq radius
+        or to any other Tport gate on the map, at 0 cost
+    4. Units near a Spyre may teleport to other Tport gates in a 120 sq radius,
         at 0 cost
     5. An Anchor can act as destination gate only
+    6. Unlike vanilla Achron, units in this mod (mostly) only teleport under thier own power. The Teleporter controls the teleport rate through giving teleport approval with stat_cap_1. (==> Vanilla 'porter = teleporter vs Echo 'porter = air traffic control tower) 
 
 Logic flow:
     1. Verify that you are permitted to teleport and the destination is within range
@@ -22,8 +23,45 @@ Logic flow:
     3. If a 'porter is NOT available
         1. attempt to self skip
         2. return to idle
-    4. If 'porter is available, ask it to teleport you
+    4. If 'porter is available, wait and ask for approval before 'porting
 */
+
+// 0. Define Macros
+//********************************************************************
+#define SKIP_QP_COST if (uclass < 300) {\
+        if (uclass < 45) { \
+            if (uclass<$TANK_CLASS) { \
+                if (uclass==$MARINE_CLASS||uclass==$MARINE_RAISED_CLASS) { qp = $MARINE_CPORT_QP; }\
+                if (uclass==$SOP_CLASS || uclass==$SOP_RAISED_CLASS) { qp = $SOP_CPORT_QP; } \
+                else { qp = $MECH_CPORT_QP; }  \
+            } \
+            else if (uclass==$TANK_CLASS) { qp = $TANK_CPORT_QP; } \
+            else if (uclass==$TANK2_CLASS) { qp = $TANK2_CPORT_QP; } \
+            else if (uclass==$MAR_CLASS) { qp = $MAR_CPORT_QP; } \
+            else if (uclass==$MAR2_CLASS) { qp = $MAR2_CPORT_QP; } \
+        } \
+        else { \
+            if (uclass==$ATHC_CLASS) { qp = $ATHC_CPORT_QP; } \
+            else if (uclass>=$MFB_CLASS && uclass <=$TYR_MFB_CLASS) { qp = $MFB_CPORT_QP; } \
+            else if (uclass==$LANCER_CLASS) { qp = $LANCER_CPORT_QP; } \
+            else if (uclass==$FRIGATE_CLASS) { qp = $FRIGATE_CPORT_QP; } \
+            else if (uclass==$TORNADE_CLASS) { qp = $TORNADE_CPORT_QP; } \
+            else if (uclass==$CRUISER_CLASS) { qp = $CRUISER_CPORT_QP; } \
+            else if (uclass==$BLACKBIRD_CLASS) { qp = $BLACKBIRD_CPORT_QP; } \
+        } \
+    }  \
+    else { \
+        if (uclass==$OCTO_CLASS) { qp = $OCTO_CPORT_QP; } \
+        else if (uclass>=$OCTOPOD_CLASS && uclass <= ($GREKIM_ACHRON_CLASS)) { qp = $OCTOPOD_CPORT_QP; } \
+        else if (uclass==$OCTOLIGO_CLASS) { qp = $OCTOLIGO_CPORT_QP; } \
+        else if (uclass==$SEPI_CLASS) { qp = $SEPI_CPORT_QP; } \
+        else if (uclass==$SEPIPOD_CLASS) { qp = $SEPIPOD_CPORT_QP; } \
+        else if (uclass==$SEPILIGO_CLASS) { qp = $SEPILIGO_CPORT_QP; } \
+        else if (uclass==$PHARO_CLASS) { qp = $PHARO_CPORT_QP; } \
+        else if (uclass==$PHAROPOD_CLASS) { qp = $PHAROPOD_CPORT_QP; } \
+        else if (uclass==$PHAROLIGO_CLASS) { qp = $PHAROLIGO_CPORT_QP; } \
+    }
+
 
 // 1. Verify that you are permitted to teleport
 //********************************************************************
@@ -37,19 +75,29 @@ if (unit->IsStasis) {
     PERFORM NOTHING;
 }
 
-//Max Teleport distance is 150 and Min is 10
-int pos = unit->ObjectiveParameters;
-int goal_dist = unit <_> pos;
-if (goal_dist > 22500) { 
-    $SAY_TELEPORT;
-	PERFORM SET_ADDITIONAL_PARAMS2 0;
-	PERFORM SET_ADDITIONAL_PARAMS 0;
-    PERFORM SET_OBJECTIVE 0;
-    PERFORM SET_PARAM 0;
-    PERFORM NOTHING;
+//Check whether the objective is targeted to a unit or a location
+int op = unit->ObjectiveParameters;
+int pos = op;
+int to_unit = 0;
+if (op!=$INVALID_POSITION && op[$Zpos]==31) {
+    to_unit = 1;
+	target = op[0,16];
+    pos = target->Position;
 }
 
-if (goal_dist < 25) { //if closer than 5 there's no point in teleporting
+int airunit = 0;
+if ($IS_AIR_UNIT) {
+    airunit = 1;
+    if (pos[$Zpos]==0) {
+        PERFORM GET_MAP_NEXT_Z_POSITION_UP pos;  //move to the spot above the position
+        pos[$Zpos] = perf_ret[$Zpos];
+    }
+} else pos[$Zpos] = 0;
+
+int goal_dist = unit <_> pos;
+
+//If distance to destination is < 5, then there's no point in teleporting
+if (goal_dist < 25) { 
     say "Already at destination";
 	PERFORM SET_ADDITIONAL_PARAMS2 0;
 	PERFORM SET_ADDITIONAL_PARAMS 0;
@@ -83,29 +131,63 @@ if (AP_UNIT) { //already have a unit stored
 }
 
 //Look for a new 'porter
-//int commanderOP = unit->ActionParameters;
 int qrank = 0;
 if (closesttport==0) {   
-	query_vis_distance = 24; // teleport radius
+	query_vis_distance = 26; // teleport radius
+    
+    //First choice is to look for Slipgates
     closesttport = QUERY UNIT [unit] MIN [ unit <=> query ] 
-                   WHERE [ ((qrank = query.Rank)>=$TELEPORTER_RANK && qrank<=$SLIPGATE_RANK) && query->IsAlly==1 && (query->Objective == 0) && !(query->Status & $FROZEN_COMMJAM) ];
+                   WHERE [ query.Rank==$SLIPGATE_RANK && query->IsAlly==1 && (query->Objective == 0) && !(query->Status & $FROZEN_COMMJAM) ];
+                   
+    //then for Teleportes
+    if (closesttport==0)
+    closesttport = QUERY UNIT [unit] MIN [ unit <=> query ] 
+                   WHERE [ query.Rank==$TELEPORTER_RANK && query->IsAlly==1 && (query->Objective == 0) && !(query->Status & $FROZEN_COMMJAM) ];
+                   
+    //and Spyres last
+    if (closesttport==0)
+    closesttport = QUERY UNIT [unit] MIN [ unit <=> query ] 
+                   WHERE [ query.Rank==$SPYRE_RANK && query->IsAlly==1 && (query->Objective == 0) && !(query->Status & $FROZEN_COMMJAM) ];
+    
 	query_vis_distance = -1;
 }
+
+
+//Check if whether the jump you want to make is within your 'porter's range
+    // If your jump is not possible with a Slipgate or a Teleporter
+    // then it is not remotely possible by any other means, so return to idle
+if ( closesttport!=0 && to_unit ) {
+    if ( target.Rank!=$SLIPGATE_RANK 
+            && target.Rank!=$TELEPORTER_RANK 
+            && target.Rank!=$SPYRE_RANK ) {
+        to_unit = 0;
+    }
+}
+if ( !to_unit && ((closesttport.Rank==$TELEPORTER_RANK && goal_dist>4900 )
+        || (closesttport.Rank==$SLIPGATE_RANK && goal_dist>40000)) ) { 
+    
+    $SAY_TELEPORT;
+	PERFORM SET_ADDITIONAL_PARAMS2 0;
+	PERFORM SET_ADDITIONAL_PARAMS 0;
+    PERFORM SET_OBJECTIVE 0;
+    PERFORM SET_PARAM 0;
+    PERFORM NOTHING;
+}
+
+    // But if the Spyre can't help us, we may still want to try Skipping
+if ( closesttport.Rank==$SPYRE_RANK && (!to_unit || goal_dist>14400 ) ){
+    closesttport =  0;
+}
+
+//save the 'porter we found to AP, so we don't have to search every time
+    
 
 // 3. If there isn't a 'porter nearby -> Attempt to self skip, then return to idle
 //********************************************************************
 if (closesttport==0 && ( player->Advancements[$HUMAN_ADV_GATE] || $IS_GREKIM ) ) {
             
-    if (player->$Power > 0) {
-        #include common/include/unit_skip_teleport_new.ais
-        PERFORM SET_ADDITIONAL_PARAMS2 0;
-        PERFORM SET_ADDITIONAL_PARAMS 0;
-        PERFORM SET_OBJECTIVE 0;
-        PERFORM SET_PARAM 0;
-        PERFORM NOTHING;
-    }
-    
-    else {
+    // check for sufficient Power
+    if (player->$Power <= 0) {
         $SAY_POWER
         say " to skip teleport";
         PERFORM SET_ADDITIONAL_PARAMS2 0;
@@ -114,97 +196,112 @@ if (closesttport==0 && ( player->Advancements[$HUMAN_ADV_GATE] || $IS_GREKIM ) )
         PERFORM SET_PARAM 0;
         PERFORM NOTHING;
     }
-}
+    
+    // check for sufficient QP
+    int qp = 0;
+    $SKIP_QP_COST
 
-// 4. If there is a 'porter nearby -> Ask it to teleport you
-//********************************************************************
-int dist = 0; 
-if (closesttport) {
-
-    int cpAP =  closesttport->AdditionalParameters;
-    if ( cpAP[$STOREDUNIT]==unit && !cpAP[$UNIT_BIT] && cpAP[11]) {  //stored me to not teleport and not because of lookup response
-          if ( cap[$OBJECTIVE]!=$OBJECTIVE_SKIP ) {  //commander is not teleporting, i'm the only one who wants to tport
-            $SAY_OBSTACLE
-            PERFORM $ACTION_ERROR2;
-          }
-		  PERFORM SET_ADDITIONAL_PARAMS2 0;
-		  PERFORM SET_ADDITIONAL_PARAMS 0; //^^^
-          PERFORM SET_OBJECTIVE 0; //can't teleport me
-          PERFORM NOTHING;
+    if (player->$QPlasma < qp) {
+        $SAY_QP
+        say " to skip teleport";
+        PERFORM SET_ADDITIONAL_PARAMS2 0;
+        PERFORM SET_ADDITIONAL_PARAMS 0;
+        PERFORM SET_OBJECTIVE 0;
+        PERFORM SET_PARAM 0;
+        PERFORM NOTHING;
     }
-        
-    dist = unit <_> closesttport;
 
-	//print closesttport, " dist: ", dist , " ss: ", closesttport.SightHRange2, "\n";
-
-    if (dist >= closesttport.SightHRange2 ) { 
-		int dir = 0;
-		int counter = unit->AdditionalParameters2; //move counter to move in the same direction
-		if (counter>0) {           //more than 0 means already moving in a direction
-			counter = counter - 1; //decrease the counter
-			int rot = unit->Rotation; //get the unit's current rotation
-			$DIR_FROM_ROT             //set the dir to move to based on that unit's rotation
-		}
-		else {  //no move counter stored, so query where to move to next
-			dir =  QUERY BESTMOVE [unit, $ACTION_MOVE] MIN [ closesttport <_> query ]  WHERE [1];    
-			if (dir[0,8] >= 16) { counter = 0; } //moving up or down, so don't store counter
-			else {
-				counter = dir[16,8]; 			  //the counter is stored in the 3rd byte of dir
-				if (counter > 7) { $MAX_COUNTER_VALUE; } //cap it at 7 since AdditionalParameters2 only has 3 bits
-			}
-		}
-
-		dir[16,8] = 0; //clear out the 3rd byte that stores the counter
-		if (dir && dir != $QUERY_EXHAUSTED) {
-			if (counter>1) {
-				$UPDATE_SPEED_FOR_FAST_UNITS
-			}
-			//store the updated move counter
-			PERFORM SET_ADDITIONAL_PARAMS2 counter;		
-			PERFORM $ACTION_MOVE dir; 
-			if ( perf_ret!=1) { 
-				PERFORM SET_ADDITIONAL_PARAMS2 0;
-			}
-		} else {
-			PERFORM SET_ADDITIONAL_PARAMS2 counter;
-			PERFORM SET_ADDITIONAL_PARAMS 0; //^^^
-			PERFORM SET_OBJECTIVE 0; //can't teleport me
-		}
-		PERFORM NOTHING;	
-
-    }
-     
-
-    if (AP_UNIT) {
-		ap[$UNIT_BIT] = 0;
-		ap[$STOREDUNIT] = 0;
-        PERFORM SET_ADDITIONAL_PARAMS ap;   
-    }
-	
+    // attempt to skip
+    #include common/include/unit_skip_teleport_new.ais
+    PERFORM SET_ADDITIONAL_PARAMS2 0;
+    PERFORM SET_ADDITIONAL_PARAMS 0;
+    PERFORM SET_OBJECTIVE 0;
+    PERFORM SET_PARAM 0;
     PERFORM NOTHING;
 }
-else {
 
+// 4. If there is a 'porter nearby -> wait for approval before 'porting
+//********************************************************************
+if ( closesttport ) {//&& unit->Status[$CAP_BIT_1] ) {
+    //It's our turn to teleport!
+    PERFORM $ACTION_SKIP pos;
+    int tported = perf_ret;
     
-    if ($SMART_IDLE ) {
-        int LOOKUP = 0;
-        if ($IS_HUMAN) { LOOKUP = $TGATE; }
-        else { LOOKUP = $SLIPGATE; }
-        object lookup=0;
-        #include common/include/unit_lookup_request.ais
-        if (waiting == 1 && unit != lookup) { //lookup failed
-            PERFORM NOTHING;                  //because it was busy
+    if ( tported > 0 ){
+        // It worked! we can return to idle
+        PERFORM SET_ADDITIONAL_PARAMS2 0;
+        PERFORM SET_ADDITIONAL_PARAMS 0;
+        PERFORM SET_OBJECTIVE 0;
+        PERFORM SET_PARAM 0;
+        PERFORM NOTHING;
+    }
+
+    //Ok, then the destination is probably blocked, see if we can find a spot nearby
+    // that will work
+    int unitPosition = unit->Position;
+    int unitZ = unitPosition[$Zpos];
+    int ulength = 3; //unit.Length;
+    int mult = ulength+2;
+    int xoffset = mult; 
+    int yoffset = 0;
+    int tportCounter = 0;
+    int x = pos[$Xpos];
+    int y = pos[$Ypos];
+    
+    //Try adjacent spots
+    while (tported<1 && tportCounter<16) {
+        tportCounter = tportCounter + 1;
+        if (tportCounter==9) {
+            mult = ulength+8; //More further!
+            xoffset = mult; yoffset = 0;
         }
+        pos[$Xpos] = x + xoffset;
+        pos[$Ypos] = y + yoffset;
         
-    }  
-    
-    $SAY_GATE;
-    PERFORM SET_OBJECTIVE 0;
-    PERFORM SET_ADDITIONAL_PARAMS2 0;
-    if (cap[$OBJECTIVE]==$OBJECTIVE_SKIP) {
-        PERFORM $ACTION_CHANGE_COMMANDER 0;
+        if (airunit) {
+            int targetZ = pos[$Zpos];
+            if (targetZ == 0) {
+                PERFORM GET_MAP_NEXT_Z_POSITION_UP pos;
+                pos[$Zpos] = unitZ |> perf_ret[$Zpos];
+                //print unitZ ," trying : ", pos[$Xpos], " ", pos[$Ypos], " ", pos[$Zpos], "\n";
+            } else {
+            
+                PERFORM IS_MAP_POSITION_VALID pos;
+                if (perf_ret==0) {
+                    PERFORM GET_MAP_NEXT_Z_POSITION_UP pos[0,24];
+                    pos = perf_ret;
+                }
+            }
+        }
+
+        if (pos != unitPosition) {
+            PERFORM $ACTION_SKIP pos;
+            tported = perf_ret;  
+        }
+
+        if (xoffset > 0 && yoffset < 0) { yoffset = 0; mult=mult+ulength; xoffset = mult; } 
+        else {
+            if (xoffset <= 0 && yoffset < 0) { xoffset = xoffset + mult;  }
+            if (xoffset < 0 && yoffset >= 0) { yoffset = yoffset - mult;  }
+            if (xoffset >= 0 && yoffset > 0) { xoffset = xoffset - mult;  }
+            if (xoffset > 0 && yoffset == 0) { yoffset = yoffset + mult;  } 
+        }
+        if (xoffset == 0 && yoffset == 0) { xoffset = xoffset + mult; }
     }
     
+    if ( tported > 0 ){
+        // It eventually worked! we can return to idle
+        PERFORM SET_ADDITIONAL_PARAMS2 0;
+        PERFORM SET_ADDITIONAL_PARAMS 0;
+        PERFORM SET_OBJECTIVE 0;
+        PERFORM SET_PARAM 0;
+        PERFORM NOTHING;
+    }
+    
+    // Nothing worked, time to cut our losses and give up
+    $SAY_GATE; // HALP!!!
+    PERFORM SET_OBJECTIVE 0;
+    PERFORM SET_ADDITIONAL_PARAMS2 0;
     PERFORM $ACTION_ERROR2;
 }
 

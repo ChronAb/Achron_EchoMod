@@ -4,3 +4,4 @@ levels/test level.map
 levels/test level.olo
 levels/test level.scn
 levels/test level.tsc
+*.lnk

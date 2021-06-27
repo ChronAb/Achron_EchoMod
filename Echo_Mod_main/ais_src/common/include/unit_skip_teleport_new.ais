@@ -9,11 +9,12 @@ Purpose:
 Permits units who are not near a teleporter to self-teleport (i.e. skip)
 
 Design:
-    1. Units skipping to a location > 16 sq distant require LOS
-    2. Units skipping to a location <= 16 sq distant may Skip blind
-    3. Units skipping to a unit may Skip blind out to their LOS radius + 8 
-    4. The skip can only fire if currentTime%9 = 5 or 6
-    5. if currentTime%9 = 6 then the skip is free
+    1. If power is < 0, or there is insufficient QP or HP, the skip should fail
+    2. Units skipping to a location are limited to their LOS radius
+    3. Units skipping to a unit may Skip out to their LOS radius + 12
+    optional features:
+    4. If the skip is not in LOS, then run a pre-skip action first
+    5. If the last action was to skip, cost is reduced
 
 Logic flow:
     (Already done by parent script)
@@ -66,21 +67,26 @@ int ap = unit->AdditionalParameters;
 			PERFORM GET_MAP_NEXT_Z_POSITION_UP pos;\
 			pos[$Zpos] = unitZ |> perf_ret[$Zpos];\
 		}\
-		if (pos!=unitPosition) { PERFORM CAN_CLASS_FIT_AT pos; can_skip = perf_ret; }
+		if (pos!=unitPosition) { PERFORM $ACTION_SKIP pos; tported = perf_ret; }
         
 // 1. Determine skip parameters
 //********************************************************************
-int can_skip = 0; //0 - undetermined, 1 - destination found, 2 - out of range
-int blind_skip = 0;
+int op = unit->ObjectiveParameters;
+int pos = op;
+int to_unit = 0;
+if (op!=$INVALID_POSITION && op[$Zpos]==31) {
+    to_unit = 1;
+	target = op[0,16];
+    pos = target->Position;
+}
 int airunit = 0;
-int pos = unit->ObjectiveParameters;
 if ($IS_AIR_UNIT) {
     airunit = 1;
     if (pos[$Zpos]==0) {
         PERFORM GET_MAP_NEXT_Z_POSITION_UP pos;  //move to the spot above the position
         pos[$Zpos] = perf_ret[$Zpos];
     }
-}
+} else pos[$Zpos] = 0;
 
 target = unit->Class;
 int unitPosition = unit->Position;
@@ -94,25 +100,43 @@ int goal_dist = unit <_> pos;
 goal_dist = |/goal_dist;
 
 // check whether distance to goal is within the skip range limit
-if ( goal_dist > (unit.SightHRange+8)**2 ) {
-    can_skip = 2;
-}
-if ( goal_dist < 256 ) {
-    blind_skip = 1;
+if (( to_unit && goal_dist > (unit.SightHRange+12) ) 
+        || ( !to_unit && goal_dist > unit.SightHRange )) {
+    goal_dist = unit.SightHRange;
+
+    int ux = unitPosition[$Xpos];
+    int uy = unitPosition[$Ypos];
+    int xd = x - ux;
+    int yd = y - uy;
+    float a = yd atan2 xd;
+    yd = goal_dist * sin a;
+    xd = goal_dist * cos a;
+      
+    pos[$Xpos] = (ux + xd);
+    pos[$Ypos] = (uy + yd);
+    pos[$Zpos] = z;
+    x = pos[$Xpos];
+    y = pos[$Ypos];
 }
 
-// 2. Attempt to Skip
+
+// 2. Attempt to Skip (like a mofo)
 //********************************************************************
-// check if you have a line-of-sight to destination and can fit 
+
+/* check if you have a line-of-sight to destination and can fit 
 if ( can_skip < 1 ){
     PERFORM CAN_CLASS_FIT_AT pos; 
     if ( perf_ret >= 1 ){
         can_skip = 1;
     } 
 }
+*/
+
+PERFORM $ACTION_SKIP pos;
+int tported = perf_ret;
 
 // destination is blocked, see if we can find a spot nearby that works
-if ( can_skip < 1 ){ 
+if ( tported < 1 ){ 
     int ulength = 3; //unit.Length;
     int mult = ulength+1;
     int xoffset = mult; 
@@ -120,7 +144,7 @@ if ( can_skip < 1 ){
     int tportCounter = 0;
     
     //Try adjacent spots
-    while (can_skip<1 && tportCounter<9) {
+    while (tported<1 && tportCounter<8) {
         tportCounter = tportCounter + 1;
         pos[$Xpos] = x + xoffset;
         pos[$Ypos] = y + yoffset;
@@ -141,9 +165,9 @@ if ( can_skip < 1 ){
             }
         }
 
-        if (pos != unitPosition) {		
-            PERFORM CAN_CLASS_FIT_AT pos; 
-            can_skip = perf_ret;  
+        if (pos != unitPosition) {
+			PERFORM $ACTION_SKIP pos;
+            tported = perf_ret;  
         }
 
         if (xoffset > 0 && yoffset < 0) { yoffset = 0; mult=mult+ulength; xoffset = mult; } 
@@ -165,16 +189,30 @@ if ( can_skip < 1 ){
         if (1) { //max dist @ 22 degrees
             _angle = $p22; $CUSTOM_ANGLE_DIST_SKIP
         } 
-        if (can_skip<1) { //max dist @ -22 degrees
+        if (tported<1) { //max dist @ -22 degrees
             _angle = $n22; $CUSTOM_ANGLE_DIST_SKIP
         } 
     }
 }
 
+// 3. If the teleport was successful, then deduct resources
+//********************************************************************
+if ( tported > 0 ){ 
+    PERFORM $ACTION_POST_SKIP pos;
+    PERFORM SET_ADDITIONAL_PARAMS2 0;
+	PERFORM SET_ADDITIONAL_PARAMS 0;
+    PERFORM SET_OBJECTIVE 0;
+    PERFORM SET_PARAM 0;
+    PERFORM NOTHING;
+}
 
+
+//********************************************************************
+//********************************************************************
+//********************************************************************
+/*
 // 3. Attempt to self-teleport (like a mofo)
 //********************************************************************
-int op = pos;
 
 // 3.1. move towards destination until skip conditions are met
 if ( can_skip != 1 ) {
