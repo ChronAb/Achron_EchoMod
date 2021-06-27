@@ -26,7 +26,7 @@ else if(uclass==$MFB_CLASS) { query_range = 22; }
 else if(uclass==202) { query_range = 13; }//Caltrop Mine
 
 // GREKIM
-else if(uclass==$SCOUT_GUARDIAN_CLASS) { query_range = 35; } // || uclass==$GREKIM_ACHRON_CLASS
+else if(uclass==$SCOUT_GUARDIAN_CLASS || uclass==$GREKIM_ACHRON_CLASS) { query_range = 35; } 
 else if(uclass==$OCTO_CLASS || uclass==1200) { query_range = 25; }
 else if(uclass==$SEPI_CLASS) { spec_AA_range = 27; query_range = 29;
 	opt_AG_range = 32; }
