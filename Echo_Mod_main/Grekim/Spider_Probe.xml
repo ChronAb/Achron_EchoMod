@@ -8,7 +8,52 @@
     <GlobalGameResources />
     <TimelineStatistics />
     <UnitLists />
-    <ActionStepModifiers />
+    <ActionStepModifiers>
+        <ActionStepModifier>
+            <Name>Spider_Probe stalking</Name>
+            <StrengthBase>0</StrengthBase>
+            <StrengthRange>0</StrengthRange>
+            <StrengthCount>0</StrengthCount>
+            <Flags>
+                <Permeating>0</Permeating>
+                <LimitDistance>1</LimitDistance>
+                <SetLastAttackedDirection>0</SetLastAttackedDirection>
+                <ContinueActionOnStepFailure>0</ContinueActionOnStepFailure>
+            </Flags>
+            <AccuracyMultiplier>1</AccuracyMultiplier>
+            <EffectTimeout>0</EffectTimeout>
+            <MinEffectRadius>0</MinEffectRadius>
+            <EffectRadius>4</EffectRadius>
+            <EffectHeight>8</EffectHeight>
+            <MaxEffectAngle>360</MaxEffectAngle>
+            <EffectSplashHeight>0</EffectSplashHeight>
+            <EffectSplashRadius>0</EffectSplashRadius>
+            <EffectSplashEffectiveRadius>0</EffectSplashEffectiveRadius>
+        </ActionStepModifier>
+        <ActionStepModifier>
+            <Name>Spider_Probe suicide</Name>
+            <StrengthBase>50</StrengthBase>
+            <StrengthRange>10</StrengthRange>
+            <StrengthCount>2</StrengthCount>
+            <Flags>
+                <Permeating>1</Permeating>
+                <LimitDistance>1</LimitDistance>
+                <SetLastAttackedDirection>0</SetLastAttackedDirection>
+                <ContinueActionOnStepFailure>0</ContinueActionOnStepFailure>
+            </Flags>
+            <AccuracyMultiplier>1</AccuracyMultiplier>
+            <EffectTimeout>0</EffectTimeout>
+            <MinEffectRadius>0</MinEffectRadius>
+            <EffectRadius>4</EffectRadius>
+            <EffectHeight>8</EffectHeight>
+            <MaxEffectAngle>360</MaxEffectAngle>
+            <EffectSplashHeight>8</EffectSplashHeight>
+            <EffectSplashRadius>8</EffectSplashRadius>
+            <EffectSplashEffectiveRadius>0</EffectSplashEffectiveRadius>
+            <SelfStatistic>DamageDealt</SelfStatistic>
+            <TargetStatistic>DamageReceived</TargetStatistic>
+        </ActionStepModifier>
+    </ActionStepModifiers>
     <ObjectClasses>
         <ObjectClass>
             <ClassNumber>1041</ClassNumber>
@@ -53,7 +98,7 @@
                 <AppearAsNoOwnerUnlessVisible>0</AppearAsNoOwnerUnlessVisible>
                 <AlwaysAppearAsNoOwner>0</AlwaysAppearAsNoOwner>
                 <AlwaysHighlightUnitUnlessNoOwner>0</AlwaysHighlightUnitUnlessNoOwner>
-                <HideHealthField>1</HideHealthField>
+                <HideHealthField>0</HideHealthField>
                 <HideEnergyField>0</HideEnergyField>
                 <HideArmorField>0</HideArmorField>
                 <HideAmmoField>0</HideAmmoField>
@@ -283,14 +328,20 @@
                     <AIScriptCanRun>0</AIScriptCanRun>
                     <SetParamZeroTicks>0</SetParamZeroTicks>
                     <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <Conditions />
+                    <Conditions>
+						<Condition>
+                            <Resource>U_ENERGY</Resource>
+                            <Comparison>GREATER</Comparison>
+                            <Value>0</Value>
+                        </Condition>
+                    </Conditions>
                     <Steps>
                         <Step>
                             <PrimitiveAction>ATTACK</PrimitiveAction>
                             <Target>TARGET_UNIT</Target>
                             <ValueEval>ONE</ValueEval>
                             <Value>0</Value>
-                            <ActionStepModifier>Micro Stalking</ActionStepModifier>
+                            <ActionStepModifier>Spider_Probe stalking</ActionStepModifier>
                         </Step>
                     </Steps>
                 </Action>
@@ -306,14 +357,20 @@
                     <AIScriptCanRun>0</AIScriptCanRun>
                     <SetParamZeroTicks>0</SetParamZeroTicks>
                     <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <Conditions />
+                    <Conditions>
+						<Condition>
+                            <Resource>U_ENERGY</Resource>
+                            <Comparison>GREATER</Comparison>
+                            <Value>0</Value>
+                        </Condition>
+                    </Conditions>
                     <Steps>
                         <Step>
                             <PrimitiveAction>ATTACK</PrimitiveAction>
                             <Target>TARGET_UNIT</Target>
                             <ValueEval>ONE</ValueEval>
                             <Value>0</Value>
-                            <ActionStepModifier>Micro Stalking</ActionStepModifier>
+                            <ActionStepModifier>Spider_Probe stalking</ActionStepModifier>
                         </Step>
                     </Steps>
                 </Action>
@@ -332,26 +389,36 @@
                     <Conditions>
                         <Condition>
                             <Resource>U_ACTION</Resource>
-                            <Comparison>EQUAL</Comparison>
+                            <Comparison>GEQUAL</Comparison>
                             <Value>3</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_ACTION</Resource>
+                            <Comparison>LEQUAL</Comparison>
+                            <Value>4</Value>
                         </Condition>
                         <Condition>
                             <Resource>P_ADVANCEMENTS</Resource>
                             <Comparison>BITMASK</Comparison>
                             <Value>256</Value>
                         </Condition>
+						<Condition>
+                            <Resource>U_ENERGY</Resource>
+                            <Comparison>GREATER</Comparison>
+                            <Value>0</Value>
+                        </Condition>
                     </Conditions>
                     <Steps>
+                        <Step>
+                            <PrimitiveAction>DIE</PrimitiveAction>
+                            <Target>SELF</Target>
+                        </Step>
                         <Step>
                             <PrimitiveAction>ATTACK</PrimitiveAction>
                             <Target>TARGET_UNIT</Target>
                             <ValueEval>ONE</ValueEval>
                             <Value>0</Value>
-                            <ActionStepModifier>Large Suicide</ActionStepModifier>
-                        </Step>
-                        <Step>
-                            <PrimitiveAction>DIE</PrimitiveAction>
-                            <Target>SELF</Target>
+                            <ActionStepModifier>Spider_Probe suicide</ActionStepModifier>
                         </Step>
                     </Steps>
                 </Action>
@@ -409,27 +476,6 @@
                             <PrimitiveAction>SET_STATUS</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>STATUS_STASIS</Type>
-                        </Step>
-                    </Steps>
-                </Action>
-                <Action>
-                    <ActionNumber>22</ActionNumber>
-                    <Identifier>ACTION_TELEPORTED</Identifier>
-                    <TimeTaken>0</TimeTaken>
-                    <ForceObjectAction>0</ForceObjectAction>
-                    <InterruptCurrentAction>0</InterruptCurrentAction>
-                    <MutexAction>0</MutexAction>
-                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
-                    <PreserveParameter>1</PreserveParameter>
-                    <AIScriptCanRun>0</AIScriptCanRun>
-                    <SetParamZeroTicks>0</SetParamZeroTicks>
-                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <Conditions />
-                    <Steps>
-                        <Step>
-                            <PrimitiveAction>CLEAR_STATUS</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>STATUS_CAPABILITY_1</Type>
                         </Step>
                     </Steps>
                 </Action>
@@ -586,55 +632,6 @@
                     </Steps>
                 </Action>
                 <Action>
-                    <ActionNumber>39</ActionNumber>
-                    <Identifier>ACTION_SET_OBJECTIVE_RELEASE</Identifier>
-                    <TimeTaken>1</TimeTaken>
-                    <ForceObjectAction>0</ForceObjectAction>
-                    <InterruptCurrentAction>0</InterruptCurrentAction>
-                    <MutexAction>0</MutexAction>
-                    <FailOnInvalidTarget>1</FailOnInvalidTarget>
-                    <PreserveParameter>0</PreserveParameter>
-                    <AIScriptCanRun>0</AIScriptCanRun>
-                    <SetParamZeroTicks>0</SetParamZeroTicks>
-                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <Conditions>
-                        <Condition>
-                            <Resource>T_ALLY</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>1</Value>
-                        </Condition>
-                    </Conditions>
-                    <Steps>
-                        <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-                            <Target>TARGET_UNIT</Target>
-                            <Type>U_OBJECTIVE</Type>
-                            <ValueEval>SET_TO_VALUE</ValueEval>
-                            <Value>17</Value>
-                        </Step>
-                    </Steps>
-                </Action>
-                <Action>
-                    <ActionNumber>47</ActionNumber>
-                    <Identifier>ACTION_DISCONNECT</Identifier>
-                    <TimeTaken>0</TimeTaken>
-                    <ForceObjectAction>0</ForceObjectAction>
-                    <InterruptCurrentAction>0</InterruptCurrentAction>
-                    <MutexAction>0</MutexAction>
-                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
-                    <PreserveParameter>0</PreserveParameter>
-                    <AIScriptCanRun>0</AIScriptCanRun>
-                    <SetParamZeroTicks>0</SetParamZeroTicks>
-                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <Conditions />
-                    <Steps>
-                        <Step>
-                            <PrimitiveAction>CHANGE_COMMANDER</PrimitiveAction>
-                            <Target>TARGET_UNIT</Target>
-                        </Step>
-                    </Steps>
-                </Action>
-                <Action>
                     <ActionNumber>50</ActionNumber>
                     <Identifier>ACTION_MOVE_SLOW</Identifier>
                     <TimeTaken>4</TimeTaken>
@@ -665,118 +662,102 @@
             <Objectives>
                 <Objective>
                     <ObjectiveNumber>0</ObjectiveNumber>
-                    <Script>Script410</Script>
-                    <Name></Name>
+                    <Script>cs000_basic_idle</Script>
+                    <Name>Idle</Name>
                     <Details></Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>1</ObjectiveNumber>
-                    <Script>Script21</Script>
+                    <Script>cs010_move</Script>
                     <Name>Move</Name>
                     <Details> \Move to specified location \Move Speed: 4.5, MaxInc: 60\Vision Range: 22, Aggro Radius: 18 \Invisible in Fog of War</Details>
-                    <ObjectiveControlShortcutNumber>4</ObjectiveControlShortcutNumber>
+                    <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>2</ObjectiveNumber>
-                    <Script>Script196</Script>
-                    <Name>Attack</Name>
-					<Details> \Suicide attack, requires Specials Tech \ \Gnd Damage: 50-70  R: 4  SR: 8</Details>
+                    <Script>cs020_moving</Script>
+                    <Name>Moving</Name>
+                    <Details></Details>
                     <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
-                    <ParameterType>POSITION</ParameterType>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>3</ObjectiveNumber>
-                    <Script>Script198</Script>
-                    <Name>Patrol</Name>
-                    <Details>Hold CTRL and select up to 5 points to\continuously patrol around\Target one of your own units to HOLD\current position or select a single\location to HOLD that position</Details>
-                    <ObjectiveControlShortcutNumber>2</ObjectiveControlShortcutNumber>
+                    <Script>cs030_atk_move</Script>
+                    <Name>Attack</Name>
+					<Details> \Suicide attack, requires Specials Tech \ \Gnd Damage: 50-70  R: 4  SR: 8</Details>
+                    <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
+                    <ParameterType>POSITION</ParameterType>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>4</ObjectiveNumber>
-                    <Script>Script193</Script>
+                    <Script>cs040_atk_target</Script>
                     <Name>Attack Unit</Name>
                     <Details></Details>
-                    <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
+                    <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
                     <ParameterType>UNIT</ParameterType>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>5</ObjectiveNumber>
-                    <Script>Script22</Script>
-                    <Name>Moving</Name>
-                    <Details></Details>
-                    <ObjectiveControlShortcutNumber>4</ObjectiveControlShortcutNumber>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>6</ObjectiveNumber>
-                    <Script>Script194</Script>
+                    <Script>cs050_atking</Script>
                     <Name>Attacking</Name>
                     <Details></Details>
-                    <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
+                    <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
                     <ParameterType>POSITION</ParameterType>
                 </Objective>
                 <Objective>
-                    <ObjectiveNumber>7</ObjectiveNumber>
-                    <Script>Script199</Script>
-                    <Name>Patrolling</Name>
+                    <ObjectiveNumber>6</ObjectiveNumber>
+                    <Script>cs060_atking_target</Script>
+                    <Name>Attacking Unit</Name>
                     <Details></Details>
-                    <ObjectiveControlShortcutNumber>2</ObjectiveControlShortcutNumber>
+                    <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
+                    <ParameterType>UNIT</ParameterType>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>7</ObjectiveNumber>
+                    <Script>cs070_stop</Script>
+                    <Name>Stop</Name>
+                    <Details> \Interrupt current objective\ \Return to idling or hold fire</Details>
+                    <ObjectiveControlShortcutNumber>3</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>8</ObjectiveNumber>
-                    <Script>Script202</Script>
-                    <Name>Change Commander</Name>
-                    <Details>Set an Arcticus as commander or set\target&apos;s Arcticus as own commander</Details>
-                    <ObjectiveControlShortcutNumber>8</ObjectiveControlShortcutNumber>
+                    <Script>cs080_ptrl</Script>
+                    <Name>Patrol</Name>
+                    <Details>Hold CTRL and select up to 5 points to\continuously patrol around\Target one of your own units to HOLD\current position or select a single\location to HOLD that position</Details>
+                    <ObjectiveControlShortcutNumber>4</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>9</ObjectiveNumber>
-                    <Script>Script204</Script>
-                    <Name>Remove from Heirarchy</Name>
-                    <Details>Remove from command hierarchy\ \Disconnect from commander</Details>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>16</ObjectiveNumber>
-                    <Script>Script197</Script>
-                    <Name>Stop</Name>
-                    <Details> \Interrupt current objective\and return to idling</Details>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>33</ObjectiveNumber>
-                    <Script>Script20</Script>
-                    <Name>Awaiting Air-Lift</Name>
+                    <Script>cs090_ptrling</Script>
+                    <Name>Patrolling</Name>
                     <Details></Details>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>34</ObjectiveNumber>
-                    <Script>Script203</Script>
-                    <Name>Carry/Commander</Name>
-                    <Details></Details>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>47</ObjectiveNumber>
-                    <Script>Script206</Script>
-                    <Name>Teleport</Name>
-                    <Details> \Teleport to a specified location\    Must be near a Teleporter</Details>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>50</ObjectiveNumber>
-                    <Script>Script208</Script>
-                    <Name>Teleport</Name>
-                    <Details> \Teleport to a specified location\    Must be near a Teleporter\    Must not have a TSS</Details>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>54</ObjectiveNumber>
-                    <Script>Script195</Script>
-                    <Name>Attacking Unit</Name>
-                    <Details></Details>
-                    <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
-                    <ParameterType>UNIT</ParameterType>
+                    <ObjectiveControlShortcutNumber>4</ObjectiveControlShortcutNumber>
                 </Objective>
             </Objectives>
             <ControlShortcuts>
                 <ControlShortcut>
                     <ControlNumber>0</ControlNumber>
-                    <ControlObjectiveNumber>2</ControlObjectiveNumber>
+                    <ControlObjectiveNumber>1</ControlObjectiveNumber>
+                    <MouseInputType>SHORTCUT_TILE</MouseInputType>
+                    <ParameterType>POSITION_AUTO_HEIGHT</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut>$AchronKBMove</KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>4</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions />
+                </ControlShortcut>
+                <ControlShortcut>
+                    <ControlNumber>1</ControlNumber>
+                    <ControlObjectiveNumber>3</ControlObjectiveNumber>
                     <MouseInputType>SHORTCUT_QUICK_1</MouseInputType>
                     <ParameterType>POSITION_OR_UNIT</ParameterType>
                     <Parameter>0</Parameter>
@@ -801,79 +782,7 @@
                     </ControlConditions>
                 </ControlShortcut>
                 <ControlShortcut>
-                    <ControlNumber>1</ControlNumber>
-                    <ControlObjectiveNumber>9</ControlObjectiveNumber>
-                    <MouseInputType>SHORTCUT_QUICK_2</MouseInputType>
-                    <ParameterType>NO_PARAMETER</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut>$AchronKBRemoveFromHierarchy</KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>U_IS_CARRIED</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>0</Value>
-                        </ControlCondition>
-                    </ControlConditions>
-                </ControlShortcut>
-                <ControlShortcut>
                     <ControlNumber>2</ControlNumber>
-                    <ControlObjectiveNumber>3</ControlObjectiveNumber>
-                    <MouseInputType>SHORTCUT_QUICK_3</MouseInputType>
-                    <ParameterType>POSITION_OR_UNIT</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut>$AchronKBPatrol</KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>U_IS_CARRIED</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>0</Value>
-                        </ControlCondition>
-                    </ControlConditions>
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>4</ControlNumber>
-                    <ControlObjectiveNumber>1</ControlObjectiveNumber>
-                    <MouseInputType>SHORTCUT_TILE</MouseInputType>
-                    <ParameterType>POSITION_AUTO_HEIGHT</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut>$AchronKBMove</KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>4</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions />
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>5</ControlNumber>
                     <ControlObjectiveNumber>4</ControlObjectiveNumber>
                     <MouseInputType>SHORTCUT_ENEMY_UNIT</MouseInputType>
                     <ParameterType>UNIT</ParameterType>
@@ -893,88 +802,8 @@
                     <ControlConditions />
                 </ControlShortcut>
                 <ControlShortcut>
-                    <ControlNumber>6</ControlNumber>
-                    <ControlObjectiveNumber>34</ControlObjectiveNumber>
-                    <MouseInputType>SHORTCUT_ALLY_UNIT</MouseInputType>
-                    <ParameterType>UNIT</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut></KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>1</ButtonInvisible>
-                        <SelectTarget>1</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions />
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>9</ControlNumber>
-                    <ControlObjectiveNumber>8</ControlObjectiveNumber>
-                    <ParameterType>UNIT</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut>$AchronKBChangeCommander</KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>U_IS_CARRIED</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>0</Value>
-                        </ControlCondition>
-                    </ControlConditions>
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>10</ControlNumber>
-                    <ControlObjectiveNumber>47</ControlObjectiveNumber>
-                    <ParameterType>POSITION</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut>$AchronKBTeleport</KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>SCENARIO_CONSTRAINTS</Resource>
-                            <Comparison>BITMASK_NOT</Comparison>
-                            <Value>64</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>U_IS_CARRIED</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>0</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>U_STATUS</Resource>
-                            <Comparison>BITMASK_NOT</Comparison>
-                            <Value>4</Value>
-                        </ControlCondition>
-                    </ControlConditions>
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>16</ControlNumber>
-                    <ControlObjectiveNumber>16</ControlObjectiveNumber>
+                    <ControlNumber>3</ControlNumber>
+                    <ControlObjectiveNumber>7</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
                     <KeyboardShortcut>$AchronKBStop</KeyboardShortcut>
@@ -998,15 +827,16 @@
                     </ControlConditions>
                 </ControlShortcut>
                 <ControlShortcut>
-                    <ControlNumber>17</ControlNumber>
-                    <ControlObjectiveNumber>50</ControlObjectiveNumber>
-                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <ControlNumber>4</ControlNumber>
+                    <ControlObjectiveNumber>8</ControlObjectiveNumber>
+                    <MouseInputType>SHORTCUT_QUICK_3</MouseInputType>
+                    <ParameterType>POSITION_OR_UNIT</ParameterType>
                     <Parameter>0</Parameter>
-                    <KeyboardShortcut></KeyboardShortcut>
+                    <KeyboardShortcut>$AchronKBPatrol</KeyboardShortcut>
                     <Flags>
                         <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
                         <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>1</ButtonDisabled>
+                        <ButtonDisabled>0</ButtonDisabled>
                         <UserControlsCustom>0</UserControlsCustom>
                         <ButtonInvisible>0</ButtonInvisible>
                         <SelectTarget>0</SelectTarget>
@@ -1016,19 +846,9 @@
                     <Sound>Sound0</Sound>
                     <ControlConditions>
                         <ControlCondition>
-                            <Resource>SCENARIO_CONSTRAINTS</Resource>
-                            <Comparison>BITMASK_NOT</Comparison>
-                            <Value>64</Value>
-                        </ControlCondition>
-                        <ControlCondition>
                             <Resource>U_IS_CARRIED</Resource>
                             <Comparison>EQUAL</Comparison>
                             <Value>0</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>U_STATUS</Resource>
-                            <Comparison>BITMASK</Comparison>
-                            <Value>4</Value>
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
