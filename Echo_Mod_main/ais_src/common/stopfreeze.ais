@@ -28,7 +28,7 @@ if(unit->Status[$CAP_BIT_3]){
 	int timeSinceLastChronoport = 0;
 
 	//only look for non stopped enemies that are <=17 spaces and <=30 spaces away
-	query_vis_distance = 17; //instead of query<_>unit<=289
+	query_vis_distance = 13; //instead of query<_>unit<=289
 	target = QUERY UNIT [unit] MIN [ unit <=> query ]
 		WHERE [ !(query->IsAlly) && query->Owner<14 && (tc=query->Class)<3999  &&
 			query->Action != $EVENT_TIME_TRAVEL_DEPART && //ignore units already being chronoported
@@ -55,11 +55,11 @@ if(unit->Status[$CAP_BIT_3]){
 }
 
 
-//ELSE attempt to charge
+/*ELSE attempt to charge
 if (!player->Advancements[$GREKIM_ADV_EXTRAS]) { 
 	PERFORM SET_OBJECTIVE 0;
 	PERFORM NOTHING;
-}
+}*/
 
 int  energy = 30;
 int  health = 60;
