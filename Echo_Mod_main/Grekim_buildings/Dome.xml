@@ -1036,7 +1036,7 @@
             <Objectives>
                 <Objective>
                     <ObjectiveNumber>0</ObjectiveNumber>
-                    <Script>Script69</Script>
+                    <Script>cs00b_turret_idle</Script>
                     <Name>Defend</Name>
                     <Details>Defend current location\ \Vision Range: 20</Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
@@ -1051,7 +1051,7 @@
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>9</ObjectiveNumber>
-                    <Script>Script189</Script>
+                    <Script>cs09b_relocate</Script>
                     <Name>Relocate</Name>
                     <Details> \Deactivate to Move</Details>
                 </Objective>
@@ -1077,7 +1077,7 @@
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>50</ObjectiveNumber>
-                    <Script>Script40</Script>
+                    <Script>cs50b_morphing</Script>
                     <Name>Morphing...</Name>
                     <Details></Details>
                 </Objective>

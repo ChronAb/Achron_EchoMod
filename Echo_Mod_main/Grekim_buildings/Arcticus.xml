@@ -1156,7 +1156,7 @@
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>9</ObjectiveNumber>
-                    <Script>Script189</Script>
+                    <Script>cs09b_relocate</Script>
                     <Name>Relocate</Name>
                     <Details> \Deactivate to Move</Details>
                 </Objective>
@@ -1271,7 +1271,7 @@
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>38</ObjectiveNumber>
-                    <Script>Script261</Script>
+                    <Script>gs38p_progen_octo</Script>
                     <Name>Produce Octo</Name>
                     <Details>Resilient, AG-only melee assault unit\Good at absorbing enemy fire\Morphs into RP or Dome\Upgradable HP regeneration\Invisible in Fog of War</Details>
                     <Resource4>100</Resource4>
@@ -1279,7 +1279,7 @@
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>39</ObjectiveNumber>
-                    <Script>Script263</Script>
+                    <Script>gs39p_progen_sepi</Script>
                     <Name>Produce Squiddy/Sepi</Name>
                     <Details>Long range support sharpshooter\Low HP, high DPS vs ground and air\Cloaks while moving\Morphs into Mound or Reaph\Invisible in Fog of War</Details>
                     <Resource4>100</Resource4>
@@ -1287,7 +1287,7 @@
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>40</ObjectiveNumber>
-                    <Script>Script265</Script>
+                    <Script>gs40p_progen_pharo</Script>
                     <Name>Produce Pharo</Name>
                     <Details>Low endurance, AG-only armored grenadier\Slow, high HP, close-range skirmisher\Detects cloaked units\Morphs into Spyre or Arcticus\Invisible in Fog of War</Details>
                     <Resource4>100</Resource4>
@@ -1295,7 +1295,7 @@
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>41</ObjectiveNumber>
-                    <Script>Script276</Script>
+                    <Script>gs41q_progen_oligo</Script>
                     <Name>Produce Cthulhu/Octoligo</Name>
                     <Details>Biological heavy-support armor\Provides high-impact swarm supression\Devastating vs infantry and grouped aircraft\Can progenerate base Sepi and Pharo pair\Can Nanite Infect (req. Specials tech)</Details>
                     <Resource4>400</Resource4>
@@ -1303,7 +1303,7 @@
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>42</ObjectiveNumber>
-                    <Script>Script279</Script>
+                    <Script>gs42q_progen_sligo</Script>
                     <Name>Produce Hydra/Sepiligo</Name>
                     <Details>Very fast biological air supremacy platform\Variable rate of fire\Devastating vs other aircraft\Effective in groups vs ground\Can progenerate base Octo and Pharo pair</Details>
                     <Resource4>600</Resource4>
@@ -1311,7 +1311,7 @@
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>43</ObjectiveNumber>
-                    <Script>Script282</Script>
+                    <Script>gs43q_progen_pligo</Script>
                     <Name>Produce Medusa/Pharoligo</Name>
                     <Details>Slow biological siege aircraft\Fires slow moving explosive energy blasts\Strong vs long range stationary targets\Can progenerate base Octo and Sepi pair\Disruption beam (Specials research)</Details>
                     <Resource4>400</Resource4>
@@ -1319,25 +1319,25 @@
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>50</ObjectiveNumber>
-                    <Script>Script40</Script>
+                    <Script>cs50b_morphing</Script>
                     <Name>Morphing...</Name>
                     <Details></Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>52</ObjectiveNumber>
-                    <Script>Script275</Script>
+                    <Script>gs52q_progen_oligo_na</Script>
                     <Name>Cthulhu/Octoligo</Name>
                     <Details> \Must be near a Spyre or research\ Loligo Tech</Details>
                 </Objective>					
                 <Objective>
                     <ObjectiveNumber>53</ObjectiveNumber>
-                    <Script>Script278</Script>
+                    <Script>gs53q_progen_sligo_na</Script>
                     <Name>Hydra/Sepiligo</Name>
                     <Details> \Must be near a Spyre or research\ Loligo Tech</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>54</ObjectiveNumber>
-                    <Script>Script281</Script>
+                    <Script>gs54q_progen_pligo_na</Script>
                     <Name>Medusa/Pharoligo</Name>
                     <Details> \Must be near a Spyre or research\ Loligo Tech</Details>
                 </Objective>

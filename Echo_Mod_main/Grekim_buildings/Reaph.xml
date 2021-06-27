@@ -816,63 +816,13 @@
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>9</ObjectiveNumber>
-                    <Script>Script189</Script>
+                    <Script>cs09b_relocate</Script>
                     <Name>Relocate</Name>
                     <Details> \Deactivate to Move</Details>
                 </Objective>
                 <Objective>
-                    <ObjectiveNumber>14</ObjectiveNumber>
-                    <Script>Script330</Script>
-                    <Name>Clear Status and Nanite</Name>
-                    <Details> \Removes Status effects and Nanites\  from the target</Details>
-                    <Resource6>60</Resource6>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>16</ObjectiveNumber>
-                    <Script>Script338</Script>
-                    <Name>Chronobomb</Name>
-                    <Details> \Launch a missile that will\send all units in the target area\into the future\Max flight range: 375 spaces</Details>
-                    <Resource4>270</Resource4>
-                    <Resource6>15</Resource6>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>19</ObjectiveNumber>
-                    <Script>Script336</Script>
-                    <Name>Chronobomb</Name>
-                    <Details> \Not Available\Must upgrade Weapons and\Chronoporting</Details>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>20</ObjectiveNumber>
-                    <Script>Script334</Script>
-                    <Name>Plasma Bomb</Name>
-                    <Details> \Launch a plasma warhead\cruise missile that chronoports back\in time en route to the target\Max flight range: 300 spaces</Details>
-                    <Resource4>180</Resource4>
-                    <Resource6>30</Resource6>
-                    <Resource8>10</Resource8>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>21</ObjectiveNumber>
-                    <Script>Script338</Script>
-                    <Name>ChronoBomb</Name>
-                    <Details> \Launch a missile that will\send all units in the target area\into the future\Max flight range: 375 spaces</Details>
-                    <Resource4>270</Resource4>
-                    <Resource6>125</Resource6>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>22</ObjectiveNumber>
-                    <Script>Script335</Script>
-                    <Name>Plasma Bomb</Name>
-                    <Details> \Not Available\Must upgrade Weapons</Details>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>23</ObjectiveNumber>
-                    <Script>Script336</Script>
-                    <Name>ChronoBomb</Name>
-                    <Details> \Not Available\Must upgrade Weapons and\Chronoporting</Details>
-                </Objective>
-                <Objective>
                     <ObjectiveNumber>50</ObjectiveNumber>
-                    <Script>Script40</Script>
+                    <Script>cs50b_morphing</Script>
                     <Name>Morphing...</Name>
                     <Details></Details>
                 </Objective>

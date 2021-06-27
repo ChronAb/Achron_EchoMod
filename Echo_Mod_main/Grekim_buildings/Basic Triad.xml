@@ -1330,124 +1330,102 @@
             <Objectives>
                 <Objective>
                     <ObjectiveNumber>0</ObjectiveNumber>
-                    <Script>Script2</Script>
+                    <Script>gs00p_progen_idle</Script>
                     <Name>Progeneration</Name>
                     <Details></Details>
-                    <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
                     <ParameterType>POSITION</ParameterType>
                 </Objective>
                 <Objective>
-                    <ObjectiveNumber>1</ObjectiveNumber>
-                    <Script>Script371</Script>
-                    <Name>display waypoint</Name>
-                    <Details></Details>
-                    <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>8</ObjectiveNumber>
-                    <Script>Script392</Script>
-                    <Name>Select Unit</Name>
-                    <Details></Details>
-                </Objective>
-                <Objective>
                     <ObjectiveNumber>13</ObjectiveNumber>
-                    <Script>Script266</Script>
+                    <Script>gs13p_unprogen_all</Script>
                     <Name>Cancel Progen for All</Name>
                     <Details>Cancel out of progeneretaion for\this and surrounding progen units</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>14</ObjectiveNumber>
-                    <Script>Script301</Script>
+                    <Script>gs14p_unprogen</Script>
                     <Name>Cancel Factory/Progeneration</Name>
                     <Details></Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>15</ObjectiveNumber>
-                    <Script>Script416</Script>
+                    <Script>gs15p_repeat_progen</Script>
                     <Name>Repeat Last Order</Name>
                     <Details> \Repeats the last production order,\not including RP dispatch</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>16</ObjectiveNumber>
-                    <Script>Script417</Script>
+                    <Script>gs16p_clear_progen</Script>
                     <Name>Set to Idle</Name>
                     <Details> \Clear smart-production memory</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>18</ObjectiveNumber>
-                    <Script>Script390</Script>
-                    <Name>Set Congregation Pointers</Name>
+                    <Script>gs18p_g_rally</Script>
+                    <Name>Set Congregation Pointer</Name>
                     <Details> \Set congregation point and/or\hierarchy leader for pregenerated units</Details>
                 </Objective>
                 <Objective>
-                    <ObjectiveNumber>19</ObjectiveNumber>
-                    <Script>Script391</Script>
-                    <Name>Clear Congregation Pointers</Name>
-                    <Details> \Clear congregation point and\hierarchy leader</Details>
-                </Objective>
-                <Objective>
                     <ObjectiveNumber>20</ObjectiveNumber>
-                    <Script>Script392</Script>
+                    <Script>gs20p_g_unit_rally</Script>
                     <Name>Rally on unit</Name>
                     <Details></Details>
-                </Objective>
+                </Objective>      
+                
+                <!--Objective>
+                    <ObjectiveNumber>1</ObjectiveNumber>
+                    <Script>Script371</Script>
+                    <Name>display waypoint</Name>
+                    <Details></Details>
+                    <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
+                </Objective-->
+                
                 <Objective>
                     <ObjectiveNumber>22</ObjectiveNumber>
-                    <Script>Script2</Script>
+                    <Script>gs00p_progen_idle</Script>
                     <Name>Octo Progen Idle</Name>
-                    <Details></Details>
-                    <ObjectiveControlShortcutNumber>5</ObjectiveControlShortcutNumber>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>23</ObjectiveNumber>
-                    <Script>Script2</Script>
-                    <Name>Sepi Progen Idle</Name>
-                    <Details></Details>
-                    <ObjectiveControlShortcutNumber>6</ObjectiveControlShortcutNumber>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>24</ObjectiveNumber>
-                    <Script>Script2</Script>
-                    <Name>Pharo Progen Idle</Name>
-                    <Details></Details>
-                    <ObjectiveControlShortcutNumber>7</ObjectiveControlShortcutNumber>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>25</ObjectiveNumber>
-                    <Script>Script2</Script>
-                    <Name>Opod Progen Idle</Name>
-                    <Details></Details>
-                    <ObjectiveControlShortcutNumber>8</ObjectiveControlShortcutNumber>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>26</ObjectiveNumber>
-                    <Script>Script2</Script>
-                    <Name>Spod Progen Idle</Name>
-                    <Details></Details>
-                    <ObjectiveControlShortcutNumber>9</ObjectiveControlShortcutNumber>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>27</ObjectiveNumber>
-                    <Script>Script2</Script>
-                    <Name>Ppod Progen Idle</Name>
                     <Details></Details>
                     <ObjectiveControlShortcutNumber>10</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
-                    <ObjectiveNumber>34</ObjectiveNumber>
-                    <Script>Script392</Script>
-                    <Name>Select Unit</Name>
+                    <ObjectiveNumber>23</ObjectiveNumber>
+                    <Script>gs00p_progen_idle</Script>
+                    <Name>Sepi Progen Idle</Name>
                     <Details></Details>
+                    <ObjectiveControlShortcutNumber>11</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
-                    <ObjectiveNumber>36</ObjectiveNumber>
-                    <Script>Script383</Script>
-                    <Name>Octo RP Dispatch</Name>
+                    <ObjectiveNumber>24</ObjectiveNumber>
+                    <Script>gs00p_progen_idle</Script>
+                    <Name>Pharo Progen Idle</Name>
                     <Details></Details>
+                    <ObjectiveControlShortcutNumber>12</ObjectiveControlShortcutNumber>
                 </Objective>
+                <Objective>
+                    <ObjectiveNumber>25</ObjectiveNumber>
+                    <Script>gs00p_progen_idle</Script>
+                    <Name>Opod Progen Idle</Name>
+                    <Details></Details>
+                    <ObjectiveControlShortcutNumber>13</ObjectiveControlShortcutNumber>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>26</ObjectiveNumber>
+                    <Script>gs00p_progen_idle</Script>
+                    <Name>Spod Progen Idle</Name>
+                    <Details></Details>
+                    <ObjectiveControlShortcutNumber>14</ObjectiveControlShortcutNumber>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>27</ObjectiveNumber>
+                    <Script>gs00p_progen_idle</Script>
+                    <Name>Ppod Progen Idle</Name>
+                    <Details></Details>
+                    <ObjectiveControlShortcutNumber>15</ObjectiveControlShortcutNumber>
+                </Objective>
+                
                 <Objective>
                     <ObjectiveNumber>38</ObjectiveNumber>
-                    <Script>Script261</Script>
+                    <Script>gs38p_progen_octo</Script>
                     <Name>Produce Octo</Name>
                     <Details>Resilient melee assault trooper\Good at absorbing enemy fire\Cannot attack air targets\Morphs into RP or Dome\Invisible in Fog of War</Details>
                     <Resource4>100</Resource4>
@@ -1455,7 +1433,7 @@
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>39</ObjectiveNumber>
-                    <Script>Script263</Script>
+                    <Script>gs39p_progen_sepi</Script>
                     <Name>Produce Squiddy/Sepi</Name>
                     <Details>Long range support sharpshooter\High damage against air and ground targets\Minimal armor; Cloaks when moving\Morphs into Mound or Reaph\Invisible in Fog of War</Details>
                     <Resource4>100</Resource4>
@@ -1463,7 +1441,7 @@
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>40</ObjectiveNumber>
-                    <Script>Script265</Script>
+                    <Script>gs40p_progen_pharo</Script>
                     <Name>Produce Pharo</Name>
                     <Details>Heavily armored shock grenadier\Detects cloaked enemies\Only effective vs light ground targets\Morphs into Spyre or Arcticus\Invisible in Fog of War</Details>
                     <Resource4>100</Resource4>
@@ -1471,7 +1449,7 @@
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>41</ObjectiveNumber>
-                    <Script>Script268</Script>
+                    <Script>gs41p_progen_opod</Script>
                     <Name>Produce Octopod</Name>
                     <Details>Biological main ground-assault armor\Mobile, high impact AG-only sniper\Low durability but can self-heal\Can construct Vecgir Foundations</Details>
                     <Resource4>300</Resource4>
@@ -1479,7 +1457,7 @@
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>42</ObjectiveNumber>
-                    <Script>Script270</Script>
+                    <Script>gs42p_progen_spod</Script>
                     <Name>Produce Humbolt/Sepipod</Name>
                     <Details>Biological air superiority fighter-bomber\Good scout and raider\Limited combat endurance\Detects cloaked enemies\Can Chronobomb (Specials research)</Details>
                     <Resource4>400</Resource4>
@@ -1487,171 +1465,74 @@
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>43</ObjectiveNumber>
-                    <Script>Script272</Script>
+                    <Script>gs43p_progen_ppod</Script>
                     <Name>Produce Vampire/Pharopod</Name>
                     <Details>Biological steatlh strike-bomber\Very high damage against ground targets\Self-Cloaks; Mists to avoid death</Details>
                     <Resource4>500</Resource4>
                     <Resource6>5</Resource6>
                 </Objective>
+                
+                <Objective>
+                    <ObjectiveNumber>52</ObjectiveNumber>
+                    <Script>gs52p_progen_RP</Script>
+                    <Name>Resource Processor Dispatch</Name>
+                    <Details>   - place near resource bins\Assimilates resources: Power and Q-Plasma\Can bootstrap and convert Q-P into L-C\Can move itself</Details>
+                    <Resource4>200</Resource4>
+                    <Resource6>5</Resource6>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>36</ObjectiveNumber>
+                    <Script>gs36p_gsend_RP</Script>
+                    <Name>Octo RP Dispatch</Name>
+                    <Details></Details>
+                </Objective>
+                
                 <Objective>
                     <ObjectiveNumber>44</ObjectiveNumber>
-                    <Script>Script260</Script>
+                    <Script>gs44p_progen_octo_na</Script>
                     <Name>Octo</Name>
                     <Details> \Must have a progenerating\Sepi and Pharo pair</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>45</ObjectiveNumber>
-                    <Script>Script262</Script>
+                    <Script>gs45p_progen_sepi_na</Script>
                     <Name>Squiddy/Sepi</Name>
                     <Details> \Must have a progenerating\Pharo and Octo pair</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>46</ObjectiveNumber>
-                    <Script>Script264</Script>
+                    <Script>gs46p_progen_pharo_na</Script>
                     <Name>Pharo</Name>
                     <Details> \Must have a progenerating\Octo and Sepi pair</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>47</ObjectiveNumber>
-                    <Script>Script267</Script>
+                    <Script>gs47p_progen_opod_na</Script>
                     <Name>Octopod</Name>
                     <Details> \Must have a progenerating\Sepi and Pharo pair</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>48</ObjectiveNumber>
-                    <Script>Script269</Script>
+                    <Script>gs48p_progen_spod_na</Script>
                     <Name>Humbolt/Sepipod</Name>
                     <Details> \Must have a progenerating\Pharo and Octo pair\Must be near a Spyre</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>49</ObjectiveNumber>
-                    <Script>Script271</Script>
+                    <Script>gs49p_progen_ppod_na</Script>
                     <Name>Vampire/Pharopod</Name>
                     <Details> \Must have a progenerating\Octo and Sepi pair\Must be near a Spyre</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>50</ObjectiveNumber>
-                    <Script>Script269</Script>
-                    <Name></Name>
-                    <Details></Details>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>51</ObjectiveNumber>
-                    <Script>Script271</Script>
-                    <Name></Name>
-                    <Details></Details>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>52</ObjectiveNumber>
-                    <Script>Script382</Script>
-                    <Name>Octo Resource Processor</Name>
-                    <Details>   - place near resource bins\Assimilates resources: Power and Q-Plasma\Can bootstrap and convert Q-P into L-C\Can move itself</Details>
-                    <Resource4>200</Resource4>
-                    <Resource6>5</Resource6>
+                    <Script>gs50p_progen_RP_na</Script>
+                    <Name>Resource Processor Dispatch</Name>
+                    <Details> \Must have a progenerating\Sepi and Pharo pair</Details>
                 </Objective>
             </Objectives>
             <ControlShortcuts>
                 <ControlShortcut>
                     <ControlNumber>0</ControlNumber>
-                    <ControlObjectiveNumber>14</ControlObjectiveNumber>
-                    <MouseInputType>SHORTCUT_QUICK_4</MouseInputType>
-                    <ParameterType>NO_PARAMETER</ParameterType>
-                    <Parameter>1055</Parameter>
-                    <KeyboardShortcut>$AchronKBCancel</KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions />
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>1</ControlNumber>
-                    <ControlObjectiveNumber>1</ControlObjectiveNumber>
-                    <ParameterType>POSITION</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut></KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>1</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions />
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>2</ControlNumber>
-                    <ControlObjectiveNumber>50</ControlObjectiveNumber>
-                    <ParameterType>NO_PARAMETER</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut></KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>1</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>U_STATUS</Resource>
-                            <Comparison>BITMASK_NOT</Comparison>
-                            <Value>16</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>U_STATUS</Resource>
-                            <Comparison>BITMASK</Comparison>
-                            <Value>32</Value>
-                        </ControlCondition>
-                    </ControlConditions>
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>3</ControlNumber>
-                    <ControlObjectiveNumber>51</ControlObjectiveNumber>
-                    <ParameterType>NO_PARAMETER</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut></KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>1</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>U_STATUS</Resource>
-                            <Comparison>BITMASK_NOT</Comparison>
-                            <Value>16</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>U_STATUS</Resource>
-                            <Comparison>BITMASK</Comparison>
-                            <Value>64</Value>
-                        </ControlCondition>
-                    </ControlConditions>
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>4</ControlNumber>
                     <ControlObjectiveNumber>13</ControlObjectiveNumber>
                     <MouseInputType>SHORTCUT_QUICK_3</MouseInputType>
                     <ParameterType>NO_PARAMETER</ParameterType>
@@ -1671,7 +1552,148 @@
                     <ControlConditions />
                 </ControlShortcut>
                 <ControlShortcut>
+                    <ControlNumber>1</ControlNumber>
+                    <ControlObjectiveNumber>14</ControlObjectiveNumber>
+                    <MouseInputType>SHORTCUT_QUICK_4</MouseInputType>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>1055</Parameter>
+                    <KeyboardShortcut>$AchronKBCancel</KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions />
+                </ControlShortcut>
+                <ControlShortcut>
+                    <ControlNumber>2</ControlNumber>
+                    <ControlObjectiveNumber>15</ControlObjectiveNumber>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut>$AchronKBPriority</KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>U_OBJECTIVE</Resource>
+                            <Comparison>GEQUAL</Comparison>
+                            <Value>22</Value>
+                        </ControlCondition>
+                        <ControlCondition>
+                            <Resource>U_OBJECTIVE</Resource>
+                            <Comparison>LEQUAL</Comparison>
+                            <Value>27</Value>
+                        </ControlCondition>
+                        <ControlCondition>
+                            <Resource>NUM_UNITS_SELECTED</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>1</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+                <ControlShortcut>
+                    <ControlNumber>3</ControlNumber>
+                    <ControlObjectiveNumber>16</ControlObjectiveNumber>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut>$AchronKBStop</KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>U_OBJECTIVE</Resource>
+                            <Comparison>GEQUAL</Comparison>
+                            <Value>22</Value>
+                        </ControlCondition>
+                        <ControlCondition>
+                            <Resource>U_OBJECTIVE</Resource>
+                            <Comparison>LEQUAL</Comparison>
+                            <Value>27</Value>
+                        </ControlCondition>
+                        <ControlCondition>
+                            <Resource>NUM_UNITS_SELECTED</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>1</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+                <ControlShortcut>
+                    <ControlNumber>4</ControlNumber>
+                    <ControlObjectiveNumber>15</ControlObjectiveNumber>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut>$AchronKBPriority</KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>NUM_UNITS_SELECTED</Resource>
+                            <Comparison>GREATER</Comparison>
+                            <Value>1</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+                <ControlShortcut>
                     <ControlNumber>5</ControlNumber>
+                    <ControlObjectiveNumber>16</ControlObjectiveNumber>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut>$AchronKBStop</KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>NUM_UNITS_SELECTED</Resource>
+                            <Comparison>GREATER</Comparison>
+                            <Value>1</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+
+                <ControlShortcut>
+                    <ControlNumber>10</ControlNumber>
                     <ControlObjectiveNumber>38</ControlObjectiveNumber>
                     <ParameterType>POSITION_CLASS</ParameterType>
                     <Parameter>0</Parameter>
@@ -1696,7 +1718,7 @@
                     </ControlConditions>
                 </ControlShortcut>
                 <ControlShortcut>
-                    <ControlNumber>6</ControlNumber>
+                    <ControlNumber>11</ControlNumber>
                     <ControlObjectiveNumber>39</ControlObjectiveNumber>
                     <ParameterType>POSITION_CLASS</ParameterType>
                     <Parameter>0</Parameter>
@@ -1721,7 +1743,7 @@
                     </ControlConditions>
                 </ControlShortcut>
                 <ControlShortcut>
-                    <ControlNumber>7</ControlNumber>
+                    <ControlNumber>12</ControlNumber>
                     <ControlObjectiveNumber>40</ControlObjectiveNumber>
                     <ParameterType>POSITION_CLASS</ParameterType>
                     <Parameter>0</Parameter>
@@ -1746,7 +1768,7 @@
                     </ControlConditions>
                 </ControlShortcut>
                 <ControlShortcut>
-                    <ControlNumber>8</ControlNumber>
+                    <ControlNumber>13</ControlNumber>
                     <ControlObjectiveNumber>41</ControlObjectiveNumber>
                     <ParameterType>POSITION_CLASS</ParameterType>
                     <Parameter>0</Parameter>
@@ -1771,7 +1793,7 @@
                     </ControlConditions>
                 </ControlShortcut>
                 <ControlShortcut>
-                    <ControlNumber>9</ControlNumber>
+                    <ControlNumber>14</ControlNumber>
                     <ControlObjectiveNumber>42</ControlObjectiveNumber>
                     <ParameterType>POSITION_CLASS</ParameterType>
                     <Parameter>0</Parameter>
@@ -1801,7 +1823,7 @@
                     </ControlConditions>
                 </ControlShortcut>
                 <ControlShortcut>
-                    <ControlNumber>10</ControlNumber>
+                    <ControlNumber>15</ControlNumber>
                     <ControlObjectiveNumber>43</ControlObjectiveNumber>
                     <ParameterType>POSITION_CLASS</ParameterType>
                     <Parameter>0</Parameter>
@@ -1831,7 +1853,33 @@
                     </ControlConditions>
                 </ControlShortcut>
                 <ControlShortcut>
-                    <ControlNumber>11</ControlNumber>
+                    <ControlNumber>16</ControlNumber>
+                    <ControlObjectiveNumber>52</ControlObjectiveNumber>
+                    <ParameterType>POSITION_CLASS</ParameterType>
+                    <Parameter>1056</Parameter>
+                    <KeyboardShortcut>$AchronKBRpGrekim</KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>756</EstTimeConst>
+                    <EstTimeDist>6</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>U_STATUS</Resource>
+                            <Comparison>BITMASK</Comparison>
+                            <Value>128</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+
+                <ControlShortcut> <!-- octo NA -->
+                    <ControlNumber>20</ControlNumber>
                     <ControlObjectiveNumber>44</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
@@ -1855,8 +1903,8 @@
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>12</ControlNumber>
+                <ControlShortcut> <!-- sepi NA -->
+                    <ControlNumber>21</ControlNumber>
                     <ControlObjectiveNumber>45</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
@@ -1880,8 +1928,8 @@
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>13</ControlNumber>
+                <ControlShortcut> <!-- pharo NA -->
+                    <ControlNumber>22</ControlNumber>
                     <ControlObjectiveNumber>46</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
@@ -1905,8 +1953,8 @@
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>14</ControlNumber>
+                <ControlShortcut> <!-- opod NA -->
+                    <ControlNumber>23</ControlNumber>
                     <ControlObjectiveNumber>47</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
@@ -1930,8 +1978,8 @@
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>15</ControlNumber>
+                <ControlShortcut> <!-- spod NA -->
+                    <ControlNumber>24</ControlNumber>
                     <ControlObjectiveNumber>48</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
@@ -1955,8 +2003,8 @@
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>16</ControlNumber>
+                <ControlShortcut> <!-- ppod NA -->
+                    <ControlNumber>25</ControlNumber>
                     <ControlObjectiveNumber>49</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
@@ -1980,205 +2028,100 @@
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>17</ControlNumber>
-                    <ControlObjectiveNumber>52</ControlObjectiveNumber>
-                    <ParameterType>POSITION_CLASS</ParameterType>
-                    <Parameter>1056</Parameter>
-                    <KeyboardShortcut>$AchronKBRpGrekim</KeyboardShortcut>
+                <ControlShortcut> <!-- RP NA -->
+                    <ControlNumber>26</ControlNumber>
+                    <ControlObjectiveNumber>50</ControlObjectiveNumber>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut></KeyboardShortcut>
                     <Flags>
                         <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
                         <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
+                        <ButtonDisabled>1</ButtonDisabled>
                         <UserControlsCustom>0</UserControlsCustom>
                         <ButtonInvisible>0</ButtonInvisible>
                         <SelectTarget>0</SelectTarget>
                     </Flags>
-                    <EstTimeConst>756</EstTimeConst>
-                    <EstTimeDist>6</EstTimeDist>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
                     <Sound>Sound0</Sound>
                     <ControlConditions>
+                        <ControlCondition>
+                            <Resource>U_STATUS</Resource>
+                            <Comparison>BITMASK_NOT</Comparison>
+                            <Value>128</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+
+                <ControlShortcut> <!-- spod spyre NA -->
+                    <ControlNumber>27</ControlNumber>
+                    <ControlObjectiveNumber>48</ControlObjectiveNumber>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut></KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>1</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>U_STATUS</Resource>
+                            <Comparison>BITMASK_NOT</Comparison>
+                            <Value>16</Value>
+                        </ControlCondition>
                         <ControlCondition>
                             <Resource>U_STATUS</Resource>
                             <Comparison>BITMASK</Comparison>
                             <Value>32</Value>
                         </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+                <ControlShortcut> <!-- ppod spyre NA -->
+                    <ControlNumber>28</ControlNumber>
+                    <ControlObjectiveNumber>49</ControlObjectiveNumber>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut></KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>1</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
                         <ControlCondition>
-                            <Resource>NUM_UNITS_SELECTED</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>1</Value>
+                            <Resource>U_STATUS</Resource>
+                            <Comparison>BITMASK_NOT</Comparison>
+                            <Value>16</Value>
+                        </ControlCondition>
+                        <ControlCondition>
+                            <Resource>U_STATUS</Resource>
+                            <Comparison>BITMASK</Comparison>
+                            <Value>64</Value>
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
+
                 <ControlShortcut>
-                    <ControlNumber>18</ControlNumber>
+                    <ControlNumber>31</ControlNumber>
                     <ControlObjectiveNumber>18</ControlObjectiveNumber>
                     <MouseInputType>SHORTCUT_TILE</MouseInputType>
                     <ParameterType>POSITION_OR_UNIT</ParameterType>
                     <Parameter>0</Parameter>
                     <KeyboardShortcut>$AchronKBCongregate</KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>U_OBJECTIVE</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>0</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>NUM_UNITS_SELECTED</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>1</Value>
-                        </ControlCondition>
-                    </ControlConditions>
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>19</ControlNumber>
-                    <ControlObjectiveNumber>18</ControlObjectiveNumber>
-                    <MouseInputType>SHORTCUT_TILE</MouseInputType>
-                    <ParameterType>POSITION_OR_UNIT</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut>$AchronKBCongregate</KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>1</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>U_OBJECTIVE</Resource>
-                            <Comparison>GEQUAL</Comparison>
-                            <Value>22</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>U_OBJECTIVE</Resource>
-                            <Comparison>LEQUAL</Comparison>
-                            <Value>27</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>NUM_UNITS_SELECTED</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>1</Value>
-                        </ControlCondition>
-                    </ControlConditions>
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>20</ControlNumber>
-                    <ControlObjectiveNumber>15</ControlObjectiveNumber>
-                    <ParameterType>NO_PARAMETER</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut>$AchronKBPriority</KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>U_OBJECTIVE</Resource>
-                            <Comparison>GEQUAL</Comparison>
-                            <Value>22</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>U_OBJECTIVE</Resource>
-                            <Comparison>LEQUAL</Comparison>
-                            <Value>27</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>NUM_UNITS_SELECTED</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>1</Value>
-                        </ControlCondition>
-                    </ControlConditions>
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>21</ControlNumber>
-                    <ControlObjectiveNumber>16</ControlObjectiveNumber>
-                    <ParameterType>NO_PARAMETER</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut>$AchronKBStop</KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>U_OBJECTIVE</Resource>
-                            <Comparison>GEQUAL</Comparison>
-                            <Value>22</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>U_OBJECTIVE</Resource>
-                            <Comparison>LEQUAL</Comparison>
-                            <Value>27</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>NUM_UNITS_SELECTED</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>1</Value>
-                        </ControlCondition>
-                    </ControlConditions>
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>22</ControlNumber>
-                    <ControlObjectiveNumber>18</ControlObjectiveNumber>
-                    <MouseInputType>SHORTCUT_TILE</MouseInputType>
-                    <ParameterType>POSITION_OR_UNIT</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut>$AchronKBCongregate</KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>NUM_UNITS_SELECTED</Resource>
-                            <Comparison>GREATER</Comparison>
-                            <Value>1</Value>
-                        </ControlCondition>
-                    </ControlConditions>
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>23</ControlNumber>
-                    <ControlObjectiveNumber>19</ControlObjectiveNumber>
-                    <ParameterType>NO_PARAMETER</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut>$AchronKBClearCongregate</KeyboardShortcut>
                     <Flags>
                         <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
                         <EstTimeConstIsStart>0</EstTimeConstIsStart>
@@ -2193,7 +2136,7 @@
                     <ControlConditions />
                 </ControlShortcut>
                 <ControlShortcut>
-                    <ControlNumber>24</ControlNumber>
+                    <ControlNumber>35</ControlNumber>
                     <ControlObjectiveNumber>20</ControlObjectiveNumber>
                     <MouseInputType>SHORTCUT_ALLY_UNIT</MouseInputType>
                     <ParameterType>UNIT</ParameterType>
@@ -2211,86 +2154,6 @@
                     <EstTimeDist>0</EstTimeDist>
                     <Sound>Sound0</Sound>
                     <ControlConditions />
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>25</ControlNumber>
-                    <ControlObjectiveNumber>15</ControlObjectiveNumber>
-                    <ParameterType>NO_PARAMETER</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut>$AchronKBPriority</KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>NUM_UNITS_SELECTED</Resource>
-                            <Comparison>GREATER</Comparison>
-                            <Value>1</Value>
-                        </ControlCondition>
-                    </ControlConditions>
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>26</ControlNumber>
-                    <ControlObjectiveNumber>16</ControlObjectiveNumber>
-                    <ParameterType>NO_PARAMETER</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut>$AchronKBStop</KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>NUM_UNITS_SELECTED</Resource>
-                            <Comparison>GREATER</Comparison>
-                            <Value>1</Value>
-                        </ControlCondition>
-                    </ControlConditions>
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>27</ControlNumber>
-                    <ControlObjectiveNumber>52</ControlObjectiveNumber>
-                    <ParameterType>POSITION_CLASS</ParameterType>
-                    <Parameter>1056</Parameter>
-                    <KeyboardShortcut>$AchronKBRpGrekim</KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>1</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>828</EstTimeConst>
-                    <EstTimeDist>6</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>U_STATUS</Resource>
-                            <Comparison>BITMASK</Comparison>
-                            <Value>32</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>NUM_UNITS_SELECTED</Resource>
-                            <Comparison>GREATER</Comparison>
-                            <Value>1</Value>
-                        </ControlCondition>
-                    </ControlConditions>
                 </ControlShortcut>
             </ControlShortcuts>
         </ObjectClass>
@@ -3589,148 +3452,126 @@
             <Objectives>
                 <Objective>
                     <ObjectiveNumber>0</ObjectiveNumber>
-                    <Script>Script2</Script>
+                    <Script>gs00p_progen_idle</Script>
                     <Name>Progeneration</Name>
                     <Details></Details>
-                    <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
                     <ParameterType>POSITION</ParameterType>
                 </Objective>
                 <Objective>
-                    <ObjectiveNumber>1</ObjectiveNumber>
-                    <Script>Script371</Script>
-                    <Name>display waypoint</Name>
-                    <Details></Details>
-                    <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>8</ObjectiveNumber>
-                    <Script>Script392</Script>
-                    <Name>Select Unit</Name>
-                    <Details></Details>
-                </Objective>
-                <Objective>
                     <ObjectiveNumber>13</ObjectiveNumber>
-                    <Script>Script266</Script>
+                    <Script>gs13p_unprogen_all</Script>
                     <Name>Cancel Progen for All</Name>
                     <Details>Cancel out of progeneretaion for\this and surrounding progen units</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>14</ObjectiveNumber>
-                    <Script>Script301</Script>
+                    <Script>gs14p_unprogen</Script>
                     <Name>Cancel Factory/Progeneration</Name>
                     <Details></Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>15</ObjectiveNumber>
-                    <Script>Script416</Script>
+                    <Script>gs15p_repeat_progen</Script>
                     <Name>Repeat Last Order</Name>
                     <Details> \Repeats the last production order,\not including RP dispatch</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>16</ObjectiveNumber>
-                    <Script>Script417</Script>
+                    <Script>gs16p_clear_progen</Script>
                     <Name>Set to Idle</Name>
                     <Details> \Clear smart-production memory</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>18</ObjectiveNumber>
-                    <Script>Script390</Script>
-                    <Name>Set Congregation Pointers</Name>
+                    <Script>gs18p_g_rally</Script>
+                    <Name>Set Congregation Pointer</Name>
                     <Details> \Set congregation point and/or\hierarchy leader for pregenerated units</Details>
                 </Objective>
                 <Objective>
-                    <ObjectiveNumber>19</ObjectiveNumber>
-                    <Script>Script391</Script>
-                    <Name>Clear Congregation Pointers</Name>
-                    <Details> \Clear congregation point and\hierarchy leader</Details>
-                </Objective>
-                <Objective>
                     <ObjectiveNumber>20</ObjectiveNumber>
-                    <Script>Script392</Script>
+                    <Script>gs20p_g_unit_rally</Script>
                     <Name>Rally on unit</Name>
                     <Details></Details>
-                </Objective>
+                </Objective>      
+                
+                <!--Objective>
+                    <ObjectiveNumber>1</ObjectiveNumber>
+                    <Script>Script371</Script>
+                    <Name>display waypoint</Name>
+                    <Details></Details>
+                    <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
+                </Objective-->
+                
                 <Objective>
                     <ObjectiveNumber>22</ObjectiveNumber>
-                    <Script>Script2</Script>
+                    <Script>gs00p_progen_idle</Script>
                     <Name>Octo Progen Idle</Name>
-                    <Details></Details>
-                    <ObjectiveControlShortcutNumber>5</ObjectiveControlShortcutNumber>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>23</ObjectiveNumber>
-                    <Script>Script2</Script>
-                    <Name>Sepi Progen Idle</Name>
-                    <Details></Details>
-                    <ObjectiveControlShortcutNumber>6</ObjectiveControlShortcutNumber>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>24</ObjectiveNumber>
-                    <Script>Script2</Script>
-                    <Name>Pharo Progen Idle</Name>
-                    <Details></Details>
-                    <ObjectiveControlShortcutNumber>7</ObjectiveControlShortcutNumber>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>25</ObjectiveNumber>
-                    <Script>Script2</Script>
-                    <Name>Opod Progen Idle</Name>
-                    <Details></Details>
-                    <ObjectiveControlShortcutNumber>8</ObjectiveControlShortcutNumber>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>26</ObjectiveNumber>
-                    <Script>Script2</Script>
-                    <Name>Spod Progen Idle</Name>
-                    <Details></Details>
-                    <ObjectiveControlShortcutNumber>9</ObjectiveControlShortcutNumber>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>27</ObjectiveNumber>
-                    <Script>Script2</Script>
-                    <Name>Ppod Progen Idle</Name>
                     <Details></Details>
                     <ObjectiveControlShortcutNumber>10</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
-                    <ObjectiveNumber>34</ObjectiveNumber>
-                    <Script>Script392</Script>
-                    <Name>Select Unit</Name>
+                    <ObjectiveNumber>23</ObjectiveNumber>
+                    <Script>gs00p_progen_idle</Script>
+                    <Name>Sepi Progen Idle</Name>
                     <Details></Details>
+                    <ObjectiveControlShortcutNumber>11</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
-                    <ObjectiveNumber>36</ObjectiveNumber>
-                    <Script>Script383</Script>
-                    <Name>Octo RP Dispatch</Name>
+                    <ObjectiveNumber>24</ObjectiveNumber>
+                    <Script>gs00p_progen_idle</Script>
+                    <Name>Pharo Progen Idle</Name>
                     <Details></Details>
+                    <ObjectiveControlShortcutNumber>12</ObjectiveControlShortcutNumber>
                 </Objective>
+                <Objective>
+                    <ObjectiveNumber>25</ObjectiveNumber>
+                    <Script>gs00p_progen_idle</Script>
+                    <Name>Opod Progen Idle</Name>
+                    <Details></Details>
+                    <ObjectiveControlShortcutNumber>13</ObjectiveControlShortcutNumber>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>26</ObjectiveNumber>
+                    <Script>gs00p_progen_idle</Script>
+                    <Name>Spod Progen Idle</Name>
+                    <Details></Details>
+                    <ObjectiveControlShortcutNumber>14</ObjectiveControlShortcutNumber>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>27</ObjectiveNumber>
+                    <Script>gs00p_progen_idle</Script>
+                    <Name>Ppod Progen Idle</Name>
+                    <Details></Details>
+                    <ObjectiveControlShortcutNumber>15</ObjectiveControlShortcutNumber>
+                </Objective>
+                
                 <Objective>
                     <ObjectiveNumber>38</ObjectiveNumber>
-                    <Script>Script261</Script>
+                    <Script>gs38p_progen_octo</Script>
                     <Name>Produce Octo</Name>
-                    <Details>Resilient, AG-only melee assault unit\Good at absorbing enemy fire\Morphs into RP or Dome\Upgradable HP regeneration\Invisible in Fog of War</Details>
+                    <Details>Resilient melee assault trooper\Good at absorbing enemy fire\Cannot attack air targets\Morphs into RP or Dome\Invisible in Fog of War</Details>
                     <Resource4>100</Resource4>
                     <Resource6>5</Resource6>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>39</ObjectiveNumber>
-                    <Script>Script263</Script>
+                    <Script>gs39p_progen_sepi</Script>
                     <Name>Produce Squiddy/Sepi</Name>
-                    <Details>Long range support sharpshooter\Low HP, high DPS vs ground and air\Cloaks while moving\Morphs into Mound or Reaph\Invisible in Fog of War</Details>
+                    <Details>Long range support sharpshooter\High damage against air and ground targets\Minimal armor; Cloaks when moving\Morphs into Mound or Reaph\Invisible in Fog of War</Details>
                     <Resource4>100</Resource4>
                     <Resource6>5</Resource6>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>40</ObjectiveNumber>
-                    <Script>Script265</Script>
+                    <Script>gs40p_progen_pharo</Script>
                     <Name>Produce Pharo</Name>
-                    <Details>Low endurance, AG-only armored grenadier\Slow, high HP, close-range skirmisher\Detects cloaked units\Morphs into Spyre or Arcticus\Invisible in Fog of War</Details>
+                    <Details>Heavily armored shock grenadier\Detects cloaked enemies\Only effective vs light ground targets\Morphs into Spyre or Arcticus\Invisible in Fog of War</Details>
                     <Resource4>100</Resource4>
                     <Resource6>5</Resource6>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>41</ObjectiveNumber>
-                    <Script>Script268</Script>
+                    <Script>gs41p_progen_opod</Script>
                     <Name>Produce Octopod</Name>
                     <Details>Biological main ground-assault armor\Mobile, high impact AG-only sniper\Low durability but can self-heal\Can construct Vecgir Foundations</Details>
                     <Resource4>300</Resource4>
@@ -3738,179 +3579,82 @@
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>42</ObjectiveNumber>
-                    <Script>Script270</Script>
+                    <Script>gs42p_progen_spod</Script>
                     <Name>Produce Humbolt/Sepipod</Name>
-                    <Details>Tactical air superiority fighter-bomber\Good scout and raider; Biological\Detects cloaked units\Can Chronobomb (Specials research)</Details>
+                    <Details>Biological air superiority fighter-bomber\Good scout and raider\Limited combat endurance\Detects cloaked enemies\Can Chronobomb (Specials research)</Details>
                     <Resource4>400</Resource4>
                     <Resource6>5</Resource6>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>43</ObjectiveNumber>
-                    <Script>Script272</Script>
+                    <Script>gs43p_progen_ppod</Script>
                     <Name>Produce Vampire/Pharopod</Name>
                     <Details>Biological steatlh strike-bomber\Very high damage against ground targets\Self-Cloaks; Mists to avoid death</Details>
                     <Resource4>500</Resource4>
                     <Resource6>5</Resource6>
                 </Objective>
+                
+                <Objective>
+                    <ObjectiveNumber>52</ObjectiveNumber>
+                    <Script>gs52p_progen_RP</Script>
+                    <Name>Resource Processor Dispatch</Name>
+                    <Details>   - place near resource bins\Assimilates resources: Power and Q-Plasma\Can bootstrap and convert Q-P into L-C\Can move itself</Details>
+                    <Resource4>200</Resource4>
+                    <Resource6>5</Resource6>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>36</ObjectiveNumber>
+                    <Script>gs36p_gsend_RP</Script>
+                    <Name>Octo RP Dispatch</Name>
+                    <Details></Details>
+                </Objective>
+                
                 <Objective>
                     <ObjectiveNumber>44</ObjectiveNumber>
-                    <Script>Script260</Script>
+                    <Script>gs44p_progen_octo_na</Script>
                     <Name>Octo</Name>
                     <Details> \Must have a progenerating\Sepi and Pharo pair</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>45</ObjectiveNumber>
-                    <Script>Script262</Script>
+                    <Script>gs45p_progen_sepi_na</Script>
                     <Name>Squiddy/Sepi</Name>
                     <Details> \Must have a progenerating\Pharo and Octo pair</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>46</ObjectiveNumber>
-                    <Script>Script264</Script>
+                    <Script>gs46p_progen_pharo_na</Script>
                     <Name>Pharo</Name>
                     <Details> \Must have a progenerating\Octo and Sepi pair</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>47</ObjectiveNumber>
-                    <Script>Script267</Script>
+                    <Script>gs47p_progen_opod_na</Script>
                     <Name>Octopod</Name>
                     <Details> \Must have a progenerating\Sepi and Pharo pair</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>48</ObjectiveNumber>
-                    <Script>Script269</Script>
+                    <Script>gs48p_progen_spod_na</Script>
                     <Name>Humbolt/Sepipod</Name>
                     <Details> \Must have a progenerating\Pharo and Octo pair\Must be near a Spyre</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>49</ObjectiveNumber>
-                    <Script>Script271</Script>
+                    <Script>gs49p_progen_ppod_na</Script>
                     <Name>Vampire/Pharopod</Name>
                     <Details> \Must have a progenerating\Octo and Sepi pair\Must be near a Spyre</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>50</ObjectiveNumber>
-                    <Script>Script269</Script>
-                    <Name></Name>
-                    <Details></Details>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>51</ObjectiveNumber>
-                    <Script>Script271</Script>
-                    <Name></Name>
-                    <Details></Details>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>52</ObjectiveNumber>
-                    <Script>Script382</Script>
-                    <Name>Octo Resource Processor</Name>
-                    <Details>   - place near resource bins\Assimilates resources: Power and Q-Plasma\Can bootstrap and convert Q-P into L-C\Can move itself</Details>
-                    <Resource4>200</Resource4>
-                    <Resource6>5</Resource6>
+                    <Script>gs50p_progen_RP_na</Script>
+                    <Name>Resource Processor Dispatch</Name>
+                    <Details> \Must have a progenerating\Sepi and Pharo pair</Details>
                 </Objective>
             </Objectives>
             <ControlShortcuts>
                 <ControlShortcut>
                     <ControlNumber>0</ControlNumber>
-                    <ControlObjectiveNumber>14</ControlObjectiveNumber>
-                    <MouseInputType>SHORTCUT_QUICK_4</MouseInputType>
-                    <ParameterType>NO_PARAMETER</ParameterType>
-                    <Parameter>1055</Parameter>
-                    <KeyboardShortcut>$AchronKBCancel</KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions />
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>1</ControlNumber>
-                    <ControlObjectiveNumber>1</ControlObjectiveNumber>
-                    <ParameterType>POSITION</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut></KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>1</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions />
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>2</ControlNumber>
-                    <ControlObjectiveNumber>50</ControlObjectiveNumber>
-                    <ParameterType>NO_PARAMETER</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut></KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>1</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>U_STATUS</Resource>
-                            <Comparison>BITMASK_NOT</Comparison>
-                            <Value>16</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>U_STATUS</Resource>
-                            <Comparison>BITMASK</Comparison>
-                            <Value>128</Value>
-                        </ControlCondition>
-                    </ControlConditions>
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>3</ControlNumber>
-                    <ControlObjectiveNumber>51</ControlObjectiveNumber>
-                    <ParameterType>NO_PARAMETER</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut></KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>1</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>U_STATUS</Resource>
-                            <Comparison>BITMASK_NOT</Comparison>
-                            <Value>16</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>U_STATUS</Resource>
-                            <Comparison>BITMASK</Comparison>
-                            <Value>64</Value>
-                        </ControlCondition>
-                    </ControlConditions>
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>4</ControlNumber>
                     <ControlObjectiveNumber>13</ControlObjectiveNumber>
                     <MouseInputType>SHORTCUT_QUICK_3</MouseInputType>
                     <ParameterType>NO_PARAMETER</ParameterType>
@@ -3930,7 +3674,148 @@
                     <ControlConditions />
                 </ControlShortcut>
                 <ControlShortcut>
+                    <ControlNumber>1</ControlNumber>
+                    <ControlObjectiveNumber>14</ControlObjectiveNumber>
+                    <MouseInputType>SHORTCUT_QUICK_4</MouseInputType>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>1055</Parameter>
+                    <KeyboardShortcut>$AchronKBCancel</KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions />
+                </ControlShortcut>
+                <ControlShortcut>
+                    <ControlNumber>2</ControlNumber>
+                    <ControlObjectiveNumber>15</ControlObjectiveNumber>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut>$AchronKBPriority</KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>U_OBJECTIVE</Resource>
+                            <Comparison>GEQUAL</Comparison>
+                            <Value>22</Value>
+                        </ControlCondition>
+                        <ControlCondition>
+                            <Resource>U_OBJECTIVE</Resource>
+                            <Comparison>LEQUAL</Comparison>
+                            <Value>27</Value>
+                        </ControlCondition>
+                        <ControlCondition>
+                            <Resource>NUM_UNITS_SELECTED</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>1</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+                <ControlShortcut>
+                    <ControlNumber>3</ControlNumber>
+                    <ControlObjectiveNumber>16</ControlObjectiveNumber>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut>$AchronKBStop</KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>U_OBJECTIVE</Resource>
+                            <Comparison>GEQUAL</Comparison>
+                            <Value>22</Value>
+                        </ControlCondition>
+                        <ControlCondition>
+                            <Resource>U_OBJECTIVE</Resource>
+                            <Comparison>LEQUAL</Comparison>
+                            <Value>27</Value>
+                        </ControlCondition>
+                        <ControlCondition>
+                            <Resource>NUM_UNITS_SELECTED</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>1</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+                <ControlShortcut>
+                    <ControlNumber>4</ControlNumber>
+                    <ControlObjectiveNumber>15</ControlObjectiveNumber>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut>$AchronKBPriority</KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>NUM_UNITS_SELECTED</Resource>
+                            <Comparison>GREATER</Comparison>
+                            <Value>1</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+                <ControlShortcut>
                     <ControlNumber>5</ControlNumber>
+                    <ControlObjectiveNumber>16</ControlObjectiveNumber>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut>$AchronKBStop</KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>NUM_UNITS_SELECTED</Resource>
+                            <Comparison>GREATER</Comparison>
+                            <Value>1</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+                
+                <ControlShortcut>
+                    <ControlNumber>10</ControlNumber>
                     <ControlObjectiveNumber>38</ControlObjectiveNumber>
                     <ParameterType>POSITION_CLASS</ParameterType>
                     <Parameter>0</Parameter>
@@ -3955,7 +3840,7 @@
                     </ControlConditions>
                 </ControlShortcut>
                 <ControlShortcut>
-                    <ControlNumber>6</ControlNumber>
+                    <ControlNumber>11</ControlNumber>
                     <ControlObjectiveNumber>39</ControlObjectiveNumber>
                     <ParameterType>POSITION_CLASS</ParameterType>
                     <Parameter>0</Parameter>
@@ -3980,7 +3865,7 @@
                     </ControlConditions>
                 </ControlShortcut>
                 <ControlShortcut>
-                    <ControlNumber>7</ControlNumber>
+                    <ControlNumber>12</ControlNumber>
                     <ControlObjectiveNumber>40</ControlObjectiveNumber>
                     <ParameterType>POSITION_CLASS</ParameterType>
                     <Parameter>0</Parameter>
@@ -4005,7 +3890,7 @@
                     </ControlConditions>
                 </ControlShortcut>
                 <ControlShortcut>
-                    <ControlNumber>8</ControlNumber>
+                    <ControlNumber>13</ControlNumber>
                     <ControlObjectiveNumber>41</ControlObjectiveNumber>
                     <ParameterType>POSITION_CLASS</ParameterType>
                     <Parameter>0</Parameter>
@@ -4030,7 +3915,7 @@
                     </ControlConditions>
                 </ControlShortcut>
                 <ControlShortcut>
-                    <ControlNumber>9</ControlNumber>
+                    <ControlNumber>14</ControlNumber>
                     <ControlObjectiveNumber>42</ControlObjectiveNumber>
                     <ParameterType>POSITION_CLASS</ParameterType>
                     <Parameter>0</Parameter>
@@ -4060,7 +3945,7 @@
                     </ControlConditions>
                 </ControlShortcut>
                 <ControlShortcut>
-                    <ControlNumber>10</ControlNumber>
+                    <ControlNumber>15</ControlNumber>
                     <ControlObjectiveNumber>43</ControlObjectiveNumber>
                     <ParameterType>POSITION_CLASS</ParameterType>
                     <Parameter>0</Parameter>
@@ -4090,7 +3975,33 @@
                     </ControlConditions>
                 </ControlShortcut>
                 <ControlShortcut>
-                    <ControlNumber>11</ControlNumber>
+                    <ControlNumber>16</ControlNumber>
+                    <ControlObjectiveNumber>52</ControlObjectiveNumber>
+                    <ParameterType>POSITION_CLASS</ParameterType>
+                    <Parameter>1056</Parameter>
+                    <KeyboardShortcut>$AchronKBRpGrekim</KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>756</EstTimeConst>
+                    <EstTimeDist>6</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>U_STATUS</Resource>
+                            <Comparison>BITMASK</Comparison>
+                            <Value>32</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+
+                <ControlShortcut> <!-- octo NA -->
+                    <ControlNumber>20</ControlNumber>
                     <ControlObjectiveNumber>44</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
@@ -4114,8 +4025,8 @@
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>12</ControlNumber>
+                <ControlShortcut> <!-- sepi NA -->
+                    <ControlNumber>21</ControlNumber>
                     <ControlObjectiveNumber>45</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
@@ -4139,8 +4050,8 @@
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>13</ControlNumber>
+                <ControlShortcut> <!-- pharo NA -->
+                    <ControlNumber>22</ControlNumber>
                     <ControlObjectiveNumber>46</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
@@ -4164,8 +4075,8 @@
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>14</ControlNumber>
+                <ControlShortcut> <!-- opod NA -->
+                    <ControlNumber>23</ControlNumber>
                     <ControlObjectiveNumber>47</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
@@ -4189,8 +4100,8 @@
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>15</ControlNumber>
+                <ControlShortcut> <!-- spod NA -->
+                    <ControlNumber>24</ControlNumber>
                     <ControlObjectiveNumber>48</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
@@ -4214,8 +4125,8 @@
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>16</ControlNumber>
+                <ControlShortcut> <!-- ppod NA -->
+                    <ControlNumber>25</ControlNumber>
                     <ControlObjectiveNumber>49</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
@@ -4239,205 +4150,100 @@
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>17</ControlNumber>
-                    <ControlObjectiveNumber>52</ControlObjectiveNumber>
-                    <ParameterType>POSITION_CLASS</ParameterType>
-                    <Parameter>1056</Parameter>
-                    <KeyboardShortcut>$AchronKBRpGrekim</KeyboardShortcut>
+                <ControlShortcut> <!-- RP NA -->
+                    <ControlNumber>26</ControlNumber>
+                    <ControlObjectiveNumber>50</ControlObjectiveNumber>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut></KeyboardShortcut>
                     <Flags>
                         <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
                         <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
+                        <ButtonDisabled>1</ButtonDisabled>
                         <UserControlsCustom>0</UserControlsCustom>
                         <ButtonInvisible>0</ButtonInvisible>
                         <SelectTarget>0</SelectTarget>
                     </Flags>
-                    <EstTimeConst>756</EstTimeConst>
-                    <EstTimeDist>6</EstTimeDist>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
                     <Sound>Sound0</Sound>
                     <ControlConditions>
                         <ControlCondition>
                             <Resource>U_STATUS</Resource>
-                            <Comparison>BITMASK</Comparison>
+                            <Comparison>BITMASK_NOT</Comparison>
                             <Value>32</Value>
                         </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+
+                <ControlShortcut> <!-- spod spyre NA -->
+                    <ControlNumber>27</ControlNumber>
+                    <ControlObjectiveNumber>48</ControlObjectiveNumber>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut></KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>1</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
                         <ControlCondition>
-                            <Resource>NUM_UNITS_SELECTED</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>1</Value>
+                            <Resource>U_STATUS</Resource>
+                            <Comparison>BITMASK_NOT</Comparison>
+                            <Value>16</Value>
+                        </ControlCondition>
+                        <ControlCondition>
+                            <Resource>U_STATUS</Resource>
+                            <Comparison>BITMASK</Comparison>
+                            <Value>128</Value>
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
+                <ControlShortcut> <!-- ppod spyre NA -->
+                    <ControlNumber>28</ControlNumber>
+                    <ControlObjectiveNumber>49</ControlObjectiveNumber>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut></KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>1</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>U_STATUS</Resource>
+                            <Comparison>BITMASK_NOT</Comparison>
+                            <Value>16</Value>
+                        </ControlCondition>
+                        <ControlCondition>
+                            <Resource>U_STATUS</Resource>
+                            <Comparison>BITMASK</Comparison>
+                            <Value>64</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+
                 <ControlShortcut>
-                    <ControlNumber>18</ControlNumber>
+                    <ControlNumber>31</ControlNumber>
                     <ControlObjectiveNumber>18</ControlObjectiveNumber>
                     <MouseInputType>SHORTCUT_TILE</MouseInputType>
                     <ParameterType>POSITION_OR_UNIT</ParameterType>
                     <Parameter>0</Parameter>
                     <KeyboardShortcut>$AchronKBCongregate</KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>U_OBJECTIVE</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>0</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>NUM_UNITS_SELECTED</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>1</Value>
-                        </ControlCondition>
-                    </ControlConditions>
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>19</ControlNumber>
-                    <ControlObjectiveNumber>18</ControlObjectiveNumber>
-                    <MouseInputType>SHORTCUT_TILE</MouseInputType>
-                    <ParameterType>POSITION_OR_UNIT</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut>$AchronKBCongregate</KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>1</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>U_OBJECTIVE</Resource>
-                            <Comparison>GEQUAL</Comparison>
-                            <Value>22</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>U_OBJECTIVE</Resource>
-                            <Comparison>LEQUAL</Comparison>
-                            <Value>27</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>NUM_UNITS_SELECTED</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>1</Value>
-                        </ControlCondition>
-                    </ControlConditions>
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>20</ControlNumber>
-                    <ControlObjectiveNumber>15</ControlObjectiveNumber>
-                    <ParameterType>NO_PARAMETER</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut>$AchronKBPriority</KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>U_OBJECTIVE</Resource>
-                            <Comparison>GEQUAL</Comparison>
-                            <Value>22</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>U_OBJECTIVE</Resource>
-                            <Comparison>LEQUAL</Comparison>
-                            <Value>27</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>NUM_UNITS_SELECTED</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>1</Value>
-                        </ControlCondition>
-                    </ControlConditions>
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>21</ControlNumber>
-                    <ControlObjectiveNumber>16</ControlObjectiveNumber>
-                    <ParameterType>NO_PARAMETER</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut>$AchronKBStop</KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>U_OBJECTIVE</Resource>
-                            <Comparison>GEQUAL</Comparison>
-                            <Value>22</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>U_OBJECTIVE</Resource>
-                            <Comparison>LEQUAL</Comparison>
-                            <Value>27</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>NUM_UNITS_SELECTED</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>1</Value>
-                        </ControlCondition>
-                    </ControlConditions>
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>22</ControlNumber>
-                    <ControlObjectiveNumber>18</ControlObjectiveNumber>
-                    <MouseInputType>SHORTCUT_TILE</MouseInputType>
-                    <ParameterType>POSITION_OR_UNIT</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut>$AchronKBCongregate</KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>NUM_UNITS_SELECTED</Resource>
-                            <Comparison>GREATER</Comparison>
-                            <Value>1</Value>
-                        </ControlCondition>
-                    </ControlConditions>
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>23</ControlNumber>
-                    <ControlObjectiveNumber>19</ControlObjectiveNumber>
-                    <ParameterType>NO_PARAMETER</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut>$AchronKBClearCongregate</KeyboardShortcut>
                     <Flags>
                         <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
                         <EstTimeConstIsStart>0</EstTimeConstIsStart>
@@ -4452,7 +4258,7 @@
                     <ControlConditions />
                 </ControlShortcut>
                 <ControlShortcut>
-                    <ControlNumber>24</ControlNumber>
+                    <ControlNumber>35</ControlNumber>
                     <ControlObjectiveNumber>20</ControlObjectiveNumber>
                     <MouseInputType>SHORTCUT_ALLY_UNIT</MouseInputType>
                     <ParameterType>UNIT</ParameterType>
@@ -4470,86 +4276,6 @@
                     <EstTimeDist>0</EstTimeDist>
                     <Sound>Sound0</Sound>
                     <ControlConditions />
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>25</ControlNumber>
-                    <ControlObjectiveNumber>15</ControlObjectiveNumber>
-                    <ParameterType>NO_PARAMETER</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut>$AchronKBPriority</KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>NUM_UNITS_SELECTED</Resource>
-                            <Comparison>GREATER</Comparison>
-                            <Value>1</Value>
-                        </ControlCondition>
-                    </ControlConditions>
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>26</ControlNumber>
-                    <ControlObjectiveNumber>16</ControlObjectiveNumber>
-                    <ParameterType>NO_PARAMETER</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut>$AchronKBStop</KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>NUM_UNITS_SELECTED</Resource>
-                            <Comparison>GREATER</Comparison>
-                            <Value>1</Value>
-                        </ControlCondition>
-                    </ControlConditions>
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>27</ControlNumber>
-                    <ControlObjectiveNumber>52</ControlObjectiveNumber>
-                    <ParameterType>POSITION_CLASS</ParameterType>
-                    <Parameter>1056</Parameter>
-                    <KeyboardShortcut>$AchronKBRpGrekim</KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>1</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>828</EstTimeConst>
-                    <EstTimeDist>6</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>U_STATUS</Resource>
-                            <Comparison>BITMASK</Comparison>
-                            <Value>32</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>NUM_UNITS_SELECTED</Resource>
-                            <Comparison>GREATER</Comparison>
-                            <Value>1</Value>
-                        </ControlCondition>
-                    </ControlConditions>
                 </ControlShortcut>
             </ControlShortcuts>
         </ObjectClass>
@@ -5848,124 +5574,102 @@
             <Objectives>
                 <Objective>
                     <ObjectiveNumber>0</ObjectiveNumber>
-                    <Script>Script2</Script>
+                    <Script>gs00p_progen_idle</Script>
                     <Name>Progeneration</Name>
                     <Details></Details>
-                    <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
                     <ParameterType>POSITION</ParameterType>
                 </Objective>
                 <Objective>
-                    <ObjectiveNumber>1</ObjectiveNumber>
-                    <Script>Script371</Script>
-                    <Name>display waypoint</Name>
-                    <Details></Details>
-                    <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>8</ObjectiveNumber>
-                    <Script>Script392</Script>
-                    <Name>Select Unit</Name>
-                    <Details></Details>
-                </Objective>
-                <Objective>
                     <ObjectiveNumber>13</ObjectiveNumber>
-                    <Script>Script266</Script>
+                    <Script>gs13p_unprogen_all</Script>
                     <Name>Cancel Progen for All</Name>
                     <Details>Cancel out of progeneretaion for\this and surrounding progen units</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>14</ObjectiveNumber>
-                    <Script>Script301</Script>
+                    <Script>gs14p_unprogen</Script>
                     <Name>Cancel Factory/Progeneration</Name>
                     <Details></Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>15</ObjectiveNumber>
-                    <Script>Script416</Script>
+                    <Script>gs15p_repeat_progen</Script>
                     <Name>Repeat Last Order</Name>
                     <Details> \Repeats the last production order,\not including RP dispatch</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>16</ObjectiveNumber>
-                    <Script>Script417</Script>
+                    <Script>gs16p_clear_progen</Script>
                     <Name>Set to Idle</Name>
                     <Details> \Clear smart-production memory</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>18</ObjectiveNumber>
-                    <Script>Script390</Script>
-                    <Name>Set Congregation Pointers</Name>
+                    <Script>gs18p_g_rally</Script>
+                    <Name>Set Congregation Pointer</Name>
                     <Details> \Set congregation point and/or\hierarchy leader for pregenerated units</Details>
                 </Objective>
                 <Objective>
-                    <ObjectiveNumber>19</ObjectiveNumber>
-                    <Script>Script391</Script>
-                    <Name>Clear Congregation Pointers</Name>
-                    <Details> \Clear congregation point and\hierarchy leader</Details>
-                </Objective>
-                <Objective>
                     <ObjectiveNumber>20</ObjectiveNumber>
-                    <Script>Script392</Script>
+                    <Script>gs20p_g_unit_rally</Script>
                     <Name>Rally on unit</Name>
                     <Details></Details>
-                </Objective>
+                </Objective>      
+                
+                <!--Objective>
+                    <ObjectiveNumber>1</ObjectiveNumber>
+                    <Script>Script371</Script>
+                    <Name>display waypoint</Name>
+                    <Details></Details>
+                    <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
+                </Objective-->
+                
                 <Objective>
                     <ObjectiveNumber>22</ObjectiveNumber>
-                    <Script>Script2</Script>
+                    <Script>gs00p_progen_idle</Script>
                     <Name>Octo Progen Idle</Name>
-                    <Details></Details>
-                    <ObjectiveControlShortcutNumber>5</ObjectiveControlShortcutNumber>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>23</ObjectiveNumber>
-                    <Script>Script2</Script>
-                    <Name>Sepi Progen Idle</Name>
-                    <Details></Details>
-                    <ObjectiveControlShortcutNumber>6</ObjectiveControlShortcutNumber>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>24</ObjectiveNumber>
-                    <Script>Script2</Script>
-                    <Name>Pharo Progen Idle</Name>
-                    <Details></Details>
-                    <ObjectiveControlShortcutNumber>7</ObjectiveControlShortcutNumber>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>25</ObjectiveNumber>
-                    <Script>Script2</Script>
-                    <Name>Opod Progen Idle</Name>
-                    <Details></Details>
-                    <ObjectiveControlShortcutNumber>8</ObjectiveControlShortcutNumber>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>26</ObjectiveNumber>
-                    <Script>Script2</Script>
-                    <Name>Spod Progen Idle</Name>
-                    <Details></Details>
-                    <ObjectiveControlShortcutNumber>9</ObjectiveControlShortcutNumber>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>27</ObjectiveNumber>
-                    <Script>Script2</Script>
-                    <Name>Ppod Progen Idle</Name>
                     <Details></Details>
                     <ObjectiveControlShortcutNumber>10</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
-                    <ObjectiveNumber>34</ObjectiveNumber>
-                    <Script>Script392</Script>
-                    <Name>Select Unit</Name>
+                    <ObjectiveNumber>23</ObjectiveNumber>
+                    <Script>gs00p_progen_idle</Script>
+                    <Name>Sepi Progen Idle</Name>
                     <Details></Details>
+                    <ObjectiveControlShortcutNumber>11</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
-                    <ObjectiveNumber>36</ObjectiveNumber>
-                    <Script>Script383</Script>
-                    <Name>Octo RP Dispatch</Name>
+                    <ObjectiveNumber>24</ObjectiveNumber>
+                    <Script>gs00p_progen_idle</Script>
+                    <Name>Pharo Progen Idle</Name>
                     <Details></Details>
+                    <ObjectiveControlShortcutNumber>12</ObjectiveControlShortcutNumber>
                 </Objective>
+                <Objective>
+                    <ObjectiveNumber>25</ObjectiveNumber>
+                    <Script>gs00p_progen_idle</Script>
+                    <Name>Opod Progen Idle</Name>
+                    <Details></Details>
+                    <ObjectiveControlShortcutNumber>13</ObjectiveControlShortcutNumber>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>26</ObjectiveNumber>
+                    <Script>gs00p_progen_idle</Script>
+                    <Name>Spod Progen Idle</Name>
+                    <Details></Details>
+                    <ObjectiveControlShortcutNumber>14</ObjectiveControlShortcutNumber>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>27</ObjectiveNumber>
+                    <Script>gs00p_progen_idle</Script>
+                    <Name>Ppod Progen Idle</Name>
+                    <Details></Details>
+                    <ObjectiveControlShortcutNumber>15</ObjectiveControlShortcutNumber>
+                </Objective>
+                
                 <Objective>
                     <ObjectiveNumber>38</ObjectiveNumber>
-                    <Script>Script261</Script>
+                    <Script>gs38p_progen_octo</Script>
                     <Name>Produce Octo</Name>
                     <Details>Resilient melee assault trooper\Good at absorbing enemy fire\Cannot attack air targets\Morphs into RP or Dome\Invisible in Fog of War</Details>
                     <Resource4>100</Resource4>
@@ -5973,7 +5677,7 @@
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>39</ObjectiveNumber>
-                    <Script>Script263</Script>
+                    <Script>gs39p_progen_sepi</Script>
                     <Name>Produce Squiddy/Sepi</Name>
                     <Details>Long range support sharpshooter\High damage against air and ground targets\Minimal armor; Cloaks when moving\Morphs into Mound or Reaph\Invisible in Fog of War</Details>
                     <Resource4>100</Resource4>
@@ -5981,15 +5685,15 @@
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>40</ObjectiveNumber>
-                    <Script>Script265</Script>
+                    <Script>gs40p_progen_pharo</Script>
                     <Name>Produce Pharo</Name>
-                    <Details>Heavily armored shock grenadier\Detects cloaked units\Only effective vs light ground targets\Morphs into Spyre or Arcticus\Invisible in Fog of War</Details>
+                    <Details>Heavily armored shock grenadier\Detects cloaked enemies\Only effective vs light ground targets\Morphs into Spyre or Arcticus\Invisible in Fog of War</Details>
                     <Resource4>100</Resource4>
                     <Resource6>5</Resource6>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>41</ObjectiveNumber>
-                    <Script>Script268</Script>
+                    <Script>gs41p_progen_opod</Script>
                     <Name>Produce Octopod</Name>
                     <Details>Biological main ground-assault armor\Mobile, high impact AG-only sniper\Low durability but can self-heal\Can construct Vecgir Foundations</Details>
                     <Resource4>300</Resource4>
@@ -5997,179 +5701,82 @@
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>42</ObjectiveNumber>
-                    <Script>Script270</Script>
+                    <Script>gs42p_progen_spod</Script>
                     <Name>Produce Humbolt/Sepipod</Name>
-                    <Details>Tactical air superiority fighter-bomber\Good scout and raider; Biological\Detects cloaked units\Can Chronobomb (Specials research)</Details>
+                    <Details>Biological air superiority fighter-bomber\Good scout and raider\Limited combat endurance\Detects cloaked enemies\Can Chronobomb (Specials research)</Details>
                     <Resource4>400</Resource4>
                     <Resource6>5</Resource6>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>43</ObjectiveNumber>
-                    <Script>Script272</Script>
+                    <Script>gs43p_progen_ppod</Script>
                     <Name>Produce Vampire/Pharopod</Name>
                     <Details>Biological steatlh strike-bomber\Very high damage against ground targets\Self-Cloaks; Mists to avoid death</Details>
                     <Resource4>500</Resource4>
                     <Resource6>5</Resource6>
                 </Objective>
+                
+                <Objective>
+                    <ObjectiveNumber>52</ObjectiveNumber>
+                    <Script>gs52p_progen_RP</Script>
+                    <Name>Resource Processor Dispatch</Name>
+                    <Details>   - place near resource bins\Assimilates resources: Power and Q-Plasma\Can bootstrap and convert Q-P into L-C\Can move itself</Details>
+                    <Resource4>200</Resource4>
+                    <Resource6>5</Resource6>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>36</ObjectiveNumber>
+                    <Script>gs36p_gsend_RP</Script>
+                    <Name>Octo RP Dispatch</Name>
+                    <Details></Details>
+                </Objective>
+                
                 <Objective>
                     <ObjectiveNumber>44</ObjectiveNumber>
-                    <Script>Script260</Script>
+                    <Script>gs44p_progen_octo_na</Script>
                     <Name>Octo</Name>
                     <Details> \Must have a progenerating\Sepi and Pharo pair</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>45</ObjectiveNumber>
-                    <Script>Script262</Script>
+                    <Script>gs45p_progen_sepi_na</Script>
                     <Name>Squiddy/Sepi</Name>
                     <Details> \Must have a progenerating\Pharo and Octo pair</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>46</ObjectiveNumber>
-                    <Script>Script264</Script>
+                    <Script>gs46p_progen_pharo_na</Script>
                     <Name>Pharo</Name>
                     <Details> \Must have a progenerating\Octo and Sepi pair</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>47</ObjectiveNumber>
-                    <Script>Script267</Script>
+                    <Script>gs47p_progen_opod_na</Script>
                     <Name>Octopod</Name>
                     <Details> \Must have a progenerating\Sepi and Pharo pair</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>48</ObjectiveNumber>
-                    <Script>Script269</Script>
+                    <Script>gs48p_progen_spod_na</Script>
                     <Name>Humbolt/Sepipod</Name>
                     <Details> \Must have a progenerating\Pharo and Octo pair\Must be near a Spyre</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>49</ObjectiveNumber>
-                    <Script>Script271</Script>
+                    <Script>gs49p_progen_ppod_na</Script>
                     <Name>Vampire/Pharopod</Name>
                     <Details> \Must have a progenerating\Octo and Sepi pair\Must be near a Spyre</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>50</ObjectiveNumber>
-                    <Script>Script269</Script>
-                    <Name></Name>
-                    <Details></Details>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>51</ObjectiveNumber>
-                    <Script>Script271</Script>
-                    <Name></Name>
-                    <Details></Details>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>52</ObjectiveNumber>
-                    <Script>Script382</Script>
-                    <Name>Octo Resource Processor</Name>
-                    <Details>   - place near resource bins\Assimilates resources: Power and Q-Plasma\Can bootstrap and convert Q-P into L-C\Can move itself</Details>
-                    <Resource4>200</Resource4>
-                    <Resource6>5</Resource6>
+                    <Script>gs50p_progen_RP_na</Script>
+                    <Name>Resource Processor Dispatch</Name>
+                    <Details> \Must have a progenerating\Sepi and Pharo pair</Details>
                 </Objective>
             </Objectives>
             <ControlShortcuts>
                 <ControlShortcut>
                     <ControlNumber>0</ControlNumber>
-                    <ControlObjectiveNumber>14</ControlObjectiveNumber>
-                    <MouseInputType>SHORTCUT_QUICK_4</MouseInputType>
-                    <ParameterType>NO_PARAMETER</ParameterType>
-                    <Parameter>1055</Parameter>
-                    <KeyboardShortcut>$AchronKBCancel</KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions />
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>1</ControlNumber>
-                    <ControlObjectiveNumber>1</ControlObjectiveNumber>
-                    <ParameterType>POSITION</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut></KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>1</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions />
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>2</ControlNumber>
-                    <ControlObjectiveNumber>50</ControlObjectiveNumber>
-                    <ParameterType>NO_PARAMETER</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut></KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>1</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>U_STATUS</Resource>
-                            <Comparison>BITMASK_NOT</Comparison>
-                            <Value>16</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>U_STATUS</Resource>
-                            <Comparison>BITMASK</Comparison>
-                            <Value>64</Value>
-                        </ControlCondition>
-                    </ControlConditions>
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>3</ControlNumber>
-                    <ControlObjectiveNumber>51</ControlObjectiveNumber>
-                    <ParameterType>NO_PARAMETER</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut></KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>1</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>U_STATUS</Resource>
-                            <Comparison>BITMASK_NOT</Comparison>
-                            <Value>16</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>U_STATUS</Resource>
-                            <Comparison>BITMASK</Comparison>
-                            <Value>128</Value>
-                        </ControlCondition>
-                    </ControlConditions>
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>4</ControlNumber>
                     <ControlObjectiveNumber>13</ControlObjectiveNumber>
                     <MouseInputType>SHORTCUT_QUICK_3</MouseInputType>
                     <ParameterType>NO_PARAMETER</ParameterType>
@@ -6189,7 +5796,148 @@
                     <ControlConditions />
                 </ControlShortcut>
                 <ControlShortcut>
+                    <ControlNumber>1</ControlNumber>
+                    <ControlObjectiveNumber>14</ControlObjectiveNumber>
+                    <MouseInputType>SHORTCUT_QUICK_4</MouseInputType>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>1055</Parameter>
+                    <KeyboardShortcut>$AchronKBCancel</KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions />
+                </ControlShortcut>
+                <ControlShortcut>
+                    <ControlNumber>2</ControlNumber>
+                    <ControlObjectiveNumber>15</ControlObjectiveNumber>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut>$AchronKBPriority</KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>U_OBJECTIVE</Resource>
+                            <Comparison>GEQUAL</Comparison>
+                            <Value>22</Value>
+                        </ControlCondition>
+                        <ControlCondition>
+                            <Resource>U_OBJECTIVE</Resource>
+                            <Comparison>LEQUAL</Comparison>
+                            <Value>27</Value>
+                        </ControlCondition>
+                        <ControlCondition>
+                            <Resource>NUM_UNITS_SELECTED</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>1</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+                <ControlShortcut>
+                    <ControlNumber>3</ControlNumber>
+                    <ControlObjectiveNumber>16</ControlObjectiveNumber>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut>$AchronKBStop</KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>U_OBJECTIVE</Resource>
+                            <Comparison>GEQUAL</Comparison>
+                            <Value>22</Value>
+                        </ControlCondition>
+                        <ControlCondition>
+                            <Resource>U_OBJECTIVE</Resource>
+                            <Comparison>LEQUAL</Comparison>
+                            <Value>27</Value>
+                        </ControlCondition>
+                        <ControlCondition>
+                            <Resource>NUM_UNITS_SELECTED</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>1</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+                <ControlShortcut>
+                    <ControlNumber>4</ControlNumber>
+                    <ControlObjectiveNumber>15</ControlObjectiveNumber>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut>$AchronKBPriority</KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>NUM_UNITS_SELECTED</Resource>
+                            <Comparison>GREATER</Comparison>
+                            <Value>1</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+                <ControlShortcut>
                     <ControlNumber>5</ControlNumber>
+                    <ControlObjectiveNumber>16</ControlObjectiveNumber>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut>$AchronKBStop</KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>NUM_UNITS_SELECTED</Resource>
+                            <Comparison>GREATER</Comparison>
+                            <Value>1</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+                
+                <ControlShortcut>
+                    <ControlNumber>10</ControlNumber>
                     <ControlObjectiveNumber>38</ControlObjectiveNumber>
                     <ParameterType>POSITION_CLASS</ParameterType>
                     <Parameter>0</Parameter>
@@ -6214,7 +5962,7 @@
                     </ControlConditions>
                 </ControlShortcut>
                 <ControlShortcut>
-                    <ControlNumber>6</ControlNumber>
+                    <ControlNumber>11</ControlNumber>
                     <ControlObjectiveNumber>39</ControlObjectiveNumber>
                     <ParameterType>POSITION_CLASS</ParameterType>
                     <Parameter>0</Parameter>
@@ -6239,7 +5987,7 @@
                     </ControlConditions>
                 </ControlShortcut>
                 <ControlShortcut>
-                    <ControlNumber>7</ControlNumber>
+                    <ControlNumber>12</ControlNumber>
                     <ControlObjectiveNumber>40</ControlObjectiveNumber>
                     <ParameterType>POSITION_CLASS</ParameterType>
                     <Parameter>0</Parameter>
@@ -6264,7 +6012,7 @@
                     </ControlConditions>
                 </ControlShortcut>
                 <ControlShortcut>
-                    <ControlNumber>8</ControlNumber>
+                    <ControlNumber>13</ControlNumber>
                     <ControlObjectiveNumber>41</ControlObjectiveNumber>
                     <ParameterType>POSITION_CLASS</ParameterType>
                     <Parameter>0</Parameter>
@@ -6289,7 +6037,7 @@
                     </ControlConditions>
                 </ControlShortcut>
                 <ControlShortcut>
-                    <ControlNumber>9</ControlNumber>
+                    <ControlNumber>14</ControlNumber>
                     <ControlObjectiveNumber>42</ControlObjectiveNumber>
                     <ParameterType>POSITION_CLASS</ParameterType>
                     <Parameter>0</Parameter>
@@ -6319,7 +6067,7 @@
                     </ControlConditions>
                 </ControlShortcut>
                 <ControlShortcut>
-                    <ControlNumber>10</ControlNumber>
+                    <ControlNumber>15</ControlNumber>
                     <ControlObjectiveNumber>43</ControlObjectiveNumber>
                     <ParameterType>POSITION_CLASS</ParameterType>
                     <Parameter>0</Parameter>
@@ -6349,7 +6097,33 @@
                     </ControlConditions>
                 </ControlShortcut>
                 <ControlShortcut>
-                    <ControlNumber>11</ControlNumber>
+                    <ControlNumber>16</ControlNumber>
+                    <ControlObjectiveNumber>52</ControlObjectiveNumber>
+                    <ParameterType>POSITION_CLASS</ParameterType>
+                    <Parameter>1056</Parameter>
+                    <KeyboardShortcut>$AchronKBRpGrekim</KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>756</EstTimeConst>
+                    <EstTimeDist>6</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>U_STATUS</Resource>
+                            <Comparison>BITMASK</Comparison>
+                            <Value>32</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+
+                <ControlShortcut> <!-- octo NA -->
+                    <ControlNumber>20</ControlNumber>
                     <ControlObjectiveNumber>44</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
@@ -6373,8 +6147,8 @@
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>12</ControlNumber>
+                <ControlShortcut> <!-- sepi NA -->
+                    <ControlNumber>21</ControlNumber>
                     <ControlObjectiveNumber>45</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
@@ -6398,8 +6172,8 @@
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>13</ControlNumber>
+                <ControlShortcut> <!-- pharo NA -->
+                    <ControlNumber>22</ControlNumber>
                     <ControlObjectiveNumber>46</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
@@ -6423,8 +6197,8 @@
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>14</ControlNumber>
+                <ControlShortcut> <!-- opod NA -->
+                    <ControlNumber>23</ControlNumber>
                     <ControlObjectiveNumber>47</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
@@ -6448,8 +6222,8 @@
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>15</ControlNumber>
+                <ControlShortcut> <!-- spod NA -->
+                    <ControlNumber>24</ControlNumber>
                     <ControlObjectiveNumber>48</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
@@ -6473,8 +6247,8 @@
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>16</ControlNumber>
+                <ControlShortcut> <!-- ppod NA -->
+                    <ControlNumber>25</ControlNumber>
                     <ControlObjectiveNumber>49</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
@@ -6498,205 +6272,100 @@
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>17</ControlNumber>
-                    <ControlObjectiveNumber>52</ControlObjectiveNumber>
-                    <ParameterType>POSITION_CLASS</ParameterType>
-                    <Parameter>1056</Parameter>
-                    <KeyboardShortcut>$AchronKBRpGrekim</KeyboardShortcut>
+                <ControlShortcut> <!-- RP NA -->
+                    <ControlNumber>26</ControlNumber>
+                    <ControlObjectiveNumber>50</ControlObjectiveNumber>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut></KeyboardShortcut>
                     <Flags>
                         <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
                         <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
+                        <ButtonDisabled>1</ButtonDisabled>
                         <UserControlsCustom>0</UserControlsCustom>
                         <ButtonInvisible>0</ButtonInvisible>
                         <SelectTarget>0</SelectTarget>
                     </Flags>
-                    <EstTimeConst>756</EstTimeConst>
-                    <EstTimeDist>6</EstTimeDist>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
                     <Sound>Sound0</Sound>
                     <ControlConditions>
                         <ControlCondition>
                             <Resource>U_STATUS</Resource>
-                            <Comparison>BITMASK</Comparison>
+                            <Comparison>BITMASK_NOT</Comparison>
                             <Value>32</Value>
                         </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+
+                <ControlShortcut> <!-- spod spyre NA -->
+                    <ControlNumber>27</ControlNumber>
+                    <ControlObjectiveNumber>48</ControlObjectiveNumber>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut></KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>1</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
                         <ControlCondition>
-                            <Resource>NUM_UNITS_SELECTED</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>1</Value>
+                            <Resource>U_STATUS</Resource>
+                            <Comparison>BITMASK_NOT</Comparison>
+                            <Value>16</Value>
+                        </ControlCondition>
+                        <ControlCondition>
+                            <Resource>U_STATUS</Resource>
+                            <Comparison>BITMASK</Comparison>
+                            <Value>64</Value>
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
+                <ControlShortcut> <!-- ppod spyre NA -->
+                    <ControlNumber>28</ControlNumber>
+                    <ControlObjectiveNumber>49</ControlObjectiveNumber>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut></KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>1</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>U_STATUS</Resource>
+                            <Comparison>BITMASK_NOT</Comparison>
+                            <Value>16</Value>
+                        </ControlCondition>
+                        <ControlCondition>
+                            <Resource>U_STATUS</Resource>
+                            <Comparison>BITMASK</Comparison>
+                            <Value>128</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+
                 <ControlShortcut>
-                    <ControlNumber>18</ControlNumber>
+                    <ControlNumber>31</ControlNumber>
                     <ControlObjectiveNumber>18</ControlObjectiveNumber>
                     <MouseInputType>SHORTCUT_TILE</MouseInputType>
                     <ParameterType>POSITION_OR_UNIT</ParameterType>
                     <Parameter>0</Parameter>
                     <KeyboardShortcut>$AchronKBCongregate</KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>U_OBJECTIVE</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>0</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>NUM_UNITS_SELECTED</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>1</Value>
-                        </ControlCondition>
-                    </ControlConditions>
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>19</ControlNumber>
-                    <ControlObjectiveNumber>18</ControlObjectiveNumber>
-                    <MouseInputType>SHORTCUT_TILE</MouseInputType>
-                    <ParameterType>POSITION_OR_UNIT</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut>$AchronKBCongregate</KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>1</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>U_OBJECTIVE</Resource>
-                            <Comparison>GEQUAL</Comparison>
-                            <Value>22</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>U_OBJECTIVE</Resource>
-                            <Comparison>LEQUAL</Comparison>
-                            <Value>27</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>NUM_UNITS_SELECTED</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>1</Value>
-                        </ControlCondition>
-                    </ControlConditions>
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>20</ControlNumber>
-                    <ControlObjectiveNumber>15</ControlObjectiveNumber>
-                    <ParameterType>NO_PARAMETER</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut>$AchronKBPriority</KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>U_OBJECTIVE</Resource>
-                            <Comparison>GEQUAL</Comparison>
-                            <Value>22</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>U_OBJECTIVE</Resource>
-                            <Comparison>LEQUAL</Comparison>
-                            <Value>27</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>NUM_UNITS_SELECTED</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>1</Value>
-                        </ControlCondition>
-                    </ControlConditions>
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>21</ControlNumber>
-                    <ControlObjectiveNumber>16</ControlObjectiveNumber>
-                    <ParameterType>NO_PARAMETER</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut>$AchronKBStop</KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>U_OBJECTIVE</Resource>
-                            <Comparison>GEQUAL</Comparison>
-                            <Value>22</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>U_OBJECTIVE</Resource>
-                            <Comparison>LEQUAL</Comparison>
-                            <Value>27</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>NUM_UNITS_SELECTED</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>1</Value>
-                        </ControlCondition>
-                    </ControlConditions>
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>22</ControlNumber>
-                    <ControlObjectiveNumber>18</ControlObjectiveNumber>
-                    <MouseInputType>SHORTCUT_TILE</MouseInputType>
-                    <ParameterType>POSITION_OR_UNIT</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut>$AchronKBCongregate</KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>NUM_UNITS_SELECTED</Resource>
-                            <Comparison>GREATER</Comparison>
-                            <Value>1</Value>
-                        </ControlCondition>
-                    </ControlConditions>
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>23</ControlNumber>
-                    <ControlObjectiveNumber>19</ControlObjectiveNumber>
-                    <ParameterType>NO_PARAMETER</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut>$AchronKBClearCongregate</KeyboardShortcut>
                     <Flags>
                         <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
                         <EstTimeConstIsStart>0</EstTimeConstIsStart>
@@ -6711,7 +6380,7 @@
                     <ControlConditions />
                 </ControlShortcut>
                 <ControlShortcut>
-                    <ControlNumber>24</ControlNumber>
+                    <ControlNumber>35</ControlNumber>
                     <ControlObjectiveNumber>20</ControlObjectiveNumber>
                     <MouseInputType>SHORTCUT_ALLY_UNIT</MouseInputType>
                     <ParameterType>UNIT</ParameterType>
@@ -6729,86 +6398,6 @@
                     <EstTimeDist>0</EstTimeDist>
                     <Sound>Sound0</Sound>
                     <ControlConditions />
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>25</ControlNumber>
-                    <ControlObjectiveNumber>15</ControlObjectiveNumber>
-                    <ParameterType>NO_PARAMETER</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut>$AchronKBPriority</KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>NUM_UNITS_SELECTED</Resource>
-                            <Comparison>GREATER</Comparison>
-                            <Value>1</Value>
-                        </ControlCondition>
-                    </ControlConditions>
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>26</ControlNumber>
-                    <ControlObjectiveNumber>16</ControlObjectiveNumber>
-                    <ParameterType>NO_PARAMETER</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut>$AchronKBStop</KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>NUM_UNITS_SELECTED</Resource>
-                            <Comparison>GREATER</Comparison>
-                            <Value>1</Value>
-                        </ControlCondition>
-                    </ControlConditions>
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>27</ControlNumber>
-                    <ControlObjectiveNumber>52</ControlObjectiveNumber>
-                    <ParameterType>POSITION_CLASS</ParameterType>
-                    <Parameter>1056</Parameter>
-                    <KeyboardShortcut>$AchronKBRpGrekim</KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>1</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>828</EstTimeConst>
-                    <EstTimeDist>6</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>U_STATUS</Resource>
-                            <Comparison>BITMASK</Comparison>
-                            <Value>32</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>NUM_UNITS_SELECTED</Resource>
-                            <Comparison>GREATER</Comparison>
-                            <Value>1</Value>
-                        </ControlCondition>
-                    </ControlConditions>
                 </ControlShortcut>
             </ControlShortcuts>
         </ObjectClass>

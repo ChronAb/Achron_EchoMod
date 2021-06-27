@@ -1556,13 +1556,13 @@
             <Objectives>
                 <Objective>
                     <ObjectiveNumber>0</ObjectiveNumber>
-                    <Script>Script106</Script>
+                    <Script>cs00r_rp_idle</Script>
                     <Name></Name>
                     <Details></Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>1</ObjectiveNumber>
-                    <Script>Script47</Script>
+                    <Script>cs01r_rp_mine</Script>
                     <Name>Processing</Name>
                     <Details></Details>
                     <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
@@ -1570,7 +1570,7 @@
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>2</ObjectiveNumber>
-                    <Script>Script48</Script>
+                    <Script>cs02r_rp_pickmine</Script>
                     <Name>Process Resource</Name>
                     <Details> \Process Q-Plasma\ \For best efficiency limit to 1 RP\  per QP Cell</Details>
 					<ValidRadius>60</ValidRadius>
@@ -1578,20 +1578,20 @@
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>9</ObjectiveNumber>
-                    <Script>Script24</Script>
+                    <Script>cs09r_rp_move</Script>
                     <Name>Relocate</Name>
                     <Details> \Move to a new location \after current processing cycle ends</Details>
                     <ObjectiveControlShortcutNumber>6</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>11</ObjectiveNumber>
-                    <Script>Script183</Script>
+                    <Script>cs011r_rp_plant</Script>
                     <Name>Stop and Open</Name>
                     <Details> \Stop moving and re-enable</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>13</ObjectiveNumber>
-                    <Script>Script372</Script>
+                    <Script>cs13r_rp_convert</Script>
                     <Name>QPlasma -&gt; Power</Name>
                     <Details> \Convert 100 QP to 200 Power\after current processing cycle ends</Details>
                     <Resource4>100</Resource4>
@@ -3081,13 +3081,13 @@
             <Objectives>
                 <Objective>
                     <ObjectiveNumber>0</ObjectiveNumber>
-                    <Script>Script106</Script>
+                    <Script>cs00r_rp_idle</Script>
                     <Name></Name>
                     <Details></Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>2</ObjectiveNumber>
-                    <Script>Script48</Script>
+                    <Script>cs01r_rp_mine</Script>
                     <Name>Process Resource</Name>
                     <Details> \Process Q-Plasma\ \For best efficiency limit to 1 RP\  per QP Cell</Details>
 					<ValidRadius>60</ValidRadius>
@@ -3095,14 +3095,14 @@
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>9</ObjectiveNumber>
-                    <Script>Script24</Script>
+                    <Script>cs02r_rp_pickmine</Script>
                     <Name>Relocate</Name>
                     <Details> \Move to specified location</Details>
                     <ObjectiveControlShortcutNumber>6</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>10</ObjectiveNumber>
-                    <Script>Script23</Script>
+                    <Script>cs10r_rp_moving</Script>
                     <Name>Moving</Name>
                     <Details></Details>
                     <ObjectiveControlShortcutNumber>6</ObjectiveControlShortcutNumber>
@@ -3110,7 +3110,7 @@
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>11</ObjectiveNumber>
-                    <Script>Script183</Script>
+                    <Script>cs011r_rp_plant</Script>
                     <Name>Stop and re-enable</Name>
                     <Details> \Stop moving and re-enable</Details>
                 </Objective>
