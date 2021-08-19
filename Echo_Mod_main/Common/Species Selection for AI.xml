@@ -2874,7 +2874,7 @@
                         <Condition>
                             <Resource>U_AMMO</Resource>
                             <Comparison>EQUAL</Comparison>
-                            <Value>3</Value>
+                            <Value>2</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_ENERGY</Resource>
