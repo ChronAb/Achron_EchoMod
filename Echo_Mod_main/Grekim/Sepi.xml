@@ -60,14 +60,14 @@
         <ObjectClass>
             <ClassNumber>1005</ClassNumber>
             <Name>Squiddy (Sepi)</Name>
-            <Description>SQUIDDY/SEPI:&#x0D;&#x0A;Long range support sharpshooter&#x0D;&#x0A;Light armor, high DPS sniper&#x0D;&#x0A;Devastating splash attack vs air&#x0D;&#x0A; &#x0D;&#x0A;Morphs into Reaph and Mound&#x0D;&#x0A;Cloaks when moving; must decloak to fire</Description>
+            <Description>SQUIDDY/SEPI:&#x0D;&#x0A;Cloaking support sharpshooter&#x0D;&#x0A;Light armor, high DPS sniper&#x0D;&#x0A;Devastating splash attack vs air&#x0D;&#x0A; &#x0D;&#x0A;Morphs into Reaph and Mound&#x0D;&#x0A;Cloaks when moving or idle</Description>
             <Model>./Achron_EchoMod/Echo_Mod_main/New_Models/sepi.mdl</Model>
             <Rank>124</Rank>
             <Type>2</Type>
             <PrioritySelectionRank>0</PrioritySelectionRank>
             <MaxHealth>90</MaxHealth>
             <MaxEnergy>20</MaxEnergy>
-            <MaxArmor>4</MaxArmor>
+            <MaxArmor>7</MaxArmor>
             <MaxAmmo>255</MaxAmmo>
             <SightRadius>19</SightRadius>
             <ForwardMinSightRadius>0</ForwardMinSightRadius>
@@ -652,11 +652,6 @@
                             <Comparison>LESS</Comparison>
                             <Value>96</Value>
                         </Condition>
-                        <Condition>
-                            <Resource>U_STATUS</Resource>
-                            <Comparison>BITMASK_NOT</Comparison>
-                            <Value>1</Value>
-                        </Condition>
                     </Conditions>
                     <Steps>
                         <Step>
@@ -699,11 +694,6 @@
                             <Resource>U_AMMO</Resource>
                             <Comparison>LESS</Comparison>
                             <Value>96</Value>
-                        </Condition>
-                        <Condition>
-                            <Resource>U_STATUS</Resource>
-                            <Comparison>BITMASK_NOT</Comparison>
-                            <Value>1</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_HP</Resource>
@@ -947,6 +937,18 @@
                             <ValueEval>ONE</ValueEval>
                             <Value>20</Value>
                         </Step>
+                        <Step>
+                            <PrimitiveAction>CLEAR_STATUS</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>STATUS_CLOAKED</Type>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_ARMOUR</Type>
+                            <ValueEval>SET_TO_VALUE</ValueEval>
+                            <Value>0</Value>
+                        </Step>
                     </Steps>
                 </Action>
                 <Action>
@@ -1014,6 +1016,18 @@
                         <Step>
                             <PrimitiveAction>TELEPORT</PrimitiveAction>
                             <Target>SELF</Target>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CLEAR_STATUS</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>STATUS_CLOAKED</Type>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_ARMOUR</Type>
+                            <ValueEval>SET_TO_VALUE</ValueEval>
+                            <Value>0</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -1289,216 +1303,6 @@
                 </Action>
                 <Action>
                     <ActionNumber>32</ActionNumber>
-                    <Identifier>ACTION_SETTLE</Identifier>
-                    <TimeTaken>0</TimeTaken>
-                    <ForceObjectAction>1</ForceObjectAction>
-                    <InterruptCurrentAction>1</InterruptCurrentAction>
-                    <MutexAction>0</MutexAction>
-                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
-                    <PreserveParameter>0</PreserveParameter>
-                    <AIScriptCanRun>0</AIScriptCanRun>
-                    <SetParamZeroTicks>0</SetParamZeroTicks>
-                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <Conditions>
-                        <Condition>
-                            <Resource>U_ACTION</Resource>
-                            <Comparison>NOT_EQUAL</Comparison>
-                            <Value>2</Value>
-                        </Condition>
-                        <Condition>
-                            <Resource>U_ACTION</Resource>
-                            <Comparison>NOT_EQUAL</Comparison>
-                            <Value>50</Value>
-                        </Condition>
-                        <Condition>
-                            <Resource>U_ARMOUR</Resource>
-                            <Comparison>GREATER</Comparison>
-                            <Value>0</Value>
-                        </Condition>
-                        <Condition>
-                            <Resource>U_AGE</Resource>
-                            <Comparison>MODULO_IS_ZERO</Comparison>
-                            <Value>36</Value>
-                        </Condition>
-                    </Conditions>
-                    <Steps>
-                        <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>U_ARMOUR</Type>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>1</Value>
-                        </Step>
-                    </Steps>
-                </Action>
-                <Action>
-                    <ActionNumber>33</ActionNumber>
-                    <Identifier>ACTION_MOVE_passives</Identifier>
-                    <TimeTaken>0</TimeTaken>
-                    <ForceObjectAction>1</ForceObjectAction>
-                    <InterruptCurrentAction>1</InterruptCurrentAction>
-                    <MutexAction>0</MutexAction>
-                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
-                    <PreserveParameter>0</PreserveParameter>
-                    <AIScriptCanRun>0</AIScriptCanRun>
-                    <SetParamZeroTicks>0</SetParamZeroTicks>
-                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <Conditions>
-                        <Condition>
-                            <Resource>U_ACTION</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>2</Value>
-                        </Condition>
-                        <Condition>
-                            <Resource>U_AGE</Resource>
-                            <Comparison>MODULO_IS_ZERO</Comparison>
-                            <Value>36</Value>
-                        </Condition>
-                    </Conditions>
-                    <Steps>
-                        <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>U_ARMOUR</Type>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>-1</Value>
-                        </Step>
-                    </Steps>
-                </Action>
-                <Action>
-                    <ActionNumber>34</ActionNumber>
-                    <Identifier>ACTION_MOVE_passives</Identifier>
-                    <TimeTaken>0</TimeTaken>
-                    <ForceObjectAction>1</ForceObjectAction>
-                    <InterruptCurrentAction>1</InterruptCurrentAction>
-                    <MutexAction>0</MutexAction>
-                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
-                    <PreserveParameter>0</PreserveParameter>
-                    <AIScriptCanRun>0</AIScriptCanRun>
-                    <SetParamZeroTicks>0</SetParamZeroTicks>
-                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <Conditions>
-                        <Condition>
-                            <Resource>U_ACTION</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>50</Value>
-                        </Condition>
-                        <Condition>
-                            <Resource>U_AGE</Resource>
-                            <Comparison>MODULO_IS_ZERO</Comparison>
-                            <Value>36</Value>
-                        </Condition>
-                    </Conditions>
-                    <Steps>
-                        <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>U_ARMOUR</Type>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>-1</Value>
-                        </Step>
-                    </Steps>
-                </Action>
-                <Action>
-                    <ActionNumber>35</ActionNumber>
-                    <Identifier>ACTION_ROTATE</Identifier>
-                    <TimeTaken>1</TimeTaken>
-                    <ForceObjectAction>0</ForceObjectAction>
-                    <InterruptCurrentAction>0</InterruptCurrentAction>
-                    <MutexAction>0</MutexAction>
-                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
-                    <PreserveParameter>0</PreserveParameter>
-                    <AIScriptCanRun>0</AIScriptCanRun>
-                    <SetParamZeroTicks>0</SetParamZeroTicks>
-                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <Conditions />
-                    <Steps>
-                        <Step>
-                            <PrimitiveAction>ROTATE</PrimitiveAction>
-                            <Target>SELF</Target>
-                        </Step>
-                    </Steps>
-                </Action>
-                <Action>
-                    <ActionNumber>36</ActionNumber>
-                    <Identifier>ACTION_MOVE_FATIGUE</Identifier>
-                    <TimeTaken>0</TimeTaken>
-                    <ForceObjectAction>1</ForceObjectAction>
-                    <InterruptCurrentAction>1</InterruptCurrentAction>
-                    <MutexAction>0</MutexAction>
-                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
-                    <PreserveParameter>0</PreserveParameter>
-                    <AIScriptCanRun>0</AIScriptCanRun>
-                    <SetParamZeroTicks>0</SetParamZeroTicks>
-                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <Conditions>
-                        <Condition>
-                            <Resource>U_ACTION</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>2</Value>
-                        </Condition>
-                        <Condition>
-                            <Resource>U_AGE</Resource>
-                            <Comparison>MODULO_IS_ZERO</Comparison>
-                            <Value>18</Value>
-                        </Condition>
-                        <Condition>
-                            <Resource>U_HP</Resource>
-                            <Comparison>GEQUAL</Comparison>
-                            <Value>60</Value>
-                        </Condition>
-                    </Conditions>
-                    <Steps>
-                        <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>U_HP</Type>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>1</Value>
-                        </Step>
-                    </Steps>
-                </Action>
-                <Action>
-                    <ActionNumber>37</ActionNumber>
-                    <Identifier>ACTION_MOVE_FATIGUE</Identifier>
-                    <TimeTaken>0</TimeTaken>
-                    <ForceObjectAction>1</ForceObjectAction>
-                    <InterruptCurrentAction>1</InterruptCurrentAction>
-                    <MutexAction>0</MutexAction>
-                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
-                    <PreserveParameter>0</PreserveParameter>
-                    <AIScriptCanRun>0</AIScriptCanRun>
-                    <SetParamZeroTicks>0</SetParamZeroTicks>
-                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <Conditions>
-                        <Condition>
-                            <Resource>U_ACTION</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>50</Value>
-                        </Condition>
-                        <Condition>
-                            <Resource>U_AGE</Resource>
-                            <Comparison>MODULO_IS_ZERO</Comparison>
-                            <Value>18</Value>
-                        </Condition>
-                        <Condition>
-                            <Resource>U_HP</Resource>
-                            <Comparison>GEQUAL</Comparison>
-                            <Value>60</Value>
-                        </Condition>
-                    </Conditions>
-                    <Steps>
-                        <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>U_HP</Type>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>1</Value>
-                        </Step>
-                    </Steps>
-                </Action>
-                <Action>
-                    <ActionNumber>38</ActionNumber>
                     <Identifier>ACTION_RELOAD_2</Identifier>
                     <TimeTaken>0</TimeTaken>
                     <ForceObjectAction>1</ForceObjectAction>
@@ -1535,6 +1339,268 @@
                             <Type>U_HP</Type>
                             <ValueEval>ONE</ValueEval>
                             <Value>0</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>33</ActionNumber>
+                    <Identifier>ACTION_RELOAD</Identifier>
+                    <TimeTaken>0</TimeTaken>
+                    <ForceObjectAction>1</ForceObjectAction>
+                    <InterruptCurrentAction>1</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <Conditions>
+                        <Condition>
+                            <Resource>U_AGE</Resource>
+                            <Comparison>MODULO_IS_ZERO</Comparison>
+                            <Value>6</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_AMMO</Resource>
+                            <Comparison>GREATER</Comparison>
+                            <Value>0</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_ACTION</Resource>
+                            <Comparison>NOT_EQUAL</Comparison>
+                            <Value>3</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_ACTION</Resource>
+                            <Comparison>NOT_EQUAL</Comparison>
+                            <Value>4</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_ACTION</Resource>
+                            <Comparison>NOT_EQUAL</Comparison>
+                            <Value>23</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_ACTION</Resource>
+                            <Comparison>NOT_EQUAL</Comparison>
+                            <Value>25</Value>
+                        </Condition>
+                    </Conditions>
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_AMMO</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>-1</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CLEAR_STATUS</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>STATUS_CLOAKED</Type>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_ARMOUR</Type>
+                            <ValueEval>SET_TO_VALUE</ValueEval>
+                            <Value>0</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>35</ActionNumber>
+                    <Identifier>ACTION_ROTATE</Identifier>
+                    <TimeTaken>1</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>ROTATE</PrimitiveAction>
+                            <Target>SELF</Target>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>36</ActionNumber>
+                    <Identifier>ACTION_MOVE_CLOAK_UP</Identifier>
+                    <TimeTaken>0</TimeTaken>
+                    <ForceObjectAction>1</ForceObjectAction>
+                    <InterruptCurrentAction>1</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <Conditions>
+                        <Condition>
+                            <Resource>U_STATUS</Resource>
+                            <Comparison>BITMASK_NOT</Comparison>
+                            <Value>1</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_ACTION</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>2</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_AMMO</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>0</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_AGE</Resource>
+                            <Comparison>MODULO_IS_ZERO</Comparison>
+                            <Value>17</Value>
+                        </Condition>
+                    </Conditions>
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_ARMOUR</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>-2</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>37</ActionNumber>
+                    <Identifier>ACTION_IDLE_CLOAK_UP</Identifier>
+                    <TimeTaken>0</TimeTaken>
+                    <ForceObjectAction>1</ForceObjectAction>
+                    <InterruptCurrentAction>1</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <Conditions>
+                        <Condition>
+                            <Resource>U_STATUS</Resource>
+                            <Comparison>BITMASK_NOT</Comparison>
+                            <Value>1</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_ACTION</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>58</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_HP</Resource>
+                            <Comparison>GEQUAL</Comparison>
+                            <Value>90</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_AMMO</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>0</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_OWNER</Resource>
+                            <Comparison>LESS</Comparison>
+                            <Value>15</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_AGE</Resource>
+                            <Comparison>MODULO_IS_ZERO</Comparison>
+                            <Value>46</Value>
+                        </Condition>
+                    </Conditions>
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_ARMOUR</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>-1</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>38</ActionNumber>
+                    <Identifier>ACTION_MOVE_FATIGUE</Identifier>
+                    <TimeTaken>0</TimeTaken>
+                    <ForceObjectAction>1</ForceObjectAction>
+                    <InterruptCurrentAction>1</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <Conditions>
+                        <Condition>
+                            <Resource>U_ACTION</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>2</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_AGE</Resource>
+                            <Comparison>MODULO_IS_ZERO</Comparison>
+                            <Value>18</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_HP</Resource>
+                            <Comparison>GEQUAL</Comparison>
+                            <Value>60</Value>
+                        </Condition>
+                    </Conditions>
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_HP</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>1</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>39</ActionNumber>
+                    <Identifier>ACTION_MOVE_FATIGUE</Identifier>
+                    <TimeTaken>0</TimeTaken>
+                    <ForceObjectAction>1</ForceObjectAction>
+                    <InterruptCurrentAction>1</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <Conditions>
+                        <Condition>
+                            <Resource>U_ACTION</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>50</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_AGE</Resource>
+                            <Comparison>MODULO_IS_ZERO</Comparison>
+                            <Value>18</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_HP</Resource>
+                            <Comparison>GEQUAL</Comparison>
+                            <Value>60</Value>
+                        </Condition>
+                    </Conditions>
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_HP</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>1</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -1633,60 +1699,6 @@
                     </Steps>
                 </Action>
                 <Action>
-                    <ActionNumber>42</ActionNumber>
-                    <Identifier>ACTION_RELOAD</Identifier>
-                    <TimeTaken>0</TimeTaken>
-                    <ForceObjectAction>1</ForceObjectAction>
-                    <InterruptCurrentAction>1</InterruptCurrentAction>
-                    <MutexAction>0</MutexAction>
-                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
-                    <PreserveParameter>0</PreserveParameter>
-                    <AIScriptCanRun>0</AIScriptCanRun>
-                    <SetParamZeroTicks>0</SetParamZeroTicks>
-                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <Conditions>
-                        <Condition>
-                            <Resource>U_AGE</Resource>
-                            <Comparison>MODULO_IS_ZERO</Comparison>
-                            <Value>6</Value>
-                        </Condition>
-                        <Condition>
-                            <Resource>U_AMMO</Resource>
-                            <Comparison>GREATER</Comparison>
-                            <Value>0</Value>
-                        </Condition>
-                        <Condition>
-                            <Resource>U_ACTION</Resource>
-                            <Comparison>NOT_EQUAL</Comparison>
-                            <Value>3</Value>
-                        </Condition>
-                        <Condition>
-                            <Resource>U_ACTION</Resource>
-                            <Comparison>NOT_EQUAL</Comparison>
-                            <Value>4</Value>
-                        </Condition>
-                        <Condition>
-                            <Resource>U_ACTION</Resource>
-                            <Comparison>NOT_EQUAL</Comparison>
-                            <Value>23</Value>
-                        </Condition>
-                        <Condition>
-                            <Resource>U_ACTION</Resource>
-                            <Comparison>NOT_EQUAL</Comparison>
-                            <Value>25</Value>
-                        </Condition>
-                    </Conditions>
-                    <Steps>
-                        <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>U_AMMO</Type>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>-1</Value>
-                        </Step>
-                    </Steps>
-                </Action>
-                <Action>
                     <ActionNumber>43</ActionNumber>
                     <Identifier>ACTION_UNCLOAK</Identifier>
                     <TimeTaken>1</TimeTaken>
@@ -1700,9 +1712,14 @@
                     <AllowActionWhenStopped>0</AllowActionWhenStopped>
                     <Conditions>
                         <Condition>
-                            <Resource>U_ARMOUR</Resource>
+                            <Resource>U_ACTION</Resource>
+                            <Comparison>GEQUAL</Comparison>
+                            <Value>23</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_ACTION</Resource>
                             <Comparison>LEQUAL</Comparison>
-                            <Value>0</Value>
+                            <Value>25</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_STATUS</Resource>
@@ -1715,6 +1732,13 @@
                             <PrimitiveAction>CLEAR_STATUS</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>STATUS_CLOAKED</Type>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_ARMOUR</Type>
+                            <ValueEval>SET_TO_VALUE</ValueEval>
+                            <Value>0</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -1734,7 +1758,7 @@
                         <Condition>
                             <Resource>U_ARMOUR</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>3</Value>
+                            <Value>6</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_STATUS</Resource>

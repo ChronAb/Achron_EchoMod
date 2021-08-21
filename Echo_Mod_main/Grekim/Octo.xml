@@ -126,7 +126,7 @@
         <ObjectClass>
             <ClassNumber>1000</ClassNumber>
             <Name>Octo</Name>
-            <Description>OCTO:&#x0D;&#x0A;Resilient melee assault trooper&#x0D;&#x0A;Good at absorbing enemy fire&#x0D;&#x0A;Morphs into Mound and Dome&#x0D;&#x0A; &#x0D;&#x0A;Upgradable defensive abilities:&#x0D;&#x0A;Adv Str: Shield regen. [+180 hp, +18/s]&#x0D;&#x0A;Weapons: 2X  regen. [+360 hp, +36/s]</Description>
+            <Description>OCTO:&#x0D;&#x0A;Resilient melee assault trooper&#x0D;&#x0A;Good at absorbing enemy fire&#x0D;&#x0A;Morphs into Mound and Dome&#x0D;&#x0A; &#x0D;&#x0A;Upgradable defensive abilities:&#x0D;&#x0A;Adv Str: Cloaks when stationary &#x0D;&#x0A;    Shield regen. [+180 hp, +18/s] &#x0D;&#x0A;Weapons: 2X  regen. [+360 hp, +36/s]</Description>
             <Model>./Achron_EchoMod/Echo_Mod_main/New_Models/octo.mdl</Model>
             <Rank>122</Rank>
             <Type>2</Type>
@@ -946,6 +946,11 @@
                             <Value>-40</Value>
                         </Step>
                         <Step>
+                            <PrimitiveAction>CLEAR_STATUS</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>STATUS_CLOAKED</Type>
+                        </Step>
+                        <Step>
                             <PrimitiveAction>CHANGE_CLASS</PrimitiveAction>
                             <Target>SELF</Target>
                             <Value>1056</Value>
@@ -993,6 +998,11 @@
                         </Condition>
                     </Conditions>
                     <Steps>
+                        <Step>
+                            <PrimitiveAction>CLEAR_STATUS</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>STATUS_CLOAKED</Type>
+                        </Step>
                         <Step>
                             <PrimitiveAction>CHANGE_CLASS</PrimitiveAction>
                             <Target>SELF</Target>
@@ -1120,6 +1130,11 @@
                             <Type>U_HP</Type>
                             <ValueEval>ONE</ValueEval>
                             <Value>-30</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CLEAR_STATUS</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>STATUS_CLOAKED</Type>
                         </Step>
                         <Step>
                             <PrimitiveAction>CHANGE_CLASS</PrimitiveAction>
@@ -1847,6 +1862,95 @@
                             <Type>U_HP</Type>
                             <ValueEval>ONE</ValueEval>
                             <Value>-9</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>47</ActionNumber>
+                    <Identifier>ACTION_CLOAK</Identifier>
+                    <TimeTaken>1</TimeTaken>
+                    <ForceObjectAction>1</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <Conditions>
+                        <Condition>
+                            <Resource>P_ADVANCEMENTS</Resource>
+                            <Comparison>BITMASK</Comparison>
+                            <Value>64</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_STATUS</Resource>
+                            <Comparison>BITMASK_NOT</Comparison>
+                            <Value>1</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_ACTION</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>58</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_HP</Resource>
+                            <Comparison>GEQUAL</Comparison>
+                            <Value>100</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_AGE</Resource>
+                            <Comparison>MODULO_IS_ZERO</Comparison>
+                            <Value>90</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_OWNER</Resource>
+                            <Comparison>LESS</Comparison>
+                            <Value>15</Value>
+                        </Condition>
+                    </Conditions>
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>SET_STATUS</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>STATUS_CLOAKED</Type>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>48</ActionNumber>
+                    <Identifier>ACTION_UNCLOAK</Identifier>
+                    <TimeTaken>0</TimeTaken>
+                    <ForceObjectAction>1</ForceObjectAction>
+                    <InterruptCurrentAction>1</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <Conditions>
+                        <Condition>
+                            <Resource>U_STATUS</Resource>
+                            <Comparison>BITMASK</Comparison>
+                            <Value>1</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_AGE</Resource>
+                            <Comparison>MODULO_IS_ZERO</Comparison>
+                            <Value>9</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_ACTION</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>2</Value>
+                        </Condition>
+                    </Conditions>
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CLEAR_STATUS</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>STATUS_CLOAKED</Type>
                         </Step>
                     </Steps>
                 </Action>
