@@ -750,7 +750,7 @@
                         <Condition>
                             <Resource>P_Q_PLASMA</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>300</Value>
+                            <Value>100</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_STATUS</Resource>
@@ -764,14 +764,14 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>300</Value>
+                            <Value>100</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>0</Value>
+                            <Value>600</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -1832,7 +1832,8 @@
                     <Script>gs163_pharo_arct</Script>
                     <Name>Morph: Arcticus</Name>
                     <Details> \Advanced progeneration hub\Produces base and Ligo class units\Cloaks and fertilizes all progenitors\in a large area</Details>
-                    <Resource4>300</Resource4>
+                    <Resource1>600</Resource1>
+                    <Resource4>100</Resource4>
                     <ObjectiveControlShortcutNumber>10</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>

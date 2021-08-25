@@ -1317,7 +1317,7 @@
 #define SPYRE_LC 0
 #define SPYRE_QP 150
 #define ARCTICUS_LC 0
-#define ARCTICUS_QP 300
+#define ARCTICUS_QP 100
 #define DOME_LC 0
 #define DOME_QP 200
 #define DOME_E 0
