@@ -1312,7 +1312,7 @@
 #define REAPH_QP 0
 #define REAPH_E 20
 #define MOUND_LC 0
-#define MOUND_QP 150
+#define MOUND_QP 50
 #define MOUND_E 10
 #define SPYRE_LC 0
 #define SPYRE_QP 150
@@ -1328,21 +1328,21 @@
 #define PRI_ARCTICUS_LC 0
 #define PRI_ARCTICUS_QP 200
 
-// Adv structures tech (100 +150 +100 =350 QP)
+// Adv structures tech (100 +50 +50 =200 QP +200 P -> 200 QP)
 #define ADV1_G_LC 0
-#define ADV1_G_QP 100
-// Loligo tech (100 +150 +200 =450 QP)
+#define ADV1_G_QP 50
+// Loligo tech (100 +50 +150 =300 QP +500 P -> 400 QP)
 #define ADV2_G_LC 0
-#define ADV2_G_QP 200
-// Specials Tech (100 +150 +50 =300 QP +100 P)
+#define ADV2_G_QP 150
+// Specials Tech (100 +50 +50 =200 QP +300 P -> 250 QP)
 #define ADV3_G_LC 0
 #define ADV3_G_QP 50
-// Chrono tech (100 +150 +150 =400 QP +300 P)
+// Chrono tech (100 +50 +50 =200 QP +600 P -> 500 QP)
 #define ADV4_G_LC 0
-#define ADV4_G_QP 150
-// Weapons tech (100 +150 +50 =300 QP +300 P)
+#define ADV4_G_QP 50
+// Weapons tech (100 +50 +150 =300 QP +600 P -> 450 QP)
 #define ADV5_G_LC 0
-#define ADV5_G_QP 50
+#define ADV5_G_QP 150
 
 #define PULSER_POWER 1
 #define TERCHER_POWER 2

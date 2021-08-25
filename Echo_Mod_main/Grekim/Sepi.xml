@@ -1193,7 +1193,7 @@
                         <Condition>
                             <Resource>P_Q_PLASMA</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>150</Value>
+                            <Value>50</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_ENERGY</Resource>
@@ -1207,7 +1207,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>150</Value>
+                            <Value>50</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -2093,7 +2093,7 @@
                     <Script>gs202_sepi_mound</Script>
                     <Name>Morph: Mound</Name>
                     <Details>Robust tech/comm and raider building\Performs tech tree and comm upgrades\ \Produces Cuttles: \ultra-light scout-raider aircraft</Details>
-                    <Resource4>150</Resource4>
+                    <Resource4>50</Resource4>
                     <Resource6>10</Resource6>
                     <ObjectiveControlShortcutNumber>12</ObjectiveControlShortcutNumber>
                 </Objective>
