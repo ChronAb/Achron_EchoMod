@@ -32,13 +32,13 @@
         <ObjectClass>
             <ClassNumber>4020</ClassNumber>
             <Name>Subspace Amplifier Relay</Name>
-            <Description>SUBSPACE AMPLIFIER:&#x0D;&#x0A;&#x0D;&#x0A;Secure 12 Supremacy Points at any point in the past to claim victory &#x0D;&#x0A;Makes resources at full control: &#x0D;&#x0A;  + 30 QP, P / 60s continuously&#x0D;&#x0A;  + 30 QP, LC at 180 s intervals while cores remain</Description>
+            <Description>SUBSPACE AMPLIFIER:&#x0D;&#x0A;&#x0D;&#x0A;Secure 12 Supremacy Points at any point in the past to claim victory &#x0D;&#x0A;Makes resources at full control: &#x0D;&#x0A;  + 15 QP, P / 60s continuously&#x0D;&#x0A;  + 30 QP, LC at 120 s intervals while cores remain</Description>
             <Model>./humans/commcenter.mdl</Model>
             <Rank>7</Rank>
             <Type>0</Type>
             <PrioritySelectionRank>0</PrioritySelectionRank>
             <MaxHealth>100</MaxHealth>
-            <MaxEnergy>3</MaxEnergy>
+            <MaxEnergy>4</MaxEnergy>
             <MaxArmor>0</MaxArmor>
             <MaxAmmo>3</MaxAmmo>
             <SightRadius>12</SightRadius>
@@ -334,7 +334,7 @@
                             <Target>SELF</Target>
                             <Type>U_ENERGY</Type>
                             <ValueEval>SET_TO_VALUE</ValueEval>
-                            <Value>3</Value>
+                            <Value>4</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -431,7 +431,7 @@
                             <Target>SELF</Target>
                             <Type>U_ENERGY</Type>
                             <ValueEval>SET_TO_VALUE</ValueEval>
-                            <Value>3</Value>
+                            <Value>4</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -727,7 +727,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-10</Value>
+                            <Value>-5</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -741,7 +741,7 @@
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-10</Value>
+                            <Value>-5</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -786,7 +786,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-10</Value>
+                            <Value>-5</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -859,7 +859,7 @@
                         <Condition>
                             <Resource>U_AGE</Resource>
                             <Comparison>MODULO_IS_ZERO</Comparison>
-                            <Value>3240</Value>
+                            <Value>2160</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_OWNER</Resource>
@@ -1082,14 +1082,14 @@
         <ObjectClass>
             <ClassNumber>4021</ClassNumber>
             <Name>Subspace Amplifier Relay</Name>
-            <Description>SUBSPACE AMPLIFIER:&#x0D;&#x0A;&#x0D;&#x0A;Secure 12 Supremacy Points at any point in the past to claim victory &#x0D;&#x0A;Makes resources at full control: &#x0D;&#x0A;  + 30 QP, P / 60s continuously&#x0D;&#x0A;  + 30 QP, LC at 180 s intervals while cores remain</Description>
+            <Description>SUBSPACE AMPLIFIER:&#x0D;&#x0A;&#x0D;&#x0A;Secure 12 Supremacy Points at any point in the past to claim victory &#x0D;&#x0A;Makes resources at full control: &#x0D;&#x0A;  + 15 QP, P / 60s continuously&#x0D;&#x0A;  + 30 QP, LC at 120 s intervals while cores remain</Description>
             <!-- Start ping-ing when 8+ are controlled -->
             <Model>./humans/commcenter.mdl</Model>
             <Rank>7</Rank>
             <Type>0</Type>
             <PrioritySelectionRank>0</PrioritySelectionRank>
             <MaxHealth>100</MaxHealth>
-            <MaxEnergy>3</MaxEnergy>
+            <MaxEnergy>4</MaxEnergy>
             <MaxArmor>0</MaxArmor>
             <MaxAmmo>3</MaxAmmo>
             <SightRadius>12</SightRadius>
@@ -1331,7 +1331,7 @@
                             <Target>SELF</Target>
                             <Type>U_ENERGY</Type>
                             <ValueEval>SET_TO_VALUE</ValueEval>
-                            <Value>3</Value>
+                            <Value>4</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -1428,7 +1428,7 @@
                             <Target>SELF</Target>
                             <Type>U_ENERGY</Type>
                             <ValueEval>SET_TO_VALUE</ValueEval>
-                            <Value>3</Value>
+                            <Value>4</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -1724,7 +1724,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-10</Value>
+                            <Value>-5</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -1738,7 +1738,7 @@
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-10</Value>
+                            <Value>-5</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -1783,7 +1783,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-10</Value>
+                            <Value>-5</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -1811,7 +1811,7 @@
                         <Condition>
                             <Resource>U_AGE</Resource>
                             <Comparison>MODULO_IS_ZERO</Comparison>
-                            <Value>3240</Value>
+                            <Value>2160</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_OWNER</Resource>

@@ -920,7 +920,7 @@
                         <Condition>
                             <Resource>P_Q_PLASMA</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>100</Value>
+                            <Value>50</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -929,14 +929,14 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>100</Value>
+                            <Value>50</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>400</Value>
+                            <Value>100</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -2156,8 +2156,8 @@
                     <Script>gs161_octo_rp</Script>
                     <Name>Resource Processor</Name>
                     <Details>   - place near resource bins\Assimilates resources: Power and Q-Plasma\Can convert Q-Plasma into Power\Cloaks and moves itself</Details>
-                    <Resource1>400</Resource1>
-                    <Resource4>100</Resource4>
+                    <Resource1>100</Resource1>
+                    <Resource4>50</Resource4>
                     <Resource6>0</Resource6>
                     <ObjectiveControlShortcutNumber>10</ObjectiveControlShortcutNumber>
                 </Objective>
