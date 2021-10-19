@@ -107,16 +107,62 @@
 
         <!-- general building scripts -->
         <AIScript>
-            <Name>cs00b_turret_idle</Name>
-            <Path>./Achron_EchoMod/Echo_Mod_main/ais/turret_defend.abn</Path>
-        </AIScript>
-        <AIScript>
             <Name>cs09b_relocate</Name>
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/startmove.abn</Path>
         </AIScript>
         <AIScript>
+            <Name>cs08b_turret_atk</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/turret_attack.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs00b_turret_idle</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/turret_defend.abn</Path>
+        </AIScript>
+        <AIScript>
             <Name>cs50b_morphing</Name>
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs00mb_relocating_idle</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/auto_reactivate.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs09mb_move</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/simple_move_dispatch.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs10mb_moving</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/simple_move.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs11mb_stop</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/stopmove.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs12mb_plant</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/plant_dispatch.abn</Path>
+        </AIScript>
+        
+        <!-- comm center scripts -->
+        <AIScript>
+            <Name>cs00c_commc_idle</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/commc_idle.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs04c_autoH_on</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/commc_autocommandon.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs06c_autoH_off</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/commc_autocommandoff.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs05c_smart_idle_on</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/commc_propagateon.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs07c_smart_idle_off</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/commc_propagateoff.abn</Path>
         </AIScript>
 
         <!-- resource processor scripts -->
@@ -141,17 +187,20 @@
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/simple_move.abn</Path>
         </AIScript>
         <AIScript>
+            <Name>cs13r_rp_convert</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/convert_qp.abn</Path>
+        </AIScript>
+        <AIScript>
             <Name>cs011r_rp_plant</Name>
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/rp_plant.abn</Path>
         </AIScript>
         <AIScript>
-            <Name>cs13r_rp_convert</Name>
-            <Path>./Achron_EchoMod/Echo_Mod_main/ais/convert_qp.abn</Path>
+            <Name>cs16r_rp_stop</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/set_idle.abn</Path>
         </AIScript>
-        
         <AIScript>
-            <Name>cs09r_rp_move</Name>
-            <Path>./Achron_EchoMod/Echo_Mod_main/ais/simple_move_dispatch.abn</Path>
+            <Name>cs47r_rp_tport</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/teleportme.abn</Path>
         </AIScript>
         
         
