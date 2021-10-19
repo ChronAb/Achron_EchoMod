@@ -1043,7 +1043,7 @@
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>8</ObjectiveNumber>
-                    <Script>Script67</Script>
+                    <Script>cs08b_turret_atk</Script>
                     <Name>Attack</Name>
                     <Details>Attack specified target \Fire rate upgradable (Weapons tech)\[Weapons Avg Damage/10secs ]\Gnd: 50 (+150),  R 24\Air: 50 (+150),  R 24</Details>
                     <ValidRadius>23</ValidRadius>
@@ -1055,26 +1055,13 @@
                     <Name>Relocate</Name>
                     <Details> \Deactivate to Move</Details>
                 </Objective>
-                <Objective>
-                    <ObjectiveNumber>17</ObjectiveNumber>
-                    <Script>Script162</Script>
-                    <Name>Break TSS</Name>
-                    <Details> \Break a Temporal Soliton Shield</Details>
-                    <Resource6>100</Resource6>
-                </Objective>
-                <Objective>
+                <!-- Objective>
                     <ObjectiveNumber>19</ObjectiveNumber>
-                    <Script>Script240</Script>
+                    <Script>gbs19d_beam_dome</Script>
                     <Name>Upgrade Beam</Name>
                     <Details>Enable long-range Beam Cannon\Replaces weapons, Permanent Anti-Grav\ \Designate targets to engage beyond vision \Slow, low strength, long range fire support</Details>
                     <Resource4>200</Resource4>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>21</ObjectiveNumber>
-                    <Script>Script68</Script>
-                    <Name></Name>
-                    <Details></Details>
-                </Objective>
+                </Objective -->
                 <Objective>
                     <ObjectiveNumber>50</ObjectiveNumber>
                     <Script>cs50b_morphing</Script>
@@ -1160,7 +1147,7 @@
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
-                <ControlShortcut>
+                <!-- ControlShortcut>
                     <ControlNumber>5</ControlNumber>
                     <ControlObjectiveNumber>19</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
@@ -1178,7 +1165,7 @@
                     <EstTimeDist>0</EstTimeDist>
                     <Sound>Sound0</Sound>
                     <ControlConditions />
-                </ControlShortcut>
+                </ControlShortcut -->
             </ControlShortcuts>
         </ObjectClass>
         <ObjectClass>
@@ -1874,34 +1861,34 @@
             <Objectives>
                 <Objective>
                     <ObjectiveNumber>0</ObjectiveNumber>
-                    <Script>Script389</Script>
+                    <Script>cs00mb_relocating_idle</Script>
                     <Name></Name>
                     <Details></Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>9</ObjectiveNumber>
-                    <Script>Script24</Script>
+                    <Script>cs09mb_move</Script>
                     <Name>Move</Name>
                     <Details></Details>
                     <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>10</ObjectiveNumber>
-                    <Script>Script23</Script>
+                    <Script>cs10mb_moving</Script>
                     <Name>Moving</Name>
                     <Details></Details>
                     <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>11</ObjectiveNumber>
-                    <Script>Script181</Script>
+                    <Script>cs11mb_stop</Script>
                     <Name>Activating</Name>
                     <Details></Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>12</ObjectiveNumber>
-                    <Script>Script182</Script>
+                    <Script>cs12mb_plant</Script>
                     <Name>Activate</Name>
                     <Details> \Plant at position and activate</Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>

@@ -364,7 +364,7 @@
                             <Target>SELF</Target>
                             <Type>U_AMMO</Type>
                             <ValueEval>SET_TO_VALUE</ValueEval>
-                            <Value>10</Value>
+                            <Value>30</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>ACCUM_STATISTIC</PrimitiveAction>
@@ -1583,12 +1583,37 @@
                     <Details> \Move to a new location \after current processing cycle ends</Details>
                     <ObjectiveControlShortcutNumber>6</ObjectiveControlShortcutNumber>
                 </Objective>
+                
+                <!--Objective>
+                    <ObjectiveNumber>10</ObjectiveNumber>
+                    <Script>cs100_tport</Script>
+                    <Name>Teleport</Name>
+                    <Details>Teleport to a unit / location \or self-teleport within LOS range\Teleporters extend range and negate cost\ \Blocked by Temporal Soliton Shield (TSS)</Details>
+                    <Resource1>40</Resource1>
+                    <Resource4>20</Resource4>
+                    <ObjectiveControlShortcutNumber>5</ObjectiveControlShortcutNumber>
+                </Objective>
                 <Objective>
                     <ObjectiveNumber>11</ObjectiveNumber>
-                    <Script>cs011r_rp_plant</Script>
-                    <Name>Stop and Open</Name>
-                    <Details> \Stop moving and re-enable</Details>
+                    <Script>cs111_g_cport</Script>
+                    <Name>Chronoport</Name>
+                    <Details>Chronoport to a specified point in time\ \Recharges Shields 50%\Must not have a TSS</Details>
+                    <Resource1>40</Resource1>
+                    <Resource4>20</Resource4>
                 </Objective>
+                <Objective>
+                    <ObjectiveNumber>12</ObjectiveNumber>
+                    <Script>cs120_cport_na</Script>
+                    <Name>Chronoport</Name>
+                    <Details>   Not Available\    Requires Chronoporting upgrade</Details>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>13</ObjectiveNumber>
+                    <Script>cs130_make_room</Script>
+                    <Name>Move Away</Name>
+                    <Details></Details>
+                </Objective-->
+                
                 <Objective>
                     <ObjectiveNumber>13</ObjectiveNumber>
                     <Script>cs13r_rp_convert</Script>
@@ -1598,42 +1623,42 @@
                     <Resource8>20</Resource8>
                 </Objective>
                 <Objective>
+                    <ObjectiveNumber>11</ObjectiveNumber>
+                    <Script>cs011r_rp_plant</Script>
+                    <Name>Stop and Open</Name>
+                    <Details> \Stop moving and re-enable</Details>
+                </Objective>
+                <Objective>
                     <ObjectiveNumber>16</ObjectiveNumber>
-                    <Script>Script417</Script>
+                    <Script>cs16r_rp_stop</Script>
                     <Name>Stop and Close</Name>
                     <Details> \Stop processing Q-Plasma\ \Close RP</Details>
                 </Objective>
-                <Objective>
-                    <ObjectiveNumber>17</ObjectiveNumber>
-                    <Script>Script411</Script>
-                    <Name>Cloaking On</Name>
-                    <Details> \Engage cloaking (default state)\ \Reduced Charge regeneration rate</Details>
-                    <Resource6>6</Resource6>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>20</ObjectiveNumber>
-                    <Script>Script412</Script>
-                    <Name>Cloaking Off</Name>
-                    <Details> \Turn off cloaking\ \3X Charge regeneration rate</Details>
-                </Objective>
-                <Objective>
+                <!-- Objective>
                     <ObjectiveNumber>47</ObjectiveNumber>
-                    <Script>Script206</Script>
+                    <Script>cs47r_rp_tport</Script>
                     <Name>Teleport</Name>
                     <Details> \Teleport to a specified location\after current processing cycle ends\ \    Must be near a Teleporter</Details>
                     <ObjectiveControlShortcutNumber>7</ObjectiveControlShortcutNumber>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>49</ObjectiveNumber>
-                    <Script>Script213</Script>
-                    <Name>Move Away</Name>
-                    <Details></Details>
-                </Objective>
+                </Objective -->
                 <Objective>
                     <ObjectiveNumber>50</ObjectiveNumber>
-                    <Script>Script40</Script>
+                    <Script>cs50b_morphing</Script>
                     <Name>Morphing...</Name>
                     <Details></Details>
+                </Objective>
+                
+                <Objective>
+                    <ObjectiveNumber>17</ObjectiveNumber>
+                    <Script>gbs17p_rp_cloak</Script>
+                    <Name>Cloaking On</Name>
+                    <Details> \Engage cloaking (default state)\ \Reduced Charge regeneration rate</Details>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>20</ObjectiveNumber>
+                    <Script>gbs20p_rp_uncloak</Script>
+                    <Name>Cloaking Off</Name>
+                    <Details> \Turn off cloaking\ \3X Charge regeneration rate</Details>
                 </Objective>
             </Objectives>
             <ControlShortcuts>
@@ -1816,7 +1841,7 @@
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
-                <ControlShortcut>
+                <!-- ControlShortcut>
                     <ControlNumber>8</ControlNumber>
                     <ControlObjectiveNumber>47</ControlObjectiveNumber>
                     <ParameterType>POSITION_CLASS</ParameterType>
@@ -1834,7 +1859,7 @@
                     <EstTimeDist>0</EstTimeDist>
                     <Sound>Sound0</Sound>
                     <ControlConditions />
-                </ControlShortcut>
+                </ControlShortcut -->
                 <ControlShortcut>
                     <ControlNumber>9</ControlNumber>
                     <ControlObjectiveNumber>16</ControlObjectiveNumber>
@@ -2235,7 +2260,14 @@
                             <Target>SELF</Target>
                             <Type>U_AMMO</Type>
                             <ValueEval>SET_TO_VALUE</ValueEval>
-                            <Value>10</Value>
+                            <Value>30</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>ACCUM_STATISTIC</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>UnitsCreated</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>1</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -3087,7 +3119,7 @@
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>2</ObjectiveNumber>
-                    <Script>cs01r_rp_mine</Script>
+                    <Script>cs02r_rp_pickmine</Script>
                     <Name>Process Resource</Name>
                     <Details> \Process Q-Plasma\ \For best efficiency limit to 1 RP\  per QP Cell</Details>
 					<ValidRadius>60</ValidRadius>
@@ -3095,7 +3127,7 @@
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>9</ObjectiveNumber>
-                    <Script>cs02r_rp_pickmine</Script>
+                    <Script>cs09r_rp_move</Script>
                     <Name>Relocate</Name>
                     <Details> \Move to specified location</Details>
                     <ObjectiveControlShortcutNumber>6</ObjectiveControlShortcutNumber>
@@ -3109,57 +3141,51 @@
                     <ParameterType>POSITION</ParameterType>
                 </Objective>
                 <Objective>
-                    <ObjectiveNumber>11</ObjectiveNumber>
-                    <Script>cs011r_rp_plant</Script>
-                    <Name>Stop and re-enable</Name>
-                    <Details> \Stop moving and re-enable</Details>
-                </Objective>
-                <Objective>
                     <ObjectiveNumber>13</ObjectiveNumber>
-                    <Script>Script372</Script>
+                    <Script>cs13r_rp_convert</Script>
                     <Name>QPlasma -&gt; Power</Name>
                     <Details> \Convert 100 QP to 200 Power\after current processing cycle ends</Details>
                     <Resource4>100</Resource4>
                     <Resource8>20</Resource8>
                 </Objective>
                 <Objective>
+                    <ObjectiveNumber>11</ObjectiveNumber>
+                    <Script>cs011r_rp_plant</Script>
+                    <Name>Stop and re-enable</Name>
+                    <Details> \Stop moving and re-enable</Details>
+                </Objective>
+                <Objective>
                     <ObjectiveNumber>16</ObjectiveNumber>
-                    <Script>Script417</Script>
+                    <Script>cs16r_rp_stop</Script>
                     <Name>Stop and Close</Name>
                     <Details> \Stop processing Q-Plasma\ \Close RP</Details>
                 </Objective>
-                <Objective>
-                    <ObjectiveNumber>17</ObjectiveNumber>
-                    <Script>Script411</Script>
-                    <Name>Cloaking On</Name>
-                    <Details> \Engage cloaking (default state)\ \Reduced Charge regeneration rate</Details>
-                    <Resource6>6</Resource6>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>20</ObjectiveNumber>
-                    <Script>Script412</Script>
-                    <Name>Cloaking Off</Name>
-                    <Details> \Turn off cloaking\ \3X Charge regeneration rate</Details>
-                </Objective>
-                <Objective>
+                <!-- Objective>
                     <ObjectiveNumber>47</ObjectiveNumber>
-                    <Script>Script206</Script>
+                    <Script>cs47r_rp_tport</Script>
                     <Name>Teleport</Name>
                     <Details> \Teleport to a specified location\ \    Must be near a Teleporter</Details>
                     <ObjectiveControlShortcutNumber>7</ObjectiveControlShortcutNumber>
                     <ParameterType>POSITION</ParameterType>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>49</ObjectiveNumber>
-                    <Script>Script213</Script>
-                    <Name>Move Away</Name>
-                    <Details></Details>
-                </Objective>
+                </Objective -->
                 <Objective>
                     <ObjectiveNumber>50</ObjectiveNumber>
-                    <Script>Script40</Script>
+                    <Script>cs50b_morphing</Script>
                     <Name>Morphing...</Name>
                     <Details></Details>
+                </Objective>
+                
+                <Objective>
+                    <ObjectiveNumber>17</ObjectiveNumber>
+                    <Script>gbs17p_rp_cloak</Script>
+                    <Name>Cloaking On</Name>
+                    <Details> \Engage cloaking (default state)\ \Reduced Charge regeneration rate</Details>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>20</ObjectiveNumber>
+                    <Script>gbs20p_rp_uncloak</Script>
+                    <Name>Cloaking Off</Name>
+                    <Details> \Turn off cloaking\ \3X Charge regeneration rate</Details>
                 </Objective>
             </Objectives>
             <ControlShortcuts>
@@ -3305,7 +3331,7 @@
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
-                <ControlShortcut>
+                <!-- ControlShortcut>
                     <ControlNumber>8</ControlNumber>
                     <ControlObjectiveNumber>47</ControlObjectiveNumber>
                     <ParameterType>POSITION_CLASS</ParameterType>
@@ -3323,7 +3349,7 @@
                     <EstTimeDist>0</EstTimeDist>
                     <Sound>Sound0</Sound>
                     <ControlConditions />
-                </ControlShortcut>
+                </ControlShortcut -->
                 <ControlShortcut>
                     <ControlNumber>9</ControlNumber>
                     <ControlObjectiveNumber>16</ControlObjectiveNumber>

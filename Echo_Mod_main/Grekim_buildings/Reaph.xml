@@ -511,6 +511,12 @@
                             <ActionStepModifier>Reaph Heal</ActionStepModifier>
                         </Step>
                         <Step>
+                            <PrimitiveAction>CLEAR_STATUS</PrimitiveAction>
+                            <Target>TARGET_UNIT</Target>
+                            <Type>STATUS_COMMJAM</Type>
+                            <ActionStepModifier>Reaph Heal</ActionStepModifier>
+                        </Step>
+                        <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>U_ENERGY</Type>
@@ -810,7 +816,7 @@
             <Objectives>
                 <Objective>
                     <ObjectiveNumber>0</ObjectiveNumber>
-                    <Script>Script328</Script>
+                    <Script>gbs00r_reaph_idle</Script>
                     <Name></Name>
                     <Details></Details>
                 </Objective>
@@ -1575,34 +1581,34 @@
             <Objectives>
                 <Objective>
                     <ObjectiveNumber>0</ObjectiveNumber>
-                    <Script>Script389</Script>
+                    <Script>cs00mb_relocating_idle</Script>
                     <Name></Name>
                     <Details></Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>9</ObjectiveNumber>
-                    <Script>Script24</Script>
+                    <Script>cs09mb_move</Script>
                     <Name>Move</Name>
                     <Details></Details>
                     <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>10</ObjectiveNumber>
-                    <Script>Script23</Script>
+                    <Script>cs10mb_moving</Script>
                     <Name>Moving</Name>
                     <Details></Details>
                     <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>11</ObjectiveNumber>
-                    <Script>Script181</Script>
+                    <Script>cs11mb_stop</Script>
                     <Name>Activating</Name>
                     <Details></Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>12</ObjectiveNumber>
-                    <Script>Script182</Script>
+                    <Script>cs12mb_plant</Script>
                     <Name>Activate</Name>
                     <Details> \Plant on the ground and activate</Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>

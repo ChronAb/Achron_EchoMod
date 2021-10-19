@@ -1273,7 +1273,7 @@
                     <ObjectiveNumber>38</ObjectiveNumber>
                     <Script>gs38p_progen_octo</Script>
                     <Name>Produce Octo</Name>
-                    <Details>Resilient, AG-only melee assault unit\Good at absorbing enemy fire\Morphs into RP or Dome\Upgradable HP regeneration\Invisible in Fog of War</Details>
+                    <Details>Resilient melee assault trooper\Good at absorbing enemy fire\Cannot attack air targets\Morphs into RP or Dome\Invisible in Fog of War</Details>
                     <Resource4>100</Resource4>
                     <Resource6>60</Resource6>
                 </Objective>
@@ -1281,7 +1281,7 @@
                     <ObjectiveNumber>39</ObjectiveNumber>
                     <Script>gs39p_progen_sepi</Script>
                     <Name>Produce Squiddy/Sepi</Name>
-                    <Details>Long range support sharpshooter\Low HP, high DPS vs ground and air\Cloaks while moving\Morphs into Mound or Reaph\Invisible in Fog of War</Details>
+                    <Details>Cloaking support sharpshooter\Low HP, high DPS vs ground and air\Cloaks while moving or idle\Morphs into Mound or Reaph\Invisible in Fog of War</Details>
                     <Resource4>100</Resource4>
                     <Resource6>60</Resource6>
                 </Objective>
@@ -1289,7 +1289,7 @@
                     <ObjectiveNumber>40</ObjectiveNumber>
                     <Script>gs40p_progen_pharo</Script>
                     <Name>Produce Pharo</Name>
-                    <Details>Low endurance, AG-only armored grenadier\Slow, high HP, close-range skirmisher\Detects cloaked units\Morphs into Spyre or Arcticus\Invisible in Fog of War</Details>
+                    <Details>Heavily armored shock grenadier\Detects cloaked enemies\Only effective vs light ground targets\Morphs into Spyre or Arcticus\Invisible in Fog of War</Details>
                     <Resource4>100</Resource4>
                     <Resource6>60</Resource6>
                 </Objective>

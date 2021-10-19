@@ -1435,7 +1435,7 @@
                     <ObjectiveNumber>39</ObjectiveNumber>
                     <Script>gs39p_progen_sepi</Script>
                     <Name>Produce Squiddy/Sepi</Name>
-                    <Details>Long range support sharpshooter\High damage against air and ground targets\Minimal armor; Cloaks when moving\Morphs into Mound or Reaph\Invisible in Fog of War</Details>
+                    <Details>Cloaking support sharpshooter\Low HP, high DPS vs ground and air\Cloaks while moving or idle\Morphs into Mound or Reaph\Invisible in Fog of War</Details>
                     <Resource4>100</Resource4>
                     <Resource6>5</Resource6>
                 </Objective>
@@ -3557,7 +3557,7 @@
                     <ObjectiveNumber>39</ObjectiveNumber>
                     <Script>gs39p_progen_sepi</Script>
                     <Name>Produce Squiddy/Sepi</Name>
-                    <Details>Long range support sharpshooter\High damage against air and ground targets\Minimal armor; Cloaks when moving\Morphs into Mound or Reaph\Invisible in Fog of War</Details>
+                    <Details>Cloaking support sharpshooter\Low HP, high DPS vs ground and air\Cloaks while moving or idle\Morphs into Mound or Reaph\Invisible in Fog of War</Details>
                     <Resource4>100</Resource4>
                     <Resource6>5</Resource6>
                 </Objective>
@@ -5679,7 +5679,7 @@
                     <ObjectiveNumber>39</ObjectiveNumber>
                     <Script>gs39p_progen_sepi</Script>
                     <Name>Produce Squiddy/Sepi</Name>
-                    <Details>Long range support sharpshooter\High damage against air and ground targets\Minimal armor; Cloaks when moving\Morphs into Mound or Reaph\Invisible in Fog of War</Details>
+                    <Details>Cloaking support sharpshooter\Low HP, high DPS vs ground and air\Cloaks while moving or idle\Morphs into Mound or Reaph\Invisible in Fog of War</Details>
                     <Resource4>100</Resource4>
                     <Resource6>5</Resource6>
                 </Objective>

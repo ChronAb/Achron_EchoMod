@@ -10,10 +10,11 @@
     <UnitLists />
     <ActionStepModifiers />
     <ObjectClasses>
+        <!-- Spyre spawns Vecgir Virs -->
         <ObjectClass>
             <ClassNumber>1070</ClassNumber>
             <Name>Spyre</Name>
-            <Description>SPYRE:&#x0D;&#x0A;&#x0D;&#x0A;Allows nearby progenerating units&#x0D;&#x0A;to generate aerospace and Ligo units</Description>
+            <Description>SPYRE:&#x0D;&#x0A;&#x0D;&#x0A;Grekim teleportation network node &#x0D;&#x0A;Maximum teleport jump range: 120 &#x0D;&#x0A;&#x0D;&#x0A;Allows nearby progenerating units&#x0D;&#x0A;to generate aerospace and Ligo units</Description>
             <Model>./grekim/spyre.mdl</Model>
             <Rank>55</Rank>
             <Type>2</Type>
@@ -54,7 +55,7 @@
                 <AlwaysAppearAsNoOwner>0</AlwaysAppearAsNoOwner>
                 <AlwaysHighlightUnitUnlessNoOwner>0</AlwaysHighlightUnitUnlessNoOwner>
                 <HideHealthField>0</HideHealthField>
-                <HideEnergyField>0</HideEnergyField>
+                <HideEnergyField>1</HideEnergyField>
                 <HideArmorField>0</HideArmorField>
                 <HideAmmoField>1</HideAmmoField>
                 <HideCapacityField>0</HideCapacityField>
@@ -352,89 +353,7 @@
                     <Conditions />
                     <Steps />
                 </Action>
-                <Action>
-                    <ActionNumber>18</ActionNumber>
-                    <Identifier>ACTION_Todaro</Identifier>
-                    <TimeTaken>6</TimeTaken>
-                    <ForceObjectAction>1</ForceObjectAction>
-                    <InterruptCurrentAction>0</InterruptCurrentAction>
-                    <MutexAction>0</MutexAction>
-                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
-                    <PreserveParameter>0</PreserveParameter>
-                    <AIScriptCanRun>0</AIScriptCanRun>
-                    <SetParamZeroTicks>0</SetParamZeroTicks>
-                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <Conditions>
-                        <Condition>
-                            <Resource>U_AMMO</Resource>
-                            <Comparison>GEQUAL</Comparison>
-                            <Value>1</Value>
-                        </Condition>
-                    </Conditions>
-                    <Steps>
-                        <Step>
-                            <PrimitiveAction>CREATE_UNIT</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Value>1014</Value>
-                        </Step>
-                        <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>U_AMMO</Type>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>1</Value>
-                        </Step>
-                    </Steps>
-                </Action>
-                <Action>
-                    <ActionNumber>25</ActionNumber>
-                    <Identifier>ACTION_CREATE_Todaroes</Identifier>
-                    <TimeTaken>1</TimeTaken>
-                    <ForceObjectAction>0</ForceObjectAction>
-                    <InterruptCurrentAction>0</InterruptCurrentAction>
-                    <MutexAction>0</MutexAction>
-                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
-                    <PreserveParameter>0</PreserveParameter>
-                    <AIScriptCanRun>0</AIScriptCanRun>
-                    <SetParamZeroTicks>0</SetParamZeroTicks>
-                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <Conditions>
-                        <Condition>
-                            <Resource>P_Q_PLASMA</Resource>
-                            <Comparison>GEQUAL</Comparison>
-                            <Value>140</Value>
-                        </Condition>
-                        <Condition>
-                            <Resource>U_ENERGY</Resource>
-                            <Comparison>GEQUAL</Comparison>
-                            <Value>10</Value>
-                        </Condition>
-                    </Conditions>
-                    <Steps>
-                        <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>U_ENERGY</Type>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>10</Value>
-                        </Step>
-                        <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>P_Q_PLASMA</Type>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>140</Value>
-                        </Step>
-                        <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>U_AMMO</Type>
-                            <ValueEval>SET_TO_VALUE</ValueEval>
-                            <Value>0</Value>
-                        </Step>
-                    </Steps>
-				</Action>
-                <Action>
+                <!-- Action>
                     <ActionNumber>36</ActionNumber>
                     <Identifier>ACTION_REGEN</Identifier>
                     <TimeTaken>0</TimeTaken>
@@ -467,7 +386,7 @@
                             <Value>-1</Value>
                         </Step>
                     </Steps>
-                </Action>
+                </Action -->
                 <Action>
                     <ActionNumber>43</ActionNumber>
                     <Identifier>ACTION_CLEAR_LAD</Identifier>
@@ -536,31 +455,23 @@
                         </Step>
                     </Steps>
                 </Action>
-						</Actions>
+            </Actions>
             <Objectives>
                 <Objective>
                     <ObjectiveNumber>0</ObjectiveNumber>
-                    <Script>Script29</Script>
+                    <Script>gbs00s_spyre_idle</Script>
                     <Name></Name>
                     <Details></Details>
                 </Objective>
                 <Objective>
-                    <ObjectiveNumber>4</ObjectiveNumber>
-                    <Script>Script317</Script>
-                    <Name>Make Cuttle/Todaro Pair</Name>
-                    <Details>Biological light raider aircraft\Very fast with low combat stamina\Good scout and expendable harasser\Limited lifespan</Details>
-                    <Resource4>200</Resource4>
-                    <Resource6>10</Resource6>
-                </Objective>
-                <Objective>
                     <ObjectiveNumber>9</ObjectiveNumber>
-                    <Script>Script189</Script>
+                    <Script>cs09b_relocate</Script>
                     <Name>Relocate</Name>
                     <Details> \Deactivate to move</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>50</ObjectiveNumber>
-                    <Script>Script40</Script>
+                    <Script>cs50b_morphing</Script>
                     <Name>Morphing...</Name>
                     <Details></Details>
                 </Objective>
@@ -663,7 +574,7 @@
                 <AlwaysAppearAsNoOwner>0</AlwaysAppearAsNoOwner>
                 <AlwaysHighlightUnitUnlessNoOwner>0</AlwaysHighlightUnitUnlessNoOwner>
                 <HideHealthField>0</HideHealthField>
-                <HideEnergyField>0</HideEnergyField>
+                <HideEnergyField>1</HideEnergyField>
                 <HideArmorField>0</HideArmorField>
                 <HideAmmoField>0</HideAmmoField>
                 <HideCapacityField>0</HideCapacityField>
@@ -1068,7 +979,7 @@
                         </Step>
                     </Steps>
                 </Action>
-                <Action>
+                <!-- Action>
                     <ActionNumber>36</ActionNumber>
                     <Identifier>ACTION_REGEN</Identifier>
                     <TimeTaken>0</TimeTaken>
@@ -1101,7 +1012,7 @@
                             <Value>-1</Value>
                         </Step>
                     </Steps>
-                </Action>
+                </Action -->
                 <Action>
                     <ActionNumber>43</ActionNumber>
                     <Identifier>ACTION_CLEAR_LAD</Identifier>
@@ -1230,34 +1141,34 @@
             <Objectives>
                 <Objective>
                     <ObjectiveNumber>0</ObjectiveNumber>
-                    <Script>Script389</Script>
+                    <Script>cs00mb_relocating_idle</Script>
                     <Name></Name>
                     <Details></Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>9</ObjectiveNumber>
-                    <Script>Script24</Script>
+                    <Script>cs09mb_move</Script>
                     <Name>Move</Name>
                     <Details></Details>
                     <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>10</ObjectiveNumber>
-                    <Script>Script23</Script>
+                    <Script>cs10mb_moving</Script>
                     <Name>Moving</Name>
                     <Details></Details>
                     <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>11</ObjectiveNumber>
-                    <Script>Script181</Script>
+                    <Script>cs11mb_stop</Script>
                     <Name>Activating</Name>
                     <Details></Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>12</ObjectiveNumber>
-                    <Script>Script182</Script>
+                    <Script>cs12mb_plant</Script>
                     <Name>Activate</Name>
                     <Details> \Plant on the ground and activate</Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>

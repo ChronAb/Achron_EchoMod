@@ -739,7 +739,7 @@
                         <Condition>
                             <Resource>P_Q_PLASMA</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>100</Value>
+                            <Value>50</Value>
                         </Condition>
                         <Condition>
                             <Resource>P_ADVANCEMENTS</Resource>
@@ -765,7 +765,14 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>100</Value>
+                            <Value>50</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_POWER</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>200</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>ACCUM_STATISTIC</PrimitiveAction>
@@ -809,7 +816,7 @@
                         <Condition>
                             <Resource>P_Q_PLASMA</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>200</Value>
+                            <Value>150</Value>
                         </Condition>
                         <Condition>
                             <Resource>P_ADVANCEMENTS</Resource>
@@ -835,7 +842,14 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>200</Value>
+                            <Value>150</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_POWER</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>500</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>ACCUM_STATISTIC</PrimitiveAction>
@@ -922,7 +936,7 @@
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>100</Value>
+                            <Value>300</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>ACCUM_STATISTIC</PrimitiveAction>
@@ -966,7 +980,7 @@
                         <Condition>
                             <Resource>P_Q_PLASMA</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>150</Value>
+                            <Value>50</Value>
                         </Condition>
                         <Condition>
                             <Resource>P_ADVANCEMENTS</Resource>
@@ -997,14 +1011,14 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>150</Value>
+                            <Value>50</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>300</Value>
+                            <Value>600</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>ACCUM_STATISTIC</PrimitiveAction>
@@ -1063,7 +1077,7 @@
                         <Condition>
                             <Resource>P_Q_PLASMA</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>50</Value>
+                            <Value>150</Value>
                         </Condition>
                         <Condition>
                             <Resource>P_ADVANCEMENTS</Resource>
@@ -1089,14 +1103,14 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>50</Value>
+                            <Value>150</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>300</Value>
+                            <Value>500</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>ACCUM_STATISTIC</PrimitiveAction>
@@ -1454,161 +1468,169 @@
             <Objectives>
                 <Objective>
                     <ObjectiveNumber>0</ObjectiveNumber>
-                    <Script>Script15</Script>
+                    <Script>cs00c_commc_idle</Script>
                     <Name></Name>
                     <Details></Details>
                 </Objective>
                 <Objective>
+                    <ObjectiveNumber>9</ObjectiveNumber>
+                    <Script>cs09b_relocate</Script>
+                    <Name>Relocate</Name>
+                    <Details> \Deactivate to move</Details>
+                </Objective>
+                <Objective>
                     <ObjectiveNumber>4</ObjectiveNumber>
-                    <Script>Script131</Script>
+                    <Script>cs04c_autoH_on</Script>
                     <Name>Turn Auto Hierarchy ON</Name>
                     <Details> \Enable Automatic Hierarchy\Makes units find higher ranked\commanders by proximity</Details>
                 </Objective>
                 <Objective>
-                    <ObjectiveNumber>5</ObjectiveNumber>
-                    <Script>Script133</Script>
-                    <Name>Turn Smart Idle ON</Name>
-                    <Details> \Enable auto-communication\Make units automatically request\and respond when help is needed\ Heal, Repair, Recover and Find</Details>
-                </Objective>
-                <Objective>
                     <ObjectiveNumber>6</ObjectiveNumber>
-                    <Script>Script132</Script>
+                    <Script>cs06c_autoH_off</Script>
                     <Name>Turn Auto Hierarchy OFF</Name>
                     <Details> \Disable Automatic Hierarchy</Details>
                 </Objective>
                 <Objective>
+                    <ObjectiveNumber>5</ObjectiveNumber>
+                    <Script>cs05c_smart_idle_on</Script>
+                    <Name>Turn Smart Idle ON</Name>
+                    <Details> \Enable auto-communication\Make units automatically request\and respond when help is needed\ Heal, Repair, Recover and Find</Details>
+                </Objective>
+                <Objective>
                     <ObjectiveNumber>7</ObjectiveNumber>
-                    <Script>Script134</Script>
+                    <Script>cs07c_smart_idle_off</Script>
                     <Name>Turn Smart Idle OFF</Name>
                     <Details> \Disable auto-communication</Details>
                 </Objective>
                 <Objective>
-                    <ObjectiveNumber>9</ObjectiveNumber>
-                    <Script>Script189</Script>
-                    <Name>Relocate</Name>
-                    <Details> \Deactivate to Move</Details>
-                </Objective>
-                <Objective>
                     <ObjectiveNumber>10</ObjectiveNumber>
-                    <Script>Script317</Script>
+                    <Script>gbs10m_cuttle</Script>
                     <Name>Make Cuttle/Todaro Pair</Name>
                     <Details>Biological light raider aircraft\Very fast with low combat stamina\Good scout and expendable harasser\Limited lifespan</Details>
                     <Resource4>200</Resource4>
                     <Resource6>80</Resource6>
                 </Objective>
+                
                 <Objective>
                     <ObjectiveNumber>24</ObjectiveNumber>
-                    <Script>Script340</Script>
+                    <Script>gbs24m_advStr</Script>
                     <Name>Upgrade Adv Structures</Name>
-                    <Details> \Enable building Spyres \Enable OCTO shield regen L1 \Unlock Chronoporting tech and Weapons \tech upgrades</Details>
-                    <Resource4>100</Resource4>
+                    <Details> \Enable building Spyres \Enable OCTO cloak + regen L1 \Unlock Chronoporting tech and Weapons \tech upgrades</Details>
+                    <Resource1>200</Resource1>
+                    <Resource4>50</Resource4>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>25</ObjectiveNumber>
-                    <Script>Script342</Script>
+                    <Script>gbs25m_advStr_done</Script>
                     <Name></Name>
                     <Details></Details>
                 </Objective>
                 <Objective>
+                    <ObjectiveNumber>40</ObjectiveNumber>
+                    <Script>gbs40m_advStr_working</Script>
+                    <Name>Upgrade Adv Structures</Name>
+                    <Details></Details>
+                </Objective>
+                
+                <Objective>
                     <ObjectiveNumber>26</ObjectiveNumber>
-                    <Script>Script344</Script>
+                    <Script>gbs26m_ligo</Script>
                     <Name>Upgrade Loligo Splicing</Name>
-                    <Details>  \Enable Meiotic Progenesis (Ligos)\Enable Gestation ability (Hydra/Sepiligo)\Eliminate need for Spyres</Details>
-                    <Resource4>200</Resource4>
+                    <Details>  \Enable Meiotic Progenesis (Ligos)\Enable Gestation ability (Hydra/Sepiligo)\Remove progen Spyre checks</Details>
+                    <Resource1>500</Resource1>
+                    <Resource4>150</Resource4>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>27</ObjectiveNumber>
-                    <Script>Script346</Script>
+                    <Script>gbs27m_ligo_done</Script>
                     <Name></Name>
                     <Details></Details>
                 </Objective>
                 <Objective>
+                    <ObjectiveNumber>42</ObjectiveNumber>
+                    <Script>gbs42m_ligo_working</Script>
+                    <Name>Upgrade Loligo Splicing</Name>
+                    <Details></Details>
+                </Objective>
+                
+                <Objective>
                     <ObjectiveNumber>28</ObjectiveNumber>
-                    <Script>Script348</Script>
+                    <Script>gbs28m_specials</Script>
                     <Name>Upgrade Specials</Name>
                     <Details>  \Enable special abilities:\Explosive Spider Probe, Comm Jam, \and Disruptor Beam \Blocks Weapons tech</Details>
-                    <Resource1>100</Resource1>
+                    <Resource1>300</Resource1>
                     <Resource4>50</Resource4>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>29</ObjectiveNumber>
-                    <Script>Script350</Script>
+                    <Script>gbs29m_specials_done</Script>
                     <Name></Name>
                     <Details></Details>
                 </Objective>
+                <Objective>
+                    <ObjectiveNumber>41</ObjectiveNumber>
+                    <Script>gbs41m_specials_working</Script>
+                    <Name>Upgrade Specials</Name>
+                    <Details></Details>
+                </Objective>
+                
                 <Objective>
                     <ObjectiveNumber>30</ObjectiveNumber>
-                    <Script>Script352</Script>
+                    <Script>gbs30m_gate</Script>
                     <Name>Upgrade Chronoporting</Name>
                     <Details> \Enable Grekim units to self chronoport \Enable Vampire/Pharopod TSS defense</Details>
-                    <Resource1>300</Resource1>
-                    <Resource4>150</Resource4>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>31</ObjectiveNumber>
-                    <Script>Script354</Script>
-                    <Name></Name>
-                    <Details></Details>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>32</ObjectiveNumber>
-                    <Script>Script356</Script>
-                    <Name>Upgrade Weapons</Name>
-                    <Details> \Enable OCTO shield regen L2\and Medusa/Pharoligo Disruptor Beam\Increase Dome rate-of-fire\Blocks Specials tech</Details>
-                    <Resource1>300</Resource1>
+                    <Resource1>600</Resource1>
                     <Resource4>50</Resource4>
                 </Objective>
                 <Objective>
-                    <ObjectiveNumber>33</ObjectiveNumber>
-                    <Script>Script358</Script>
+                    <ObjectiveNumber>31</ObjectiveNumber>
+                    <Script>gbs31m_gate_done</Script>
                     <Name></Name>
                     <Details></Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>36</ObjectiveNumber>
-                    <Script>Script353</Script>
+                    <Script>gbs36m_gate_working</Script>
                     <Name>Upgrade Chronoporting</Name>
                     <Details></Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>37</ObjectiveNumber>
-                    <Script>Script351</Script>
+                    <Script>gbs37m_gate_na</Script>
                     <Name>Upgrade Chronoporting</Name>
                     <Details> \Enable Grekim units to self chronoport \ \Must upgrade Adv Structures</Details>
                 </Objective>
+                
+                <Objective>
+                    <ObjectiveNumber>32</ObjectiveNumber>
+                    <Script>gbs32m_weapons</Script>
+                    <Name>Upgrade Weapons</Name>
+                    <Details> \Enable OCTO shield regen L2\and Medusa/Pharoligo Disruptor Beam\Increase Dome rate-of-fire\Blocks Specials tech</Details>
+                    <Resource1>500</Resource1>
+                    <Resource4>150</Resource4>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>33</ObjectiveNumber>
+                    <Script>gbs33m_weapons_done</Script>
+                    <Name></Name>
+                    <Details></Details>
+                </Objective>
                 <Objective>
                     <ObjectiveNumber>38</ObjectiveNumber>
-                    <Script>Script357</Script>
+                    <Script>gbs38m_weapons_working</Script>
                     <Name>Upgrade Weapons</Name>
                     <Details></Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>39</ObjectiveNumber>
-                    <Script>Script355</Script>
+                    <Script>gbs39m_weapons_na</Script>
                     <Name>Upgrade Weapons</Name>
                     <Details> \Upgrade advanced weaponry\ \Must upgrade Adv Structures</Details>
                 </Objective>
-                <Objective>
-                    <ObjectiveNumber>40</ObjectiveNumber>
-                    <Script>Script341</Script>
-                    <Name>Upgrade Adv Structures</Name>
-                    <Details></Details>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>41</ObjectiveNumber>
-                    <Script>Script349</Script>
-                    <Name>Upgrade Specials</Name>
-                    <Details></Details>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>42</ObjectiveNumber>
-                    <Script>Script345</Script>
-                    <Name>Upgrade Loligo Splicing</Name>
-                    <Details></Details>
-                </Objective>
+                
                 <Objective>
                     <ObjectiveNumber>50</ObjectiveNumber>
-                    <Script>Script40</Script>
+                    <Script>cs50b_morphing</Script>
                     <Name>Morphing...</Name>
                     <Details></Details>
                 </Objective>
@@ -1616,63 +1638,6 @@
             <ControlShortcuts>
                 <ControlShortcut>
                     <ControlNumber>0</ControlNumber>
-                    <ControlObjectiveNumber>4</ControlObjectiveNumber>
-                    <MouseInputType>SHORTCUT_QUICK_2</MouseInputType>
-                    <ParameterType>NO_PARAMETER</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut>$AchronKBAutoHeirarchy</KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>P_FLAGS</Resource>
-                            <Comparison>BITMASK_NOT</Comparison>
-                            <Value>1</Value>
-                        </ControlCondition>
-                    </ControlConditions>
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>1</ControlNumber>
-                    <ControlObjectiveNumber>5</ControlObjectiveNumber>
-                    <MouseInputType>SHORTCUT_QUICK_3</MouseInputType>
-                    <ParameterType>NO_PARAMETER</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut>$AchronKBSmartidle</KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>SCENARIO_CONSTRAINTS</Resource>
-                            <Comparison>BITMASK_NOT</Comparison>
-                            <Value>16</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>P_FLAGS</Resource>
-                            <Comparison>BITMASK_NOT</Comparison>
-                            <Value>2</Value>
-                        </ControlCondition>
-                    </ControlConditions>
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>3</ControlNumber>
                     <ControlObjectiveNumber>9</ControlObjectiveNumber>
                     <MouseInputType>SHORTCUT_QUICK_4</MouseInputType>
                     <ParameterType>POSITION_CLASS</ParameterType>
@@ -1703,7 +1668,121 @@
                     </ControlConditions>
                 </ControlShortcut>
                 <ControlShortcut>
+                    <ControlNumber>1</ControlNumber> <!-- AH on -->
+                    <ControlObjectiveNumber>4</ControlObjectiveNumber>
+                    <MouseInputType>SHORTCUT_QUICK_2</MouseInputType>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut>$AchronKBAutoHeirarchy</KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>P_FLAGS</Resource>
+                            <Comparison>BITMASK_NOT</Comparison>
+                            <Value>1</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+                <ControlShortcut> <!-- AH off -->
+                    <ControlNumber>2</ControlNumber>
+                    <ControlObjectiveNumber>6</ControlObjectiveNumber>
+                    <MouseInputType>SHORTCUT_QUICK_2</MouseInputType>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut>$AchronKBAutoHeirarchy</KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>P_FLAGS</Resource>
+                            <Comparison>BITMASK</Comparison>
+                            <Value>1</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+                <ControlShortcut>  <!-- SI on -->
+                    <ControlNumber>3</ControlNumber>
+                    <ControlObjectiveNumber>5</ControlObjectiveNumber>
+                    <MouseInputType>SHORTCUT_QUICK_3</MouseInputType>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut>$AchronKBSmartidle</KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>SCENARIO_CONSTRAINTS</Resource>
+                            <Comparison>BITMASK_NOT</Comparison>
+                            <Value>16</Value>
+                        </ControlCondition>
+                        <ControlCondition>
+                            <Resource>P_FLAGS</Resource>
+                            <Comparison>BITMASK_NOT</Comparison>
+                            <Value>2</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+                <ControlShortcut>  <!-- SI off -->
                     <ControlNumber>4</ControlNumber>
+                    <ControlObjectiveNumber>7</ControlObjectiveNumber>
+                    <MouseInputType>SHORTCUT_QUICK_3</MouseInputType>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut>$AchronKBSmartidle</KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>SCENARIO_CONSTRAINTS</Resource>
+                            <Comparison>BITMASK_NOT</Comparison>
+                            <Value>16</Value>
+                        </ControlCondition>
+                        <ControlCondition>
+                            <Resource>P_FLAGS</Resource>
+                            <Comparison>BITMASK</Comparison>
+                            <Value>2</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+                <ControlShortcut>
+                    <ControlNumber>6</ControlNumber>
                     <ControlObjectiveNumber>10</ControlObjectiveNumber>
                     <MouseInputType>SHORTCUT_QUICK_3</MouseInputType>
                     <ParameterType>NO_PARAMETER</ParameterType>
@@ -1728,8 +1807,9 @@
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
+
                 <ControlShortcut>
-                    <ControlNumber>7</ControlNumber>
+                    <ControlNumber>8</ControlNumber>
                     <ControlObjectiveNumber>30</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
@@ -1778,8 +1858,8 @@
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>8</ControlNumber>
+                <ControlShortcut> <!-- Gate tech done -->
+                    <ControlNumber>9</ControlNumber>
                     <ControlObjectiveNumber>31</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
@@ -1813,8 +1893,8 @@
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>9</ControlNumber>
+                <ControlShortcut>  <!-- Gate tech working -->
+                    <ControlNumber>10</ControlNumber>
                     <ControlObjectiveNumber>36</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
@@ -1843,11 +1923,6 @@
                         </ControlCondition>
                         <ControlCondition>
                             <Resource>P_ADVANCEMENTS</Resource>
-                            <Comparison>BITMASK</Comparison>
-                            <Value>64</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>P_ADVANCEMENTS</Resource>
                             <Comparison>BITMASK_NOT</Comparison>
                             <Value>512</Value>
                         </ControlCondition>
@@ -1858,8 +1933,8 @@
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>10</ControlNumber>
+                <ControlShortcut>  <!-- Gate tech na -->
+                    <ControlNumber>11</ControlNumber>
                     <ControlObjectiveNumber>37</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
@@ -1891,10 +1966,21 @@
                             <Comparison>BITMASK_NOT</Comparison>
                             <Value>64</Value>
                         </ControlCondition>
+                        <ControlCondition>
+                            <Resource>P_ADVANCEMENTS</Resource>
+                            <Comparison>BITMASK_NOT</Comparison>
+                            <Value>512</Value>
+                        </ControlCondition>
+                        <ControlCondition>
+                            <Resource>P_CUSTOM_CONTROLS</Resource>
+                            <Comparison>BITMASK_NOT</Comparison>
+                            <Value>512</Value>
+                        </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
+                
                 <ControlShortcut>
-                    <ControlNumber>11</ControlNumber>
+                    <ControlNumber>15</ControlNumber>
                     <ControlObjectiveNumber>32</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
@@ -1943,8 +2029,8 @@
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>12</ControlNumber>
+                <ControlShortcut> <!-- Weapons tech done -->
+                    <ControlNumber>16</ControlNumber>
                     <ControlObjectiveNumber>33</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
@@ -1978,8 +2064,8 @@
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>13</ControlNumber>
+                <ControlShortcut> <!-- Weapons tech working -->
+                    <ControlNumber>17</ControlNumber>
                     <ControlObjectiveNumber>38</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
@@ -2023,8 +2109,44 @@
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
+                <ControlShortcut> <!-- Weapons tech na -->
+                    <ControlNumber>18</ControlNumber>
+                    <ControlObjectiveNumber>39</ControlObjectiveNumber>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>4294967295</Parameter>
+                    <KeyboardShortcut></KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>1</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>SCENARIO_CONSTRAINTS</Resource>
+                            <Comparison>BITMASK_NOT</Comparison>
+                            <Value>16384</Value>
+                        </ControlCondition>
+                        <ControlCondition>
+                            <Resource>U_OBJECTIVE</Resource>
+                            <Comparison>NOT_EQUAL</Comparison>
+                            <Value>50</Value>
+                        </ControlCondition>
+                        <ControlCondition>
+                            <Resource>P_ADVANCEMENTS</Resource>
+                            <Comparison>BITMASK_NOT</Comparison>
+                            <Value>64</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+                
                 <ControlShortcut>
-                    <ControlNumber>14</ControlNumber>
+                    <ControlNumber>20</ControlNumber>
                     <ControlObjectiveNumber>24</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
@@ -2063,8 +2185,8 @@
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>15</ControlNumber>
+                <ControlShortcut> <!-- Adv Str tech done -->
+                    <ControlNumber>21</ControlNumber>
                     <ControlObjectiveNumber>25</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
@@ -2098,8 +2220,8 @@
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>16</ControlNumber>
+                <ControlShortcut> <!-- Adv Str tech working -->
+                    <ControlNumber>22</ControlNumber>
                     <ControlObjectiveNumber>40</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
@@ -2138,8 +2260,9 @@
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
+                
                 <ControlShortcut>
-                    <ControlNumber>17</ControlNumber>
+                    <ControlNumber>25</ControlNumber>
                     <ControlObjectiveNumber>28</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
@@ -2175,7 +2298,7 @@
                             <Resource>P_ADVANCEMENTS</Resource>
                             <Comparison>BITMASK_NOT</Comparison>
                             <Value>1280</Value>
-														</ControlCondition>
+                        </ControlCondition>
                         <ControlCondition>
                             <Resource>P_CUSTOM_CONTROLS</Resource>
                             <Comparison>BITMASK_NOT</Comparison>
@@ -2183,8 +2306,8 @@
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>18</ControlNumber>
+                <ControlShortcut> <!-- Specials tech done -->
+                    <ControlNumber>26</ControlNumber>
                     <ControlObjectiveNumber>29</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
@@ -2218,8 +2341,49 @@
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
+                <ControlShortcut> <!-- Specials tech working -->
+                    <ControlNumber>27</ControlNumber>
+                    <ControlObjectiveNumber>41</ControlObjectiveNumber>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut></KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>1</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>U_OBJECTIVE</Resource>
+                            <Comparison>NOT_EQUAL</Comparison>
+                            <Value>50</Value>
+                        </ControlCondition>
+                        <ControlCondition>
+                            <Resource>NUM_UNITS_SELECTED</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>1</Value>
+                        </ControlCondition>
+                        <ControlCondition>
+                            <Resource>P_ADVANCEMENTS</Resource>
+                            <Comparison>BITMASK_NOT</Comparison>
+                            <Value>1280</Value>
+                        </ControlCondition>
+                        <ControlCondition>
+                            <Resource>P_CUSTOM_CONTROLS</Resource>
+                            <Comparison>BITMASK</Comparison>
+                            <Value>1280</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+                
                 <ControlShortcut>
-                    <ControlNumber>19</ControlNumber>
+                    <ControlNumber>30</ControlNumber>
                     <ControlObjectiveNumber>26</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
@@ -2263,8 +2427,8 @@
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>20</ControlNumber>
+                <ControlShortcut> <!-- Ligo tech done -->
+                    <ControlNumber>31</ControlNumber>
                     <ControlObjectiveNumber>27</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
@@ -2298,48 +2462,8 @@
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>21</ControlNumber>
-                    <ControlObjectiveNumber>41</ControlObjectiveNumber>
-                    <ParameterType>NO_PARAMETER</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut></KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>1</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>U_OBJECTIVE</Resource>
-                            <Comparison>NOT_EQUAL</Comparison>
-                            <Value>50</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>NUM_UNITS_SELECTED</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>1</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>P_ADVANCEMENTS</Resource>
-                            <Comparison>BITMASK_NOT</Comparison>
-                            <Value>1280</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>P_CUSTOM_CONTROLS</Resource>
-                            <Comparison>BITMASK</Comparison>
-                            <Value>1280</Value>
-                        </ControlCondition>
-                    </ControlConditions>
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>22</ControlNumber>
+                <ControlShortcut> <!-- Ligo tech working -->
+                    <ControlNumber>32</ControlNumber>
                     <ControlObjectiveNumber>42</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>4294967295</Parameter>
@@ -2375,98 +2499,6 @@
                             <Resource>P_CUSTOM_CONTROLS</Resource>
                             <Comparison>BITMASK</Comparison>
                             <Value>128</Value>
-                        </ControlCondition>
-                    </ControlConditions>
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>23</ControlNumber>
-                    <ControlObjectiveNumber>39</ControlObjectiveNumber>
-                    <ParameterType>NO_PARAMETER</ParameterType>
-                    <Parameter>4294967295</Parameter>
-                    <KeyboardShortcut></KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>1</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>SCENARIO_CONSTRAINTS</Resource>
-                            <Comparison>BITMASK_NOT</Comparison>
-                            <Value>16384</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>U_OBJECTIVE</Resource>
-                            <Comparison>NOT_EQUAL</Comparison>
-                            <Value>50</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>P_ADVANCEMENTS</Resource>
-                            <Comparison>BITMASK_NOT</Comparison>
-                            <Value>64</Value>
-                        </ControlCondition>
-                    </ControlConditions>
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>25</ControlNumber>
-                    <ControlObjectiveNumber>6</ControlObjectiveNumber>
-                    <MouseInputType>SHORTCUT_QUICK_2</MouseInputType>
-                    <ParameterType>NO_PARAMETER</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut>$AchronKBAutoHeirarchy</KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>P_FLAGS</Resource>
-                            <Comparison>BITMASK</Comparison>
-                            <Value>1</Value>
-                        </ControlCondition>
-                    </ControlConditions>
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>26</ControlNumber>
-                    <ControlObjectiveNumber>7</ControlObjectiveNumber>
-                    <MouseInputType>SHORTCUT_QUICK_3</MouseInputType>
-                    <ParameterType>NO_PARAMETER</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut>$AchronKBSmartidle</KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>SCENARIO_CONSTRAINTS</Resource>
-                            <Comparison>BITMASK_NOT</Comparison>
-                            <Value>16</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>P_FLAGS</Resource>
-                            <Comparison>BITMASK</Comparison>
-                            <Value>2</Value>
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
@@ -3076,34 +3108,34 @@
             <Objectives>
                 <Objective>
                     <ObjectiveNumber>0</ObjectiveNumber>
-                    <Script>Script389</Script>
+                    <Script>cs00mb_relocating_idle</Script>
                     <Name></Name>
                     <Details></Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>9</ObjectiveNumber>
-                    <Script>Script24</Script>
+                    <Script>cs09mb_move</Script>
                     <Name>Move</Name>
                     <Details></Details>
                     <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>10</ObjectiveNumber>
-                    <Script>Script23</Script>
+                    <Script>cs10mb_moving</Script>
                     <Name>Moving</Name>
                     <Details></Details>
                     <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>11</ObjectiveNumber>
-                    <Script>Script181</Script>
+                    <Script>cs11mb_stop</Script>
                     <Name>Activating</Name>
                     <Details></Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>12</ObjectiveNumber>
-                    <Script>Script182</Script>
+                    <Script>cs12mb_plant</Script>
                     <Name>Activate</Name>
                     <Details> \Plant on the ground and activate</Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
@@ -4072,44 +4104,44 @@
             <Objectives>
                 <Objective>
                     <ObjectiveNumber>0</ObjectiveNumber>
-                    <Script>Script15</Script>
+                    <Script>cs00c_commc_idle</Script>
                     <Name></Name>
                     <Details></Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>4</ObjectiveNumber>
-                    <Script>Script131</Script>
+                    <Script>cs04c_autoH_on</Script>
                     <Name>Turn Auto Hierarchy ON</Name>
                     <Details> \Enable Automatic Hierarchy\Makes units find higher ranked\commanders by proximity</Details>
                 </Objective>
                 <Objective>
-                    <ObjectiveNumber>5</ObjectiveNumber>
-                    <Script>Script133</Script>
-                    <Name>Turn Smart Idle ON</Name>
-                    <Details> \Enable auto-communication\Make units automatically request\and respond when help is needed\ Heal, Repair, Recover and Find</Details>
-                </Objective>
-                <Objective>
                     <ObjectiveNumber>6</ObjectiveNumber>
-                    <Script>Script132</Script>
+                    <Script>cs06c_autoH_off</Script>
                     <Name>Turn Auto Hierarchy OFF</Name>
                     <Details> \Disable Automatic Hierarchy</Details>
                 </Objective>
                 <Objective>
+                    <ObjectiveNumber>5</ObjectiveNumber>
+                    <Script>cs05c_smart_idle_on</Script>
+                    <Name>Turn Smart Idle ON</Name>
+                    <Details> \Enable auto-communication\Make units automatically request\and respond when help is needed\ Heal, Repair, Recover and Find</Details>
+                </Objective>
+                <Objective>
                     <ObjectiveNumber>7</ObjectiveNumber>
-                    <Script>Script134</Script>
+                    <Script>cs07c_smart_idle_off</Script>
                     <Name>Turn Smart Idle OFF</Name>
                     <Details> \Disable auto-communication</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>17</ObjectiveNumber>
-                    <Script>Script411</Script>
+                    <Script>gbs17m_cc_cloak</Script>
                     <Name>Cloaking On</Name>
                     <Details> \Enable cloaking\Disables all support functions\  (including Tech support) while active</Details>
                     <Resource6>6</Resource6>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>20</ObjectiveNumber>
-                    <Script>Script412</Script>
+                    <Script>gbs20m_cc_uncloak</Script>
                     <Name>Uncloak</Name>
                     <Details> \Disable cloaking\  Restores deactivated functions</Details>
                 </Objective>
@@ -5629,6 +5661,13 @@
                             <Target>SELF</Target>
                             <Value>1160</Value>
                         </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_AMMO</Type>
+                            <ValueEval>SET_TO_VALUE</ValueEval>
+                            <Value>1</Value>
+                        </Step>
                     </Steps>
                 </Action>
                 <Action>
@@ -5671,37 +5710,37 @@
             <Objectives>
                 <Objective>
                     <ObjectiveNumber>0</ObjectiveNumber>
-                    <Script>Script15</Script>
+                    <Script>cs00c_commc_idle</Script>
                     <Name></Name>
                     <Details></Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>4</ObjectiveNumber>
-                    <Script>Script131</Script>
+                    <Script>cs04c_autoH_on</Script>
                     <Name>Turn Auto Hierarchy ON</Name>
                     <Details> \Enable Automatic Hierarchy\Makes units find higher ranked\commanders by proximity</Details>
                 </Objective>
                 <Objective>
-                    <ObjectiveNumber>5</ObjectiveNumber>
-                    <Script>Script133</Script>
-                    <Name>Turn Smart Idle ON</Name>
-                    <Details> \Enable auto-communication\Make units automatically request\and respond when help is needed\ Heal, Repair, Recover and Find</Details>
-                </Objective>
-                <Objective>
                     <ObjectiveNumber>6</ObjectiveNumber>
-                    <Script>Script132</Script>
+                    <Script>cs06c_autoH_off</Script>
                     <Name>Turn Auto Hierarchy OFF</Name>
                     <Details> \Disable Automatic Hierarchy</Details>
                 </Objective>
                 <Objective>
+                    <ObjectiveNumber>5</ObjectiveNumber>
+                    <Script>cs05c_smart_idle_on</Script>
+                    <Name>Turn Smart Idle ON</Name>
+                    <Details> \Enable auto-communication\Make units automatically request\and respond when help is needed\ Heal, Repair, Recover and Find</Details>
+                </Objective>
+                <Objective>
                     <ObjectiveNumber>7</ObjectiveNumber>
-                    <Script>Script134</Script>
+                    <Script>cs07c_smart_idle_off</Script>
                     <Name>Turn Smart Idle OFF</Name>
                     <Details> \Disable auto-communication</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>10</ObjectiveNumber>
-                    <Script>Script317</Script>
+                    <Script>gbs10m_cuttle</Script>
                     <Name>Make Cuttle/Todaro Pair</Name>
                     <Details>Biological light raider aircraft\Very fast with low combat stamina\Good scout and expendable harasser\Limited lifespan</Details>
                     <Resource4>200</Resource4>
@@ -5709,20 +5748,20 @@
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>17</ObjectiveNumber>
-                    <Script>Script411</Script>
+                    <Script>gbs17m_cc_cloak</Script>
                     <Name>Cloaking On</Name>
                     <Details> \Enable cloaking\Disables all support functions\  (including Tech support) while active</Details>
                     <Resource6>6</Resource6>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>20</ObjectiveNumber>
-                    <Script>Script412</Script>
+                    <Script>gbs20m_cc_uncloak</Script>
                     <Name>Uncloak</Name>
                     <Details> \Disable cloaking\  Restores deactivated functions</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>50</ObjectiveNumber>
-                    <Script>Script40</Script>
+                    <Script>cs50b_morphing</Script>
                     <Name>Morphing...</Name>
                     <Details></Details>
                 </Objective>
@@ -7055,6 +7094,13 @@
                             <Target>SELF</Target>
                             <Value>1160</Value>
                         </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_AMMO</Type>
+                            <ValueEval>SET_TO_VALUE</ValueEval>
+                            <Value>2</Value>
+                        </Step>
                     </Steps>
                 </Action>
                 <Action>
@@ -7097,50 +7143,50 @@
             <Objectives>
                 <Objective>
                     <ObjectiveNumber>0</ObjectiveNumber>
-                    <Script>Script15</Script>
+                    <Script>cs00c_commc_idle</Script>
                     <Name></Name>
                     <Details></Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>4</ObjectiveNumber>
-                    <Script>Script131</Script>
+                    <Script>cs04c_autoH_on</Script>
                     <Name>Turn Auto Hierarchy ON</Name>
                     <Details> \Enable Automatic Hierarchy\Makes units find higher ranked\commanders by proximity</Details>
                 </Objective>
                 <Objective>
-                    <ObjectiveNumber>5</ObjectiveNumber>
-                    <Script>Script133</Script>
-                    <Name>Turn Smart Idle ON</Name>
-                    <Details> \Enable auto-communication\Make units automatically request\and respond when help is needed\ Heal, Repair, Recover and Find</Details>
-                </Objective>
-                <Objective>
                     <ObjectiveNumber>6</ObjectiveNumber>
-                    <Script>Script132</Script>
+                    <Script>cs06c_autoH_off</Script>
                     <Name>Turn Auto Hierarchy OFF</Name>
                     <Details> \Disable Automatic Hierarchy</Details>
                 </Objective>
                 <Objective>
+                    <ObjectiveNumber>5</ObjectiveNumber>
+                    <Script>cs05c_smart_idle_on</Script>
+                    <Name>Turn Smart Idle ON</Name>
+                    <Details> \Enable auto-communication\Make units automatically request\and respond when help is needed\ Heal, Repair, Recover and Find</Details>
+                </Objective>
+                <Objective>
                     <ObjectiveNumber>7</ObjectiveNumber>
-                    <Script>Script134</Script>
+                    <Script>cs07c_smart_idle_off</Script>
                     <Name>Turn Smart Idle OFF</Name>
                     <Details> \Disable auto-communication</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>17</ObjectiveNumber>
-                    <Script>Script411</Script>
+                    <Script>gbs17m_cc_cloak</Script>
                     <Name>Cloaking On</Name>
                     <Details> \Enable cloaking\Disables all support functions\  (including Tech support) while active</Details>
                     <Resource6>6</Resource6>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>20</ObjectiveNumber>
-                    <Script>Script412</Script>
+                    <Script>gbs20m_cc_uncloak</Script>
                     <Name>Uncloak</Name>
                     <Details> \Disable cloaking\  Restores deactivated functions</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>50</ObjectiveNumber>
-                    <Script>Script40</Script>
+                    <Script>cs50b_morphing</Script>
                     <Name>Morphing...</Name>
                     <Details></Details>
                 </Objective>
@@ -8447,6 +8493,13 @@
                             <Target>SELF</Target>
                             <Value>1160</Value>
                         </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_AMMO</Type>
+                            <ValueEval>SET_TO_VALUE</ValueEval>
+                            <Value>3</Value>
+                        </Step>
                     </Steps>
                 </Action>
                 <Action>
@@ -8489,50 +8542,50 @@
             <Objectives>
                 <Objective>
                     <ObjectiveNumber>0</ObjectiveNumber>
-                    <Script>Script15</Script>
+                    <Script>cs00c_commc_idle</Script>
                     <Name></Name>
                     <Details></Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>4</ObjectiveNumber>
-                    <Script>Script131</Script>
+                    <Script>cs04c_autoH_on</Script>
                     <Name>Turn Auto Hierarchy ON</Name>
                     <Details> \Enable Automatic Hierarchy\Makes units find higher ranked\commanders by proximity</Details>
                 </Objective>
                 <Objective>
-                    <ObjectiveNumber>5</ObjectiveNumber>
-                    <Script>Script133</Script>
-                    <Name>Turn Smart Idle ON</Name>
-                    <Details> \Enable auto-communication\Make units automatically request\and respond when help is needed\ Heal, Repair, Recover and Find</Details>
-                </Objective>
-                <Objective>
                     <ObjectiveNumber>6</ObjectiveNumber>
-                    <Script>Script132</Script>
+                    <Script>cs06c_autoH_off</Script>
                     <Name>Turn Auto Hierarchy OFF</Name>
                     <Details> \Disable Automatic Hierarchy</Details>
                 </Objective>
                 <Objective>
+                    <ObjectiveNumber>5</ObjectiveNumber>
+                    <Script>cs05c_smart_idle_on</Script>
+                    <Name>Turn Smart Idle ON</Name>
+                    <Details> \Enable auto-communication\Make units automatically request\and respond when help is needed\ Heal, Repair, Recover and Find</Details>
+                </Objective>
+                <Objective>
                     <ObjectiveNumber>7</ObjectiveNumber>
-                    <Script>Script134</Script>
+                    <Script>cs07c_smart_idle_off</Script>
                     <Name>Turn Smart Idle OFF</Name>
                     <Details> \Disable auto-communication</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>17</ObjectiveNumber>
-                    <Script>Script411</Script>
+                    <Script>gbs17m_cc_cloak</Script>
                     <Name>Cloaking On</Name>
                     <Details> \Enable cloaking\Disables all support functions\  (including Tech support) while active</Details>
                     <Resource6>6</Resource6>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>20</ObjectiveNumber>
-                    <Script>Script412</Script>
+                    <Script>gbs20m_cc_uncloak</Script>
                     <Name>Uncloak</Name>
                     <Details> \Disable cloaking\  Restores deactivated functions</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>50</ObjectiveNumber>
-                    <Script>Script40</Script>
+                    <Script>cs50b_morphing</Script>
                     <Name>Morphing...</Name>
                     <Details></Details>
                 </Objective>
@@ -9824,6 +9877,13 @@
                             <Target>SELF</Target>
                             <Value>1160</Value>
                         </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_AMMO</Type>
+                            <ValueEval>SET_TO_VALUE</ValueEval>
+                            <Value>4</Value>
+                        </Step>
                     </Steps>
                 </Action>
                 <Action>
@@ -9866,50 +9926,50 @@
             <Objectives>
                 <Objective>
                     <ObjectiveNumber>0</ObjectiveNumber>
-                    <Script>Script15</Script>
+                    <Script>cs00c_commc_idle</Script>
                     <Name></Name>
                     <Details></Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>4</ObjectiveNumber>
-                    <Script>Script131</Script>
+                    <Script>cs04c_autoH_on</Script>
                     <Name>Turn Auto Hierarchy ON</Name>
                     <Details> \Enable Automatic Hierarchy\Makes units find higher ranked\commanders by proximity</Details>
                 </Objective>
                 <Objective>
-                    <ObjectiveNumber>5</ObjectiveNumber>
-                    <Script>Script133</Script>
-                    <Name>Turn Smart Idle ON</Name>
-                    <Details> \Enable auto-communication\Make units automatically request\and respond when help is needed\ Heal, Repair, Recover and Find</Details>
-                </Objective>
-                <Objective>
                     <ObjectiveNumber>6</ObjectiveNumber>
-                    <Script>Script132</Script>
+                    <Script>cs06c_autoH_off</Script>
                     <Name>Turn Auto Hierarchy OFF</Name>
                     <Details> \Disable Automatic Hierarchy</Details>
                 </Objective>
                 <Objective>
+                    <ObjectiveNumber>5</ObjectiveNumber>
+                    <Script>cs05c_smart_idle_on</Script>
+                    <Name>Turn Smart Idle ON</Name>
+                    <Details> \Enable auto-communication\Make units automatically request\and respond when help is needed\ Heal, Repair, Recover and Find</Details>
+                </Objective>
+                <Objective>
                     <ObjectiveNumber>7</ObjectiveNumber>
-                    <Script>Script134</Script>
+                    <Script>cs07c_smart_idle_off</Script>
                     <Name>Turn Smart Idle OFF</Name>
                     <Details> \Disable auto-communication</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>17</ObjectiveNumber>
-                    <Script>Script411</Script>
+                    <Script>gbs17m_cc_cloak</Script>
                     <Name>Cloaking On</Name>
                     <Details> \Enable cloaking\Disables all support functions\  (including Tech support) while active</Details>
                     <Resource6>6</Resource6>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>20</ObjectiveNumber>
-                    <Script>Script412</Script>
+                    <Script>gbs20m_cc_uncloak</Script>
                     <Name>Uncloak</Name>
                     <Details> \Disable cloaking\  Restores deactivated functions</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>50</ObjectiveNumber>
-                    <Script>Script40</Script>
+                    <Script>cs50b_morphing</Script>
                     <Name>Morphing...</Name>
                     <Details></Details>
                 </Objective>
@@ -11216,6 +11276,13 @@
                             <Target>SELF</Target>
                             <Value>1160</Value>
                         </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_AMMO</Type>
+                            <ValueEval>SET_TO_VALUE</ValueEval>
+                            <Value>5</Value>
+                        </Step>
                     </Steps>
                 </Action>
                 <Action>
@@ -11258,50 +11325,50 @@
             <Objectives>
                 <Objective>
                     <ObjectiveNumber>0</ObjectiveNumber>
-                    <Script>Script15</Script>
+                    <Script>cs00c_commc_idle</Script>
                     <Name></Name>
                     <Details></Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>4</ObjectiveNumber>
-                    <Script>Script131</Script>
+                    <Script>cs04c_autoH_on</Script>
                     <Name>Turn Auto Hierarchy ON</Name>
                     <Details> \Enable Automatic Hierarchy\Makes units find higher ranked\commanders by proximity</Details>
                 </Objective>
                 <Objective>
-                    <ObjectiveNumber>5</ObjectiveNumber>
-                    <Script>Script133</Script>
-                    <Name>Turn Smart Idle ON</Name>
-                    <Details> \Enable auto-communication\Make units automatically request\and respond when help is needed\ Heal, Repair, Recover and Find</Details>
-                </Objective>
-                <Objective>
                     <ObjectiveNumber>6</ObjectiveNumber>
-                    <Script>Script132</Script>
+                    <Script>cs06c_autoH_off</Script>
                     <Name>Turn Auto Hierarchy OFF</Name>
                     <Details> \Disable Automatic Hierarchy</Details>
                 </Objective>
                 <Objective>
+                    <ObjectiveNumber>5</ObjectiveNumber>
+                    <Script>cs05c_smart_idle_on</Script>
+                    <Name>Turn Smart Idle ON</Name>
+                    <Details> \Enable auto-communication\Make units automatically request\and respond when help is needed\ Heal, Repair, Recover and Find</Details>
+                </Objective>
+                <Objective>
                     <ObjectiveNumber>7</ObjectiveNumber>
-                    <Script>Script134</Script>
+                    <Script>cs07c_smart_idle_off</Script>
                     <Name>Turn Smart Idle OFF</Name>
                     <Details> \Disable auto-communication</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>17</ObjectiveNumber>
-                    <Script>Script411</Script>
+                    <Script>gbs17m_cc_cloak</Script>
                     <Name>Cloaking On</Name>
                     <Details> \Enable cloaking\Disables all support functions\  (including Tech support) while active</Details>
                     <Resource6>6</Resource6>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>20</ObjectiveNumber>
-                    <Script>Script412</Script>
+                    <Script>gbs20m_cc_uncloak</Script>
                     <Name>Uncloak</Name>
                     <Details> \Disable cloaking\  Restores deactivated functions</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>50</ObjectiveNumber>
-                    <Script>Script40</Script>
+                    <Script>cs50b_morphing</Script>
                     <Name>Morphing...</Name>
                     <Details></Details>
                 </Objective>
