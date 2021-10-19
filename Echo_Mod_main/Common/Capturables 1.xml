@@ -24,8 +24,10 @@
         <!-- Monkooky's Disruptor Beam Suggestions:
             * Beam should have finite range - so it will be harder to use offensively
                 X - this range would need to be map dependent
-            * Damaged AMPs should auto repair with time or when captured by an enemy - 
-                so the game will be less likely to stalemate
+            * Damaged AMPs should auto repair with time
+                - so the game will be less likely to stalemate
+            * Damaged AMPs should auto repair when captured
+                X - Removing the ability to scorch earth breaks rush balance
             * Beam should kill - to open up more design space for using status effects 
                 X - killing is much less cool
         -->
@@ -327,7 +329,7 @@
                             <Target>SELF</Target>
                             <Type>P_CUSTOM_FIELD_8</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-1</Value>
+                            <Value>-1024</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -377,7 +379,7 @@
                             <Target>SELF</Target>
                             <Type>P_CUSTOM_FIELD_8</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>1</Value>
+                            <Value>1024</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>SET_STATUS</PrimitiveAction>
@@ -445,7 +447,7 @@
                             <Target>SELF</Target>
                             <Type>P_CUSTOM_FIELD_8</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-1</Value>
+                            <Value>-1024</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -579,7 +581,7 @@
                             <Target>SELF</Target>
                             <Type>P_CUSTOM_FIELD_8</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>1</Value>
+                            <Value>1024</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CHANGE_OWNER</PrimitiveAction>
@@ -590,7 +592,7 @@
                             <Target>SELF</Target>
                             <Type>P_CUSTOM_FIELD_8</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-1</Value>
+                            <Value>-1024</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -939,7 +941,7 @@
                         <Condition>
                             <Resource>P_CUSTOM_FIELD_8</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>8</Value>
+                            <Value>8192</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -980,7 +982,7 @@
                             <Target>SELF</Target>
                             <Type>P_CUSTOM_FIELD_8</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>1</Value>
+                            <Value>1024</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -1039,7 +1041,7 @@
                 <Objective>
                     <ObjectiveNumber>0</ObjectiveNumber>
                     <Script>Script414_vendor_idle</Script>
-                    <Name>vendor_idle</Name>
+                    <Name>Idle</Name>
                     <Details>makes unit change its allegiances as-becomes convenient for it</Details>
                 </Objective>
                 <Objective>
@@ -1324,7 +1326,7 @@
                             <Target>SELF</Target>
                             <Type>P_CUSTOM_FIELD_8</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-1</Value>
+                            <Value>-1024</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -1374,7 +1376,7 @@
                             <Target>SELF</Target>
                             <Type>P_CUSTOM_FIELD_8</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>1</Value>
+                            <Value>1024</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>SET_STATUS</PrimitiveAction>
@@ -1442,7 +1444,7 @@
                             <Target>SELF</Target>
                             <Type>P_CUSTOM_FIELD_8</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-1</Value>
+                            <Value>-1024</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -1576,7 +1578,7 @@
                             <Target>SELF</Target>
                             <Type>P_CUSTOM_FIELD_8</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>1</Value>
+                            <Value>1024</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CHANGE_OWNER</PrimitiveAction>
@@ -1587,7 +1589,7 @@
                             <Target>SELF</Target>
                             <Type>P_CUSTOM_FIELD_8</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-1</Value>
+                            <Value>-1024</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -1860,105 +1862,6 @@
                         </Step>
                     </Steps>
                 </Action>
-                <!--Action>
-                    <ActionNumber>27</ActionNumber>
-                    <Identifier>ACTION_AUTOCONVERT</Identifier>
-                    <TimeTaken>18</TimeTaken>
-                    <ForceObjectAction>1</ForceObjectAction>
-                    <InterruptCurrentAction>0</InterruptCurrentAction>
-                    <MutexAction>0</MutexAction>
-                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
-                    <PreserveParameter>0</PreserveParameter>
-                    <AIScriptCanRun>0</AIScriptCanRun>
-                    <SetParamZeroTicks>0</SetParamZeroTicks>
-                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <LobProjectilePath>0</LobProjectilePath>
-                    <Conditions>
-                        <Condition>
-                            <Resource>U_OWNER</Resource>
-                            <Comparison>LESS</Comparison>
-                            <Value>8</Value>
-                        </Condition>
-                        <Condition>
-                            <Resource>U_HP</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>100</Value>
-                        </Condition>
-                        <Condition>
-                            <Resource>U_ENERGY</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>150</Value>
-                        </Condition>
-                    </Conditions>
-                    <Steps>
-                        <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>P_Q_PLASMA</Type>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>-10</Value>
-                        </Step>
-                        <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>P_POWER</Type>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>-0</Value>
-                        </Step>
-                        <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>U_ENERGY</Type>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>30</Value>
-                        </Step>
-                    </Steps>
-                </Action-->
-                <!--Action>
-                    <ActionNumber>28</ActionNumber>
-                    <Identifier>ACTION_GENERATE_ENERGY</Identifier>
-                    <TimeTaken>0</TimeTaken>
-                    <ForceObjectAction>1</ForceObjectAction>
-                    <InterruptCurrentAction>0</InterruptCurrentAction>
-                    <MutexAction>0</MutexAction>
-                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
-                    <PreserveParameter>0</PreserveParameter>
-                    <AIScriptCanRun>0</AIScriptCanRun>
-                    <SetParamZeroTicks>0</SetParamZeroTicks>
-                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <LobProjectilePath>0</LobProjectilePath>
-                    <Conditions>
-                        <Condition>
-                            <Resource>U_AGE</Resource>
-                            <Comparison>MODULO_IS_ZERO</Comparison>
-                            <Value>36</Value>
-                        </Condition>
-                        <Condition>
-                            <Resource>U_OWNER</Resource>
-                            <Comparison>LESS</Comparison>
-                            <Value>8</Value>
-                        </Condition>
-                        <Condition>
-                            <Resource>P_POWER</Resource>
-                            <Comparison>GREATER</Comparison>
-                            <Value>0</Value>
-                        </Condition>
-                        <Condition>
-                            <Resource>U_HP</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>100</Value>
-                        </Condition>
-                    </Conditions>
-                    <Steps>
-                        <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>U_ENERGY</Type>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>-1</Value>
-                        </Step>
-                    </Steps>
-                </Action-->
                 <Action>
                     <ActionNumber>30</ActionNumber>
                     <Identifier>ACTION_ERROR1</Identifier>
@@ -1989,8 +1892,8 @@
                     <Conditions>
                         <Condition>
                             <Resource>P_CUSTOM_FIELD_8</Resource>
-                            <Comparison>LEQUAL</Comparison>
-                            <Value>7</Value>
+                            <Comparison>LESS</Comparison>
+                            <Value>8192</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -2031,7 +1934,7 @@
                             <Target>SELF</Target>
                             <Type>P_CUSTOM_FIELD_8</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>1</Value>
+                            <Value>1024</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -2090,7 +1993,7 @@
                 <Objective>
                     <ObjectiveNumber>0</ObjectiveNumber>
                     <Script>Script414_vendor_idle</Script>
-                    <Name>vendor_idle</Name>
+                    <Name>Idle</Name>
                     <Details>makes unit change its allegiances as-becomes convenient for it</Details>
                 </Objective>
                 <Objective>
@@ -2139,7 +2042,7 @@
             <Type>0</Type>
             <PrioritySelectionRank>0</PrioritySelectionRank>
             <MaxHealth>100</MaxHealth>
-            <MaxEnergy>2</MaxEnergy>
+            <MaxEnergy>4</MaxEnergy>
             <MaxArmor>2</MaxArmor>
             <MaxAmmo>100</MaxAmmo>
             <SightRadius>12</SightRadius>
@@ -2430,7 +2333,7 @@
                         </Step>
                     </Steps>
                 </Action>
-                <Action>
+                <!--Action>
                     <ActionNumber>12</ActionNumber>
                     <Identifier>ACTION_JOIN_TEAM_repair</Identifier>
                     <TimeTaken>1</TimeTaken>
@@ -2466,7 +2369,7 @@
                             <Target>SELF</Target>
                             <Type>P_CUSTOM_FIELD_8</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-1</Value>
+                            <Value>-1024</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -2511,7 +2414,7 @@
                             <Value>1</Value>
                         </Step>
                     </Steps>
-                </Action>
+                </Action-->
                 <Action>
                     <ActionNumber>14</ActionNumber>
                     <Identifier>ACTION_JOIN_TEAM_unlock</Identifier>
@@ -2618,7 +2521,7 @@
                             <Target>SELF</Target>
                             <Type>P_CUSTOM_FIELD_8</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-1</Value>
+                            <Value>-1024</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -2809,7 +2712,7 @@
                             <Target>SELF</Target>
                             <Type>P_CUSTOM_FIELD_8</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-1</Value>
+                            <Value>-1024</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>

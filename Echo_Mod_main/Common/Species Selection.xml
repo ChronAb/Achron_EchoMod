@@ -768,6 +768,13 @@
                             <ValueEval>OR</ValueEval>
                             <Value>8</Value>
                         </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_CUSTOM_FIELD_8</Type>
+                            <ValueEval>OR</ValueEval>
+                            <Value>1</Value>
+                        </Step>
                     </Steps>
                 </Action>
                 <Action>
@@ -808,6 +815,13 @@
                             <Type>P_L_CRYSTALS</Type>
                             <ValueEval>ONE</ValueEval>
                             <Value>-200</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_CUSTOM_FIELD_8</Type>
+                            <ValueEval>OR</ValueEval>
+                            <Value>2</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -856,6 +870,13 @@
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
                             <Value>-600</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_CUSTOM_FIELD_8</Type>
+                            <ValueEval>OR</ValueEval>
+                            <Value>4</Value>
                         </Step>
                     </Steps>
                 </Action>

@@ -192,6 +192,13 @@
                             <ValueEval>OR</ValueEval>
                             <Value>8</Value>
                         </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_CUSTOM_FIELD_8</Type>
+                            <ValueEval>OR</ValueEval>
+                            <Value>1</Value>
+                        </Step>
                     </Steps>
                 </Action>
                 <Action>
@@ -213,6 +220,13 @@
                             <PrimitiveAction>CHANGE_CLASS</PrimitiveAction>
                             <Target>SELF</Target>
                             <Value>4049</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_CUSTOM_FIELD_8</Type>
+                            <ValueEval>OR</ValueEval>
+                            <Value>4</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -248,7 +262,14 @@
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>SET_TO_VALUE</ValueEval>
-                            <Value>100</Value>
+                            <Value>1000</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_CUSTOM_FIELD_8</Type>
+                            <ValueEval>OR</ValueEval>
+                            <Value>2</Value>
                         </Step>
                     </Steps>
                 </Action>

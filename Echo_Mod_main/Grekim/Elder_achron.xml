@@ -573,6 +573,35 @@
                     </Steps>
                 </Action>
                 <Action>
+                    <ActionNumber>15</ActionNumber>
+                    <Identifier>ACTION_SELF_UPGRADE</Identifier>
+                    <TimeTaken>1</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>1</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <Conditions>
+                        <Condition>
+                            <Resource>P_CUSTOM_FIELD_8</Resource>
+                            <Comparison>GEQUAL</Comparison>
+                            <Value>12288</Value>
+                        </Condition>
+                    </Conditions>
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_CUSTOM_FIELD_8</Type>
+                            <ValueEval>OR</ValueEval>
+                            <Value>16384</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
                     <ActionNumber>19</ActionNumber>
                     <Identifier>ACTION_CANCEL</Identifier>
                     <TimeTaken>1</TimeTaken>
@@ -1259,7 +1288,7 @@
                         <Condition>
                             <Resource>P_CUSTOM_FIELD_8</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>12</Value>
+                            <Value>12288</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_STATUS</Resource>
@@ -1454,6 +1483,12 @@
                     <Resource2>400</Resource2>
                     <Resource6>80</Resource6>
                 </Objective>
+                <Objective>
+                    <ObjectiveNumber>21</ObjectiveNumber>
+                    <Script>gs210_achron_morph</Script>
+                    <Name>Assert Temporal Supremacy</Name>
+                    <Details> \Force defeat on remaining enemies\ \This action is ineffective in the future</Details>
+                </Objective>
             </Objectives>
             <ControlShortcuts>
                 <ControlShortcut>
@@ -1643,6 +1678,31 @@
                     <EstTimeDist>0</EstTimeDist>
                     <Sound>Sound0</Sound>
                     <ControlConditions />
+                </ControlShortcut>
+                <ControlShortcut>
+                    <ControlNumber>12</ControlNumber>
+                    <ControlObjectiveNumber>21</ControlObjectiveNumber>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut>$AchronKBUpgradeSelf</KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>U_STATUS</Resource>
+                            <Comparison>BITMASK</Comparison>
+                            <Value>4</Value>
+                        </ControlCondition>
+                    </ControlConditions>
                 </ControlShortcut>
             </ControlShortcuts>
         </ObjectClass>
