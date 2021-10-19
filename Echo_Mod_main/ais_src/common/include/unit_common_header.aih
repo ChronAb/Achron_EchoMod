@@ -24,7 +24,7 @@
 //to DISABLE autopilot, edit the PLAYER's ScenarioConstraints in the Level Editor
 //set the 1-bit to ON (value = 2). Reference "specs-AIS.txt" for ScenaioConstraint bit usage
 #define PASSIVE_AI (player.ScenarioConstraints)[1]
-#define AUTOPILOT (player->IsComputerPlayer && !$PASSIVE_AI) 
+#define AUTOPILOT ((player->IsComputerPlayer && !$PASSIVE_AI) || $SMART_IDLE)
 
 //used by repair/heal units units
 #define TYPE_MECHANICAL 1
@@ -530,6 +530,12 @@
 
 //sets the target's HP to 0, effectively killing the target
 #define ACTION_KILL_UNIT 3
+//sets the target's HP to the value of the parameter
+#define ACTION_SET_HP 5
+//gives the target the parameter's quantity of HP
+#define ACTION_CHANGE_HP 6
+//infects the target with the parameter player's nanites
+#define ACTION_SM_NANITE 7
 // //breaks the target's TSS
 // #define ACTION_BREAKTSS 8
 // //gives the target 250 HP, 250 energy and 250 ammo
@@ -543,10 +549,20 @@
 
 //set player->GlobalFlags 4th bit to 1, used in Achron for Assassin-mode multiplayer
 #define SET_PLAYER_FLAG_BIT_4 20
-//gives the player (owner) of the target 100 LC
+//set the player (owner) of the target->CustomField8 to the parameter's value
+#define SET_PLAYER_CF_8 21
+//adds the parameter's quantity to the player (owner) of the target->CustomField8
+#define ADD_TO_PLAYER_CF_8 22
+
+//gives the player (owner) of the target the parameter's quantity of LC 
 #define ACTION_GIVE_LC 23
-//gives the player (owner) of the target 100 QP
+//gives the player (owner) of the target the parameter's quantity of QP
 #define ACTION_GIVE_QP 24
+//gives the player (owner) of the target the parameter's quantity of Power
+#define ACTION_GIVE_POWER 25
+//gives the player (owner) of the target the parameter's quantity of Reserves
+//#define ACTION_GIVE_RESERVES 26
+
 //the scenario monitor can carry units specified by target
 //#define ACTION_TAKE_UNIT 27
 #define ACTION_CLEAR_CAP_BIT_1 41
@@ -1306,7 +1322,7 @@
 #define GREKIM_ARCT_R 60
 
 #define GREKIM_RP_LC 0
-#define GREKIM_RP_QP 100
+#define GREKIM_RP_QP 50
 #define GREKIM_RP_E 30
 #define REAPH_LC 0
 #define REAPH_QP 0
@@ -1441,6 +1457,8 @@
 // 400 p => 200 qp
 #define PHAROLIGO_CPORT_QP 40 
 // 800 p => 400 qp
+#define G_RP_CPORT_QP 20 
+// 100 p => 50 qp
 
 #define SET_AP if (setAdditionalParameters) { PERFORM SET_ADDITIONAL_PARAMS ap; }
 
