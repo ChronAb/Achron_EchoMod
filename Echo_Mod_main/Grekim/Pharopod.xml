@@ -729,7 +729,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>0</Value>
+                            <Value>40</Value>
                         </Step>
 						<Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -796,7 +796,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>0</Value>
+                            <Value>40</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -810,7 +810,7 @@
                             <Target>SELF</Target>
                             <Type>U_HP</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>40</Value>
+                            <Value>0</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -1408,8 +1408,8 @@
                     <Name>Teleport</Name>
                     <Details>Teleport to a specified location\or self-teleport within LOS range\Teleporters extend range and negate cost\ \Blocked by Temporal Soliton Shield (TSS)</Details>
                     <Resource1>160</Resource1>
-                    <Resource4>0</Resource4>
-                    <Resource5>40</Resource5>
+                    <Resource4>40</Resource4>
+                    <!--Resource5>40</Resource5-->
                     <ObjectiveControlShortcutNumber>5</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
@@ -1418,7 +1418,7 @@
                     <Name>Chronoport</Name>
                     <Details>Chronoport to a specified point in time\ \Recharges Shields 50%\Must not have a TSS</Details>
                     <Resource1>160</Resource1>
-                    <Resource4>0</Resource4>
+                    <Resource4>40</Resource4>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>12</ObjectiveNumber>
@@ -2084,8 +2084,8 @@
                     <Name>Teleport</Name>
                     <Details>Teleport to a specified location\or self-teleport within LOS range\Teleporters extend range and negate cost\ \Blocked by Temporal Soliton Shield (TSS)</Details>
                     <Resource1>160</Resource1>
-                    <Resource4>0</Resource4>
-                    <Resource5>40</Resource5>
+                    <Resource4>40</Resource4>
+                    <!--Resource5>40</Resource5-->
                     <ObjectiveControlShortcutNumber>5</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
@@ -2094,7 +2094,7 @@
                     <Name>Chronoport</Name>
                     <Details>Chronoport to a specified point in time\ \Recharges Shields 50%\Must not have a TSS</Details>
                     <Resource1>160</Resource1>
-                    <Resource4>0</Resource4>
+                    <Resource4>40</Resource4>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>12</ObjectiveNumber>

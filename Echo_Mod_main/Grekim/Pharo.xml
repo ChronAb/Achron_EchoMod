@@ -1840,7 +1840,7 @@
                     <ObjectiveNumber>20</ObjectiveNumber>
                     <Script>gs203_pharo_spyre</Script>
                     <Name>Spyre</Name>
-                    <Details> \Advanced-production support building\Enables progeneration of aerospace\and Ligo units in its vision radius</Details>
+                    <Details> \Teleporter network node and \advanced-production support building \Enables progeneration of aerospace \and Ligo units in its vision radius</Details>
                     <Resource4>150</Resource4>
                     <ObjectiveControlShortcutNumber>12</ObjectiveControlShortcutNumber>
                 </Objective>

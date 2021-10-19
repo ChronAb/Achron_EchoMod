@@ -928,7 +928,7 @@
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>250</Value>
+                            <Value>200</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -2083,7 +2083,7 @@
                     <Script>gs162_sepi_reaph</Script>
                     <Name>Reaph</Name>
                     <Details> \Defensive support building\Repairs friendly units and structures</Details>
-                    <Resource1>250</Resource1>
+                    <Resource1>200</Resource1>
                     <Resource4>0</Resource4>
                     <Resource6>20</Resource6>
                     <ObjectiveControlShortcutNumber>10</ObjectiveControlShortcutNumber>
