@@ -1,6 +1,9 @@
 <?xml version="1.0" ?>
 <ResequenceObjectClassSet>
     <AIScripts>
+    <!-- Note: The order of the AI scripts here determines the order they are fitted 
+        onto unit command grids. The naming-scheme is just for readability. -->
+        
         <!-- progeny rallying -->
         <AIScript>
             <Name>gs150_rally_to</Name>
@@ -15,6 +18,10 @@
         <AIScript>
             <Name>gs200_convert</Name>
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/convert_qp.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gs210_achron_morph</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/simple_morph.abn</Path>
         </AIScript>
         
         <!-- octo buildings -->
@@ -86,6 +93,42 @@
         </AIScript>
         <AIScript>
             <Name>gs214_chronobomb_na</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown.abn</Path>
+        </AIScript>
+        
+        <!-- meiotic progen (AKA split down) -->
+        <AIScript>
+            <Name>gs405_split_down</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/grekim_split_down.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gs435_split_down_na</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gs125_sligo_release</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/releaseAll.abn</Path>
+        </AIScript>
+        
+        <!-- ligo abilities -->
+        <AIScript>
+            <Name>gs455_oligo_rage</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/simple_morph.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gs464_comm_nanites</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/nanite.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gs474_comm_nanites_na</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gs484_freezebeam</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/stopfreezebeam.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gs494_freezebeam_na</Name>
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown.abn</Path>
         </AIScript>
         
@@ -179,7 +222,6 @@
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown.abn</Path>
         </AIScript>
         
-        
         <!-- octoligo -->
         <AIScript>
             <Name>gs41q_progen_oligo</Name>
@@ -224,6 +266,127 @@
         <AIScript>
             <Name>gs16p_clear_progen</Name>
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/set_idle.abn</Path>
+        </AIScript>
+        
+        <!-- *** Building Scripts *** -->
+        
+        <!-- dome -->
+        <AIScript>
+            <Name>gbs19d_beam_dome</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/turret_upgrade.abn</Path>
+        </AIScript>
+
+        <!-- reaph -->
+        <AIScript>
+            <Name>gbs00r_reaph_idle</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/reaph_idle.abn</Path>
+        </AIScript>
+        
+        <!-- spyre -->
+        <AIScript>
+            <Name>gbs00s_spyre_idle</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/spyre_idle.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gbs04s_cuttle</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/arcticus_sepia.abn</Path>
+        </AIScript>
+        
+        <!-- RP -->
+        <AIScript>
+            <Name>gbs17p_rp_cloak</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/cloak.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gbs20p_rp_uncloak</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/uncloak.abn</Path>
+        </AIScript>
+
+        <!-- mound -->
+        <AIScript>
+            <Name>gbs10m_cuttle</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/arcticus_sepia.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gbs17m_cc_cloak</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/cloak.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gbs20m_cc_uncloak</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/uncloak.abn</Path>
+        </AIScript>
+        
+        <AIScript>
+            <Name>gbs24m_advStr</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/reaph_advbuildings.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gbs25m_advStr_done</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/researched.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gbs40m_advStr_working</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/reaph_advbuildingsG.abn</Path>
+        </AIScript>
+        
+        <AIScript>
+            <Name>gbs26m_ligo</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/reaph_loligo.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gbs27m_ligo_done</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/researched.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gbs42m_ligo_working</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/reaph_loligoG.abn</Path>
+        </AIScript>
+        
+        <AIScript>
+            <Name>gbs28m_specials</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/reaph_extras.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gbs29m_specials_done</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/researched.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gbs41m_specials_working</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/reaph_extrasG.abn</Path>
+        </AIScript>
+        
+        <AIScript>
+            <Name>gbs30m_gate</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/reaph_chronoporting.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gbs31m_gate_done</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/researched.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gbs36m_gate_working</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/reaph_chronoportingG.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gbs37m_gate_na</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown.abn</Path>
+        </AIScript>
+        
+        <AIScript>
+            <Name>gbs32m_weapons</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/reaph_weapons.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gbs33m_weapons_done</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/researched.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gbs38m_weapons_working</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/reaph_weaponsG.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gbs39m_weapons_na</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown.abn</Path>
         </AIScript>
         
     </AIScripts>
