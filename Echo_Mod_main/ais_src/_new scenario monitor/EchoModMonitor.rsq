@@ -1,6 +1,9 @@
 //Contributed by Dallas "ChronAberant" Joder
 #include include/monitorHeader.rsh
 
+//----------------------------------------------
+// Chronal Variable Definitions
+//----------------------------------------------
 int PLAYER_DEAD_MODE 	= $NON_PRODUCING;
 int END_GAME_MODE		= $TOTAL_DEFEAT;
 
@@ -10,19 +13,80 @@ int TICKS_PER_SECOND = perf_ret;
 PERFORM GET_ENABLED_PLAYERS;
 int enabled = perf_ret;
 
+PERFORM GET_CONNECTED_PLAYERS;
+int connected = perf_ret;
+
+PERFORM GET_ACTIVE_PLAYERS;
+int active = perf_ret;
+
+// Temporal coordinates
 PERFORM GET_PRESENT_TIME;
 int present = perf_ret;    
     
 PERFORM GET_CUR_TIME;
 int current = perf_ret;
 
-#include include/commonStatsAndPlayerUpdates.rsi
-//#include include/nonPlayer.rsi
+PERFORM GET_TIME_WINDOW_START;
+int im_past = perf_ret;
+
+// meta-temporal coordinate
+int metatime = current-present; 
+
+// Map dimensions
+PERFORM GET_MAP_WIDTH; 
+int mapX = perf_ret;
+
+PERFORM GET_MAP_LENGTH; 
+int mapY = perf_ret;
+
+// Global utility variables
+object queryOwnr = 0;
+
+//----------------------------------------------
+// Achronal Variable Definitions
+//----------------------------------------------
+
+/*
+Achronal field 1 is used to store connected and surrendered players
+    bits 0-14 af2[0,15] are used to store originally connected players 
+        for disconnect notification
+    bits 15-30 af2[15,15] are used to mark surrendered and lost players
+        for surrendered notification
+    bits 30,31 af2[30,2] unused
+*/
+PERFORM GET_ACHRONAL_FIELD 1;
+int af2 = perf_ret;
+
+// Achronal field 37 stores victory timestamps
+PERFORM GET_ACHRONAL_FIELD 37; 
+int af37 = perf_ret;  
+int supremacyTime = af37;
+
+// Achronal field 38 stores exit engine timestamps
+PERFORM GET_ACHRONAL_FIELD 38; 
+int af38 = perf_ret;
+int exitEngineTime = af38;
+
+/*
+Achronal field 116 is used to store observers
+    bits 0-14 obsfield [0,14] are used to store Observers -- players without any 
+        racepickers or liquid military assets. These can have an AI player to 
+        provide visibility sharing.
+    bits 16-30 obsfield [16,30] are used to store Contenders -- players who 
+        have military assets. They share thier vision and resource data with 
+        observer players.
+    bits 31 unused
+*/
+#define OBS_AF 116
+PERFORM GET_ACHRONAL_FIELD $OBS_AF;
+int obsfield = perf_ret;
+int obs = perf_ret[0,14];
+int contenders = perf_ret[16,30];
+
 
 //----------------------------------------------
 // Credits Bulletin
 //----------------------------------------------
-
 if(current == present && present == 1){
 	int x = 0;
 	for(x=0;x<15;x=x+1){
@@ -43,7 +107,7 @@ if(current == present && present == 1){
     Slow Timeline:
         Set the timeline speed to 0.5 (because Echo Mod is really busy)
 ***********************************************/
-if(current == present && present == 1){
+if(0 && current == present && present == 1){
     PERFORM GET_PRESENT_TIME_WAVE_TIME_RATE;
     int presentRate = perf_ret_float;
         
@@ -80,40 +144,429 @@ if(pre_game_settings[$MP_ASSASSIN_MODE] && presentRate > 0){
 //----------------------------------------------
 // Game and Player Setup
 //----------------------------------------------
+/*
+* All enabled players start out designated as ~participants~
+* Participants who have no units become ~observers~
+* Participants who have military units become ~contenders~
+* Contenders who have no units or buildings become Observers
+* Observers see the units and resources of Contenders
+    but only the units and not the resources of Participants
+*/
+
+//compute players' nomalized resource stat for their timelines
+#include include/commonStatsAndPlayerUpdates.rsi
+
+//Define the generic nonPlayer
+//#include include/nonPlayer.rsi
+
+//Determine who the AI players are
+#include include/checkAiPlayer.rsi
+
+//notify players if someone disconnects
+#include include/checkConnected.rsi
+
+//Set neutral (non-)players explicitly
+#include include/neutralPlayer.rsi
+
+//Kill AI players that should die (Should come after randomizer)
+//#include include/aiKiller.rsi
+
+/***********************************************
+    Observer Players:
+        Players who start without any units
+        or who surrender, get to be observers
+***********************************************/
+
+//Create Obs alliances and vision sharing
+#include include/obsAlliances.rsi
+
+//Tell observers about all resources
+#include include/obsResourceSay.rsi
+
+//check to see if the game is over and set tournament win pip, if tournament display is on
+//#include include/tournamentWinHandler.rsi
 
 /***********************************************
     Ally Vision Sharing:
-        Share vision between allies
+        Share vision between allies and to observers
 ***********************************************/
+// auto-share vision between allies at game start
 if(current == 1){
-	int allymask = 0;
-	int x = 0;
+	int p = 0;
+    int allymask = 0;
 	
-	for (x = 0; x < 15; x=x+1) {
-		player = x;
-		if ( (enabled>>x)&1) {
+	for (p = 0; p < 12; p=p+1) {
+		player = p;
+		if ( (enabled>>p)&1) {
 			allymask = player->Allies;
 			PERFORM SET_PLAYER_VISIBILITY_SHARING allymask;
 		}
 	}
 }
-//**********************************************
 
-// Observer Alliances
+/***********************************************
+    Computer Player Nanite Delegation:
+        Give nanite control of any idle computer Species Selector 
+        or Landing Probe to the nearest allied human player.
+        If there is none, give it to the nearest non-ally human player,
+        or failing that, the lowest number human player available 
+***********************************************/
+if(current >= 360 && current <= 395){
+	player = (current-90)%12;
+    int allymask = player->Allies;
+    object chooser = 0;
+    object herald = 0;
+    int humanity = 15;
+	
+    // Look for a chooser type unit that's not been nanited yet
+    if (player->IsComputerPlayer) {
+        chooser = QUERY UNIT [unit] MIN [1] WHERE [ 
+                query.Rank == $RACE_CHOOSER_RANK &&
+                query->Owner == player &&
+                query->SecondOwner == 15
+                ];
+    }
+    
+    // Look for the nearest friendly human player
+    if (chooser>0) {
+        herald = QUERY UNIT [unit] MIN [query<_>chooser] WHERE [ 
+                (queryOwnr = query->Owner)->IsComputerPlayer == 0 &&
+                (allymask & 1<<queryOwnr) > 0
+                ];
+    }
+    
+    // none found; then look for the nearest any human player
+    if (herald==0) {
+        herald = QUERY UNIT [unit] MIN [query<_>chooser] WHERE [ 
+                (queryOwnr = query->Owner)->IsComputerPlayer == 0
+                ];
+    }
+    
+    // none found; then pick the first human player from the list
+    if (herald>0) {
+        humanity = herald->Owner;
+    } else {
+        int p = 0;
+        
+        for (p = 0; p < 15; p=p+1) {
+            player = p;
+            if (player->IsComputerPlayer == 0) break;
+        }
+        humanity = p;
+    }
+    
+    if (humanity != 15){
+        target = chooser;
+        PERFORM $ACTION_SM_NANITE humanity; 
+    }
+}
+
 
 //----------------------------------------------
 // Victory Conditions
 //----------------------------------------------
 
-// Assassin Mode
-
 // Award victory when a player achieves temporal supremacy in the playable past
+    // if any player has CustomField8 == 16,384 -> any player who is not allied with them loses
+    // if allied players don't have the same value for CustomField8 -> set it for them
+    // Warn players when a player reaches 8, 9, 10, 11, or 12 supremacy points
+    
+// af37 stores victory timestamp
+// af38 stores exit engine timestamp
+int p = 0;
+int winner = 15;
+int allymask = 0;
 
-// Warn players when a player is at 11 supremacy points
+int totalSecs = current / $TPS;
+$CALCULATE_MIN_SEC_HOUR
+
+if(current%9==7){
+	//Check whether any player has enough AMPs
+    for (p = 0; winner == 15 && p < 12; p=p+1){
+		player = p;
+        if (player->CustomField8[10,14] >= 12) winner=p;
+	}
+    
+    // Yes -> Issue a warning and update the supremacy time if needed
+    if (winner!=15 && exitEngineTime==0){
+        for (p = 0; p < 15; p=p+1) {
+            player = p;
+            allymask = player->Allies;
+            
+            if (p==winner && current<=present && 
+                    (supremacyTime==0 || current<=supremacyTime)){
+                say_to_var "";
+                say "Temporal supremacy achieved at ";
+                $SAY_CALCULATED_TIME
+                say_to_var "";
+                say "Your Achron can claim victory";
+                say_to_var "playSaySound";
+                say 1;
+                say_to_var "";
+            }
+            
+            if (p==winner && (supremacyTime==0 || current<supremacyTime)){
+                say_to_var "DefeatedText";
+                say "Victory Conditions Achieved at ";
+                $SAY_CALCULATED_TIME
+                say_to_var "playSaySound";
+                say 1;
+                say_to_var "";
+            }
+            
+            if (p!=winner && (allymask >> winner)[0]==0 && 
+                    (supremacyTime==0 || current<supremacyTime)){
+                say_to_var "DefeatedText";
+                say "Defeat Conditions Detected at ";
+                $SAY_CALCULATED_TIME
+                
+                say_to_var "";
+                say "WARNING: temporal disparity detected at ";
+                $SAY_CALCULATED_TIME
+                say_to_var "";
+                say "Recapture AMPLIFIERS to prevent defeat";
+                say_to_var "playSaySound";
+                say 1;
+                say_to_var "";
+            }
+        }
+        
+        if(supremacyTime==0 || current<supremacyTime){
+            supremacyTime = current;
+            target = 37; PERFORM SET_ACHRONAL_FIELD supremacyTime; //save timestamp
+        }
+    }
+        
+    // No -> clear the supremacy time if it's been retconned
+    if (current==supremacyTime && winner==15){
+        supremacyTime = 0;
+        target = 37; PERFORM SET_ACHRONAL_FIELD supremacyTime; //save timestamp
+        
+        for (p = 0; p < 15; p=p+1) {
+            player = p;
+            say_to_var "DefeatedText";
+            say "";
+        }
+    }
+    
+    // Yes -> give the win to an AI Player who held their victory points for over 2 minutes
+    if (winner!=15 && current <= present && exitEngineTime==0){
+        player = winner;
+        if (player->IsComputerPlayer && current > supremacyTime + 120 $seconds){
+            // say what happened
+            for (p = 0; p < 15; p=p+1) {
+                player = p;
+                allymask = player->Allies;
+                if ( (allymask >> winner)[0]==1 ){
+                    say_to_var "endgameTime";
+                    say "Temporal supremacy won at ";
+                    $SAY_CALCULATED_TIME
+                }
+                
+                if (p!=winner && (allymask >> winner)[0]==0){
+                    say_to_var "endgameTime";
+                    say "Temporal parity lost at ";
+                    $SAY_CALCULATED_TIME
+                    if(current <= present) PERFORM PLAYER_LOST (1 << p); //player p lost
+                }
+            }
+            //save exit engine timestamp
+            exitEngineTime = present;
+            target = 38; PERFORM SET_ACHRONAL_FIELD exitEngineTime; 
+        }
+    }
+    
+    //Award victory if any Player team has claimed supremacy in the playable past
+    winner = 15;    
+    if(current <= present && exitEngineTime==0){
+        for (p = 0; winner == 15 && p < 14; p=p+1){
+            player = p;
+            if (player->CustomField8[10,14] >= 16) winner=p;
+        }
+        
+        if (winner!=15){
+            // say what happened
+            for (p = 0; p < 15; p=p+1) {
+                player = p;
+                allymask = player->Allies;
+                if (p==winner || (allymask >> winner)[0]==1){
+                    say_to_var "endgameTime";
+                    say "Temporal supremacy secured at ";
+                    $SAY_CALCULATED_TIME
+                }
+                
+                if (p!=winner && (allymask >> winner)[0]==0){
+                    say_to_var "endgameTime";
+                    say "Temporal parity lost at ";
+                    $SAY_CALCULATED_TIME
+                    if(current <= present) PERFORM PLAYER_LOST (1 << p); //player p lost
+                }
+                
+            }
+            //save exit engine timestamp
+            exitEngineTime = present;
+            target = 38; PERFORM SET_ACHRONAL_FIELD exitEngineTime; 
+        }
+    }
+    
+    // After a short delay when victory is declared -> exit the engine
+    if(exitEngineTime>0 && present>=exitEngineTime+5 $seconds){
+        PERFORM END_SCENARIO;
+        PERFORM EXIT_ENGINE;
+    }
+}
+
 
 //----------------------------------------------
-// Light-footed Observers
+// Assassin Mode
 //----------------------------------------------
 
 
-// #include include/EXMPObsMonitor.rsi
+//----------------------------------------------
+// AI Gameplay
+//----------------------------------------------
+
+// Map AI Definitions
+//*******************************
+#define PICK_LAZY_GRUNT_FROM_POSITION QUERY \
+    UNIT [unit] MIN [query->Age + query<_>_dest] \
+    WHERE [ \
+        query.Rank >= $MARINE_RANK && \
+        query->Objective == 0 && \
+        ((queryOwnr = query->Owner) == _uOwner || _uOwner==-1) && \
+        queryOwnr <= _maxOwner && \
+        queryOwnr->IsComputerPlayer && \
+        query<_>_dest > 400 && \
+        (queryPos = query->Position)[$Xpos] >= _minX && \
+        queryPos[$Xpos] <= _maxX && \
+        queryPos[$Ypos] >= _minY && \
+        queryPos[$Ypos] <= _maxY && \
+        queryPos[$Zpos] >= _minZ && \
+        queryPos[$Zpos] <= _maxZ \
+    ];
+                            
+#define DEPLOY_MINIONS player = _uOwner; \
+    if ( current >= _minT && current < _maxT + _recruit && \
+        (current - _minT)%_everyT < _recruit && \
+        metatime >= _minM && metatime < _maxM && \
+        (player->IsComputerPlayer || _uOwner==-1) \
+    ) { \
+        underling = 0; \
+        underling = $PICK_LAZY_GRUNT_FROM_POSITION \
+        if (underling>0) { \
+            target = underling; \
+            _obj = $OBJECTIVE_ATTACKPOS_DISPATCH; \
+            $DISPATCH_OBJECTIVE \
+            if (DMDebug>0) { \
+                player = 0; \
+                say " dispatch order ", DMDebug; \
+            } \
+        } \
+    }
+                            
+#define MAKA_REAPH player = _uOwner; \
+    if ( current == _minT && metatime >= _minM && metatime < _maxM && \
+            player->$Power >= 500 && player->IsComputerPlayer ) { \
+        underling = 0; \
+        underling = QUERY UNIT [unit] MIN [query<_>_dest - query->HP] \
+            WHERE [ query->Class == $SEPI_CLASS && \
+                (queryOwnr = query->Owner) == _uOwner && \
+                queryOwnr->IsComputerPlayer \
+            ]; \
+        if (underling>0) { \
+            target = underling; \
+            _obj = $OBJECTIVE_MORPH_REAPH; \
+            $DISPATCH_OBJECTIVE \
+            if (DMDebug>0) { \
+                player = 0; \
+                say " Reaph dispatch order ", DMDebug; \
+            } \
+        } \
+    }
+                            
+#define PLAYER_HUMAN (player->CustomField8)[0] == 1
+#define PLAYER_GREKIM (player->CustomField8)[1] == 1
+#define PLAYER_VECGIR (player->CustomField8)[2] == 1
+
+
+// AI-Processes variable initialization
+object underling = 0;
+int _uOwner = -1; int _maxOwner = 11;
+int _minM = -600 $seconds; int _maxM = (2*present) <| (720 $seconds); 
+    // IP: -600, UPP: -390, present: 0, UP future: 120
+int _minX = 0; int _maxX = 0;
+int _minY = 0; int _maxY = 0;
+int _minZ = 0; int _maxZ = 100;
+_dest[$Zpos] = 0;
+int _minT = 0; int _maxT = 0;
+int _everyT = 1; int _recruit = 1;
+int DMDebug = 0;
+
+
+/* Common AI processes
+*********************************/
+
+// Ephemeral units dispatching:
+if (1 && current%108 == 83) {
+    // - units with limited lifespan get sent to fight right away
+    // - check and send one order every 6 s
+    object underling1 = 0;
+    int u1Owner = 0;
+    object enemy1 = 0;
+    underling1 = QUERY UNIT [unit] MAX [query->Age] WHERE [ 
+            query->Class == $TODARO_CLASS && 
+            query->Objective == 0 && 
+            (query->Owner)->IsComputerPlayer
+        ];
+        
+    if (underling1!=0) {
+        u1Owner = underling1->Owner;
+        
+        enemy1 = QUERY UNIT [unit] MAX [ query<_>underling1 - 4*(query->HP)**2] WHERE [ 
+                (queryOwnr = query->Owner) != u1Owner &&
+                queryOwnr < 15 &&
+                !(query->IsCloaked)
+            ];
+        
+        _dest = enemy1->Position;
+        target = underling1;
+        _obj = $OBJECTIVE_ATTACKPOS_DISPATCH;
+        $DISPATCH_OBJECTIVE
+    }
+    _dest[$Zpos] = 0;
+}
+
+// Idle RP taskmaster:
+if (1 && current>120$seconds && current%(18$seconds) == 13$seconds) {
+    // - Idle RPs get tasked to the nearest red crate < 150 sq distant
+    // - if no red crate is found -> send to the nearest blue crate with an opening
+    // - check and send one order every 18 s
+    object idleRP = 0;
+    idleRP = QUERY UNIT [unit] MIN [1] WHERE [ 
+            query.Rank == $RP_RANK &&
+            query->Objective == 0 &&
+            (query->Owner)->IsComputerPlayer ];
+            
+    if (idleRP!=0) {
+        object resCrate = 0;
+        resCrate = QUERY UNIT [unit] MIN [query<_>idleRP] WHERE [ 
+                query->Class == $QP_CLASS &&
+                query<_>idleRP > 400 &&
+                query<_>idleRP < 22500 ];
+                
+        if (resCrate==0) {
+            resCrate = QUERY UNIT [unit] MIN [query<_>idleRP] WHERE [ 
+                    query->Class == $LC_CLASS &&
+                    query<_>idleRP > 900 &&
+                    1 ]; //todo: check for opening
+        }
+        
+        if (resCrate!=0) {
+            target = idleRP;
+            _dest = resCrate->Position;
+            _dest[$Zpos] = 0;
+            _obj = $OBJ_BLDG_MOVE;
+            $DISPATCH_OBJECTIVE;
+        }
+    }
+}

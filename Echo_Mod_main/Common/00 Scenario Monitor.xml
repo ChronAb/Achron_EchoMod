@@ -5900,6 +5900,75 @@
                     </Steps>
                 </Action>
                 <Action>
+                    <ActionNumber>5</ActionNumber>
+                    <Identifier>ACTION_SET_HP</Identifier>
+                    <TimeTaken>0</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE_PARAMETER</PrimitiveAction>
+                            <Target>TARGET_UNIT</Target>
+                            <Type>U_HP</Type>
+                            <ValueEval>SET_TO_VALUE</ValueEval>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>6</ActionNumber>
+                    <Identifier>ACTION_CHANGE_HP</Identifier>
+                    <TimeTaken>0</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE_PARAMETER</PrimitiveAction>
+                            <Target>TARGET_UNIT</Target>
+                            <Type>U_HP</Type>
+                            <ValueEval>ONE</ValueEval>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>7</ActionNumber>
+                    <Identifier>ACTION_NANITE</Identifier>
+                    <TimeTaken>0</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE_PARAMETER</PrimitiveAction>
+                            <Target>TARGET_UNIT</Target>
+                            <Type>U_SECOND_OWNER</Type>
+                            <ValueEval>SET_TO_VALUE</ValueEval>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
                     <ActionNumber>8</ActionNumber>
                     <Identifier>ACTION_BREAKTSS</Identifier>
                     <TimeTaken>0</TimeTaken>
@@ -6058,6 +6127,52 @@
                     </Steps>
                 </Action>
                 <Action>
+                    <ActionNumber>21</ActionNumber>
+                    <Identifier>SET_P_CUSTOM_FIELD_8</Identifier>
+                    <TimeTaken>0</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE_PARAMETER</PrimitiveAction>
+                            <Target>TARGET_UNIT</Target>
+                            <Type>P_CUSTOM_FIELD_8</Type>
+                            <ValueEval>SET_TO_VALUE</ValueEval>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>22</ActionNumber>
+                    <Identifier>ADD_TO_P_CUSTOM_FIELD_8</Identifier>
+                    <TimeTaken>0</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE_PARAMETER</PrimitiveAction>
+                            <Target>TARGET_UNIT</Target>
+                            <Type>P_CUSTOM_FIELD_8</Type>
+                            <ValueEval>ONE</ValueEval>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
                     <ActionNumber>23</ActionNumber>
                     <Identifier>ACTION_BLUE</Identifier>
                     <TimeTaken>0</TimeTaken>
@@ -6073,11 +6188,10 @@
                     <Conditions />
                     <Steps>
                         <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <PrimitiveAction>CONSUME_RESOURCE_PARAMETER</PrimitiveAction>
                             <Target>TARGET_UNIT</Target>
                             <Type>P_L_CRYSTALS</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-100</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -6097,11 +6211,33 @@
                     <Conditions />
                     <Steps>
                         <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <PrimitiveAction>CONSUME_RESOURCE_PARAMETER</PrimitiveAction>
                             <Target>TARGET_UNIT</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-100</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>25</ActionNumber>
+                    <Identifier>ACTION_POWER</Identifier>
+                    <TimeTaken>0</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE_PARAMETER</PrimitiveAction>
+                            <Target>TARGET_UNIT</Target>
+                            <Type>P_POWER</Type>
+                            <ValueEval>ONE</ValueEval>
                         </Step>
                     </Steps>
                 </Action>
