@@ -8,24 +8,24 @@
 
 PERFORM SET_OBJECTIVE 0;
 
-//RPs have a special QP bootstrap action that is not a real chronoport
-if ( unit.Rank == $RP_RANK ){
-	if (unit->Ammo < 60) {
-		say "Not enough Charge";
-		PERFORM $ACTION_ERROR1;
-	}
-	else {
-		PERFORM $ACTION_CAST;
-	}
-	PERFORM NOTHING;
-}
-
+// Need to have Chronotech
 if ( !(player->Advancements)[$GREKIM_ADV_GATE] ) {
     PERFORM NOTHING;
 }
 
 //tss'd units can't chronoport. don't waste time on it
 if (unit->IsStasis) { 
+    PERFORM SET_PARAM 0;
+    PERFORM NOTHING;
+}
+
+// check for sufficient Power
+if (player->$Power <= 0) {
+    $SAY_POWER
+    say " to Chronoport";
+    PERFORM SET_ADDITIONAL_PARAMS2 0;
+    PERFORM SET_ADDITIONAL_PARAMS 0;
+    PERFORM SET_OBJECTIVE 0;
     PERFORM SET_PARAM 0;
     PERFORM NOTHING;
 }
@@ -44,6 +44,7 @@ else if (uclass==$SEPILIGO_CLASS) { qp = $SEPILIGO_CPORT_QP; }
 else if (uclass==$PHARO_CLASS) { qp = $PHARO_CPORT_QP; } 
 else if (uclass==$PHAROPOD_CLASS) { qp = $PHAROPOD_CPORT_QP; } 
 else if (uclass==$PHAROLIGO_CLASS) { qp = $PHAROLIGO_CPORT_QP; } 
+else if (uclass==$GREKIM_RP_CLASS || uclass==$GREKIM_RP_OFF_CLASS) { qp = $G_RP_CPORT_QP; } 
 
 //was 225/175 for all
 if (player->$LCrystals<lc || player->$QPlasma<qp) {

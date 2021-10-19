@@ -11,8 +11,12 @@ int curtime = perf_ret;
 int uclass = unit->Class;
 
 //Automatic actions for AI players
-if(curtime%109==0 && player < 8 && $AUTOPILOT){
-    if(uclass==$DERELICT_TURRET || uclass==$GENERATOR_CLASS_3X){ //Capturable Turrets and Dead Amplifiers claimed by the AI automatically upgrade
+if(curtime%109==0 && player < 14 && player->IsComputerPlayer){
+    //Capturable Turrets and Dead Amplifiers claimed by the AI automatically upgrade
+    if(uclass==$DERELICT_TURRET || 
+            (uclass==$GENERATOR_CLASS_3X && 
+            player->$QPlasma >= 1000 && player->$Power >= 1200)
+            ){
         PERFORM $ACTION_SELF_UPGRADE;
         PERFORM NOTHING;
     }
