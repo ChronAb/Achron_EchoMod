@@ -46,7 +46,7 @@
             <ClassNumber>1002</ClassNumber>
             <Name>Octo (Progen)</Name>
             <Description>Must be near a Sepi or Pharo&#x0D;&#x0A;that is also in Progeneration mode&#x0D;&#x0A;&#x0D;&#x0A;Must be near a Spyre to progenerate&#x0D;&#x0A;aerospace units.</Description>
-            <Model>./grekim/octo.mdl</Model>
+            <Model>./Achron_EchoMod/Echo_Mod_main/New_Models/octo.mdl</Model>
             <Rank>75</Rank>
             <Type>2</Type>
             <PrioritySelectionRank>0</PrioritySelectionRank>
@@ -2161,7 +2161,7 @@
             <ClassNumber>1007</ClassNumber>
             <Name>Squiddy/Sepi (Progen)</Name>
             <Description>Must be near an Octo or Pharo&#x0D;&#x0A;that is also in Progeneration mode&#x0D;&#x0A;&#x0D;&#x0A;Must be near a Spyre to progenerate&#x0D;&#x0A;aerospace units.</Description>
-            <Model>./grekim/sepi.mdl</Model>
+            <Model>./Achron_EchoMod/Echo_Mod_main/New_Models/sepi.mdl</Model>
             <Rank>75</Rank>
             <Type>2</Type>
             <PrioritySelectionRank>0</PrioritySelectionRank>
@@ -4283,7 +4283,7 @@
             <ClassNumber>1012</ClassNumber>
             <Name>Pharo (Progen)</Name>
             <Description>Must be near a Sepi or Octo&#x0D;&#x0A;that is also in Progeneration mode&#x0D;&#x0A;&#x0D;&#x0A;Must be near a Spyre to progenerate&#x0D;&#x0A;aerospace units.</Description>
-            <Model>./grekim/pharo.mdl</Model>
+            <Model>./Achron_EchoMod/Echo_Mod_main/New_Models/pharo.mdl</Model>
             <Rank>75</Rank>
             <Type>2</Type>
             <PrioritySelectionRank>0</PrioritySelectionRank>
