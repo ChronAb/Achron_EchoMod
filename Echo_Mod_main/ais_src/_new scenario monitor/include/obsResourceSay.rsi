@@ -1,43 +1,50 @@
 /*************************************
-* Resource display for observers by Shadowfury333 and ChronA
-* Displays player resources to all observers.
-* First section grabs relevant values for each player and sets them to appropriate AFs.
-* If a value is synchronized with the skin here a synced bit is set.
-* Second section says the values to the skin. This only happens if the synced bit for that value is clear
-* After a say, the synced bit is set.
-*
-* Field usage varies depending on number of enabled players and observers
-*
-* Defines:  PLAYERCOUNT_AF 118 : Field for player number storage
-*           CURR_TIME_RATE_START_AF 121 : Start Field for current player time rate
-*           CURR_TIME_RATE_Y_AF 121+y : Field for current player time rate, y is current observer
-*           RESOURCESAY_START_AF 122 : Starting point for resource storage
-*
-* Global vars used: obs
-*
-* Fields: 118 : bits 0-3: Stores the number of non-observer players enabled on the map
-*               bits 4-18: Stores a mask of non-obs players active in the game, including active AI
-*               bit 19-31: unused
-*         121 to 135 : Stores current time rate for all players in 2-bit chunks
-*
-*         136 to 1036 : Used to store player resources and tech for each observer
-*          Per observers fields are needed to avoid race conditions on resource data. Per player fields are necessary for
-*          observer stats in replays while looking from player POV.
-*
-*         136+4n : Used to store Vecgir Power (bits 0-27)
-*         137+4n : Used to store Liquid Crystal (bits 0-18), and player race (bits 19-20),
-*          SmartIdle (bit 22), Auto-Hierarchy (bit 21), whether a Comm building exists (bit 23),
-*          and whether LC has been synced (bit 24), whether Race has been synced (bit 25),
-*          whether Tech has been synced (bit 26), and whether Power has been synced (bit 27).
-*          In assassin mode, also contains the status of the Achron (bit 28).
-*         138+4n : Q-Plasma(bits 13-29), CESO Reserves(bits 0-12),
-*          and whether Q-Plasma or Reserves has synced (bits 31 and 30 respectively)
-*         139+4n : Used to store Tech. First 16 bits are researched tech, last 16 bits are tech in progress
-*
-* Global vars defined: y : mentioned for code safety's sake. This is defined in other code as well.
-*                          So far, no issues.
-*              playerCount : Stores the number of non-observer players enabled on the map
-*                      nonObsPlayerMask : Stores a mask of players who are not obs and active at game start, for skin stats display
+Resource display for observers by Shadowfury333 and ChronA
+
+Displays contender resources to all observers.
+
+First section grabs relevant values for each contender and sets them to appropriate AFs.
+    If a value is synchronized with the skin here a synced bit is set.
+Second section says the values to the skin. This only happens if the synced bit for 
+    that value is clear. After a say, the synced bit is set.
+Field usage varies depending on number of enabled players and observers
+
+Defines:  
+    PLAYERCOUNT_AF 118 : Field for player number storage
+        CURR_TIME_RATE_START_AF 121 : Start Field for current player time rate
+        CURR_TIME_RATE_Y_AF 121+y : Field for current player time rate, y is current observer
+        RESOURCESAY_START_AF 122 : Starting point for resource storage
+
+Global vars used: obs
+
+Fields: 
+    118 :  bits 0-3: Stores the number of non-observer players enabled on the map
+           bits 4-18: Stores a mask of non-obs players active in the game, including active AI
+           bit 19-31: unused
+    121 to 135 : Stores current time rate for all players in 2-bit chunks
+
+    136 to 1036 : Used to store player resources and tech for each observer
+        Per observers fields are needed to avoid race conditions on resource data.
+        Per player fields are necessary for observer stats in replays while looking 
+            from player POV.
+
+    136+4n : Used to store Vecgir Power (bits 0-27)
+    137+4n : Used to store Liquid Crystal (bits 0-18), and player race (bits 19-20),
+        SmartIdle (bit 22), Auto-Hierarchy (bit 21), whether a Comm building exists (bit 23),
+        and whether LC has been synced (bit 24), whether Race has been synced (bit 25),
+        whether Tech has been synced (bit 26), and whether Power has been synced (bit 27).
+        In assassin mode, also contains the status of the Achron (bit 28).
+    138+4n : Q-Plasma(bits 13-29), CESO Reserves(bits 0-12),
+        and whether Q-Plasma or Reserves has synced (bits 31 and 30 respectively)
+    139+4n : Used to store Tech. First 16 bits are researched tech, last 16 bits 
+        are tech in progress
+
+Global vars defined:
+    y : mentioned for code safety's sake. This is defined in other code as well.
+        So far, no issues.
+    playerCount : Stores the number of non-observer players enabled on the map
+    nonObsPlayerMask : Stores a mask of players who are not obs and active at game start, 
+        for skin stats display
 *************************************/
 
 #define CURR_TIME_RATE_START_AF 121
@@ -73,10 +80,10 @@
 int y = 0;
 
 /***********************************************
-    Grab relevant values
+    For each Obs: grab relevant values
         and store them in achronal fields
 ***********************************************/
-for (y=0; y<15; y=y+1){
+for (y=0; y<14; y=y+1){
   //If we are in a replay, make sure all players get data
   PERFORM IS_REPLAY;
   if((((obs&connected)>>y)&1)||(perf_ret&&((enabled>>y)&1))){ 
@@ -86,9 +93,9 @@ for (y=0; y<15; y=y+1){
     if (TwicePerSecond && current == currentObsTime){
       //Get information for each player to each obs from each obs's current time
       int x = 0;
-      for( x=0; x<15; x=x+1){
+      for( x=0; x<14; x=x+1){
         player = x;
-        if((nonObsPlayerMask>>x)&1){
+        if((contenders>>x)&1){
           //We need to grab all fields and set for that, in case the synced bit is reset
           //and hasn't been reset by the say block
           PERFORM GET_ACHRONAL_FIELD $P_X_COMM_RACE_LC_AF;
@@ -111,11 +118,11 @@ for (y=0; y<15; y=y+1){
           ADV[$ADV_INCOMPLETE_BITS] = player->CustomControls;
 
           if ((current/$TPS < 465 || !COMM_RACE_LC[$LC_SYNCED_BIT]) && ADV != 0) { //Efficient race check. If they have tech, they are that race and no query is needed
-            if (ADV[1,5] != 0 || ADV[17,5] != 0){
-              COMM_RACE_LC[$RACE_BITS] = 1; //Set to CESO
-            } else if (ADV[6,5] != 0 || ADV[22,5] != 0){
+            if ($PLAYER_GREKIM){
               COMM_RACE_LC[$RACE_BITS] = 3; //Set to Grekim
-            } else if (ADV[11,5] != 0 || ADV[27,5] != 0 || ADV[0] == 1 || ADV[16] == 1){
+            } else if ($PLAYER_HUMAN){
+              COMM_RACE_LC[$RACE_BITS] = 1; //Set to CESO
+            } else if ($PLAYER_VECGIR){
               COMM_RACE_LC[$RACE_BITS] = 2; //Set to Vecgir
             }
           }
@@ -156,53 +163,21 @@ for (y=0; y<15; y=y+1){
       }
     }
 
-    //Slow race check. current % 60 / 4 makes it work for 1 player every 4 ticks, checking if that player even exists
-    if (current % 4 == 0 && (nonObsPlayerMask>>((current % 60)/4))&1 && current == currentObsTime){
-
-      //Get Player x's race if stored
-      int x = (current % 60)/4;
-      player = x;
-
-      //Get current race here in case no query is done. That way it will remain consistent.
-      PERFORM GET_ACHRONAL_FIELD $P_X_COMM_RACE_LC_AF;
-      int pxRace = perf_ret[$RACE_BITS];
-
-      if ((current/$TPS < 465 || !perf_ret[$RACE_SYNCED_BIT]) && player->Advancements == 0 && player->CustomControls == 0){ //Check if tech is researched. If it is, that indicates race already
-        object pxRaceUnit = $GET_UNIT [ query->Owner == x];
-
-        if (pxRaceUnit.Rank == $RACE_CHOOSER_RANK) {
-          pxRace = 0;
-        } else if (pxRaceUnit->Class >= 1 && pxRaceUnit->Class <= 999) {
-          pxRace = 1;
-        } else if (pxRaceUnit->Class >= 1000 && pxRaceUnit->Class <= 1999) {
-          pxRace = 3;
-        } else if (pxRaceUnit->Class >= 2000 && pxRaceUnit->Class <= 2999) {
-          pxRace = 2;
-        }
-      }
-
-      if (pxRace != perf_ret[$RACE_BITS]) {perf_ret[$RACE_SYNCED_BIT] = 0;}  //Clear race synced bit if race has changed since last stored race
-
-      perf_ret[$RACE_BITS] = pxRace;
-      target = $P_X_COMM_RACE_LC_AF;
-      PERFORM SET_ACHRONAL_FIELD perf_ret;
-
-    }
     if (current == present && TwicePerSecond && present >= $TPS){
       player = y;
       say_to_var "SMObsPlayerNum";
-      say (playerCount | (nonObsPlayerMask<<4));
+      say (playerCount | (contenders<<4));
     }
 
     int x = current % 18;
     player = x;
-    if (current==present && x <= 14 && ((nonObsPlayerMask>>x)&1)) { //cycle through all 15 players only if they are enabled
+    if (current==present && x <= 13 && ((contenders>>x)&1)) { //cycle through all 14 players only if they are enabled
 
       player = y;
       //Send information to skin variables
       //Send information as bits 0-3: Number of players
       //            bits 4-18: Bitmask of all 15 players.
-      if( (nonObsPlayerMask>>x)&1 ) { //only do this for non-observer
+      if( (contenders>>x)&1 ) { //only do this for non-observer
 
         //If this is a replay, bypass all efficiency measures, it messes with proper operation.
         //If this isn't a replay, send all data every 30 seconds anyway, in case lag spikes have caused a

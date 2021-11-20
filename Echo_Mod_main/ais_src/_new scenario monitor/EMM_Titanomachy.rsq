@@ -14,7 +14,7 @@
 
 // Big attack start metatime: -150 seconds
 //#define SmlAtkMT -2700
-#define BigAtkMT (2*present) <| (720 $seconds);
+#define SmlAtkMT (2*present) <| (720 $seconds);
 
 if (current < 10 $seconds) PERFORM NOTHING;
 
@@ -99,7 +99,7 @@ if (af65==0 && present>90 $seconds  + 15 && current==150 $seconds + 15) {
     af65 = (seedling1->Position * seedling1->Age)%8100+1;
     target = 65; PERFORM SET_ACHRONAL_FIELD af65; //save randomizer seeder
     
-    if (1 || DMDebug>0) {
+    if (0 || DMDebug>0) {
         player = 0;
         say " germinating seeds at ", af65/18;
     }
@@ -114,7 +114,7 @@ if (af66==0 && af65>0 && current==af65) {
     af67 = perf_ret;
     target = 67; PERFORM SET_ACHRONAL_FIELD af67;
     
-    if (1 || DMDebug>0) {
+    if (0 || DMDebug>0) {
         player = 0;
         say " af66 seed = ", af66, " af67 seed = ", af67;
     }

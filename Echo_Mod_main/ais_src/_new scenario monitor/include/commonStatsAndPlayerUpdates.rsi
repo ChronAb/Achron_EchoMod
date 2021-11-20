@@ -7,12 +7,6 @@ if (current % ($TPS / 2) == 0) {
 	TwicePerSecond = 1; 
 }
 
-PERFORM GET_ACTIVE_PLAYERS;
-int active = perf_ret;       //bitmask of active players
-
-PERFORM GET_TIMELINE_CONTROLS_PLAYERS;
-int timelineControllers = perf_ret;
-
 //relative time is calculated only by the fixed updater/time wave at present
 //and only run this twice a second (since there's no need to run it more often)
 if (current==present && TwicePerSecond ) {

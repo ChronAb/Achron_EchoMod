@@ -10,22 +10,11 @@ int END_GAME_MODE		= $TOTAL_DEFEAT;
 PERFORM CONVERT_SECONDS_TO_TICKS 1;
 int TICKS_PER_SECOND = perf_ret;
 
-PERFORM GET_ENABLED_PLAYERS;
-int enabled = perf_ret;
-
-PERFORM GET_CONNECTED_PLAYERS;
-int connected = perf_ret;
-
-PERFORM GET_ACTIVE_PLAYERS;
-int active = perf_ret;
-
 // Temporal coordinates
 PERFORM GET_PRESENT_TIME;
 int present = perf_ret;    
-    
 PERFORM GET_CUR_TIME;
 int current = perf_ret;
-
 PERFORM GET_TIME_WINDOW_START;
 int im_past = perf_ret;
 
@@ -35,28 +24,20 @@ int metatime = current-present;
 // Map dimensions
 PERFORM GET_MAP_WIDTH; 
 int mapX = perf_ret;
-
 PERFORM GET_MAP_LENGTH; 
 int mapY = perf_ret;
 
 // Global utility variables
 object queryOwnr = 0;
+#define PLAYER_HUMAN (player->CustomField8)[0] == 1
+#define PLAYER_GREKIM (player->CustomField8)[1] == 1
+#define PLAYER_VECGIR (player->CustomField8)[2] == 1
+#define PLAYER_V_PTS (player->CustomField8)[5,4]
+#define TEAM_V_PTS (player->CustomField8)[10,5]
 
 //----------------------------------------------
 // Achronal Variable Definitions
 //----------------------------------------------
-
-/*
-Achronal field 1 is used to store connected and surrendered players
-    bits 0-14 af2[0,15] are used to store originally connected players 
-        for disconnect notification
-    bits 15-30 af2[15,15] are used to mark surrendered and lost players
-        for surrendered notification
-    bits 30,31 af2[30,2] unused
-*/
-PERFORM GET_ACHRONAL_FIELD 1;
-int af2 = perf_ret;
-
 // Achronal field 37 stores victory timestamps
 PERFORM GET_ACHRONAL_FIELD 37; 
 int af37 = perf_ret;  
@@ -67,22 +48,78 @@ PERFORM GET_ACHRONAL_FIELD 38;
 int af38 = perf_ret;
 int exitEngineTime = af38;
 
+//----------------------------------------------
+// Player Variable Definitions (Chronal + Achronal)
+//----------------------------------------------
+/*
+Achronal field 2 is used to store connected and surrendered players
+    bits 0-14 af2[0,15] are used to store originally connected players 
+        for disconnect notification
+    bits 15-28 af2[15,14] are used to mark surrendered and lost players
+        for surrendered notification
+    bits 29-31 unused
+*/
+PERFORM GET_ACHRONAL_FIELD 2;
+int af2 = perf_ret;
+
+// Player Types:
+// enabled - designated as participants when the map started
+PERFORM GET_ENABLED_PLAYERS;
+int enabled = perf_ret;
+
+// connected - players currently connected to the game
+PERFORM GET_CONNECTED_PLAYERS;
+int connected = perf_ret;
+
+// active - players who have not lost yet
+PERFORM GET_ACTIVE_PLAYERS;
+int active = perf_ret;
+
+// timelineControllers - players who can move on the timeline
+PERFORM GET_TIMELINE_CONTROLS_PLAYERS;
+int timelineControllers = perf_ret;
+
+// neutral player control flag
+#define IS_NEUTRAL (player->ControlFlags)[5]
+
 /*
 Achronal field 116 is used to store observers
-    bits 0-14 obsfield [0,14] are used to store Observers -- players without any 
+    bits 0-13 obsfield [0,14] are used to store Observers -- players without any 
         racepickers or liquid military assets. These can have an AI player to 
         provide visibility sharing.
-    bits 16-30 obsfield [16,30] are used to store Contenders -- players who 
+    bits 14-27 obsfield [14,14] are used to store Contenders -- players who 
         have military assets. They share thier vision and resource data with 
         observer players.
-    bits 31 unused
+    bits 28-31 obsfield [28,4] are used to store the contender count
 */
 #define OBS_AF 116
 PERFORM GET_ACHRONAL_FIELD $OBS_AF;
 int obsfield = perf_ret;
 int obs = perf_ret[0,14];
-int contenders = perf_ret[16,30];
+int contenders = perf_ret[14,14];
 
+/*
+Achronal field 117 is used to store AI players
+*/
+#define AIPLAYER_AF 117
+PERFORM GET_ACHRONAL_FIELD $AIPLAYER_AF;
+int aiPlayer = perf_ret;
+
+/*
+Achronal field 118 is used to store the contender count
+*/
+#define PLAYERCOUNT_AF 118
+PERFORM GET_ACHRONAL_FIELD $PLAYERCOUNT_AF;
+int playerCount = perf_ret[0,4];
+//int nonObsPlayerMask = perf_ret[4,15];
+
+/*
+Achronal field 120 is used to store non-players
+    These players start the game with no assets, and should thus become observers 
+*/
+#define NONPLAYER_AF 120;
+PERFORM GET_ACHRONAL_FIELD $NONPLAYER_AF;
+int nonPlayer = perf_ret;
 
 //----------------------------------------------
 // Credits Bulletin
@@ -145,10 +182,11 @@ if(pre_game_settings[$MP_ASSASSIN_MODE] && presentRate > 0){
 // Game and Player Setup
 //----------------------------------------------
 /*
-* All enabled players start out designated as ~participants~
+* All enabled players start out designated as _~participants~_
 * Participants who have no units become ~observers~
 * Participants who have military units become ~contenders~
-* Contenders who have no units or buildings become Observers
+* Contenders who have no units or buildings, or who surrender,
+*   become Observers
 * Observers see the units and resources of Contenders
     but only the units and not the resources of Participants
 */
@@ -156,26 +194,36 @@ if(pre_game_settings[$MP_ASSASSIN_MODE] && presentRate > 0){
 //compute players' nomalized resource stat for their timelines
 #include include/commonStatsAndPlayerUpdates.rsi
 
-//Define the generic nonPlayer
-//#include include/nonPlayer.rsi
-
-//Determine who the AI players are
-#include include/checkAiPlayer.rsi
-
 //notify players if someone disconnects
 #include include/checkConnected.rsi
 
-//Set neutral (non-)players explicitly
-#include include/neutralPlayer.rsi
-
-//Kill AI players that should die (Should come after randomizer)
-//#include include/aiKiller.rsi
-
-/***********************************************
-    Observer Players:
-        Players who start without any units
-        or who surrender, get to be observers
-***********************************************/
+//Initialize nonPlayers, aiPlayers, & neutral players
+if(1 && current == present && present == 1){
+	int x = 0;
+	for (x = 0; x<15; x = x + 1){
+        player = x;
+		if ((enabled>>x)&1){			
+			int playerNum = x;
+            
+            //nonPlayer
+			int class = 0;
+			#include include/calculatePlayerHealth.rsi
+			if (playerHealth == 0) nonPlayer = nonPlayer | (1<<x);
+            
+            //neutral
+			if ($IS_NEUTRAL) nonPlayer = nonPlayer | (1<<x);
+            
+            //aiPlayer
+            if (player->IsComputerPlayer == 1) aiPlayer = aiPlayer | (1<<x);
+		}
+	}
+	
+	target = $NONPLAYER_AF;
+	PERFORM SET_ACHRONAL_FIELD nonPlayer;
+    
+    target = $AIPLAYER_AF;
+	PERFORM SET_ACHRONAL_FIELD aiPlayer;
+}	
 
 //Create Obs alliances and vision sharing
 #include include/obsAlliances.rsi
@@ -211,8 +259,8 @@ if(current == 1){
         If there is none, give it to the nearest non-ally human player,
         or failing that, the lowest number human player available 
 ***********************************************/
-if(current >= 360 && current <= 395){
-	player = (current-90)%12;
+if(current >= 360 && current <= 371){
+	player = (current-360)%12;
     int allymask = player->Allies;
     object chooser = 0;
     object herald = 0;
@@ -284,12 +332,12 @@ if(current%9==7){
 	//Check whether any player has enough AMPs
     for (p = 0; winner == 15 && p < 12; p=p+1){
 		player = p;
-        if (player->CustomField8[10,14] >= 12) winner=p;
+        if ($TEAM_V_PTS >= 12) winner=p;
 	}
     
     // Yes -> Issue a warning and update the supremacy time if needed
     if (winner!=15 && exitEngineTime==0){
-        for (p = 0; p < 15; p=p+1) {
+        for (p = 0; p < 14; p=p+1) {
             player = p;
             allymask = player->Allies;
             
@@ -342,7 +390,7 @@ if(current%9==7){
         supremacyTime = 0;
         target = 37; PERFORM SET_ACHRONAL_FIELD supremacyTime; //save timestamp
         
-        for (p = 0; p < 15; p=p+1) {
+        for (p = 0; p < 14; p=p+1) {
             player = p;
             say_to_var "DefeatedText";
             say "";
@@ -354,7 +402,7 @@ if(current%9==7){
         player = winner;
         if (player->IsComputerPlayer && current > supremacyTime + 120 $seconds){
             // say what happened
-            for (p = 0; p < 15; p=p+1) {
+            for (p = 0; p < 14; p=p+1) {
                 player = p;
                 allymask = player->Allies;
                 if ( (allymask >> winner)[0]==1 ){
@@ -381,12 +429,12 @@ if(current%9==7){
     if(current <= present && exitEngineTime==0){
         for (p = 0; winner == 15 && p < 14; p=p+1){
             player = p;
-            if (player->CustomField8[10,14] >= 16) winner=p;
+            if ($TEAM_V_PTS >= 16) winner=p;
         }
         
         if (winner!=15){
             // say what happened
-            for (p = 0; p < 15; p=p+1) {
+            for (p = 0; p < 14; p=p+1) {
                 player = p;
                 allymask = player->Allies;
                 if (p==winner || (allymask >> winner)[0]==1){
@@ -483,11 +531,6 @@ if(current%9==7){
             } \
         } \
     }
-                            
-#define PLAYER_HUMAN (player->CustomField8)[0] == 1
-#define PLAYER_GREKIM (player->CustomField8)[1] == 1
-#define PLAYER_VECGIR (player->CustomField8)[2] == 1
-
 
 // AI-Processes variable initialization
 object underling = 0;
@@ -524,7 +567,7 @@ if (1 && current%108 == 83) {
         
         enemy1 = QUERY UNIT [unit] MAX [ query<_>underling1 - 4*(query->HP)**2] WHERE [ 
                 (queryOwnr = query->Owner) != u1Owner &&
-                queryOwnr < 15 &&
+                queryOwnr < 14 &&
                 !(query->IsCloaked)
             ];
         

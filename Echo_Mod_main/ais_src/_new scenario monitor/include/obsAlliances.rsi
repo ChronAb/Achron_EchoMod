@@ -9,16 +9,26 @@
 * Global vars used: obs
 *                   contenders
 *				   	nonPlayer
+*                   playerCount
 *
 * Global vars defined: none
 *
 ********************************/
 
-#define PLAYERCOUNT_AF 118
+#define CONTENDER_CHECK num = $GET_UNIT_COUNT \
+        [ query->Owner == x && query.Rank >= $MARINE_RANK]; \
+    if (num > 0) { \
+        contenders = contenders | (1<<x); \
+        obsMe = 0; \
+    } else { \
+        num = $GET_UNIT_COUNT [ query->Owner == x && query.Rank >= $FACTORY_RANK]; \
+        player = x; \
+        if (num > 0 && (player->$LCrystals > 0 || player->$QPlasma  > 0)){ \
+            contenders = contenders | (1<<x); \
+            obsMe = 0; \
+        } \
+    }
 
-PERFORM GET_ACHRONAL_FIELD $PLAYERCOUNT_AF;
-int nonObsPlayerMask = perf_ret[4,15];
-int playerCount = perf_ret[0,4];
 
 /***********************************************
     Intitialize observer status of active players
@@ -29,21 +39,14 @@ if (current == present && present == 1) {
 	int x = 0;
 	int firstObsNum = 0;
 
-	//loop through the 15 players
-	for (x = 0; x<15; x=x+1) {
+	//loop through the 14 players
+	for (x = 0; x<14; x=x+1) {
 		if((enabled>>x)&1 && ((nonPlayer>>x)&1)){
             // Enabled players who start with no liquid military assets become observers
-            num = $GET_UNIT_COUNT [ query->Owner == x && query.Rank >= $MARINE_RANK];
-            if (num > 0) {
-                contenders = contenders | (1<<x);
-                obsMe = 0;
-            } else {
-                num = $GET_UNIT_COUNT [ query->Owner == x && query.Rank >= $FACTORY_RANK];
-                player = x;
-                if (num > 0 && (player->$LCrystals > 0 || player->$QPlasma  > 0)){
-                    contenders = contenders | (1<<x);
-                    obsMe = 0;
-                }
+            $CONTENDER_CHECK
+            
+            if (obsMe == 0){
+                playerCount = playerCount + 1;
             }
             
             if (obsMe > 0){
@@ -73,17 +76,21 @@ if (current == present && present == 1) {
 	if(perf_ret){obs = (obs&connected)|(1<<firstObsNum);}
 	else {obs = (obs&connected);}
     contenders = (contenders&connected);
-    obsfield = contenders<<16 | obs;
+    obsfield = contenders<<14 | obs;
 	target = $OBS_AF;
 	PERFORM SET_ACHRONAL_FIELD obsfield;
+    
+    //Update Player Count
+    target = $PLAYERCOUNT_AF;
+    PERFORM SET_ACHRONAL_FIELD playerCount;
 
 	PERFORM GET_PLAYER_TIMEWAVE_VISIBILIY;
 	PERFORM SET_PLAYER_TIMEWAVE_VISIBILIY perf_ret&(~(obs));
 
 	//Make all unused observers lose quietly
 	PERFORM PLAYER_LOST unusedObs;
-	af2[15,15] = af2[15,15] | unusedObs;
-	target = 1; PERFORM SET_ACHRONAL_FIELD af2;
+	af2[15,14] = af2[15,14] | unusedObs;
+	target = 2; PERFORM SET_ACHRONAL_FIELD af2;
 
 	//Make all remaining obs unable to control units or manually make alliances
 	//PERFORM PLAYER_DISABLE_UNIT_CONTROLS obs;
@@ -95,10 +102,10 @@ if (current == present && present == 1) {
         convert players to contenders or 
         observers per their circumstances
 ***********************************************/
-if(TwicePerSecond && current > 2){
+if(current%9==3){
 	int allymask = 0;
 	int visionmask = 0;
-	int x = (current/9)%14;
+	int x = ((current-3)/9)%14;
 
     // Share vision with the observers
     player = x;
@@ -107,7 +114,7 @@ if(TwicePerSecond && current > 2){
         say_to_var "SMReplayStats"; say 1;
     }
     allymask = player->Allies;
-    if ((obs&enabled)>>x)&1){
+    if (((obs&enabled)>>x)&1){
         say_to_var "SMObsStats"; say 1;
         PERFORM SET_PLAYER_VISIBILITY_SHARING (obs|connected|active);
         PERFORM SET_PLAYER_ALLIANCES allymask | obs;
@@ -117,32 +124,40 @@ if(TwicePerSecond && current > 2){
         // PERFORM SET_PLAYER_ALLIANCES allymask;
     }
 	
-    // Non-observers update their type
+    // Non-observers update their type:
+    /*  * Contenders who surrender become Observers
+        * Participants who get military assets become Contenders
+    */
     if (~(obs>>x)&1) {
+        int num = 0;
+        int obsMe = 1;
         
+        // Contenders who surrender become Observers
+        if ((contenders>>x)&1 && !((active>>x)&1)){
+            obs = obs | (1<<x);
+            contenders = contenders & ~(1<<x);
+            obsfield = contenders<<14 | obs;
+            target = $OBS_AF;
+            PERFORM SET_ACHRONAL_FIELD obsfield;
+            
+            playerCount = playerCount - 1;
+            target = $PLAYERCOUNT_AF;
+            PERFORM SET_ACHRONAL_FIELD playerCount;
+        }
+        else { 
+            // Participants who get military assets become Contenders
+            $CONTENDER_CHECK
+            if (obsMe == 0) {
+                contenders = contenders | (1<<x);
+                obsfield = contenders<<14 | obs;
+                target = $OBS_AF;
+                PERFORM SET_ACHRONAL_FIELD obsfield;
+                
+                playerCount = playerCount + 1;
+                target = $PLAYERCOUNT_AF;
+                PERFORM SET_ACHRONAL_FIELD playerCount;
+            }
+        }
     }
 
-}
-
-//Update playerCount
-if (current == present && present == 2){
-  int x = 0;
-  playerCount = 0;
-  for (x = 0;x < 15; x=x+1){
-    if (((active&(~nonPlayer))>>x)&1) {
-      playerCount = playerCount + 1;
-    }
-  }
-  PERFORM GET_ACHRONAL_FIELD $PLAYERCOUNT_AF;
-  target = $PLAYERCOUNT_AF;
-  PERFORM SET_ACHRONAL_FIELD perf_ret | playerCount;
-
-  //Determine which players are still alive after ai killer
-  //If random and an AI survives, active doesn't store AI,
-  //so we need to not the mask of dead AI players that are AI players in the first place and add that
-  nonObsPlayerMask = (active & (~nonPlayer));
-  target = $PLAYERCOUNT_AF;
-  PERFORM GET_ACHRONAL_FIELD $PLAYERCOUNT_AF;
-  perf_ret[4,15] = nonObsPlayerMask;
-  PERFORM SET_ACHRONAL_FIELD perf_ret;
 }

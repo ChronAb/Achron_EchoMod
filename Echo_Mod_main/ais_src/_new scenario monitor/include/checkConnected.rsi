@@ -3,9 +3,6 @@
 //deal with connected/disconnected players, only run this check by the timewave at present
 //at the start of game (current==1), load up configuration values specified in pre-game lobby to set in-game logic based off those parameters
 if (current==present) {
-	PERFORM GET_CONNECTED_PLAYERS;
-	int connected = perf_ret;		
-
 	if (current==1) {  //one-time setup at start of level
 	
 	
@@ -56,7 +53,7 @@ if (current==present) {
 		
 		//store whoever is connected 1 tick into the match as the original connected
 		af2[0,15] = connected;
-		target = 1; PERFORM SET_ACHRONAL_FIELD  af2;
+		target = 2; PERFORM SET_ACHRONAL_FIELD  af2;
 		player = 0;
 	} 
 	else if (current > 1) {
@@ -72,7 +69,7 @@ if (current==present) {
 					if (( ( connected >> x) & 1) == 0 ) {  //but is no longer connected
 						disconnectedPlayer = x + 1;   //don't display 0-based numbers to users, shows 1-15 instead
 						af2 = af2 & ~(1 << x); //clear out the connected bit for that player
-						target = 1; PERFORM SET_ACHRONAL_FIELD  af2;
+						target = 2; PERFORM SET_ACHRONAL_FIELD  af2;
 						x = 16; // same as 'break;'
 					}
 				}

@@ -78,7 +78,7 @@ example:
 	if (_dest==0) { _dest[$Xpos] = _x; _dest[$Ypos] = _y; _dest[$Zpos] = _z; }\
 	PERFORM SET_OTHER_ADDITIONAL_PARAMS 0;\
 	PERFORM SET_OTHER_OBJECTIVE_PARAMS _dest;\
-	PERFORM ENQUEUE_OTHER_OBJECTIVE _obj; }
+	PERFORM SET_OTHER_OBJECTIVE _obj; }
 	
 /*
 make target attack position at _x, _y, or unit if _dest is set
