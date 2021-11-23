@@ -2,6 +2,17 @@
 #include include/monitorHeader.rsh
 
 //----------------------------------------------
+// Echo Ops Mod - Common Scenario Monitor
+//----------------------------------------------
+
+/***********************************************
+To Do:
+* Victory points need upgrades to work for teams
+* Observer skin needs to re-initialize each time a new contender is added
+************************************************
+***********************************************/
+
+//----------------------------------------------
 // Chronal Variable Definitions
 //----------------------------------------------
 int PLAYER_DEAD_MODE 	= $NON_PRODUCING;
@@ -145,7 +156,7 @@ if(current == present && present == 1){
     Slow Timeline:
         Set the timeline speed to 0.5 (because Echo Mod is really busy)
 ***********************************************/
-if(0 && current == present && present == 1){
+if(1 && current == present && present == 1){
     PERFORM GET_PRESENT_TIME_WAVE_TIME_RATE;
     int presentRate = perf_ret_float;
         
@@ -508,7 +519,7 @@ if(current%9==7){
             $DISPATCH_OBJECTIVE \
             if (DMDebug>0) { \
                 player = 0; \
-                say " dispatch order ", DMDebug; \
+                print " dispatch order ", DMDebug; \
             } \
         } \
     }
@@ -528,7 +539,7 @@ if(current%9==7){
             $DISPATCH_OBJECTIVE \
             if (DMDebug>0) { \
                 player = 0; \
-                say " Reaph dispatch order ", DMDebug; \
+                print " Reaph dispatch order ", DMDebug; \
             } \
         } \
     }

@@ -3934,12 +3934,12 @@
                         <Condition>
                             <Resource>U_AGE</Resource>
                             <Comparison>MODULO_IS_ZERO</Comparison>
-                            <Value>179</Value>
+                            <Value>180</Value>
                         </Condition>
                         <Condition>
                             <Resource>P_L_CRYSTALS</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>2000</Value>
+                            <Value>20</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -3948,14 +3948,14 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-800</Value>
+                            <Value>-20</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>P_L_CRYSTALS</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>800</Value>
+                            <Value>20</Value>
                         </Step>
                     </Steps>
                 </Action>
