@@ -105,7 +105,8 @@ if (current == present && present == 1) {
 if(current%9==3){
 	int allymask = 0;
 	int visionmask = 0;
-	int x = ((current-3)/9)%14;
+	int x = ((current-3)/9 + 12)%14; 
+    // (for some reason this starts at P2 without the + 12 offset)
 
     // Share vision with the observers
     player = x;
@@ -132,7 +133,7 @@ if(current%9==3){
         int num = 0;
         int obsMe = 1;
         
-        // Contenders who surrender become Observers
+        // Contenders who surrender (or disconnect) become Observers
         if ((contenders>>x)&1 && !((active>>x)&1)){
             obs = obs | (1<<x);
             contenders = contenders & ~(1<<x);
@@ -143,8 +144,27 @@ if(current%9==3){
             playerCount = playerCount - 1;
             target = $PLAYERCOUNT_AF;
             PERFORM SET_ACHRONAL_FIELD playerCount;
+            
+            if ((af2 >> (15 + x) & 1) == 0) {
+                PERFORM PLAYER_LOST (1 << x); //player x lost
+				
+                //update af2
+				af2 = af2 | ( 1 << (x + 15));
+				target = 2; PERFORM SET_ACHRONAL_FIELD af2;
+                
+                //notify other players of the player x's elimination
+                print "UPDATE:   Player ", x+1, " was eliminated";
+				/*int x =0;
+				for (x=0;x<=15;x=x+1) { //notify other players of this player's surrender
+					if ( ( enabled >> x) & 1 == 1 ) {
+						player = x;
+						say "UPDATE:   Player ", p+1, " has surrendered";
+					}
+				}*/
+			}
         }
-        else { 
+        
+        if (!(contenders>>x)&1){
             // Participants who get military assets become Contenders
             $CONTENDER_CHECK
             if (obsMe == 0) {
@@ -159,5 +179,9 @@ if(current%9==3){
             }
         }
     }
+}
 
+// Debugging
+if(0 && current == present && current%90==0){
+    print "PC: ", playerCount, " Cdrs: ", contenders, " Obs: ", obs, "\n";
 }

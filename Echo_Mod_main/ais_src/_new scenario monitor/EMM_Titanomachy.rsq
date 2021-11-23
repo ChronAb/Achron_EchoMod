@@ -2,19 +2,29 @@
 #include EchoModMonitor.rsq
 
 //----------------------------------------------
+// Echo Ops Mod:
 // Titanomachy - AI Gameplay
 //----------------------------------------------
+
+/***********************************************
+To Do:
+* More AI behaviors
+* Achronal reactivity
+* Randomization
+* Not trying to capture team-mates' Amps
+************************************************
+***********************************************/
 
 // Definitions
 //*******************************
 
 // Big attack start metatime: -90 seconds;
-//#define BigAtkMT -1620
-#define BigAtkMT (2*present) <| (720 $seconds)
+#define BigAtkMT -1620
+//#define BigAtkMT (2*present) <| (720 $seconds)
 
 // Big attack start metatime: -150 seconds
-//#define SmlAtkMT -2700
-#define SmlAtkMT (2*present) <| (720 $seconds);
+#define SmlAtkMT -2700
+//#define SmlAtkMT (2*present) <| (720 $seconds);
 
 if (current < 10 $seconds) PERFORM NOTHING;
 
@@ -101,7 +111,7 @@ if (af65==0 && present>90 $seconds  + 15 && current==150 $seconds + 15) {
     
     if (0 || DMDebug>0) {
         player = 0;
-        say " germinating seeds at ", af65/18;
+        print " germinating seeds at ", af65/18;
     }
 }
 
@@ -116,7 +126,7 @@ if (af66==0 && af65>0 && current==af65) {
     
     if (0 || DMDebug>0) {
         player = 0;
-        say " af66 seed = ", af66, " af67 seed = ", af67;
+        print " af66 seed = ", af66, " af67 seed = ", af67;
     }
 }
 //test value of af67: 9142

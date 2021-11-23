@@ -1,0 +1,368 @@
+/*************************************
+Resource display for observers - Info Display SubComponent
+by Shadowfury333 and ChronA
+*************************************/
+
+player = y;
+
+//If this is a replay, bypass all efficiency measures, it messes with proper operation.
+//If this isn't a replay, send all data every 30 seconds anyway, in case lag spikes have caused a
+//false positive in the synced detection bits.
+PERFORM IS_REPLAY;
+int forceUpdate = perf_ret|((present%(30 $seconds))==x);
+
+PERFORM GET_ACHRONAL_FIELD $P_X_COMM_RACE_LC_AF;
+int COMM_RACE_LC = perf_ret;
+if (!perf_ret[$LC_SYNCED_BIT]||forceUpdate){
+    if (x==0) { say_to_var "SMObsP1LC"; }
+    if (x==1) { say_to_var "SMObsP2LC"; }
+    if (x==2) { say_to_var "SMObsP3LC"; }
+    if (x==3) { say_to_var "SMObsP4LC"; }
+    if (x==4) { say_to_var "SMObsP5LC"; }
+    if (x==5) { say_to_var "SMObsP6LC"; }
+    if (x==6) { say_to_var "SMObsP7LC"; }
+    if (x==7) { say_to_var "SMObsP8LC"; }
+    if (x==8) { say_to_var "SMObsP9LC"; }
+    if (x==9) { say_to_var "SMObsP10LC"; }
+    if (x==10) { say_to_var "SMObsP11LC"; }
+    if (x==11) { say_to_var "SMObsP12LC"; }
+    if (x==12) { say_to_var "SMObsP13LC"; }
+    if (x==13) { say_to_var "SMObsP14LC"; }
+    if (x==14) { say_to_var "SMObsP15LC"; }
+    // Since ADV_SYNCED_BIT is stored with COMM_RACE_LC, we need it as a separate var
+    say perf_ret[$LC_BITS];
+    perf_ret[$LC_SYNCED_BIT] = 1;
+    target = $P_X_COMM_RACE_LC_AF;
+    PERFORM SET_ACHRONAL_FIELD perf_ret;
+}
+
+PERFORM GET_ACHRONAL_FIELD $P_X_QP_RES_AF;
+if (!perf_ret[$QP_SYNCED_BIT]||forceUpdate){
+    if (x==0) { say_to_var "SMObsP1QP"; }
+    if (x==1) { say_to_var "SMObsP2QP"; }
+    if (x==2) { say_to_var "SMObsP3QP"; }
+    if (x==3) { say_to_var "SMObsP4QP"; }
+    if (x==4) { say_to_var "SMObsP5QP"; }
+    if (x==5) { say_to_var "SMObsP6QP"; }
+    if (x==6) { say_to_var "SMObsP7QP"; }
+    if (x==7) { say_to_var "SMObsP8QP"; }
+    if (x==8) { say_to_var "SMObsP9QP"; }
+    if (x==9) { say_to_var "SMObsP10QP"; }
+    if (x==10) { say_to_var "SMObsP11QP"; }
+    if (x==11) { say_to_var "SMObsP12QP"; }
+    if (x==12) { say_to_var "SMObsP13QP"; }
+    if (x==13) { say_to_var "SMObsP14QP"; }
+    if (x==14) { say_to_var "SMObsP15QP"; }
+    say perf_ret[$QP_BITS];
+    perf_ret[$QP_SYNCED_BIT] = 1;
+    target = $P_X_QP_RES_AF;
+    PERFORM SET_ACHRONAL_FIELD perf_ret;
+}
+
+PERFORM GET_ACHRONAL_FIELD $P_X_POW_AF;
+if ((!COMM_RACE_LC[$POW_SYNCED_BIT])||forceUpdate){
+    if (x==0) { say_to_var "SMObsP1PW"; }
+    if (x==1) { say_to_var "SMObsP2PW"; }
+    if (x==2) { say_to_var "SMObsP3PW"; }
+    if (x==3) { say_to_var "SMObsP4PW"; }
+    if (x==4) { say_to_var "SMObsP5PW"; }
+    if (x==5) { say_to_var "SMObsP6PW"; }
+    if (x==6) { say_to_var "SMObsP7PW"; }
+    if (x==7) { say_to_var "SMObsP8PW"; }
+    if (x==8) { say_to_var "SMObsP9PW"; }
+    if (x==9) { say_to_var "SMObsP10PW"; }
+    if (x==10) { say_to_var "SMObsP11PW"; }
+    if (x==11) { say_to_var "SMObsP12PW"; }
+    if (x==12) { say_to_var "SMObsP13PW"; }
+    if (x==13) { say_to_var "SMObsP14PW"; }
+    if (x==14) { say_to_var "SMObsP15PW"; }
+    say perf_ret;
+    COMM_RACE_LC[$POW_SYNCED_BIT] = 1;
+    target = $P_X_COMM_RACE_LC_AF;
+    PERFORM SET_ACHRONAL_FIELD COMM_RACE_LC;
+}
+
+PERFORM GET_ACHRONAL_FIELD $P_X_QP_RES_AF;
+if ((!perf_ret[$RES_SYNCED_BIT])||forceUpdate){
+    if (x==0) { say_to_var "SMObsP1RS"; }
+    if (x==1) { say_to_var "SMObsP2RS"; }
+    if (x==2) { say_to_var "SMObsP3RS"; }
+    if (x==3) { say_to_var "SMObsP4RS"; }
+    if (x==4) { say_to_var "SMObsP5RS"; }
+    if (x==5) { say_to_var "SMObsP6RS"; }
+    if (x==6) { say_to_var "SMObsP7RS"; }
+    if (x==7) { say_to_var "SMObsP8RS"; }
+    if (x==8) { say_to_var "SMObsP9RS"; }
+    if (x==9) { say_to_var "SMObsP10RS"; }
+    if (x==10) { say_to_var "SMObsP11RS"; }
+    if (x==11) { say_to_var "SMObsP12RS"; }
+    if (x==12) { say_to_var "SMObsP13RS"; }
+    if (x==13) { say_to_var "SMObsP14RS"; }
+    if (x==14) { say_to_var "SMObsP15RS"; }
+    say perf_ret[$RES_BITS];
+    perf_ret[$RES_SYNCED_BIT] = 1;
+    target = $P_X_QP_RES_AF;
+    PERFORM SET_ACHRONAL_FIELD perf_ret;
+}
+
+PERFORM GET_ACHRONAL_FIELD $P_X_ADV_AF;
+    if (!COMM_RACE_LC[$ADV_SYNCED_BIT]||forceUpdate){ //Since ADV_SYNCED_BIT is stored with COMM_RACE_LC, we need it as a separate var
+    if(x==0) {say_to_var "SMObsP1ADV";}
+    if(x==1) {say_to_var "SMObsP2ADV";}
+    if(x==2) {say_to_var "SMObsP3ADV";}
+    if(x==3) {say_to_var "SMObsP4ADV";}
+    if(x==4) {say_to_var "SMObsP5ADV";}
+    if(x==5) {say_to_var "SMObsP6ADV";}
+    if(x==6) {say_to_var "SMObsP7ADV";}
+    if(x==7) {say_to_var "SMObsP8ADV";}
+    if(x==8) {say_to_var "SMObsP9ADV";}
+    if(x==9) {say_to_var "SMObsP10ADV";}
+    if(x==10) {say_to_var "SMObsP11ADV";}
+    if(x==11) {say_to_var "SMObsP12ADV";}
+    if(x==12) {say_to_var "SMObsP13ADV";}
+    if(x==13) {say_to_var "SMObsP14ADV";}
+    if(x==14) {say_to_var "SMObsP15ADV";}
+    say perf_ret;
+    COMM_RACE_LC[$ADV_SYNCED_BIT] = 1;
+    target = $P_X_COMM_RACE_LC_AF;
+    PERFORM SET_ACHRONAL_FIELD COMM_RACE_LC;
+}
+
+//Send command info
+
+//Calculate available orders
+float currentCE = 0;
+float maxCE = 0;
+int controlBits = 0; //Bit 0 marks player in playable past, Bit 1 marks player in Playable time, Bit 2 marks player has orders left
+int ordersLeft = 0;
+int maxOrders = 0;
+int maxPastCommands = 0;
+int playerCurrent = 0;
+int UPPCurrent = 0;
+int UPPWidth = 0;
+int windowStart = 0;
+int maxPresent = 0;
+
+PERFORM GET_PLAYER_MAX_CHRONOENERGY x;
+maxCE = perf_ret_float;
+
+PERFORM GET_PLAYER_CHRONOENERGY x;
+currentCE = perf_ret_float;
+
+PERFORM GET_PLAYER_TIME x;
+playerCurrent = perf_ret;
+
+//Compute UPP by UPPWidth - (maxPresent - present)
+PERFORM GET_UNPLAYABLE_PAST_DURATION;
+UPPWidth = perf_ret;
+
+PERFORM GET_TIME_WINDOW_START;
+windowStart = perf_ret;
+
+PERFORM GET_PRESENT_TIME_WAVE_FIXED_TIME;
+maxPresent = perf_ret;
+
+PERFORM GET_MAX_NUM_COMMANDS_IN_PAST;
+maxPastCommands = perf_ret;
+
+//Determine current UPP for chronoenergy cost calculation
+if (maxPresent > present){
+    UPPCurrent = UPPWidth - (maxPresent - present); //Present is floating
+}
+else {UPPCurrent = UPPWidth + windowStart;} //Present is fixed
+
+//Calculate number of orders left
+if (playerCurrent < present && playerCurrent > UPPCurrent){
+    maxOrders = maxPastCommands*(playerCurrent - UPPCurrent)/(present - UPPCurrent);
+    ordersLeft = (currentCE/maxCE)*maxOrders;
+    if (ordersLeft >= 1) {
+        controlBits = 3; //bit 0: In playable past, bit 1: In playable time
+    } else {
+        controlBits = 1;
+    }
+} else {
+    if (playerCurrent <= UPPCurrent){
+        controlBits = 0; //Mark that player is in UPP
+    } else {
+        controlBits = 2; //Mark that player is in present or future and that the CE display should not turn red
+    }
+}
+
+//Send orders text
+if(x==0) {say_to_var "SMObsP1Orders";}
+if(x==1) {say_to_var "SMObsP2Orders";}
+if(x==2) {say_to_var "SMObsP3Orders";}
+if(x==3) {say_to_var "SMObsP4Orders";}
+if(x==4) {say_to_var "SMObsP5Orders";}
+if(x==5) {say_to_var "SMObsP6Orders";}
+if(x==6) {say_to_var "SMObsP7Orders";}
+if(x==7) {say_to_var "SMObsP8Orders";}
+if(x==8) {say_to_var "SMObsP9Orders";}
+if(x==9) {say_to_var "SMObsP10Orders";}
+if(x==10) {say_to_var "SMObsP11Orders";}
+if(x==11) {say_to_var "SMObsP12Orders";}
+if(x==12) {say_to_var "SMObsP13Orders";}
+if(x==13) {say_to_var "SMObsP14Orders";}
+if(x==14) {say_to_var "SMObsP15Orders";}
+say ordersLeft, " / ", maxOrders;
+
+int CEFractionMax = 55; //Number of mini-windows in skin for displaying CE
+
+int displayCEFraction = (currentCE/maxCE)*CEFractionMax;
+
+//Send Chronoenergy text as number for bar
+if(x==0) {say_to_var "SMObsP1CE";}
+if(x==1) {say_to_var "SMObsP2CE";}
+if(x==2) {say_to_var "SMObsP3CE";}
+if(x==3) {say_to_var "SMObsP4CE";}
+if(x==4) {say_to_var "SMObsP5CE";}
+if(x==5) {say_to_var "SMObsP6CE";}
+if(x==6) {say_to_var "SMObsP7CE";}
+if(x==7) {say_to_var "SMObsP8CE";}
+if(x==8) {say_to_var "SMObsP9CE";}
+if(x==9) {say_to_var "SMObsP10CE";}
+if(x==10) {say_to_var "SMObsP11CE";}
+if(x==11) {say_to_var "SMObsP12CE";}
+if(x==12) {say_to_var "SMObsP13CE";}
+if(x==13) {say_to_var "SMObsP14CE";}
+if(x==14) {say_to_var "SMObsP15CE";}
+say displayCEFraction;
+
+//Send Comm Center ability activation bits [0,2] if Comm center exists, and control bits for CE display, and whether this player is still alive
+if(x==0) {say_to_var "SMObsP1COMM";}
+if(x==1) {say_to_var "SMObsP2COMM";}
+if(x==2) {say_to_var "SMObsP3COMM";}
+if(x==3) {say_to_var "SMObsP4COMM";}
+if(x==4) {say_to_var "SMObsP5COMM";}
+if(x==5) {say_to_var "SMObsP6COMM";}
+if(x==6) {say_to_var "SMObsP7COMM";}
+if(x==7) {say_to_var "SMObsP8COMM";}
+if(x==8) {say_to_var "SMObsP9COMM";}
+if(x==9) {say_to_var "SMObsP10COMM";}
+if(x==10) {say_to_var "SMObsP11COMM";}
+if(x==11) {say_to_var "SMObsP12COMM";}
+if(x==12) {say_to_var "SMObsP13COMM";}
+if(x==13) {say_to_var "SMObsP14COMM";}
+if(x==14) {say_to_var "SMObsP15COMM";}
+if(pre_game_settings[$MP_ASSASSIN_MODE]) {say COMM_RACE_LC[$COMM_BITS] | ((controlBits[0,2])<<3) | (((active>>x)&1)<<5) | (COMM_RACE_LC[$ACHRON_DEAD_BIT] << 6);}       
+else {say COMM_RACE_LC[$COMM_BITS] | ((controlBits[0,2])<<3) | (((active>>x)&1)<<5);}
+
+
+
+//print "Player", x, " Orders Left: ", ordersLeft, " Max Orders: ", maxOrders, "\n";
+
+//Tournament Display
+
+//Always send this on change to observer, since the non-observer may have been active
+//beyond the point at which the present becomes fixed
+if ((UPPCurrent < UPPWidth && !COMM_RACE_LC[$RACE_SYNCED_BIT])||forceUpdate){
+if(x==0) {say_to_var "SMP1Race";}
+if(x==1) {say_to_var "SMP2Race";}
+if(x==2) {say_to_var "SMP3Race";}
+if(x==3) {say_to_var "SMP4Race";}
+if(x==4) {say_to_var "SMP5Race";}
+if(x==5) {say_to_var "SMP6Race";}
+if(x==6) {say_to_var "SMP7Race";}
+if(x==7) {say_to_var "SMP8Race";}
+if(x==8) {say_to_var "SMP9Race";}
+if(x==9) {say_to_var "SMP10Race";}
+if(x==10) {say_to_var "SMP11Race";}
+if(x==11) {say_to_var "SMP12Race";}
+if(x==12) {say_to_var "SMP13Race";}
+if(x==13) {say_to_var "SMP14Race";}
+if(x==14) {say_to_var "SMP15Race";}
+say COMM_RACE_LC[$RACE_BITS];
+COMM_RACE_LC[$RACE_SYNCED_BIT] = 1;
+target = $P_X_COMM_RACE_LC_AF;
+PERFORM SET_ACHRONAL_FIELD COMM_RACE_LC;
+}
+
+//Get player time rate
+//Only send on change or when forced
+PERFORM GET_ACHRONAL_FIELD $CURR_TIME_RATE_Y_AF;
+int time_rate_x_change = 0;
+int curr_time_rate_array = perf_ret;
+PERFORM GET_PLAYER_TIME_RATE x;
+if(x==0) {
+    time_rate_x_change = curr_time_rate_array[0,2] != perf_ret;
+    curr_time_rate_array[0,2] = perf_ret;
+    if (time_rate_x_change||forceUpdate){ say_to_var "SMP1Time";}
+}
+if(x==1) {
+    time_rate_x_change = curr_time_rate_array[2,2] != perf_ret;
+    curr_time_rate_array[2,2] = perf_ret;
+    if (time_rate_x_change||forceUpdate){ say_to_var "SMP2Time";}
+}
+if(x==2) {
+    time_rate_x_change = curr_time_rate_array[4,2] != perf_ret;
+    curr_time_rate_array[4,2] = perf_ret;
+    if (time_rate_x_change||forceUpdate){ say_to_var "SMP3Time";}
+}
+if(x==3) {
+    time_rate_x_change = curr_time_rate_array[6,2] != perf_ret;
+    curr_time_rate_array[6,2] = perf_ret;
+    if (time_rate_x_change||forceUpdate){ say_to_var "SMP4Time";}
+}
+if(x==4) {
+    time_rate_x_change = curr_time_rate_array[8,2] != perf_ret;
+    curr_time_rate_array[8,2] = perf_ret;
+    if (time_rate_x_change||forceUpdate){ say_to_var "SMP5Time";}
+}
+if(x==5) {
+    time_rate_x_change = curr_time_rate_array[10,2] != perf_ret;
+    curr_time_rate_array[10,2] = perf_ret;
+    if (time_rate_x_change||forceUpdate){ say_to_var "SMP6Time";}
+}
+if(x==6) {
+    time_rate_x_change = curr_time_rate_array[12,2] != perf_ret;
+    curr_time_rate_array[12,2] = perf_ret;
+    if (time_rate_x_change||forceUpdate){ say_to_var "SMP7Time";}
+}
+if(x==7) {
+    time_rate_x_change = curr_time_rate_array[14,2] != perf_ret;
+    curr_time_rate_array[14,2] = perf_ret;
+    if (time_rate_x_change||forceUpdate){ say_to_var "SMP8Time";}
+}
+if(x==8) {
+    time_rate_x_change = curr_time_rate_array[16,2] != perf_ret;
+    curr_time_rate_array[16,2] = perf_ret;
+    if (time_rate_x_change||forceUpdate){ say_to_var "SMP9Time";}
+}
+if(x==9) {
+    time_rate_x_change = curr_time_rate_array[18,2] != perf_ret;
+    curr_time_rate_array[18,2] = perf_ret;
+    if (time_rate_x_change||forceUpdate){ say_to_var "SMP10Time";}
+}
+if(x==10) {
+    time_rate_x_change = curr_time_rate_array[20,2] != perf_ret;
+    curr_time_rate_array[20,2] = perf_ret;
+    if (time_rate_x_change||forceUpdate){ say_to_var "SMP11Time";}
+}
+if(x==11) {
+    time_rate_x_change = curr_time_rate_array[22,2] != perf_ret;
+    curr_time_rate_array[22,2] = perf_ret;
+    if (time_rate_x_change||forceUpdate){ say_to_var "SMP12Time";}
+}
+if(x==12) {
+    time_rate_x_change = curr_time_rate_array[24,2] != perf_ret;
+    curr_time_rate_array[24,2] = perf_ret;
+    if (time_rate_x_change||forceUpdate){ say_to_var "SMP13Time";}
+}
+if(x==13) {
+    time_rate_x_change = curr_time_rate_array[26,2] != perf_ret;
+    curr_time_rate_array[26,2] = perf_ret;
+    if (time_rate_x_change||forceUpdate){ say_to_var "SMP14Time";}
+}
+if(x==14) {
+    time_rate_x_change = curr_time_rate_array[28,2] != perf_ret;
+    curr_time_rate_array[28,2] = perf_ret;
+    if (time_rate_x_change||forceUpdate){ say_to_var "SMP15Time";}
+}
+if(time_rate_x_change||forceUpdate){
+    say perf_ret;
+}
+
+say_to_var "";
+
+target = $CURR_TIME_RATE_Y_AF;
+PERFORM SET_ACHRONAL_FIELD curr_time_rate_array;

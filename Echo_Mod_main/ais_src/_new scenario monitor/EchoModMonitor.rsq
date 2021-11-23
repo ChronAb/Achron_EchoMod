@@ -29,6 +29,7 @@ int mapY = perf_ret;
 
 // Global utility variables
 object queryOwnr = 0;
+int allymask = 0;
 #define PLAYER_HUMAN (player->CustomField8)[0] == 1
 #define PLAYER_GREKIM (player->CustomField8)[1] == 1
 #define PLAYER_VECGIR (player->CustomField8)[2] == 1
@@ -241,7 +242,7 @@ if(1 && current == present && present == 1){
 // auto-share vision between allies at game start
 if(current == 1){
 	int p = 0;
-    int allymask = 0;
+    allymask = 0;
 	
 	for (p = 0; p < 12; p=p+1) {
 		player = p;
@@ -261,7 +262,7 @@ if(current == 1){
 ***********************************************/
 if(current >= 360 && current <= 371){
 	player = (current-360)%12;
-    int allymask = player->Allies;
+    allymask = player->Allies;
     object chooser = 0;
     object herald = 0;
     int humanity = 15;
@@ -323,7 +324,7 @@ if(current >= 360 && current <= 371){
 // af38 stores exit engine timestamp
 int p = 0;
 int winner = 15;
-int allymask = 0;
+allymask = 0;
 
 int totalSecs = current / $TPS;
 $CALCULATE_MIN_SEC_HOUR

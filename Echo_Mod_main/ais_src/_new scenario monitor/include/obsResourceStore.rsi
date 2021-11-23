@@ -1,0 +1,95 @@
+/*************************************
+Resource display for observers - Field Storage SubComponent
+by Shadowfury333 and ChronA
+
+For any given player, this grabs their resource and status fields 
+to share with the Obs.
+
+To conserve bandwidth, it does not write information that hasn't changed
+*************************************/
+
+player = x;
+if((contenders>>x)&1){
+    
+    // Read Fields:
+    // LC & Status
+    PERFORM GET_ACHRONAL_FIELD $P_X_COMM_RACE_LC_AF;
+    int COMM_RACE_LC = perf_ret;
+    COMM_RACE_LC[$LC_BITS] = player->$LCrystals;
+    COMM_RACE_LC[$COMM_BITS] = player->GlobalFlags[0,3];
+
+    // QP & Reserves
+    PERFORM GET_ACHRONAL_FIELD $P_X_QP_RES_AF;
+    int QP_RES = perf_ret;
+    QP_RES[$QP_BITS] = player->$QPlasma;
+    QP_RES[$RES_BITS] = player->$ReserveSoldiers;
+
+    // Power
+    int POW = 0;
+    POW = player->$Power;
+
+    // Advancements
+    int ADV = 0;
+    ADV[$ADV_BITS] = player->Advancements;
+    ADV[$ADV_INCOMPLETE_BITS] = player->CustomControls;
+
+    // Race
+    if ($PLAYER_GREKIM){
+      COMM_RACE_LC[$RACE_BITS] = 3; //Grekim
+    } else if ($PLAYER_HUMAN){
+      COMM_RACE_LC[$RACE_BITS] = 1; //CESO
+    } else if ($PLAYER_VECGIR){
+      COMM_RACE_LC[$RACE_BITS] = 2; //Vecgir
+    }
+
+    // Dead Achron
+    if(pre_game_settings[$MP_ASSASSIN_MODE]) {
+      COMM_RACE_LC[$ACHRON_DEAD_BIT] = player->ControlFlags[$CONTROLFLAGS_PLAYER_CONTROL];
+    }
+    
+    
+    // Efficiency Check & Writing Data to Achron Fields: 
+    // To conserve bandwidth, don't send information that hasn't changed 
+    // -- only set the sync bit when curent data doesn't match what's in storage.
+    
+    // LC, Race, & Status
+    PERFORM GET_ACHRONAL_FIELD $P_X_COMM_RACE_LC_AF;
+    if (COMM_RACE_LC[$LC_BITS] != perf_ret[$LC_BITS]) COMM_RACE_LC[$LC_SYNCED_BIT] = 0;
+    if (COMM_RACE_LC[$RACE_BITS] != perf_ret[$RACE_BITS]) COMM_RACE_LC[$RACE_SYNCED_BIT] = 0;
+    
+    if (perf_ret != COMM_RACE_LC){
+        target = $P_X_COMM_RACE_LC_AF;
+        PERFORM SET_ACHRONAL_FIELD COMM_RACE_LC;
+    }
+    
+    // QP $ Reserves
+    PERFORM GET_ACHRONAL_FIELD $P_X_QP_RES_AF;
+    if (QP_RES[$QP_BITS] != perf_ret[$QP_BITS]) QP_RES[$QP_SYNCED_BIT] = 0;
+    if (QP_RES[$RES_BITS] != perf_ret[$RES_BITS]) QP_RES[$RES_SYNCED_BIT] = 0;
+    
+    if (perf_ret != QP_RES){
+        target = $P_X_QP_RES_AF;
+        PERFORM SET_ACHRONAL_FIELD QP_RES;
+    }
+    
+    // Power
+    PERFORM GET_ACHRONAL_FIELD $P_X_POW_AF;
+    if (POW != perf_ret){
+        COMM_RACE_LC[$POW_SYNCED_BIT] = 0;
+        target = $P_X_POW_AF;
+        PERFORM SET_ACHRONAL_FIELD POW;
+    }
+    
+    // Advancements
+    PERFORM GET_ACHRONAL_FIELD $P_X_ADV_AF;
+    if (ADV != perf_ret){
+        COMM_RACE_LC[$ADV_SYNCED_BIT] = 0;
+        target = $P_X_ADV_AF;
+        PERFORM SET_ACHRONAL_FIELD ADV;
+    }
+    
+    
+    //print "POW field: ", target, " Player: ", x, " Observer: ", y, "\n";
+    //print "LC field: ", target, " Player: ", x, " Observer: ", y, "\n";
+    //print "COMM_QP_RES field: ", target, " Player: ", x, " Observer: ", y, "\n";
+}
