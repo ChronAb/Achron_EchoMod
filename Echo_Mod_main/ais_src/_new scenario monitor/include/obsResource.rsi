@@ -85,6 +85,13 @@ int y = 0;
 for (y=0; y<14; y=y+1){
     //If we are in a replay, make sure all players get data
     PERFORM IS_REPLAY;
+    
+    //If this is a replay, bypass all efficiency measures, it messes with proper operation.
+    //If this isn't a replay, send all data every 30 seconds anyway, in case lag spikes 
+    // have caused a false positive in the synced detection bits.
+    int forceUpdate = perf_ret|((present%(30 $seconds))==x);
+    
+    // Store contenders' stats:
     if((((obs&connected)>>y)&1)||(perf_ret&&((enabled>>y)&1))){
         PERFORM GET_PLAYER_TIME y;
         int currentObsTime = perf_ret;

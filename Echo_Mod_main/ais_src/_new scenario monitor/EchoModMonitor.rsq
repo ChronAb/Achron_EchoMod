@@ -241,7 +241,7 @@ if(1 && current == present && present == 1){
 #include include/obsAlliances.rsi
 
 //Tell observers about all resources
-#include include/obsResourceSay.rsi
+#include include/obsResource.rsi
 
 //check to see if the game is over and set tournament win pip, if tournament display is on
 //#include include/tournamentWinHandler.rsi
