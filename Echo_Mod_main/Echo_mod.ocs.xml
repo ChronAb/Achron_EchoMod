@@ -25199,12 +25199,12 @@ Collect with a RP to gain resources</Description>
             <Condition>
               <Resource>U_AGE</Resource>
               <Comparison>MODULO_IS_ZERO</Comparison>
-              <Value>179</Value>
+              <Value>180</Value>
             </Condition>
             <Condition>
               <Resource>P_L_CRYSTALS</Resource>
               <Comparison>GEQUAL</Comparison>
-              <Value>2000</Value>
+              <Value>20</Value>
             </Condition>
           </Conditions>
           <Steps>
@@ -25213,14 +25213,14 @@ Collect with a RP to gain resources</Description>
               <Target>SELF</Target>
               <Type>P_Q_PLASMA</Type>
               <ValueEval>ONE</ValueEval>
-              <Value>-800</Value>
+              <Value>-20</Value>
             </Step>
             <Step>
               <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
               <Target>SELF</Target>
               <Type>P_L_CRYSTALS</Type>
               <ValueEval>ONE</ValueEval>
-              <Value>800</Value>
+              <Value>20</Value>
             </Step>
           </Steps>
         </Action>
@@ -25799,7 +25799,7 @@ Collect with a RP to gain resources</Description>
               <Target>SELF</Target>
               <Type>P_L_CRYSTALS</Type>
               <ValueEval>ONE</ValueEval>
-              <Value>-400</Value>
+              <Value>0</Value>
             </Step>
             <Step>
               <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -26287,7 +26287,7 @@ Collect with a RP to gain resources</Description>
               <Target>SELF</Target>
               <Type>P_POWER</Type>
               <ValueEval>ONE</ValueEval>
-              <Value>-800</Value>
+              <Value>-400</Value>
             </Step>
             <Step>
               <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -27787,7 +27787,7 @@ Shell can accommodate a fully Achronal Elder Guardian AI (i.e. you)</Description
               <Target>SELF</Target>
               <Type>P_Q_PLASMA</Type>
               <ValueEval>ONE</ValueEval>
-              <Value>-600</Value>
+              <Value>-200</Value>
             </Step>
             <Step>
               <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -67410,7 +67410,7 @@ that is also in Progeneration mode&#13;
 &#13;
 Must be near a Spyre to progenerate&#13;
 aerospace units.</Description>
-      <Model>./grekim/octo.mdl</Model>
+      <Model>./Achron_EchoMod/Echo_Mod_main/New_Models/octo.mdl</Model>
       <Rank>75</Rank>
       <Type>2</Type>
       <PrioritySelectionRank>0</PrioritySelectionRank>
@@ -69073,6 +69073,11 @@ aerospace units.</Description>
               <Comparison>BITMASK</Comparison>
               <Value>128</Value>
             </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
         <ControlShortcut>
@@ -69097,6 +69102,11 @@ aerospace units.</Description>
               <Resource>U_STATUS</Resource>
               <Comparison>BITMASK</Comparison>
               <Value>32</Value>
+            </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
             </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
@@ -69123,6 +69133,11 @@ aerospace units.</Description>
               <Comparison>BITMASK</Comparison>
               <Value>64</Value>
             </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
         <ControlShortcut>
@@ -69147,6 +69162,11 @@ aerospace units.</Description>
               <Resource>U_STATUS</Resource>
               <Comparison>BITMASK</Comparison>
               <Value>128</Value>
+            </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
             </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
@@ -69178,6 +69198,11 @@ aerospace units.</Description>
               <Comparison>BITMASK</Comparison>
               <Value>32</Value>
             </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
         <ControlShortcut>
@@ -69208,6 +69233,11 @@ aerospace units.</Description>
               <Comparison>BITMASK</Comparison>
               <Value>64</Value>
             </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
         <ControlShortcut>
@@ -69232,6 +69262,11 @@ aerospace units.</Description>
               <Resource>U_STATUS</Resource>
               <Comparison>BITMASK</Comparison>
               <Value>128</Value>
+            </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
             </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
@@ -69259,6 +69294,11 @@ aerospace units.</Description>
               <Comparison>BITMASK_NOT</Comparison>
               <Value>128</Value>
             </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
         <ControlShortcut>
@@ -69284,6 +69324,11 @@ aerospace units.</Description>
               <Resource>U_STATUS</Resource>
               <Comparison>BITMASK_NOT</Comparison>
               <Value>32</Value>
+            </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
             </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
@@ -69311,6 +69356,11 @@ aerospace units.</Description>
               <Comparison>BITMASK_NOT</Comparison>
               <Value>64</Value>
             </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
         <ControlShortcut>
@@ -69336,6 +69386,11 @@ aerospace units.</Description>
               <Resource>U_STATUS</Resource>
               <Comparison>BITMASK_NOT</Comparison>
               <Value>128</Value>
+            </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
             </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
@@ -69363,6 +69418,11 @@ aerospace units.</Description>
               <Comparison>BITMASK_NOT</Comparison>
               <Value>32</Value>
             </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
         <ControlShortcut>
@@ -69389,6 +69449,11 @@ aerospace units.</Description>
               <Comparison>BITMASK_NOT</Comparison>
               <Value>64</Value>
             </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
         <ControlShortcut>
@@ -69414,6 +69479,11 @@ aerospace units.</Description>
               <Resource>U_STATUS</Resource>
               <Comparison>BITMASK_NOT</Comparison>
               <Value>128</Value>
+            </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
             </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
@@ -69446,6 +69516,11 @@ aerospace units.</Description>
               <Comparison>BITMASK</Comparison>
               <Value>32</Value>
             </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
         <ControlShortcut>
@@ -69477,10 +69552,190 @@ aerospace units.</Description>
               <Comparison>BITMASK</Comparison>
               <Value>64</Value>
             </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
+          </ControlConditions>
+        </ControlShortcut>
+        <ControlShortcut>
+          <ControlNumber>30</ControlNumber>
+          <ControlObjectiveNumber>38</ControlObjectiveNumber>
+          <ParameterType>POSITION_CLASS</ParameterType>
+          <Parameter>0</Parameter>
+          <KeyboardShortcut>$AchronKBOcto</KeyboardShortcut>
+          <Flags>
+            <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+            <EstTimeConstIsStart>0</EstTimeConstIsStart>
+            <ButtonDisabled>0</ButtonDisabled>
+            <UserControlsCustom>0</UserControlsCustom>
+            <ButtonInvisible>0</ButtonInvisible>
+            <SelectTarget>0</SelectTarget>
+          </Flags>
+          <EstTimeConst>216</EstTimeConst>
+          <EstTimeDist>6</EstTimeDist>
+          <Sound>Sound0</Sound>
+          <ControlConditions>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>GREATER</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
         <ControlShortcut>
           <ControlNumber>31</ControlNumber>
+          <ControlObjectiveNumber>39</ControlObjectiveNumber>
+          <ParameterType>POSITION_CLASS</ParameterType>
+          <Parameter>0</Parameter>
+          <KeyboardShortcut>$AchronKBSepi</KeyboardShortcut>
+          <Flags>
+            <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+            <EstTimeConstIsStart>0</EstTimeConstIsStart>
+            <ButtonDisabled>0</ButtonDisabled>
+            <UserControlsCustom>0</UserControlsCustom>
+            <ButtonInvisible>0</ButtonInvisible>
+            <SelectTarget>0</SelectTarget>
+          </Flags>
+          <EstTimeConst>216</EstTimeConst>
+          <EstTimeDist>6</EstTimeDist>
+          <Sound>Sound0</Sound>
+          <ControlConditions>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>GREATER</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
+          </ControlConditions>
+        </ControlShortcut>
+        <ControlShortcut>
+          <ControlNumber>32</ControlNumber>
+          <ControlObjectiveNumber>40</ControlObjectiveNumber>
+          <ParameterType>POSITION_CLASS</ParameterType>
+          <Parameter>0</Parameter>
+          <KeyboardShortcut>$AchronKBPharo</KeyboardShortcut>
+          <Flags>
+            <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+            <EstTimeConstIsStart>0</EstTimeConstIsStart>
+            <ButtonDisabled>0</ButtonDisabled>
+            <UserControlsCustom>0</UserControlsCustom>
+            <ButtonInvisible>0</ButtonInvisible>
+            <SelectTarget>0</SelectTarget>
+          </Flags>
+          <EstTimeConst>216</EstTimeConst>
+          <EstTimeDist>9</EstTimeDist>
+          <Sound>Sound0</Sound>
+          <ControlConditions>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>GREATER</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
+          </ControlConditions>
+        </ControlShortcut>
+        <ControlShortcut>
+          <ControlNumber>33</ControlNumber>
+          <ControlObjectiveNumber>41</ControlObjectiveNumber>
+          <ParameterType>POSITION_CLASS</ParameterType>
+          <Parameter>0</Parameter>
+          <KeyboardShortcut>$AchronKBOctopod</KeyboardShortcut>
+          <Flags>
+            <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+            <EstTimeConstIsStart>0</EstTimeConstIsStart>
+            <ButtonDisabled>0</ButtonDisabled>
+            <UserControlsCustom>0</UserControlsCustom>
+            <ButtonInvisible>0</ButtonInvisible>
+            <SelectTarget>0</SelectTarget>
+          </Flags>
+          <EstTimeConst>540</EstTimeConst>
+          <EstTimeDist>6</EstTimeDist>
+          <Sound>Sound0</Sound>
+          <ControlConditions>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>GREATER</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
+          </ControlConditions>
+        </ControlShortcut>
+        <ControlShortcut>
+          <ControlNumber>34</ControlNumber>
+          <ControlObjectiveNumber>42</ControlObjectiveNumber>
+          <ParameterType>POSITION_CLASS</ParameterType>
+          <Parameter>0</Parameter>
+          <KeyboardShortcut>$AchronKBSepipod</KeyboardShortcut>
+          <Flags>
+            <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+            <EstTimeConstIsStart>0</EstTimeConstIsStart>
+            <ButtonDisabled>0</ButtonDisabled>
+            <UserControlsCustom>0</UserControlsCustom>
+            <ButtonInvisible>0</ButtonInvisible>
+            <SelectTarget>0</SelectTarget>
+          </Flags>
+          <EstTimeConst>432</EstTimeConst>
+          <EstTimeDist>2</EstTimeDist>
+          <Sound>Sound0</Sound>
+          <ControlConditions>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>GREATER</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
+          </ControlConditions>
+        </ControlShortcut>
+        <ControlShortcut>
+          <ControlNumber>35</ControlNumber>
+          <ControlObjectiveNumber>43</ControlObjectiveNumber>
+          <ParameterType>POSITION_CLASS</ParameterType>
+          <Parameter>0</Parameter>
+          <KeyboardShortcut>$AchronKBPharopod</KeyboardShortcut>
+          <Flags>
+            <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+            <EstTimeConstIsStart>0</EstTimeConstIsStart>
+            <ButtonDisabled>0</ButtonDisabled>
+            <UserControlsCustom>0</UserControlsCustom>
+            <ButtonInvisible>0</ButtonInvisible>
+            <SelectTarget>0</SelectTarget>
+          </Flags>
+          <EstTimeConst>720</EstTimeConst>
+          <EstTimeDist>3</EstTimeDist>
+          <Sound>Sound0</Sound>
+          <ControlConditions>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>GREATER</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
+          </ControlConditions>
+        </ControlShortcut>
+        <ControlShortcut>
+          <ControlNumber>36</ControlNumber>
+          <ControlObjectiveNumber>52</ControlObjectiveNumber>
+          <ParameterType>POSITION_CLASS</ParameterType>
+          <Parameter>1056</Parameter>
+          <KeyboardShortcut>$AchronKBRpGrekim</KeyboardShortcut>
+          <Flags>
+            <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+            <EstTimeConstIsStart>0</EstTimeConstIsStart>
+            <ButtonDisabled>0</ButtonDisabled>
+            <UserControlsCustom>0</UserControlsCustom>
+            <ButtonInvisible>0</ButtonInvisible>
+            <SelectTarget>0</SelectTarget>
+          </Flags>
+          <EstTimeConst>756</EstTimeConst>
+          <EstTimeDist>6</EstTimeDist>
+          <Sound>Sound0</Sound>
+          <ControlConditions>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>GREATER</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
+          </ControlConditions>
+        </ControlShortcut>
+        <ControlShortcut>
+          <ControlNumber>38</ControlNumber>
           <ControlObjectiveNumber>18</ControlObjectiveNumber>
           <MouseInputType>SHORTCUT_TILE</MouseInputType>
           <ParameterType>POSITION_OR_UNIT</ParameterType>
@@ -69500,7 +69755,7 @@ aerospace units.</Description>
           <ControlConditions/>
         </ControlShortcut>
         <ControlShortcut>
-          <ControlNumber>35</ControlNumber>
+          <ControlNumber>39</ControlNumber>
           <ControlObjectiveNumber>20</ControlObjectiveNumber>
           <MouseInputType>SHORTCUT_ALLY_UNIT</MouseInputType>
           <ParameterType>UNIT</ParameterType>
@@ -69529,7 +69784,7 @@ that is also in Progeneration mode&#13;
 &#13;
 Must be near a Spyre to progenerate&#13;
 aerospace units.</Description>
-      <Model>./grekim/sepi.mdl</Model>
+      <Model>./Achron_EchoMod/Echo_Mod_main/New_Models/sepi.mdl</Model>
       <Rank>75</Rank>
       <Type>2</Type>
       <PrioritySelectionRank>0</PrioritySelectionRank>
@@ -71199,6 +71454,11 @@ aerospace units.</Description>
               <Comparison>BITMASK</Comparison>
               <Value>32</Value>
             </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
         <ControlShortcut>
@@ -71223,6 +71483,11 @@ aerospace units.</Description>
               <Resource>U_STATUS</Resource>
               <Comparison>BITMASK</Comparison>
               <Value>128</Value>
+            </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
             </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
@@ -71249,6 +71514,11 @@ aerospace units.</Description>
               <Comparison>BITMASK</Comparison>
               <Value>64</Value>
             </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
         <ControlShortcut>
@@ -71273,6 +71543,11 @@ aerospace units.</Description>
               <Resource>U_STATUS</Resource>
               <Comparison>BITMASK</Comparison>
               <Value>32</Value>
+            </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
             </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
@@ -71304,6 +71579,11 @@ aerospace units.</Description>
               <Comparison>BITMASK</Comparison>
               <Value>128</Value>
             </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
         <ControlShortcut>
@@ -71334,6 +71614,11 @@ aerospace units.</Description>
               <Comparison>BITMASK</Comparison>
               <Value>64</Value>
             </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
         <ControlShortcut>
@@ -71358,6 +71643,11 @@ aerospace units.</Description>
               <Resource>U_STATUS</Resource>
               <Comparison>BITMASK</Comparison>
               <Value>32</Value>
+            </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
             </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
@@ -71385,6 +71675,11 @@ aerospace units.</Description>
               <Comparison>BITMASK_NOT</Comparison>
               <Value>32</Value>
             </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
         <ControlShortcut>
@@ -71410,6 +71705,11 @@ aerospace units.</Description>
               <Resource>U_STATUS</Resource>
               <Comparison>BITMASK_NOT</Comparison>
               <Value>128</Value>
+            </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
             </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
@@ -71437,6 +71737,11 @@ aerospace units.</Description>
               <Comparison>BITMASK_NOT</Comparison>
               <Value>64</Value>
             </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
         <ControlShortcut>
@@ -71462,6 +71767,11 @@ aerospace units.</Description>
               <Resource>U_STATUS</Resource>
               <Comparison>BITMASK_NOT</Comparison>
               <Value>32</Value>
+            </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
             </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
@@ -71489,6 +71799,11 @@ aerospace units.</Description>
               <Comparison>BITMASK_NOT</Comparison>
               <Value>128</Value>
             </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
         <ControlShortcut>
@@ -71515,6 +71830,11 @@ aerospace units.</Description>
               <Comparison>BITMASK_NOT</Comparison>
               <Value>64</Value>
             </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
         <ControlShortcut>
@@ -71540,6 +71860,11 @@ aerospace units.</Description>
               <Resource>U_STATUS</Resource>
               <Comparison>BITMASK_NOT</Comparison>
               <Value>32</Value>
+            </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
             </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
@@ -71572,6 +71897,11 @@ aerospace units.</Description>
               <Comparison>BITMASK</Comparison>
               <Value>128</Value>
             </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
         <ControlShortcut>
@@ -71603,10 +71933,190 @@ aerospace units.</Description>
               <Comparison>BITMASK</Comparison>
               <Value>64</Value>
             </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
+          </ControlConditions>
+        </ControlShortcut>
+        <ControlShortcut>
+          <ControlNumber>30</ControlNumber>
+          <ControlObjectiveNumber>38</ControlObjectiveNumber>
+          <ParameterType>POSITION_CLASS</ParameterType>
+          <Parameter>0</Parameter>
+          <KeyboardShortcut>$AchronKBOcto</KeyboardShortcut>
+          <Flags>
+            <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+            <EstTimeConstIsStart>0</EstTimeConstIsStart>
+            <ButtonDisabled>0</ButtonDisabled>
+            <UserControlsCustom>0</UserControlsCustom>
+            <ButtonInvisible>0</ButtonInvisible>
+            <SelectTarget>0</SelectTarget>
+          </Flags>
+          <EstTimeConst>216</EstTimeConst>
+          <EstTimeDist>6</EstTimeDist>
+          <Sound>Sound0</Sound>
+          <ControlConditions>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>GREATER</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
         <ControlShortcut>
           <ControlNumber>31</ControlNumber>
+          <ControlObjectiveNumber>39</ControlObjectiveNumber>
+          <ParameterType>POSITION_CLASS</ParameterType>
+          <Parameter>0</Parameter>
+          <KeyboardShortcut>$AchronKBSepi</KeyboardShortcut>
+          <Flags>
+            <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+            <EstTimeConstIsStart>0</EstTimeConstIsStart>
+            <ButtonDisabled>0</ButtonDisabled>
+            <UserControlsCustom>0</UserControlsCustom>
+            <ButtonInvisible>0</ButtonInvisible>
+            <SelectTarget>0</SelectTarget>
+          </Flags>
+          <EstTimeConst>216</EstTimeConst>
+          <EstTimeDist>6</EstTimeDist>
+          <Sound>Sound0</Sound>
+          <ControlConditions>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>GREATER</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
+          </ControlConditions>
+        </ControlShortcut>
+        <ControlShortcut>
+          <ControlNumber>32</ControlNumber>
+          <ControlObjectiveNumber>40</ControlObjectiveNumber>
+          <ParameterType>POSITION_CLASS</ParameterType>
+          <Parameter>0</Parameter>
+          <KeyboardShortcut>$AchronKBPharo</KeyboardShortcut>
+          <Flags>
+            <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+            <EstTimeConstIsStart>0</EstTimeConstIsStart>
+            <ButtonDisabled>0</ButtonDisabled>
+            <UserControlsCustom>0</UserControlsCustom>
+            <ButtonInvisible>0</ButtonInvisible>
+            <SelectTarget>0</SelectTarget>
+          </Flags>
+          <EstTimeConst>216</EstTimeConst>
+          <EstTimeDist>9</EstTimeDist>
+          <Sound>Sound0</Sound>
+          <ControlConditions>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>GREATER</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
+          </ControlConditions>
+        </ControlShortcut>
+        <ControlShortcut>
+          <ControlNumber>33</ControlNumber>
+          <ControlObjectiveNumber>41</ControlObjectiveNumber>
+          <ParameterType>POSITION_CLASS</ParameterType>
+          <Parameter>0</Parameter>
+          <KeyboardShortcut>$AchronKBOctopod</KeyboardShortcut>
+          <Flags>
+            <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+            <EstTimeConstIsStart>0</EstTimeConstIsStart>
+            <ButtonDisabled>0</ButtonDisabled>
+            <UserControlsCustom>0</UserControlsCustom>
+            <ButtonInvisible>0</ButtonInvisible>
+            <SelectTarget>0</SelectTarget>
+          </Flags>
+          <EstTimeConst>540</EstTimeConst>
+          <EstTimeDist>6</EstTimeDist>
+          <Sound>Sound0</Sound>
+          <ControlConditions>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>GREATER</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
+          </ControlConditions>
+        </ControlShortcut>
+        <ControlShortcut>
+          <ControlNumber>34</ControlNumber>
+          <ControlObjectiveNumber>42</ControlObjectiveNumber>
+          <ParameterType>POSITION_CLASS</ParameterType>
+          <Parameter>0</Parameter>
+          <KeyboardShortcut>$AchronKBSepipod</KeyboardShortcut>
+          <Flags>
+            <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+            <EstTimeConstIsStart>0</EstTimeConstIsStart>
+            <ButtonDisabled>0</ButtonDisabled>
+            <UserControlsCustom>0</UserControlsCustom>
+            <ButtonInvisible>0</ButtonInvisible>
+            <SelectTarget>0</SelectTarget>
+          </Flags>
+          <EstTimeConst>432</EstTimeConst>
+          <EstTimeDist>2</EstTimeDist>
+          <Sound>Sound0</Sound>
+          <ControlConditions>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>GREATER</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
+          </ControlConditions>
+        </ControlShortcut>
+        <ControlShortcut>
+          <ControlNumber>35</ControlNumber>
+          <ControlObjectiveNumber>43</ControlObjectiveNumber>
+          <ParameterType>POSITION_CLASS</ParameterType>
+          <Parameter>0</Parameter>
+          <KeyboardShortcut>$AchronKBPharopod</KeyboardShortcut>
+          <Flags>
+            <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+            <EstTimeConstIsStart>0</EstTimeConstIsStart>
+            <ButtonDisabled>0</ButtonDisabled>
+            <UserControlsCustom>0</UserControlsCustom>
+            <ButtonInvisible>0</ButtonInvisible>
+            <SelectTarget>0</SelectTarget>
+          </Flags>
+          <EstTimeConst>720</EstTimeConst>
+          <EstTimeDist>3</EstTimeDist>
+          <Sound>Sound0</Sound>
+          <ControlConditions>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>GREATER</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
+          </ControlConditions>
+        </ControlShortcut>
+        <ControlShortcut>
+          <ControlNumber>36</ControlNumber>
+          <ControlObjectiveNumber>52</ControlObjectiveNumber>
+          <ParameterType>POSITION_CLASS</ParameterType>
+          <Parameter>1056</Parameter>
+          <KeyboardShortcut>$AchronKBRpGrekim</KeyboardShortcut>
+          <Flags>
+            <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+            <EstTimeConstIsStart>0</EstTimeConstIsStart>
+            <ButtonDisabled>0</ButtonDisabled>
+            <UserControlsCustom>0</UserControlsCustom>
+            <ButtonInvisible>0</ButtonInvisible>
+            <SelectTarget>0</SelectTarget>
+          </Flags>
+          <EstTimeConst>756</EstTimeConst>
+          <EstTimeDist>6</EstTimeDist>
+          <Sound>Sound0</Sound>
+          <ControlConditions>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>GREATER</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
+          </ControlConditions>
+        </ControlShortcut>
+        <ControlShortcut>
+          <ControlNumber>38</ControlNumber>
           <ControlObjectiveNumber>18</ControlObjectiveNumber>
           <MouseInputType>SHORTCUT_TILE</MouseInputType>
           <ParameterType>POSITION_OR_UNIT</ParameterType>
@@ -71626,7 +72136,7 @@ aerospace units.</Description>
           <ControlConditions/>
         </ControlShortcut>
         <ControlShortcut>
-          <ControlNumber>35</ControlNumber>
+          <ControlNumber>39</ControlNumber>
           <ControlObjectiveNumber>20</ControlObjectiveNumber>
           <MouseInputType>SHORTCUT_ALLY_UNIT</MouseInputType>
           <ParameterType>UNIT</ParameterType>
@@ -71655,7 +72165,7 @@ that is also in Progeneration mode&#13;
 &#13;
 Must be near a Spyre to progenerate&#13;
 aerospace units.</Description>
-      <Model>./grekim/pharo.mdl</Model>
+      <Model>./Achron_EchoMod/Echo_Mod_main/New_Models/pharo.mdl</Model>
       <Rank>75</Rank>
       <Type>2</Type>
       <PrioritySelectionRank>0</PrioritySelectionRank>
@@ -73325,6 +73835,11 @@ aerospace units.</Description>
               <Comparison>BITMASK</Comparison>
               <Value>32</Value>
             </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
         <ControlShortcut>
@@ -73349,6 +73864,11 @@ aerospace units.</Description>
               <Resource>U_STATUS</Resource>
               <Comparison>BITMASK</Comparison>
               <Value>64</Value>
+            </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
             </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
@@ -73375,6 +73895,11 @@ aerospace units.</Description>
               <Comparison>BITMASK</Comparison>
               <Value>128</Value>
             </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
         <ControlShortcut>
@@ -73399,6 +73924,11 @@ aerospace units.</Description>
               <Resource>U_STATUS</Resource>
               <Comparison>BITMASK</Comparison>
               <Value>32</Value>
+            </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
             </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
@@ -73430,6 +73960,11 @@ aerospace units.</Description>
               <Comparison>BITMASK</Comparison>
               <Value>64</Value>
             </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
         <ControlShortcut>
@@ -73460,6 +73995,11 @@ aerospace units.</Description>
               <Comparison>BITMASK</Comparison>
               <Value>128</Value>
             </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
         <ControlShortcut>
@@ -73484,6 +74024,11 @@ aerospace units.</Description>
               <Resource>U_STATUS</Resource>
               <Comparison>BITMASK</Comparison>
               <Value>32</Value>
+            </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
             </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
@@ -73511,6 +74056,11 @@ aerospace units.</Description>
               <Comparison>BITMASK_NOT</Comparison>
               <Value>32</Value>
             </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
         <ControlShortcut>
@@ -73536,6 +74086,11 @@ aerospace units.</Description>
               <Resource>U_STATUS</Resource>
               <Comparison>BITMASK_NOT</Comparison>
               <Value>64</Value>
+            </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
             </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
@@ -73563,6 +74118,11 @@ aerospace units.</Description>
               <Comparison>BITMASK_NOT</Comparison>
               <Value>128</Value>
             </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
         <ControlShortcut>
@@ -73588,6 +74148,11 @@ aerospace units.</Description>
               <Resource>U_STATUS</Resource>
               <Comparison>BITMASK_NOT</Comparison>
               <Value>32</Value>
+            </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
             </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
@@ -73615,6 +74180,11 @@ aerospace units.</Description>
               <Comparison>BITMASK_NOT</Comparison>
               <Value>64</Value>
             </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
         <ControlShortcut>
@@ -73641,6 +74211,11 @@ aerospace units.</Description>
               <Comparison>BITMASK_NOT</Comparison>
               <Value>128</Value>
             </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
         <ControlShortcut>
@@ -73666,6 +74241,11 @@ aerospace units.</Description>
               <Resource>U_STATUS</Resource>
               <Comparison>BITMASK_NOT</Comparison>
               <Value>32</Value>
+            </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
             </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
@@ -73698,6 +74278,11 @@ aerospace units.</Description>
               <Comparison>BITMASK</Comparison>
               <Value>64</Value>
             </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
         <ControlShortcut>
@@ -73729,10 +74314,190 @@ aerospace units.</Description>
               <Comparison>BITMASK</Comparison>
               <Value>128</Value>
             </ControlCondition>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
+          </ControlConditions>
+        </ControlShortcut>
+        <ControlShortcut>
+          <ControlNumber>30</ControlNumber>
+          <ControlObjectiveNumber>38</ControlObjectiveNumber>
+          <ParameterType>POSITION_CLASS</ParameterType>
+          <Parameter>0</Parameter>
+          <KeyboardShortcut>$AchronKBOcto</KeyboardShortcut>
+          <Flags>
+            <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+            <EstTimeConstIsStart>0</EstTimeConstIsStart>
+            <ButtonDisabled>0</ButtonDisabled>
+            <UserControlsCustom>0</UserControlsCustom>
+            <ButtonInvisible>0</ButtonInvisible>
+            <SelectTarget>0</SelectTarget>
+          </Flags>
+          <EstTimeConst>216</EstTimeConst>
+          <EstTimeDist>6</EstTimeDist>
+          <Sound>Sound0</Sound>
+          <ControlConditions>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>GREATER</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
           </ControlConditions>
         </ControlShortcut>
         <ControlShortcut>
           <ControlNumber>31</ControlNumber>
+          <ControlObjectiveNumber>39</ControlObjectiveNumber>
+          <ParameterType>POSITION_CLASS</ParameterType>
+          <Parameter>0</Parameter>
+          <KeyboardShortcut>$AchronKBSepi</KeyboardShortcut>
+          <Flags>
+            <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+            <EstTimeConstIsStart>0</EstTimeConstIsStart>
+            <ButtonDisabled>0</ButtonDisabled>
+            <UserControlsCustom>0</UserControlsCustom>
+            <ButtonInvisible>0</ButtonInvisible>
+            <SelectTarget>0</SelectTarget>
+          </Flags>
+          <EstTimeConst>216</EstTimeConst>
+          <EstTimeDist>6</EstTimeDist>
+          <Sound>Sound0</Sound>
+          <ControlConditions>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>GREATER</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
+          </ControlConditions>
+        </ControlShortcut>
+        <ControlShortcut>
+          <ControlNumber>32</ControlNumber>
+          <ControlObjectiveNumber>40</ControlObjectiveNumber>
+          <ParameterType>POSITION_CLASS</ParameterType>
+          <Parameter>0</Parameter>
+          <KeyboardShortcut>$AchronKBPharo</KeyboardShortcut>
+          <Flags>
+            <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+            <EstTimeConstIsStart>0</EstTimeConstIsStart>
+            <ButtonDisabled>0</ButtonDisabled>
+            <UserControlsCustom>0</UserControlsCustom>
+            <ButtonInvisible>0</ButtonInvisible>
+            <SelectTarget>0</SelectTarget>
+          </Flags>
+          <EstTimeConst>216</EstTimeConst>
+          <EstTimeDist>9</EstTimeDist>
+          <Sound>Sound0</Sound>
+          <ControlConditions>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>GREATER</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
+          </ControlConditions>
+        </ControlShortcut>
+        <ControlShortcut>
+          <ControlNumber>33</ControlNumber>
+          <ControlObjectiveNumber>41</ControlObjectiveNumber>
+          <ParameterType>POSITION_CLASS</ParameterType>
+          <Parameter>0</Parameter>
+          <KeyboardShortcut>$AchronKBOctopod</KeyboardShortcut>
+          <Flags>
+            <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+            <EstTimeConstIsStart>0</EstTimeConstIsStart>
+            <ButtonDisabled>0</ButtonDisabled>
+            <UserControlsCustom>0</UserControlsCustom>
+            <ButtonInvisible>0</ButtonInvisible>
+            <SelectTarget>0</SelectTarget>
+          </Flags>
+          <EstTimeConst>540</EstTimeConst>
+          <EstTimeDist>6</EstTimeDist>
+          <Sound>Sound0</Sound>
+          <ControlConditions>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>GREATER</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
+          </ControlConditions>
+        </ControlShortcut>
+        <ControlShortcut>
+          <ControlNumber>34</ControlNumber>
+          <ControlObjectiveNumber>42</ControlObjectiveNumber>
+          <ParameterType>POSITION_CLASS</ParameterType>
+          <Parameter>0</Parameter>
+          <KeyboardShortcut>$AchronKBSepipod</KeyboardShortcut>
+          <Flags>
+            <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+            <EstTimeConstIsStart>0</EstTimeConstIsStart>
+            <ButtonDisabled>0</ButtonDisabled>
+            <UserControlsCustom>0</UserControlsCustom>
+            <ButtonInvisible>0</ButtonInvisible>
+            <SelectTarget>0</SelectTarget>
+          </Flags>
+          <EstTimeConst>432</EstTimeConst>
+          <EstTimeDist>2</EstTimeDist>
+          <Sound>Sound0</Sound>
+          <ControlConditions>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>GREATER</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
+          </ControlConditions>
+        </ControlShortcut>
+        <ControlShortcut>
+          <ControlNumber>35</ControlNumber>
+          <ControlObjectiveNumber>43</ControlObjectiveNumber>
+          <ParameterType>POSITION_CLASS</ParameterType>
+          <Parameter>0</Parameter>
+          <KeyboardShortcut>$AchronKBPharopod</KeyboardShortcut>
+          <Flags>
+            <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+            <EstTimeConstIsStart>0</EstTimeConstIsStart>
+            <ButtonDisabled>0</ButtonDisabled>
+            <UserControlsCustom>0</UserControlsCustom>
+            <ButtonInvisible>0</ButtonInvisible>
+            <SelectTarget>0</SelectTarget>
+          </Flags>
+          <EstTimeConst>720</EstTimeConst>
+          <EstTimeDist>3</EstTimeDist>
+          <Sound>Sound0</Sound>
+          <ControlConditions>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>GREATER</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
+          </ControlConditions>
+        </ControlShortcut>
+        <ControlShortcut>
+          <ControlNumber>36</ControlNumber>
+          <ControlObjectiveNumber>52</ControlObjectiveNumber>
+          <ParameterType>POSITION_CLASS</ParameterType>
+          <Parameter>1056</Parameter>
+          <KeyboardShortcut>$AchronKBRpGrekim</KeyboardShortcut>
+          <Flags>
+            <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+            <EstTimeConstIsStart>0</EstTimeConstIsStart>
+            <ButtonDisabled>0</ButtonDisabled>
+            <UserControlsCustom>0</UserControlsCustom>
+            <ButtonInvisible>0</ButtonInvisible>
+            <SelectTarget>0</SelectTarget>
+          </Flags>
+          <EstTimeConst>756</EstTimeConst>
+          <EstTimeDist>6</EstTimeDist>
+          <Sound>Sound0</Sound>
+          <ControlConditions>
+            <ControlCondition>
+              <Resource>NUM_UNITS_SELECTED</Resource>
+              <Comparison>GREATER</Comparison>
+              <Value>1</Value>
+            </ControlCondition>
+          </ControlConditions>
+        </ControlShortcut>
+        <ControlShortcut>
+          <ControlNumber>38</ControlNumber>
           <ControlObjectiveNumber>18</ControlObjectiveNumber>
           <MouseInputType>SHORTCUT_TILE</MouseInputType>
           <ParameterType>POSITION_OR_UNIT</ParameterType>
@@ -73752,7 +74517,7 @@ aerospace units.</Description>
           <ControlConditions/>
         </ControlShortcut>
         <ControlShortcut>
-          <ControlNumber>35</ControlNumber>
+          <ControlNumber>39</ControlNumber>
           <ControlObjectiveNumber>20</ControlObjectiveNumber>
           <MouseInputType>SHORTCUT_ALLY_UNIT</MouseInputType>
           <ParameterType>UNIT</ParameterType>
@@ -93653,6 +94418,7 @@ No risk from further internal explosions</Description>
     </ObjectClass>
     <!--END Grekim_buildings\Reaph.xml-->
     <!--BEGIN Grekim_buildings\Spyre.xml-->
+    <!-- Spyre spawns Vecgir Virs -->
     <ObjectClass>
       <ClassNumber>1070</ClassNumber>
       <Name>Spyre</Name>

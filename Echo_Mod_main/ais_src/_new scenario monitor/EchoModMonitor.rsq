@@ -9,6 +9,7 @@
 To Do:
 * Victory points need upgrades to work for teams
 * Observer skin needs to re-initialize each time a new contender is added
+    This will require adding a new reset process to the skin code
 ************************************************
 ***********************************************/
 

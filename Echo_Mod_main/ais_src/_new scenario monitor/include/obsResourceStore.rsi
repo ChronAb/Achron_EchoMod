@@ -54,27 +54,31 @@ if((contenders>>x)&1){
     
     // LC, Race, & Status
     PERFORM GET_ACHRONAL_FIELD $P_X_COMM_RACE_LC_AF;
-    if (COMM_RACE_LC[$LC_BITS] != perf_ret[$LC_BITS]) COMM_RACE_LC[$LC_SYNCED_BIT] = 0;
-    if (COMM_RACE_LC[$RACE_BITS] != perf_ret[$RACE_BITS]) COMM_RACE_LC[$RACE_SYNCED_BIT] = 0;
+    if (COMM_RACE_LC[$LC_BITS] != perf_ret[$LC_BITS] || forceUpdate)
+        COMM_RACE_LC[$LC_SYNCED_BIT] = 0;
+    if (COMM_RACE_LC[$RACE_BITS] != perf_ret[$RACE_BITS] || forceUpdate) 
+        COMM_RACE_LC[$RACE_SYNCED_BIT] = 0;
     
-    if (perf_ret != COMM_RACE_LC){
+    if (perf_ret != COMM_RACE_LC || forceUpdate){
         target = $P_X_COMM_RACE_LC_AF;
         PERFORM SET_ACHRONAL_FIELD COMM_RACE_LC;
     }
     
     // QP $ Reserves
     PERFORM GET_ACHRONAL_FIELD $P_X_QP_RES_AF;
-    if (QP_RES[$QP_BITS] != perf_ret[$QP_BITS]) QP_RES[$QP_SYNCED_BIT] = 0;
-    if (QP_RES[$RES_BITS] != perf_ret[$RES_BITS]) QP_RES[$RES_SYNCED_BIT] = 0;
+    if (QP_RES[$QP_BITS] != perf_ret[$QP_BITS] || forceUpdate) 
+        QP_RES[$QP_SYNCED_BIT] = 0;
+    if (QP_RES[$RES_BITS] != perf_ret[$RES_BITS] || forceUpdate) 
+        QP_RES[$RES_SYNCED_BIT] = 0;
     
-    if (perf_ret != QP_RES){
+    if (perf_ret != QP_RES || forceUpdate){
         target = $P_X_QP_RES_AF;
         PERFORM SET_ACHRONAL_FIELD QP_RES;
     }
     
     // Power
     PERFORM GET_ACHRONAL_FIELD $P_X_POW_AF;
-    if (POW != perf_ret){
+    if (POW != perf_ret || forceUpdate){
         COMM_RACE_LC[$POW_SYNCED_BIT] = 0;
         target = $P_X_POW_AF;
         PERFORM SET_ACHRONAL_FIELD POW;
@@ -82,7 +86,7 @@ if((contenders>>x)&1){
     
     // Advancements
     PERFORM GET_ACHRONAL_FIELD $P_X_ADV_AF;
-    if (ADV != perf_ret){
+    if (ADV != perf_ret || forceUpdate){
         COMM_RACE_LC[$ADV_SYNCED_BIT] = 0;
         target = $P_X_ADV_AF;
         PERFORM SET_ACHRONAL_FIELD ADV;

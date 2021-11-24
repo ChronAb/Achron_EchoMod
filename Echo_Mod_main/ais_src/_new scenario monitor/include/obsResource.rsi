@@ -83,31 +83,32 @@ int y = 0;
         and store them in achronal fields
 ***********************************************/
 for (y=0; y<14; y=y+1){
-    //If we are in a replay, make sure all players get data
+    
+    //If we are in a replay, make sure all players get data & bypass all efficiency 
+    //  measures (they mess with proper operation).
+    //If this isn't a replay, send all data every 10 seconds anyway in case lag spikes 
+    //  have caused a false positive in the synced detection bits.
     PERFORM IS_REPLAY;
-    
-    //If this is a replay, bypass all efficiency measures, it messes with proper operation.
-    //If this isn't a replay, send all data every 30 seconds anyway, in case lag spikes 
-    // have caused a false positive in the synced detection bits.
-    int forceUpdate = perf_ret|((present%(30 $seconds))==x);
-    
-    // Store contenders' stats:
+    int x = current % 18;
+    int forceUpdate = perf_ret|((present%90)==x);
+
     if((((obs&connected)>>y)&1)||(perf_ret&&((enabled>>y)&1))){
         PERFORM GET_PLAYER_TIME y;
         int currentObsTime = perf_ret;
     
-        // Write player information to achronal fields
+        // Store contenders' stats:
+        //***********************************
         if (TwicePerSecond && current == currentObsTime){
-            //Get information for each contender to each obs from each obs's current time
-            int x = 0;
+            //Get information from each contender for each obs, in each obs's current time
+            x = 0;
             for( x=0; x<14; x=x+1){
                 #include include/obsResourceStore.rsi
             }
         }
 
-
-        //Send team information to skin variables:
-        //Send information as bits 0-3: Number of players
+        // Send team information to skin variables:
+        //***********************************
+        // Send information as bits 0-3: Number of players
         //            bits 4-18: Bitmask of all 15 players.
         if (current == present && TwicePerSecond && present >= 720){
           player = y;
@@ -116,12 +117,12 @@ for (y=0; y<14; y=y+1){
           //print "PC: ", playerCount, "\n";
         }
 
-
         //Read Player Stats Out to the Skin:
+        //***********************************
         int x = current % 18;
         player = x;
         if (current==present && x <= 13 && ((contenders>>x)&1)) { 
-            //cycle through all 14 players only if they are enabled
+            //cycle through all 14 players -> only if they are enabled
             #include include/obsResourceDisplay.rsi
         }
     }
