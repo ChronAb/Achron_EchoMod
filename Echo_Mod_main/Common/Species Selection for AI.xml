@@ -3069,6 +3069,7 @@
                         <Step>
                             <PrimitiveAction>CREATE_UNIT</PrimitiveAction>
                             <Target>SELF</Target>
+                            <Probability>0.5</Probability>
                             <Value>1015</Value>
                         </Step>
                         <Step>
@@ -3112,7 +3113,7 @@
                         <Condition>
                             <Resource>P_Q_PLASMA</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>500</Value>
+                            <Value>1700</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -3152,7 +3153,12 @@
                     <Conditions>
                         <Condition>
                             <Resource>U_AMMO</Resource>
-                            <Comparison>EQUAL</Comparison>
+                            <Comparison>GEQUAL</Comparison>
+                            <Value>3</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_AMMO</Resource>
+                            <Comparison>LEQUAL</Comparison>
                             <Value>4</Value>
                         </Condition>
                         <Condition>
@@ -3178,7 +3184,7 @@
                         <Condition>
                             <Resource>P_Q_PLASMA</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>150</Value>
+                            <Value>1400</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -3231,6 +3237,7 @@
                         <Step>
                             <PrimitiveAction>CREATE_UNIT</PrimitiveAction>
                             <Target>SELF</Target>
+                            <Probability>0.6</Probability>
                             <Value>1100</Value>
                         </Step>
                         <Step>
@@ -3273,7 +3280,7 @@
                         <Condition>
                             <Resource>P_Q_PLASMA</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>200</Value>
+                            <Value>1400</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -3329,7 +3336,7 @@
                         <Condition>
                             <Resource>P_Q_PLASMA</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>400</Value>
+                            <Value>1600</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -3385,7 +3392,7 @@
                         <Condition>
                             <Resource>P_Q_PLASMA</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>600</Value>
+                            <Value>1800</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -3399,6 +3406,7 @@
                         <Step>
                             <PrimitiveAction>CREATE_UNIT</PrimitiveAction>
                             <Target>SELF</Target>
+                            <Probability>0.5</Probability>
                             <Value>1105</Value>
                         </Step>
                         <Step>
@@ -3406,7 +3414,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>600</Value>
+                            <Value>300</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -3426,7 +3434,7 @@
                         <Condition>
                             <Resource>P_Q_PLASMA</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>1000</Value>
+                            <Value>2200</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_ENERGY</Resource>
@@ -3470,7 +3478,7 @@
                         <Condition>
                             <Resource>P_Q_PLASMA</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>1000</Value>
+                            <Value>2200</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_ENERGY</Resource>
@@ -3553,7 +3561,7 @@
                         <Condition>
                             <Resource>P_Q_PLASMA</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>1800</Value>
+                            <Value>3000</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_HP</Resource>
@@ -3729,7 +3737,7 @@
                 </Action>
                 <Action>
                     <ActionNumber>43</ActionNumber>
-                    <Identifier>ACTION_QP_OCTOx7</Identifier>
+                    <Identifier>ACTION_QP_OCTOx5</Identifier>
                     <TimeTaken>3</TimeTaken>
                     <ForceObjectAction>1</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
@@ -3748,7 +3756,7 @@
                         <Condition>
                             <Resource>U_AMMO</Resource>
                             <Comparison>LEQUAL</Comparison>
-                            <Value>117</Value>
+                            <Value>120</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -3762,6 +3770,7 @@
                         <Step>
                             <PrimitiveAction>CREATE_UNIT</PrimitiveAction>
                             <Target>SELF</Target>
+                            <Probability>0.5</Probability>
                             <Value>1000</Value>
                         </Step>
                         <Step>
@@ -3850,7 +3859,7 @@
                         <Condition>
                             <Resource>P_Q_PLASMA</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>600</Value>
+                            <Value>1800</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -3895,9 +3904,9 @@
                             <Value>180</Value>
                         </Condition>
                         <Condition>
-                            <Resource>P_POWER</Resource>
+                            <Resource>P_Q_PLASMA</Resource>
                             <Comparison>LESS</Comparison>
-                            <Value>2000</Value>
+                            <Value>3000</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -3906,14 +3915,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-20</Value>
-                        </Step>
-                        <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>P_POWER</Type>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>-20</Value>
+                            <Value>-10</Value>
                         </Step>
                     </Steps>
                 </Action>
