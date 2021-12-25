@@ -1742,6 +1742,35 @@
       <Name>cs220_change_team</Name>
       <Path>./Achron_EchoMod/Echo_Mod_main/ais/change_team.abn</Path>
     </AIScript>
+    <!-- amplifier scripts -->
+    <AIScript>
+      <Name>cs00a_vendor_idle</Name>
+      <Path>./Achron_EchoMod/Echo_Mod_main/ais/vendor_idle.abn</Path>
+    </AIScript>
+    <AIScript>
+      <Name>cs07a_freeze_beam</Name>
+      <Path>./Achron_EchoMod/Echo_Mod_main/ais/stopfreezebeam.abn</Path>
+    </AIScript>
+    <AIScript>
+      <Name>cs17a_amp_reaph</Name>
+      <Path>./Achron_EchoMod/Echo_Mod_main/ais/sepi_reaph.abn</Path>
+    </AIScript>
+    <AIScript>
+      <Name>cs18a_amp_arct</Name>
+      <Path>./Achron_EchoMod/Echo_Mod_main/ais/pharo_arcticus.abn</Path>
+    </AIScript>
+    <AIScript>
+      <Name>cs20a_amp_dome</Name>
+      <Path>./Achron_EchoMod/Echo_Mod_main/ais/octo_dome.abn</Path>
+    </AIScript>
+    <AIScript>
+      <Name>cs21a_amp_mound</Name>
+      <Path>./Achron_EchoMod/Echo_Mod_main/ais/sepi_mound.abn</Path>
+    </AIScript>
+    <AIScript>
+      <Name>cs22a_amp_spyre</Name>
+      <Path>./Achron_EchoMod/Echo_Mod_main/ais/pharo_spyre.abn</Path>
+    </AIScript>
     <!-- general building scripts -->
     <AIScript>
       <Name>cs09b_relocate</Name>
@@ -1778,6 +1807,14 @@
     <AIScript>
       <Name>cs12mb_plant</Name>
       <Path>./Achron_EchoMod/Echo_Mod_main/ais/plant_dispatch.abn</Path>
+    </AIScript>
+    <AIScript>
+      <Name>cs20b_simple_upgrade</Name>
+      <Path>./Achron_EchoMod/Echo_Mod_main/ais/simple_morph.abn</Path>
+    </AIScript>
+    <AIScript>
+      <Name>cs21b_simple_downgrade</Name>
+      <Path>./Achron_EchoMod/Echo_Mod_main/ais/simple_unmorph.abn</Path>
     </AIScript>
     <!-- comm center scripts -->
     <AIScript>
@@ -1838,20 +1875,6 @@
       <Path>./Achron_EchoMod/Echo_Mod_main/ais/teleportme.abn</Path>
     </AIScript>
     <!--END Common\02 Common Scripts.xml-->
-    <!--BEGIN Common\Capturables 1.xml-->
-    <AIScript>
-      <Name>Script308_amp_morph</Name>
-      <Path>./Achron_EchoMod/Echo_Mod_main/ais/simple_morph.abn</Path>
-    </AIScript>
-    <AIScript>
-      <Name>Script414_vendor_idle</Name>
-      <Path>./Achron_EchoMod/Echo_Mod_main/ais/vendor_idle.abn</Path>
-    </AIScript>
-    <AIScript>
-      <Name>Script418_freeze_beam</Name>
-      <Path>./Achron_EchoMod/Echo_Mod_main/ais/stopfreezebeam.abn</Path>
-    </AIScript>
-    <!--END Common\Capturables 1.xml-->
     <!--BEGIN Common\Species Selection.xml-->
     <AIScript>
       <Name>Script423_g_vanguard_tech</Name>
@@ -1894,24 +1917,24 @@
     </AIScript>
     <!-- sepi buildings -->
     <AIScript>
-      <Name>gs162_sepi_reaph</Name>
+      <Name>gs172_sepi_reaph</Name>
       <Path>./Achron_EchoMod/Echo_Mod_main/ais/sepi_reaph.abn</Path>
     </AIScript>
     <AIScript>
-      <Name>gs202_sepi_mound</Name>
+      <Name>gs212_sepi_mound</Name>
       <Path>./Achron_EchoMod/Echo_Mod_main/ais/sepi_mound.abn</Path>
     </AIScript>
     <!-- pharo buildings -->
     <AIScript>
-      <Name>gs163_pharo_arct</Name>
+      <Name>gs183_pharo_arct</Name>
       <Path>./Achron_EchoMod/Echo_Mod_main/ais/pharo_arcticus.abn</Path>
     </AIScript>
     <AIScript>
-      <Name>gs203_pharo_spyre</Name>
+      <Name>gs223_pharo_spyre</Name>
       <Path>./Achron_EchoMod/Echo_Mod_main/ais/pharo_spyre.abn</Path>
     </AIScript>
     <AIScript>
-      <Name>gs213_pharo_spyre_na</Name>
+      <Name>gs233_pharo_spyre_na</Name>
       <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown.abn</Path>
     </AIScript>
     <!-- base class progen -->
@@ -2118,6 +2141,11 @@
     <AIScript>
       <Name>gbs00r_reaph_idle</Name>
       <Path>./Achron_EchoMod/Echo_Mod_main/ais/reaph_idle.abn</Path>
+    </AIScript>
+    <!-- arcticus -->
+    <AIScript>
+      <Name>gbs00a_arct_idle</Name>
+      <Path>./Achron_EchoMod/Echo_Mod_main/ais/arcticus_idle.abn</Path>
     </AIScript>
     <!-- spyre -->
     <AIScript>
@@ -16713,7 +16741,7 @@ Clears nanite infection&#13;
             * Beam should have finite range - so it will be harder to use offensively
                 X - this range would need to be map dependent
             * Damaged AMPs should auto repair with time
-                - so the game will be less likely to stalemate
+                + - so the game will be less likely to stalemate
             * Damaged AMPs should auto repair when captured
                 X - Removing the ability to scorch earth breaks rush balance
             * Beam should kill - to open up more design space for using status effects 
@@ -16729,7 +16757,7 @@ Makes resources at full control: &#13;
   + 15 QP, P / 60s continuously&#13;
   + 30 QP, LC at 120 s intervals while cores remain</Description>
       <Model>./humans/commcenter.mdl</Model>
-      <Rank>7</Rank>
+      <Rank>14</Rank>
       <Type>0</Type>
       <PrioritySelectionRank>0</PrioritySelectionRank>
       <MaxHealth>100</MaxHealth>
@@ -17022,7 +17050,7 @@ Makes resources at full control: &#13;
               <Target>SELF</Target>
               <Type>P_CUSTOM_FIELD_8</Type>
               <ValueEval>ONE</ValueEval>
-              <Value>-1024</Value>
+              <Value>-32</Value>
             </Step>
             <Step>
               <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -17072,7 +17100,7 @@ Makes resources at full control: &#13;
                             <Target>SELF</Target>
                             <Type>P_CUSTOM_FIELD_8</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>1024</Value>
+                            <Value>32</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>SET_STATUS</PrimitiveAction>
@@ -17274,7 +17302,7 @@ Makes resources at full control: &#13;
               <Target>SELF</Target>
               <Type>P_CUSTOM_FIELD_8</Type>
               <ValueEval>ONE</ValueEval>
-              <Value>1024</Value>
+              <Value>32</Value>
             </Step>
             <Step>
               <PrimitiveAction>CHANGE_OWNER</PrimitiveAction>
@@ -17285,7 +17313,7 @@ Makes resources at full control: &#13;
               <Target>SELF</Target>
               <Type>P_CUSTOM_FIELD_8</Type>
               <ValueEval>ONE</ValueEval>
-              <Value>-1024</Value>
+              <Value>-32</Value>
             </Step>
             <Step>
               <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -17619,6 +17647,151 @@ Makes resources at full control: &#13;
           <Steps/>
         </Action>
         <Action>
+          <ActionNumber>32</ActionNumber>
+          <Identifier>ACTION_REAPH</Identifier>
+          <TimeTaken>3</TimeTaken>
+          <ForceObjectAction>0</ForceObjectAction>
+          <InterruptCurrentAction>0</InterruptCurrentAction>
+          <MutexAction>0</MutexAction>
+          <FailOnInvalidTarget>0</FailOnInvalidTarget>
+          <PreserveParameter>0</PreserveParameter>
+          <AIScriptCanRun>0</AIScriptCanRun>
+          <SetParamZeroTicks>0</SetParamZeroTicks>
+          <AllowActionWhenStopped>0</AllowActionWhenStopped>
+          <LobProjectilePath>0</LobProjectilePath>
+          <Conditions/>
+          <Steps>
+            <Step>
+              <PrimitiveAction>CREATE_UNIT_ANYWHERE</PrimitiveAction>
+              <Target>SELF</Target>
+              <Value>1061</Value>
+            </Step>
+            <Step>
+              <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+              <Target>SELF</Target>
+              <Type>P_Q_PLASMA</Type>
+              <ValueEval>ONE</ValueEval>
+              <Value>0</Value>
+            </Step>
+          </Steps>
+        </Action>
+        <Action>
+          <ActionNumber>33</ActionNumber>
+          <Identifier>ACTION_DOME</Identifier>
+          <TimeTaken>3</TimeTaken>
+          <ForceObjectAction>0</ForceObjectAction>
+          <InterruptCurrentAction>0</InterruptCurrentAction>
+          <MutexAction>0</MutexAction>
+          <FailOnInvalidTarget>0</FailOnInvalidTarget>
+          <PreserveParameter>0</PreserveParameter>
+          <AIScriptCanRun>0</AIScriptCanRun>
+          <SetParamZeroTicks>0</SetParamZeroTicks>
+          <AllowActionWhenStopped>0</AllowActionWhenStopped>
+          <LobProjectilePath>0</LobProjectilePath>
+          <Conditions/>
+          <Steps>
+            <Step>
+              <PrimitiveAction>CREATE_UNIT_ANYWHERE</PrimitiveAction>
+              <Target>SELF</Target>
+              <Value>1066</Value>
+            </Step>
+            <Step>
+              <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+              <Target>SELF</Target>
+              <Type>P_Q_PLASMA</Type>
+              <ValueEval>ONE</ValueEval>
+              <Value>300</Value>
+            </Step>
+          </Steps>
+        </Action>
+        <Action>
+          <ActionNumber>34</ActionNumber>
+          <Identifier>ACTION_MOUND</Identifier>
+          <TimeTaken>3</TimeTaken>
+          <ForceObjectAction>0</ForceObjectAction>
+          <InterruptCurrentAction>0</InterruptCurrentAction>
+          <MutexAction>0</MutexAction>
+          <FailOnInvalidTarget>0</FailOnInvalidTarget>
+          <PreserveParameter>0</PreserveParameter>
+          <AIScriptCanRun>0</AIScriptCanRun>
+          <SetParamZeroTicks>0</SetParamZeroTicks>
+          <AllowActionWhenStopped>0</AllowActionWhenStopped>
+          <LobProjectilePath>0</LobProjectilePath>
+          <Conditions/>
+          <Steps>
+            <Step>
+              <PrimitiveAction>CREATE_UNIT_ANYWHERE</PrimitiveAction>
+              <Target>SELF</Target>
+              <Value>1064</Value>
+            </Step>
+            <Step>
+              <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+              <Target>SELF</Target>
+              <Type>P_Q_PLASMA</Type>
+              <ValueEval>ONE</ValueEval>
+              <Value>150</Value>
+            </Step>
+          </Steps>
+        </Action>
+        <Action>
+          <ActionNumber>35</ActionNumber>
+          <Identifier>ACTION_SPYRE</Identifier>
+          <TimeTaken>3</TimeTaken>
+          <ForceObjectAction>0</ForceObjectAction>
+          <InterruptCurrentAction>0</InterruptCurrentAction>
+          <MutexAction>0</MutexAction>
+          <FailOnInvalidTarget>0</FailOnInvalidTarget>
+          <PreserveParameter>0</PreserveParameter>
+          <AIScriptCanRun>0</AIScriptCanRun>
+          <SetParamZeroTicks>0</SetParamZeroTicks>
+          <AllowActionWhenStopped>0</AllowActionWhenStopped>
+          <LobProjectilePath>0</LobProjectilePath>
+          <Conditions/>
+          <Steps>
+            <Step>
+              <PrimitiveAction>CREATE_UNIT_ANYWHERE</PrimitiveAction>
+              <Target>SELF</Target>
+              <Value>1070</Value>
+            </Step>
+            <Step>
+              <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+              <Target>SELF</Target>
+              <Type>P_Q_PLASMA</Type>
+              <ValueEval>ONE</ValueEval>
+              <Value>250</Value>
+            </Step>
+          </Steps>
+        </Action>
+        <Action>
+          <ActionNumber>36</ActionNumber>
+          <Identifier>ACTION_ARCT</Identifier>
+          <TimeTaken>3</TimeTaken>
+          <ForceObjectAction>0</ForceObjectAction>
+          <InterruptCurrentAction>0</InterruptCurrentAction>
+          <MutexAction>0</MutexAction>
+          <FailOnInvalidTarget>0</FailOnInvalidTarget>
+          <PreserveParameter>0</PreserveParameter>
+          <AIScriptCanRun>0</AIScriptCanRun>
+          <SetParamZeroTicks>0</SetParamZeroTicks>
+          <AllowActionWhenStopped>0</AllowActionWhenStopped>
+          <LobProjectilePath>0</LobProjectilePath>
+          <Conditions/>
+          <Steps>
+            <Step>
+              <PrimitiveAction>CREATE_UNIT_ANYWHERE</PrimitiveAction>
+              <Target>SELF</Target>
+              <Value>1050</Value>
+            </Step>
+            <Step>
+              <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+              <Target>SELF</Target>
+              <Type>P_Q_PLASMA</Type>
+              <ValueEval>ONE</ValueEval>
+              <Value>200</Value>
+            </Step>
+          </Steps>
+        </Action>
+        <Action>
           <ActionNumber>38</ActionNumber>
           <Identifier>ACTION_CHANGE</Identifier>
           <TimeTaken>0</TimeTaken>
@@ -17675,7 +17848,7 @@ Makes resources at full control: &#13;
               <Target>SELF</Target>
               <Type>P_CUSTOM_FIELD_8</Type>
               <ValueEval>ONE</ValueEval>
-              <Value>1024</Value>
+              <Value>32</Value>
             </Step>
             <Step>
               <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -17733,23 +17906,53 @@ Makes resources at full control: &#13;
       <Objectives>
         <Objective>
           <ObjectiveNumber>0</ObjectiveNumber>
-          <Script>Script414_vendor_idle</Script>
+          <Script>cs00a_vendor_idle</Script>
           <Name>Idle</Name>
           <Details>makes unit change its allegiances as-becomes convenient for it</Details>
         </Objective>
         <Objective>
-          <ObjectiveNumber>20</ObjectiveNumber>
-          <Script>Script418_freeze_beam</Script>
+          <ObjectiveNumber>7</ObjectiveNumber>
+          <Script>cs07a_freeze_beam</Script>
           <Name>Chrono-Disruptor </Name>
           <Details>Sacrifice this Amplifier Relay to \indefinitely Freeze or TSS-Break a single \target \ \(Can be used to disable enemy Amplifiers) </Details>
           <Resource4>100</Resource4>
           <ObjectiveControlShortcutNumber>3</ObjectiveControlShortcutNumber>
         </Objective>
+        <Objective>
+          <ObjectiveNumber>17</ObjectiveNumber>
+          <Script>cs17a_amp_reaph</Script>
+          <Name>Reaph</Name>
+          <Details>spawn Reaph for AI player</Details>
+        </Objective>
+        <Objective>
+          <ObjectiveNumber>18</ObjectiveNumber>
+          <Script>cs18a_amp_arct</Script>
+          <Name>Arcticus</Name>
+          <Details>spawn Arct for AI player</Details>
+        </Objective>
+        <Objective>
+          <ObjectiveNumber>20</ObjectiveNumber>
+          <Script>cs20a_amp_dome</Script>
+          <Name>Dome</Name>
+          <Details>spawn Dome for AI player</Details>
+        </Objective>
+        <Objective>
+          <ObjectiveNumber>21</ObjectiveNumber>
+          <Script>cs21a_amp_mound</Script>
+          <Name>Mound</Name>
+          <Details>spawn Mound for AI player</Details>
+        </Objective>
+        <Objective>
+          <ObjectiveNumber>22</ObjectiveNumber>
+          <Script>cs22a_amp_spyre</Script>
+          <Name>Spyre</Name>
+          <Details>spawn Spyre for AI player</Details>
+        </Objective>
       </Objectives>
       <ControlShortcuts>
         <ControlShortcut>
           <ControlNumber>3</ControlNumber>
-          <ControlObjectiveNumber>20</ControlObjectiveNumber>
+          <ControlObjectiveNumber>7</ControlObjectiveNumber>
           <ParameterType>UNIT</ParameterType>
           <Parameter>0</Parameter>
           <KeyboardShortcut>$AchronKBChronoFreeze</KeyboardShortcut>
@@ -17785,7 +17988,7 @@ Makes resources at full control: &#13;
   + 30 QP, LC at 120 s intervals while cores remain</Description>
       <!-- Start ping-ing when 8+ are controlled -->
       <Model>./humans/commcenter.mdl</Model>
-      <Rank>7</Rank>
+      <Rank>14</Rank>
       <Type>0</Type>
       <PrioritySelectionRank>0</PrioritySelectionRank>
       <MaxHealth>100</MaxHealth>
@@ -18024,7 +18227,7 @@ Makes resources at full control: &#13;
               <Target>SELF</Target>
               <Type>P_CUSTOM_FIELD_8</Type>
               <ValueEval>ONE</ValueEval>
-              <Value>-1024</Value>
+              <Value>-32</Value>
             </Step>
             <Step>
               <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -18074,7 +18277,7 @@ Makes resources at full control: &#13;
                             <Target>SELF</Target>
                             <Type>P_CUSTOM_FIELD_8</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>1024</Value>
+                            <Value>32</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>SET_STATUS</PrimitiveAction>
@@ -18276,7 +18479,7 @@ Makes resources at full control: &#13;
               <Target>SELF</Target>
               <Type>P_CUSTOM_FIELD_8</Type>
               <ValueEval>ONE</ValueEval>
-              <Value>1024</Value>
+              <Value>32</Value>
             </Step>
             <Step>
               <PrimitiveAction>CHANGE_OWNER</PrimitiveAction>
@@ -18287,7 +18490,7 @@ Makes resources at full control: &#13;
               <Target>SELF</Target>
               <Type>P_CUSTOM_FIELD_8</Type>
               <ValueEval>ONE</ValueEval>
-              <Value>-1024</Value>
+              <Value>-32</Value>
             </Step>
             <Step>
               <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -18576,6 +18779,151 @@ Makes resources at full control: &#13;
           <Steps/>
         </Action>
         <Action>
+          <ActionNumber>32</ActionNumber>
+          <Identifier>ACTION_REAPH</Identifier>
+          <TimeTaken>3</TimeTaken>
+          <ForceObjectAction>0</ForceObjectAction>
+          <InterruptCurrentAction>0</InterruptCurrentAction>
+          <MutexAction>0</MutexAction>
+          <FailOnInvalidTarget>0</FailOnInvalidTarget>
+          <PreserveParameter>0</PreserveParameter>
+          <AIScriptCanRun>0</AIScriptCanRun>
+          <SetParamZeroTicks>0</SetParamZeroTicks>
+          <AllowActionWhenStopped>0</AllowActionWhenStopped>
+          <LobProjectilePath>0</LobProjectilePath>
+          <Conditions/>
+          <Steps>
+            <Step>
+              <PrimitiveAction>CREATE_UNIT_ANYWHERE</PrimitiveAction>
+              <Target>SELF</Target>
+              <Value>1061</Value>
+            </Step>
+            <Step>
+              <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+              <Target>SELF</Target>
+              <Type>P_Q_PLASMA</Type>
+              <ValueEval>ONE</ValueEval>
+              <Value>0</Value>
+            </Step>
+          </Steps>
+        </Action>
+        <Action>
+          <ActionNumber>33</ActionNumber>
+          <Identifier>ACTION_DOME</Identifier>
+          <TimeTaken>3</TimeTaken>
+          <ForceObjectAction>0</ForceObjectAction>
+          <InterruptCurrentAction>0</InterruptCurrentAction>
+          <MutexAction>0</MutexAction>
+          <FailOnInvalidTarget>0</FailOnInvalidTarget>
+          <PreserveParameter>0</PreserveParameter>
+          <AIScriptCanRun>0</AIScriptCanRun>
+          <SetParamZeroTicks>0</SetParamZeroTicks>
+          <AllowActionWhenStopped>0</AllowActionWhenStopped>
+          <LobProjectilePath>0</LobProjectilePath>
+          <Conditions/>
+          <Steps>
+            <Step>
+              <PrimitiveAction>CREATE_UNIT_ANYWHERE</PrimitiveAction>
+              <Target>SELF</Target>
+              <Value>1066</Value>
+            </Step>
+            <Step>
+              <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+              <Target>SELF</Target>
+              <Type>P_Q_PLASMA</Type>
+              <ValueEval>ONE</ValueEval>
+              <Value>300</Value>
+            </Step>
+          </Steps>
+        </Action>
+        <Action>
+          <ActionNumber>34</ActionNumber>
+          <Identifier>ACTION_MOUND</Identifier>
+          <TimeTaken>3</TimeTaken>
+          <ForceObjectAction>0</ForceObjectAction>
+          <InterruptCurrentAction>0</InterruptCurrentAction>
+          <MutexAction>0</MutexAction>
+          <FailOnInvalidTarget>0</FailOnInvalidTarget>
+          <PreserveParameter>0</PreserveParameter>
+          <AIScriptCanRun>0</AIScriptCanRun>
+          <SetParamZeroTicks>0</SetParamZeroTicks>
+          <AllowActionWhenStopped>0</AllowActionWhenStopped>
+          <LobProjectilePath>0</LobProjectilePath>
+          <Conditions/>
+          <Steps>
+            <Step>
+              <PrimitiveAction>CREATE_UNIT_ANYWHERE</PrimitiveAction>
+              <Target>SELF</Target>
+              <Value>1064</Value>
+            </Step>
+            <Step>
+              <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+              <Target>SELF</Target>
+              <Type>P_Q_PLASMA</Type>
+              <ValueEval>ONE</ValueEval>
+              <Value>150</Value>
+            </Step>
+          </Steps>
+        </Action>
+        <Action>
+          <ActionNumber>35</ActionNumber>
+          <Identifier>ACTION_SPYRE</Identifier>
+          <TimeTaken>3</TimeTaken>
+          <ForceObjectAction>0</ForceObjectAction>
+          <InterruptCurrentAction>0</InterruptCurrentAction>
+          <MutexAction>0</MutexAction>
+          <FailOnInvalidTarget>0</FailOnInvalidTarget>
+          <PreserveParameter>0</PreserveParameter>
+          <AIScriptCanRun>0</AIScriptCanRun>
+          <SetParamZeroTicks>0</SetParamZeroTicks>
+          <AllowActionWhenStopped>0</AllowActionWhenStopped>
+          <LobProjectilePath>0</LobProjectilePath>
+          <Conditions/>
+          <Steps>
+            <Step>
+              <PrimitiveAction>CREATE_UNIT_ANYWHERE</PrimitiveAction>
+              <Target>SELF</Target>
+              <Value>1070</Value>
+            </Step>
+            <Step>
+              <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+              <Target>SELF</Target>
+              <Type>P_Q_PLASMA</Type>
+              <ValueEval>ONE</ValueEval>
+              <Value>250</Value>
+            </Step>
+          </Steps>
+        </Action>
+        <Action>
+          <ActionNumber>36</ActionNumber>
+          <Identifier>ACTION_ARCT</Identifier>
+          <TimeTaken>3</TimeTaken>
+          <ForceObjectAction>0</ForceObjectAction>
+          <InterruptCurrentAction>0</InterruptCurrentAction>
+          <MutexAction>0</MutexAction>
+          <FailOnInvalidTarget>0</FailOnInvalidTarget>
+          <PreserveParameter>0</PreserveParameter>
+          <AIScriptCanRun>0</AIScriptCanRun>
+          <SetParamZeroTicks>0</SetParamZeroTicks>
+          <AllowActionWhenStopped>0</AllowActionWhenStopped>
+          <LobProjectilePath>0</LobProjectilePath>
+          <Conditions/>
+          <Steps>
+            <Step>
+              <PrimitiveAction>CREATE_UNIT_ANYWHERE</PrimitiveAction>
+              <Target>SELF</Target>
+              <Value>1050</Value>
+            </Step>
+            <Step>
+              <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+              <Target>SELF</Target>
+              <Type>P_Q_PLASMA</Type>
+              <ValueEval>ONE</ValueEval>
+              <Value>200</Value>
+            </Step>
+          </Steps>
+        </Action>
+        <Action>
           <ActionNumber>39</ActionNumber>
           <Identifier>ACTION_CHANGE_BACK</Identifier>
           <TimeTaken>0</TimeTaken>
@@ -18632,7 +18980,7 @@ Makes resources at full control: &#13;
               <Target>SELF</Target>
               <Type>P_CUSTOM_FIELD_8</Type>
               <ValueEval>ONE</ValueEval>
-              <Value>1024</Value>
+              <Value>32</Value>
             </Step>
             <Step>
               <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -18690,23 +19038,53 @@ Makes resources at full control: &#13;
       <Objectives>
         <Objective>
           <ObjectiveNumber>0</ObjectiveNumber>
-          <Script>Script414_vendor_idle</Script>
+          <Script>cs00a_vendor_idle</Script>
           <Name>Idle</Name>
           <Details>makes unit change its allegiances as-becomes convenient for it</Details>
         </Objective>
         <Objective>
-          <ObjectiveNumber>20</ObjectiveNumber>
-          <Script>Script418_freeze_beam</Script>
+          <ObjectiveNumber>7</ObjectiveNumber>
+          <Script>cs07a_freeze_beam</Script>
           <Name>Chrono-Disruptor </Name>
           <Details>Sacrifice this Amplifier Relay to \indefinitely Freeze or TSS-Break a single \target \ \(Can be used to disable enemy Amplifiers) </Details>
           <Resource4>100</Resource4>
           <ObjectiveControlShortcutNumber>3</ObjectiveControlShortcutNumber>
         </Objective>
+        <Objective>
+          <ObjectiveNumber>17</ObjectiveNumber>
+          <Script>cs17a_amp_reaph</Script>
+          <Name>Reaph</Name>
+          <Details>spawn Reaph for AI player</Details>
+        </Objective>
+        <Objective>
+          <ObjectiveNumber>18</ObjectiveNumber>
+          <Script>cs18a_amp_arct</Script>
+          <Name>Arcticus</Name>
+          <Details>spawn Arct for AI player</Details>
+        </Objective>
+        <Objective>
+          <ObjectiveNumber>20</ObjectiveNumber>
+          <Script>cs20a_amp_dome</Script>
+          <Name>Dome</Name>
+          <Details>spawn Dome for AI player</Details>
+        </Objective>
+        <Objective>
+          <ObjectiveNumber>21</ObjectiveNumber>
+          <Script>cs21a_amp_mound</Script>
+          <Name>Mound</Name>
+          <Details>spawn Mound for AI player</Details>
+        </Objective>
+        <Objective>
+          <ObjectiveNumber>22</ObjectiveNumber>
+          <Script>cs22a_amp_spyre</Script>
+          <Name>Spyre</Name>
+          <Details>spawn Spyre for AI player</Details>
+        </Objective>
       </Objectives>
       <ControlShortcuts>
         <ControlShortcut>
           <ControlNumber>3</ControlNumber>
-          <ControlObjectiveNumber>20</ControlObjectiveNumber>
+          <ControlObjectiveNumber>7</ControlObjectiveNumber>
           <ParameterType>UNIT</ParameterType>
           <Parameter>0</Parameter>
           <KeyboardShortcut>$AchronKBChronoFreeze</KeyboardShortcut>
@@ -18738,7 +19116,7 @@ Makes resources at full control: &#13;
 &#13;
 Repair to restore resource generation and Supremacy functions</Description>
       <Model>./humans/commcenter.mdl</Model>
-      <Rank>7</Rank>
+      <Rank>15</Rank>
       <Type>0</Type>
       <PrioritySelectionRank>0</PrioritySelectionRank>
       <MaxHealth>100</MaxHealth>
@@ -19069,7 +19447,7 @@ Repair to restore resource generation and Supremacy functions</Description>
                             <Target>SELF</Target>
                             <Type>P_CUSTOM_FIELD_8</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-1024</Value>
+                            <Value>-32</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -19221,7 +19599,7 @@ Repair to restore resource generation and Supremacy functions</Description>
               <Target>SELF</Target>
               <Type>P_CUSTOM_FIELD_8</Type>
               <ValueEval>ONE</ValueEval>
-              <Value>-1024</Value>
+              <Value>-32</Value>
             </Step>
             <Step>
               <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -19412,7 +19790,7 @@ Repair to restore resource generation and Supremacy functions</Description>
               <Target>SELF</Target>
               <Type>P_CUSTOM_FIELD_8</Type>
               <ValueEval>ONE</ValueEval>
-              <Value>-1024</Value>
+              <Value>-32</Value>
             </Step>
             <Step>
               <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -19485,15 +19863,15 @@ Repair to restore resource generation and Supremacy functions</Description>
       <Objectives>
         <Objective>
           <ObjectiveNumber>0</ObjectiveNumber>
-          <Script>Script414_vendor_idle</Script>
+          <Script>cs00a_vendor_idle</Script>
           <Name>Idle</Name>
           <Details>makes unit change its allegiances as-becomes convenient for it</Details>
         </Objective>
         <Objective>
           <ObjectiveNumber>19</ObjectiveNumber>
-          <Script>Script308_amp_morph</Script>
+          <Script>cs20b_simple_upgrade</Script>
           <Name>Repair Amplifier</Name>
-          <Details>Reactivate this Amplifier Relay</Details>
+          <Details> \Reactivate this Amplifier Relay</Details>
           <Resource1>600</Resource1>
           <Resource4>600</Resource4>
         </Objective>
@@ -19749,7 +20127,7 @@ Repair to restore resource generation and Supremacy functions</Description>
       <Objectives>
         <Objective>
           <ObjectiveNumber>0</ObjectiveNumber>
-          <Script>Script414_vendor_idle</Script>
+          <Script>cs00a_vendor_idle</Script>
           <Name>vendor_idle</Name>
           <Details>makes unit change its allegiances as-becomes convenient for it</Details>
         </Objective>
@@ -19971,6 +20349,53 @@ Capturable defensive structure in need of repairs. Use Power to restore function
           </Steps>
         </Action>
         <Action>
+          <ActionNumber>14</ActionNumber>
+          <Identifier>ACTION_RECYCLE</Identifier>
+          <TimeTaken>180</TimeTaken>
+          <ForceObjectAction>0</ForceObjectAction>
+          <InterruptCurrentAction>0</InterruptCurrentAction>
+          <MutexAction>0</MutexAction>
+          <FailOnInvalidTarget>0</FailOnInvalidTarget>
+          <PreserveParameter>1</PreserveParameter>
+          <AIScriptCanRun>0</AIScriptCanRun>
+          <SetParamZeroTicks>0</SetParamZeroTicks>
+          <AllowActionWhenStopped>0</AllowActionWhenStopped>
+          <Conditions/>
+          <Steps>
+            <Step>
+              <PrimitiveAction>CHANGE_CLASS</PrimitiveAction>
+              <Target>SELF</Target>
+              <Value>115</Value>
+            </Step>
+            <Step>
+              <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+              <Target>SELF</Target>
+              <Type>P_POWER</Type>
+              <ValueEval>ONE</ValueEval>
+              <Value>-200</Value>
+            </Step>
+            <Step>
+              <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+              <Target>SELF</Target>
+              <Type>P_L_CRYSTALS</Type>
+              <ValueEval>ONE</ValueEval>
+              <Value>-100</Value>
+            </Step>
+            <Step>
+              <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+              <Target>SELF</Target>
+              <Type>U_HP</Type>
+              <ValueEval>SET_TO_VALUE</ValueEval>
+              <Value>0</Value>
+            </Step>
+            <Step>
+              <PrimitiveAction>CLEAR_STATUS</PrimitiveAction>
+              <Target>SELF</Target>
+              <Type>STATUS_STASIS</Type>
+            </Step>
+          </Steps>
+        </Action>
+        <Action>
           <ActionNumber>15</ActionNumber>
           <Identifier>ACTION_SELF_UPGRADE</Identifier>
           <TimeTaken>180</TimeTaken>
@@ -20008,6 +20433,13 @@ Capturable defensive structure in need of repairs. Use Power to restore function
               <Type>U_HP</Type>
               <ValueEval>SET_TO_VALUE</ValueEval>
               <Value>200</Value>
+            </Step>
+            <Step>
+              <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+              <Target>SELF</Target>
+              <Type>U_ENERGY</Type>
+              <ValueEval>SET_TO_VALUE</ValueEval>
+              <Value>0</Value>
             </Step>
             <Step>
               <PrimitiveAction>CLEAR_STATUS</PrimitiveAction>
@@ -20078,25 +20510,56 @@ Capturable defensive structure in need of repairs. Use Power to restore function
       <Objectives>
         <Objective>
           <ObjectiveNumber>0</ObjectiveNumber>
-          <Script>Script414_vendor_idle</Script>
+          <Script>cs00a_vendor_idle</Script>
           <Name>vendor_idle</Name>
           <Details>makes unit change its allegiances as-becomes convenient for it</Details>
         </Objective>
         <Objective>
-          <ObjectiveNumber>19</ObjectiveNumber>
-          <Script>Script308_amp_morph</Script>
+          <ObjectiveNumber>20</ObjectiveNumber>
+          <Script>cs20b_simple_upgrade</Script>
           <Name>Activate Turret</Name>
-          <Details>Activate and permanently claim this Turret</Details>
+          <Details> \Activate and permanently claim this Turret</Details>
           <Resource1>200</Resource1>
+        </Objective>
+        <Objective>
+          <ObjectiveNumber>21</ObjectiveNumber>
+          <Script>cs21b_simple_downgrade</Script>
+          <Name>Scuttle Turret</Name>
+          <Details> \Destroy this Turret to salvage resources \  +100 LC, +200 P</Details>
         </Objective>
       </Objectives>
       <ControlShortcuts>
         <ControlShortcut>
           <ControlNumber>0</ControlNumber>
-          <ControlObjectiveNumber>19</ControlObjectiveNumber>
+          <ControlObjectiveNumber>20</ControlObjectiveNumber>
           <ParameterType>NO_PARAMETER</ParameterType>
           <Parameter>0</Parameter>
           <KeyboardShortcut>$AchronKBUpgradeSelf</KeyboardShortcut>
+          <Flags>
+            <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+            <EstTimeConstIsStart>0</EstTimeConstIsStart>
+            <ButtonDisabled>0</ButtonDisabled>
+            <UserControlsCustom>0</UserControlsCustom>
+            <ButtonInvisible>0</ButtonInvisible>
+            <SelectTarget>0</SelectTarget>
+          </Flags>
+          <EstTimeConst>360</EstTimeConst>
+          <EstTimeDist>0</EstTimeDist>
+          <Sound>Sound0</Sound>
+          <ControlConditions>
+            <ControlCondition>
+              <Resource>U_IS_CARRIED</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>0</Value>
+            </ControlCondition>
+          </ControlConditions>
+        </ControlShortcut>
+        <ControlShortcut>
+          <ControlNumber>1</ControlNumber>
+          <ControlObjectiveNumber>21</ControlObjectiveNumber>
+          <ParameterType>NO_PARAMETER</ParameterType>
+          <Parameter>0</Parameter>
+          <KeyboardShortcut>$AchronKBStop</KeyboardShortcut>
           <Flags>
             <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
             <EstTimeConstIsStart>0</EstTimeConstIsStart>
@@ -20287,7 +20750,7 @@ Collect with a RP to gain resources&#13;
               <Target>SELF</Target>
               <Type>U_ENERGY</Type>
               <ValueEval>ONE</ValueEval>
-              <Value>-3</Value>
+              <Value>-4</Value>
             </Step>
           </Steps>
         </Action>
@@ -20754,7 +21217,7 @@ Collect with a RP to gain resources&#13;
       <Name>Q-Plasma Cell</Name>
       <Description>QP CONDENSER CELL:&#13;
 Collect with a RP to gain resources&#13;
-Consumes 100 QP to activate&#13;
+Consumes 150 QP to activate&#13;
  &#13;
 Diminishing returns for additional RPs&#13;
 Maximum: 1 + 2 harvesters&#13;
@@ -23988,7 +24451,7 @@ Collect with a RP to gain resources</Description>
           <Steps/>
         </Action>
         <Action>
-          <ActionNumber>8</ActionNumber>
+          <ActionNumber>7</ActionNumber>
           <Identifier>ACTION_2_15 RP</Identifier>
           <TimeTaken>3</TimeTaken>
           <ForceObjectAction>1</ForceObjectAction>
@@ -24037,8 +24500,8 @@ Collect with a RP to gain resources</Description>
           </Steps>
         </Action>
         <Action>
-          <ActionNumber>9</ActionNumber>
-          <Identifier>ACTION_2_7 RP2</Identifier>
+          <ActionNumber>8</ActionNumber>
+          <Identifier>ACTION_7 RPx3</Identifier>
           <TimeTaken>3</TimeTaken>
           <ForceObjectAction>1</ForceObjectAction>
           <InterruptCurrentAction>0</InterruptCurrentAction>
@@ -24051,17 +24514,17 @@ Collect with a RP to gain resources</Description>
           <Conditions>
             <Condition>
               <Resource>U_AMMO</Resource>
-              <Comparison>EQUAL</Comparison>
+              <Comparison>GEQUAL</Comparison>
               <Value>30</Value>
             </Condition>
             <Condition>
-              <Resource>U_ENERGY</Resource>
-              <Comparison>GEQUAL</Comparison>
-              <Value>13</Value>
+              <Resource>U_AMMO</Resource>
+              <Comparison>LEQUAL</Comparison>
+              <Value>32</Value>
             </Condition>
             <Condition>
               <Resource>U_ENERGY</Resource>
-              <Comparison>LEQUAL</Comparison>
+              <Comparison>EQUAL</Comparison>
               <Value>39</Value>
             </Condition>
           </Conditions>
@@ -24081,8 +24544,52 @@ Collect with a RP to gain resources</Description>
           </Steps>
         </Action>
         <Action>
+          <ActionNumber>9</ActionNumber>
+          <Identifier>ACTION_0 RPx4</Identifier>
+          <TimeTaken>3</TimeTaken>
+          <ForceObjectAction>1</ForceObjectAction>
+          <InterruptCurrentAction>0</InterruptCurrentAction>
+          <MutexAction>0</MutexAction>
+          <FailOnInvalidTarget>0</FailOnInvalidTarget>
+          <PreserveParameter>0</PreserveParameter>
+          <AIScriptCanRun>0</AIScriptCanRun>
+          <SetParamZeroTicks>0</SetParamZeroTicks>
+          <AllowActionWhenStopped>0</AllowActionWhenStopped>
+          <Conditions>
+            <Condition>
+              <Resource>U_AMMO</Resource>
+              <Comparison>GEQUAL</Comparison>
+              <Value>7</Value>
+            </Condition>
+            <Condition>
+              <Resource>U_AMMO</Resource>
+              <Comparison>LEQUAL</Comparison>
+              <Value>10</Value>
+            </Condition>
+            <Condition>
+              <Resource>U_ENERGY</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>0</Value>
+            </Condition>
+          </Conditions>
+          <Steps>
+            <Step>
+              <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+              <Target>SELF</Target>
+              <Type>U_AMMO</Type>
+              <ValueEval>ONE</ValueEval>
+              <Value>-1</Value>
+            </Step>
+            <Step>
+              <PrimitiveAction>CREATE_UNIT</PrimitiveAction>
+              <Target>SELF</Target>
+              <Value>1055</Value>
+            </Step>
+          </Steps>
+        </Action>
+        <Action>
           <ActionNumber>10</ActionNumber>
-          <Identifier>ACTION_0_2 SEPIx2</Identifier>
+          <Identifier>ACTION_0_2 SEPIx3</Identifier>
           <TimeTaken>3</TimeTaken>
           <ForceObjectAction>1</ForceObjectAction>
           <InterruptCurrentAction>0</InterruptCurrentAction>
@@ -24101,7 +24608,7 @@ Collect with a RP to gain resources</Description>
             <Condition>
               <Resource>U_AMMO</Resource>
               <Comparison>LEQUAL</Comparison>
-              <Value>1</Value>
+              <Value>2</Value>
             </Condition>
             <Condition>
               <Resource>U_ENERGY</Resource>
@@ -24136,7 +24643,7 @@ Collect with a RP to gain resources</Description>
         </Action>
         <Action>
           <ActionNumber>11</ActionNumber>
-          <Identifier>ACTION_0_1 OCTOx3</Identifier>
+          <Identifier>ACTION_0_1 OCTOx4</Identifier>
           <TimeTaken>3</TimeTaken>
           <ForceObjectAction>1</ForceObjectAction>
           <InterruptCurrentAction>0</InterruptCurrentAction>
@@ -24150,12 +24657,12 @@ Collect with a RP to gain resources</Description>
             <Condition>
               <Resource>U_AMMO</Resource>
               <Comparison>GEQUAL</Comparison>
-              <Value>2</Value>
+              <Value>3</Value>
             </Condition>
             <Condition>
               <Resource>U_AMMO</Resource>
               <Comparison>LEQUAL</Comparison>
-              <Value>4</Value>
+              <Value>6</Value>
             </Condition>
             <Condition>
               <Resource>U_ENERGY</Resource>
@@ -24253,47 +24760,6 @@ Collect with a RP to gain resources</Description>
           </Steps>
         </Action>
         <Action>
-          <ActionNumber>14</ActionNumber>
-          <Identifier>ACTION_2 RESEARCH_U1</Identifier>
-          <TimeTaken>3</TimeTaken>
-          <ForceObjectAction>1</ForceObjectAction>
-          <InterruptCurrentAction>0</InterruptCurrentAction>
-          <MutexAction>0</MutexAction>
-          <FailOnInvalidTarget>0</FailOnInvalidTarget>
-          <PreserveParameter>0</PreserveParameter>
-          <AIScriptCanRun>0</AIScriptCanRun>
-          <SetParamZeroTicks>0</SetParamZeroTicks>
-          <AllowActionWhenStopped>0</AllowActionWhenStopped>
-          <Conditions>
-            <Condition>
-              <Resource>U_AMMO</Resource>
-              <Comparison>EQUAL</Comparison>
-              <Value>2</Value>
-            </Condition>
-            <Condition>
-              <Resource>U_ENERGY</Resource>
-              <Comparison>EQUAL</Comparison>
-              <Value>12</Value>
-            </Condition>
-          </Conditions>
-          <Steps>
-            <Step>
-              <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-              <Target>SELF</Target>
-              <Type>U_AMMO</Type>
-              <ValueEval>ONE</ValueEval>
-              <Value>-1</Value>
-            </Step>
-            <Step>
-              <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-              <Target>SELF</Target>
-              <Type>P_ADVANCEMENTS</Type>
-              <ValueEval>OR</ValueEval>
-              <Value>64</Value>
-            </Step>
-          </Steps>
-        </Action>
-        <Action>
           <!-- for easy difficulty -> replace with PharoX2 -->
           <ActionNumber>16</ActionNumber>
           <Identifier>ACTION_3_ Opodx1</Identifier>
@@ -24334,6 +24800,7 @@ Collect with a RP to gain resources</Description>
             <Step>
               <PrimitiveAction>CREATE_UNIT</PrimitiveAction>
               <Target>SELF</Target>
+              <Probability>0.5</Probability>
               <Value>1015</Value>
             </Step>
             <Step>
@@ -24347,8 +24814,8 @@ Collect with a RP to gain resources</Description>
         </Action>
         <Action>
           <!-- for easy difficulty -> nullify -->
-          <ActionNumber>18</ActionNumber>
-          <Identifier>ACTION_4_7 Opod+1</Identifier>
+          <ActionNumber>17</ActionNumber>
+          <Identifier>ACTION_4_5 Opod+1</Identifier>
           <TimeTaken>3</TimeTaken>
           <ForceObjectAction>1</ForceObjectAction>
           <InterruptCurrentAction>0</InterruptCurrentAction>
@@ -24372,7 +24839,7 @@ Collect with a RP to gain resources</Description>
             <Condition>
               <Resource>U_ENERGY</Resource>
               <Comparison>LEQUAL</Comparison>
-              <Value>42</Value>
+              <Value>30</Value>
             </Condition>
             <Condition>
               <Resource>P_Q_PLASMA</Resource>
@@ -24403,8 +24870,8 @@ Collect with a RP to gain resources</Description>
           </Steps>
         </Action>
         <Action>
-          <ActionNumber>19</ActionNumber>
-          <Identifier>ACTION_6_7 Ppodx1</Identifier>
+          <ActionNumber>18</ActionNumber>
+          <Identifier>ACTION_4_5 Spodx0.5</Identifier>
           <TimeTaken>3</TimeTaken>
           <ForceObjectAction>1</ForceObjectAction>
           <InterruptCurrentAction>0</InterruptCurrentAction>
@@ -24423,6 +24890,68 @@ Collect with a RP to gain resources</Description>
             <Condition>
               <Resource>U_ENERGY</Resource>
               <Comparison>GEQUAL</Comparison>
+              <Value>24</Value>
+            </Condition>
+            <Condition>
+              <Resource>U_ENERGY</Resource>
+              <Comparison>LEQUAL</Comparison>
+              <Value>30</Value>
+            </Condition>
+            <Condition>
+              <Resource>P_ADVANCEMENTS</Resource>
+              <Comparison>BITMASK</Comparison>
+              <Value>192</Value>
+            </Condition>
+          </Conditions>
+          <Steps>
+            <Step>
+              <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+              <Target>SELF</Target>
+              <Type>U_AMMO</Type>
+              <ValueEval>ONE</ValueEval>
+              <Value>-1</Value>
+            </Step>
+            <Step>
+              <PrimitiveAction>CREATE_UNIT</PrimitiveAction>
+              <Target>SELF</Target>
+              <Probability>0.5</Probability>
+              <Value>1020</Value>
+            </Step>
+            <Step>
+              <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+              <Target>SELF</Target>
+              <Type>P_Q_PLASMA</Type>
+              <ValueEval>ONE</ValueEval>
+              <Value>200</Value>
+            </Step>
+          </Steps>
+        </Action>
+        <Action>
+          <ActionNumber>19</ActionNumber>
+          <Identifier>ACTION_6_7 Ppodx2</Identifier>
+          <TimeTaken>3</TimeTaken>
+          <ForceObjectAction>1</ForceObjectAction>
+          <InterruptCurrentAction>0</InterruptCurrentAction>
+          <MutexAction>0</MutexAction>
+          <FailOnInvalidTarget>0</FailOnInvalidTarget>
+          <PreserveParameter>0</PreserveParameter>
+          <AIScriptCanRun>0</AIScriptCanRun>
+          <SetParamZeroTicks>0</SetParamZeroTicks>
+          <AllowActionWhenStopped>0</AllowActionWhenStopped>
+          <Conditions>
+            <Condition>
+              <Resource>U_AMMO</Resource>
+              <Comparison>GEQUAL</Comparison>
+              <Value>3</Value>
+            </Condition>
+            <Condition>
+              <Resource>U_AMMO</Resource>
+              <Comparison>LEQUAL</Comparison>
+              <Value>4</Value>
+            </Condition>
+            <Condition>
+              <Resource>U_ENERGY</Resource>
+              <Comparison>GEQUAL</Comparison>
               <Value>36</Value>
             </Condition>
             <Condition>
@@ -24431,19 +24960,19 @@ Collect with a RP to gain resources</Description>
               <Value>42</Value>
             </Condition>
             <Condition>
+              <Resource>P_ADVANCEMENTS</Resource>
+              <Comparison>BITMASK</Comparison>
+              <Value>192</Value>
+            </Condition>
+            <Condition>
               <Resource>P_CUSTOM_FIELD_8</Resource>
               <Comparison>GEQUAL</Comparison>
               <Value>4096</Value>
             </Condition>
             <Condition>
-              <Resource>P_CUSTOM_FIELD_8</Resource>
-              <Comparison>LESS</Comparison>
-              <Value>9216</Value>
-            </Condition>
-            <Condition>
               <Resource>P_Q_PLASMA</Resource>
               <Comparison>GEQUAL</Comparison>
-              <Value>150</Value>
+              <Value>0</Value>
             </Condition>
           </Conditions>
           <Steps>
@@ -24464,7 +24993,7 @@ Collect with a RP to gain resources</Description>
               <Target>SELF</Target>
               <Type>P_Q_PLASMA</Type>
               <ValueEval>ONE</ValueEval>
-              <Value>500</Value>
+              <Value>200</Value>
             </Step>
           </Steps>
         </Action>
@@ -24491,11 +25020,17 @@ Collect with a RP to gain resources</Description>
               <Comparison>EQUAL</Comparison>
               <Value>48</Value>
             </Condition>
+            <Condition>
+              <Resource>P_ADVANCEMENTS</Resource>
+              <Comparison>BITMASK</Comparison>
+              <Value>128</Value>
+            </Condition>
           </Conditions>
           <Steps>
             <Step>
               <PrimitiveAction>CREATE_UNIT</PrimitiveAction>
               <Target>SELF</Target>
+              <Probability>0.6</Probability>
               <Value>1100</Value>
             </Step>
             <Step>
@@ -24536,9 +25071,14 @@ Collect with a RP to gain resources</Description>
               <Value>60</Value>
             </Condition>
             <Condition>
+              <Resource>P_ADVANCEMENTS</Resource>
+              <Comparison>BITMASK</Comparison>
+              <Value>128</Value>
+            </Condition>
+            <Condition>
               <Resource>P_Q_PLASMA</Resource>
               <Comparison>GEQUAL</Comparison>
-              <Value>200</Value>
+              <Value>400</Value>
             </Condition>
           </Conditions>
           <Steps>
@@ -24590,6 +25130,11 @@ Collect with a RP to gain resources</Description>
               <Resource>U_ENERGY</Resource>
               <Comparison>EQUAL</Comparison>
               <Value>66</Value>
+            </Condition>
+            <Condition>
+              <Resource>P_ADVANCEMENTS</Resource>
+              <Comparison>BITMASK</Comparison>
+              <Value>128</Value>
             </Condition>
             <Condition>
               <Resource>P_Q_PLASMA</Resource>
@@ -24648,9 +25193,14 @@ Collect with a RP to gain resources</Description>
               <Value>84</Value>
             </Condition>
             <Condition>
+              <Resource>P_ADVANCEMENTS</Resource>
+              <Comparison>BITMASK</Comparison>
+              <Value>128</Value>
+            </Condition>
+            <Condition>
               <Resource>P_Q_PLASMA</Resource>
               <Comparison>GEQUAL</Comparison>
-              <Value>600</Value>
+              <Value>0</Value>
             </Condition>
           </Conditions>
           <Steps>
@@ -24664,6 +25214,7 @@ Collect with a RP to gain resources</Description>
             <Step>
               <PrimitiveAction>CREATE_UNIT</PrimitiveAction>
               <Target>SELF</Target>
+              <Probability>0.5</Probability>
               <Value>1105</Value>
             </Step>
             <Step>
@@ -24671,98 +25222,98 @@ Collect with a RP to gain resources</Description>
               <Target>SELF</Target>
               <Type>P_Q_PLASMA</Type>
               <ValueEval>ONE</ValueEval>
-              <Value>600</Value>
-            </Step>
-          </Steps>
-        </Action>
-        <Action>
-          <ActionNumber>30</ActionNumber>
-          <Identifier>ACTION_400QP_EARLY_D</Identifier>
-          <TimeTaken>3</TimeTaken>
-          <ForceObjectAction>1</ForceObjectAction>
-          <InterruptCurrentAction>0</InterruptCurrentAction>
-          <MutexAction>0</MutexAction>
-          <FailOnInvalidTarget>0</FailOnInvalidTarget>
-          <PreserveParameter>0</PreserveParameter>
-          <AIScriptCanRun>0</AIScriptCanRun>
-          <SetParamZeroTicks>0</SetParamZeroTicks>
-          <AllowActionWhenStopped>0</AllowActionWhenStopped>
-          <Conditions>
-            <Condition>
-              <Resource>P_Q_PLASMA</Resource>
-              <Comparison>GEQUAL</Comparison>
-              <Value>1000</Value>
-            </Condition>
-            <Condition>
-              <Resource>U_ENERGY</Resource>
-              <Comparison>LESS</Comparison>
-              <Value>60</Value>
-            </Condition>
-            <Condition>
-              <Resource>P_CUSTOM_FIELD_8</Resource>
-              <Comparison>LESS</Comparison>
-              <Value>4096</Value>
-            </Condition>
-            <Condition>
-              <Resource>U_AMMO</Resource>
-              <Comparison>LESS</Comparison>
-              <Value>100</Value>
-            </Condition>
-          </Conditions>
-          <Steps>
-            <Step>
-              <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-              <Target>SELF</Target>
-              <Type>U_AMMO</Type>
-              <ValueEval>SET_TO_VALUE</ValueEval>
               <Value>100</Value>
             </Step>
           </Steps>
         </Action>
-        <Action>
-          <ActionNumber>31</ActionNumber>
-          <Identifier>ACTION_400QP_EARLY_O</Identifier>
-          <TimeTaken>3</TimeTaken>
-          <ForceObjectAction>1</ForceObjectAction>
-          <InterruptCurrentAction>0</InterruptCurrentAction>
-          <MutexAction>0</MutexAction>
-          <FailOnInvalidTarget>0</FailOnInvalidTarget>
-          <PreserveParameter>0</PreserveParameter>
-          <AIScriptCanRun>0</AIScriptCanRun>
-          <SetParamZeroTicks>0</SetParamZeroTicks>
-          <AllowActionWhenStopped>0</AllowActionWhenStopped>
-          <Conditions>
-            <Condition>
-              <Resource>P_Q_PLASMA</Resource>
-              <Comparison>GEQUAL</Comparison>
-              <Value>1000</Value>
-            </Condition>
-            <Condition>
-              <Resource>U_ENERGY</Resource>
-              <Comparison>LESS</Comparison>
-              <Value>42</Value>
-            </Condition>
-            <Condition>
-              <Resource>P_CUSTOM_FIELD_8</Resource>
-              <Comparison>GEQUAL</Comparison>
-              <Value>8192</Value>
-            </Condition>
-            <Condition>
-              <Resource>U_AMMO</Resource>
-              <Comparison>LESS</Comparison>
-              <Value>100</Value>
-            </Condition>
-          </Conditions>
-          <Steps>
-            <Step>
-              <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-              <Target>SELF</Target>
-              <Type>U_AMMO</Type>
-              <ValueEval>SET_TO_VALUE</ValueEval>
-              <Value>100</Value>
-            </Step>
-          </Steps>
-        </Action>
+        <!--Action>
+                    <ActionNumber>30</ActionNumber>
+                    <Identifier>ACTION_400QP_EARLY_D</Identifier>
+                    <TimeTaken>3</TimeTaken>
+                    <ForceObjectAction>1</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <Conditions>
+                        <Condition>
+                            <Resource>P_Q_PLASMA</Resource>
+                            <Comparison>GEQUAL</Comparison>
+                            <Value>1800</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_ENERGY</Resource>
+                            <Comparison>LESS</Comparison>
+                            <Value>60</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>P_CUSTOM_FIELD_8</Resource>
+                            <Comparison>LESS</Comparison>
+                            <Value>4096</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_AMMO</Resource>
+                            <Comparison>LESS</Comparison>
+                            <Value>100</Value>
+                        </Condition>
+                    </Conditions>
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_AMMO</Type>
+                            <ValueEval>SET_TO_VALUE</ValueEval>
+                            <Value>100</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>31</ActionNumber>
+                    <Identifier>ACTION_400QP_EARLY_O</Identifier>
+                    <TimeTaken>3</TimeTaken>
+                    <ForceObjectAction>1</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <Conditions>
+                        <Condition>
+                            <Resource>P_Q_PLASMA</Resource>
+                            <Comparison>GEQUAL</Comparison>
+                            <Value>1800</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_ENERGY</Resource>
+                            <Comparison>LESS</Comparison>
+                            <Value>42</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>P_CUSTOM_FIELD_8</Resource>
+                            <Comparison>GEQUAL</Comparison>
+                            <Value>8192</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_AMMO</Resource>
+                            <Comparison>LESS</Comparison>
+                            <Value>100</Value>
+                        </Condition>
+                    </Conditions>
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_AMMO</Type>
+                            <ValueEval>SET_TO_VALUE</ValueEval>
+                            <Value>100</Value>
+                        </Step>
+                    </Steps>
+                </Action-->
         <Action>
           <ActionNumber>32</ActionNumber>
           <Identifier>ACTION_400QP_HP</Identifier>
@@ -24804,7 +25355,7 @@ Collect with a RP to gain resources</Description>
         </Action>
         <Action>
           <ActionNumber>33</ActionNumber>
-          <Identifier>ACTION_1200QP</Identifier>
+          <Identifier>ACTION_1000QP</Identifier>
           <TimeTaken>3</TimeTaken>
           <ForceObjectAction>1</ForceObjectAction>
           <InterruptCurrentAction>0</InterruptCurrentAction>
@@ -24818,7 +25369,7 @@ Collect with a RP to gain resources</Description>
             <Condition>
               <Resource>P_Q_PLASMA</Resource>
               <Comparison>GEQUAL</Comparison>
-              <Value>1800</Value>
+              <Value>1000</Value>
             </Condition>
             <Condition>
               <Resource>U_HP</Resource>
@@ -24828,7 +25379,7 @@ Collect with a RP to gain resources</Description>
             <Condition>
               <Resource>U_ENERGY</Resource>
               <Comparison>GEQUAL</Comparison>
-              <Value>30</Value>
+              <Value>48</Value>
             </Condition>
             <Condition>
               <Resource>U_AMMO</Resource>
@@ -24896,7 +25447,7 @@ Collect with a RP to gain resources</Description>
               <Target>SELF</Target>
               <Type>P_Q_PLASMA</Type>
               <ValueEval>ONE</ValueEval>
-              <Value>0</Value>
+              <Value>300</Value>
             </Step>
           </Steps>
         </Action>
@@ -24967,7 +25518,12 @@ Collect with a RP to gain resources</Description>
             <Condition>
               <Resource>U_AMMO</Resource>
               <Comparison>LEQUAL</Comparison>
-              <Value>107</Value>
+              <Value>109</Value>
+            </Condition>
+            <Condition>
+              <Resource>P_ADVANCEMENTS</Resource>
+              <Comparison>BITMASK</Comparison>
+              <Value>192</Value>
             </Condition>
           </Conditions>
           <Steps>
@@ -24981,6 +25537,7 @@ Collect with a RP to gain resources</Description>
             <Step>
               <PrimitiveAction>CREATE_UNIT</PrimitiveAction>
               <Target>SELF</Target>
+              <Probability>0.5</Probability>
               <Value>1020</Value>
             </Step>
             <Step>
@@ -24988,13 +25545,13 @@ Collect with a RP to gain resources</Description>
               <Target>SELF</Target>
               <Type>P_Q_PLASMA</Type>
               <ValueEval>ONE</ValueEval>
-              <Value>400</Value>
+              <Value>50</Value>
             </Step>
           </Steps>
         </Action>
         <Action>
           <ActionNumber>43</ActionNumber>
-          <Identifier>ACTION_QP_OCTOx7</Identifier>
+          <Identifier>ACTION_QP_OCTOx5</Identifier>
           <TimeTaken>3</TimeTaken>
           <ForceObjectAction>1</ForceObjectAction>
           <InterruptCurrentAction>0</InterruptCurrentAction>
@@ -25013,7 +25570,7 @@ Collect with a RP to gain resources</Description>
             <Condition>
               <Resource>U_AMMO</Resource>
               <Comparison>LEQUAL</Comparison>
-              <Value>117</Value>
+              <Value>120</Value>
             </Condition>
           </Conditions>
           <Steps>
@@ -25027,6 +25584,7 @@ Collect with a RP to gain resources</Description>
             <Step>
               <PrimitiveAction>CREATE_UNIT</PrimitiveAction>
               <Target>SELF</Target>
+              <Probability>0.5</Probability>
               <Value>1000</Value>
             </Step>
             <Step>
@@ -25034,7 +25592,7 @@ Collect with a RP to gain resources</Description>
               <Target>SELF</Target>
               <Type>P_Q_PLASMA</Type>
               <ValueEval>ONE</ValueEval>
-              <Value>100</Value>
+              <Value>50</Value>
             </Step>
           </Steps>
         </Action>
@@ -25086,7 +25644,7 @@ Collect with a RP to gain resources</Description>
         </Action>
         <Action>
           <ActionNumber>46</ActionNumber>
-          <Identifier>ACTION_5_ Spodx2</Identifier>
+          <Identifier>ACTION_5_ Spodx1</Identifier>
           <TimeTaken>3</TimeTaken>
           <ForceObjectAction>1</ForceObjectAction>
           <InterruptCurrentAction>0</InterruptCurrentAction>
@@ -25113,9 +25671,14 @@ Collect with a RP to gain resources</Description>
               <Value>30</Value>
             </Condition>
             <Condition>
+              <Resource>P_ADVANCEMENTS</Resource>
+              <Comparison>BITMASK</Comparison>
+              <Value>192</Value>
+            </Condition>
+            <Condition>
               <Resource>P_Q_PLASMA</Resource>
               <Comparison>GEQUAL</Comparison>
-              <Value>600</Value>
+              <Value>400</Value>
             </Condition>
           </Conditions>
           <Steps>
@@ -25129,6 +25692,7 @@ Collect with a RP to gain resources</Description>
             <Step>
               <PrimitiveAction>CREATE_UNIT</PrimitiveAction>
               <Target>SELF</Target>
+              <Probability>0.5</Probability>
               <Value>1020</Value>
             </Step>
             <Step>
@@ -25136,52 +25700,50 @@ Collect with a RP to gain resources</Description>
               <Target>SELF</Target>
               <Type>P_Q_PLASMA</Type>
               <ValueEval>ONE</ValueEval>
-              <Value>400</Value>
+              <Value>200</Value>
             </Step>
           </Steps>
         </Action>
-        <Action>
-          <ActionNumber>48</ActionNumber>
-          <Identifier>ACTION_GENERATE_RESOURCES</Identifier>
-          <TimeTaken>0</TimeTaken>
-          <ForceObjectAction>1</ForceObjectAction>
-          <InterruptCurrentAction>0</InterruptCurrentAction>
-          <MutexAction>0</MutexAction>
-          <FailOnInvalidTarget>0</FailOnInvalidTarget>
-          <PreserveParameter>0</PreserveParameter>
-          <AIScriptCanRun>0</AIScriptCanRun>
-          <SetParamZeroTicks>0</SetParamZeroTicks>
-          <AllowActionWhenStopped>0</AllowActionWhenStopped>
-          <LobProjectilePath>0</LobProjectilePath>
-          <Conditions>
-            <Condition>
-              <Resource>U_AGE</Resource>
-              <Comparison>MODULO_IS_ZERO</Comparison>
-              <Value>180</Value>
-            </Condition>
-            <Condition>
-              <Resource>P_POWER</Resource>
-              <Comparison>LESS</Comparison>
-              <Value>2000</Value>
-            </Condition>
-          </Conditions>
-          <Steps>
-            <Step>
-              <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-              <Target>SELF</Target>
-              <Type>P_Q_PLASMA</Type>
-              <ValueEval>ONE</ValueEval>
-              <Value>-20</Value>
-            </Step>
-            <Step>
-              <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-              <Target>SELF</Target>
-              <Type>P_POWER</Type>
-              <ValueEval>ONE</ValueEval>
-              <Value>-20</Value>
-            </Step>
-          </Steps>
-        </Action>
+        <!--Action>
+                    <ActionNumber>48</ActionNumber>
+                    <Identifier>ACTION_GENERATE_RESOURCES</Identifier>
+                    <TimeTaken>0</TimeTaken>
+                    <ForceObjectAction>1</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions>
+                        <Condition>
+                            <Resource>U_AGE</Resource>
+                            <Comparison>MODULO_IS_ZERO</Comparison>
+                            <Value>89</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_AGE</Resource>
+                            <Comparison>LESS</Comparison>
+                            <Value>6480</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>P_Q_PLASMA</Resource>
+                            <Comparison>LESS</Comparison>
+                            <Value>3000</Value>
+                        </Condition>
+                    </Conditions>
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_Q_PLASMA</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>-10</Value>
+                        </Step>
+                    </Steps>
+                </Action-->
         <Action>
           <ActionNumber>49</ActionNumber>
           <Identifier>ACTION_CONVERT_RESOURCES</Identifier>
@@ -25199,28 +25761,28 @@ Collect with a RP to gain resources</Description>
             <Condition>
               <Resource>U_AGE</Resource>
               <Comparison>MODULO_IS_ZERO</Comparison>
-              <Value>180</Value>
+              <Value>361</Value>
             </Condition>
             <Condition>
               <Resource>P_L_CRYSTALS</Resource>
               <Comparison>GEQUAL</Comparison>
-              <Value>20</Value>
+              <Value>100</Value>
             </Condition>
           </Conditions>
           <Steps>
             <Step>
               <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
               <Target>SELF</Target>
-              <Type>P_Q_PLASMA</Type>
+              <Type>P_L_CRYSTALS</Type>
               <ValueEval>ONE</ValueEval>
-              <Value>-20</Value>
+              <Value>100</Value>
             </Step>
             <Step>
               <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
               <Target>SELF</Target>
-              <Type>P_L_CRYSTALS</Type>
+              <Type>P_Q_PLASMA</Type>
               <ValueEval>ONE</ValueEval>
-              <Value>20</Value>
+              <Value>-50</Value>
             </Step>
           </Steps>
         </Action>
@@ -26287,7 +26849,7 @@ Collect with a RP to gain resources</Description>
               <Target>SELF</Target>
               <Type>P_POWER</Type>
               <ValueEval>ONE</ValueEval>
-              <Value>-400</Value>
+              <Value>-1200</Value>
             </Step>
             <Step>
               <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -29452,6 +30014,7 @@ Can cloak to become a permanent asset</Description>
           <Script>cs510_pick_grekim</Script>
           <Name>Deploy Grekim</Name>
           <Details>Play as the Grekim:\Devious masters of timetravel\Rely on self-chronoportation and air power\ \Hardest to learn for new players</Details>
+          <ObjectiveControlShortcutNumber>8</ObjectiveControlShortcutNumber>
         </Objective>
         <Objective>
           <ObjectiveNumber>52</ObjectiveNumber>
@@ -29577,7 +30140,7 @@ Can cloak to become a permanent asset</Description>
           <ControlNumber>7</ControlNumber>
           <ControlObjectiveNumber>50</ControlObjectiveNumber>
           <MouseInputType>SHORTCUT_QUICK_1</MouseInputType>
-          <ParameterType>UNIT</ParameterType>
+          <ParameterType>POSITION_AUTO_HEIGHT</ParameterType>
           <Parameter>0</Parameter>
           <KeyboardShortcut>$AchronKBHuman</KeyboardShortcut>
           <Flags>
@@ -29603,7 +30166,7 @@ Can cloak to become a permanent asset</Description>
           <ControlNumber>8</ControlNumber>
           <ControlObjectiveNumber>51</ControlObjectiveNumber>
           <MouseInputType>SHORTCUT_QUICK_2</MouseInputType>
-          <ParameterType>UNIT</ParameterType>
+          <ParameterType>POSITION_AUTO_HEIGHT</ParameterType>
           <Parameter>0</Parameter>
           <KeyboardShortcut>$AchronKBGrekim</KeyboardShortcut>
           <Flags>
@@ -29629,7 +30192,7 @@ Can cloak to become a permanent asset</Description>
           <ControlNumber>9</ControlNumber>
           <ControlObjectiveNumber>52</ControlObjectiveNumber>
           <MouseInputType>SHORTCUT_QUICK_3</MouseInputType>
-          <ParameterType>UNIT</ParameterType>
+          <ParameterType>POSITION_AUTO_HEIGHT</ParameterType>
           <Parameter>0</Parameter>
           <KeyboardShortcut>$AchronKBVecgir</KeyboardShortcut>
           <Flags>
@@ -29655,7 +30218,7 @@ Can cloak to become a permanent asset</Description>
           <ControlNumber>10</ControlNumber>
           <ControlObjectiveNumber>53</ControlObjectiveNumber>
           <MouseInputType>SHORTCUT_QUICK_4</MouseInputType>
-          <ParameterType>UNIT</ParameterType>
+          <ParameterType>POSITION_AUTO_HEIGHT</ParameterType>
           <Parameter>0</Parameter>
           <KeyboardShortcut>$AchronKBRandom</KeyboardShortcut>
           <Flags>
@@ -31418,7 +31981,7 @@ Can revive frozen units</Description>
               <Target>SELF</Target>
               <Type>P_POWER</Type>
               <ValueEval>ONE</ValueEval>
-              <Value>0</Value>
+              <Value>240</Value>
             </Step>
             <Step>
               <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -32163,7 +32726,8 @@ Can revive frozen units</Description>
           <ObjectiveNumber>20</ObjectiveNumber>
           <Script>gs200_convert</Script>
           <Name>Revert LCrystal -&gt; QPlasma</Name>
-          <Details> \Convert 200 L-Crystal to Q-Plasma\converts 2.5 QP/s over 80 s \ \200 LC + 80 E = 200 QP</Details>
+          <Details> \Convert 200 L-Crystal to Q-Plasma\converts 2.5 QP/s over 80 s \ \200 LC + 240 P + 80 E = 200 QP</Details>
+          <Resource1>240</Resource1>
           <Resource2>400</Resource2>
           <Resource6>80</Resource6>
         </Objective>
@@ -33431,7 +33995,7 @@ Can spawn Spider Probe suicide scouts</Description>
               <Target>SELF</Target>
               <Type>P_POWER</Type>
               <ValueEval>ONE</ValueEval>
-              <Value>0</Value>
+              <Value>240</Value>
             </Step>
             <Step>
               <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -34003,7 +34567,8 @@ Can spawn Spider Probe suicide scouts</Description>
           <ObjectiveNumber>20</ObjectiveNumber>
           <Script>gs200_convert</Script>
           <Name>Revert LCrystal -&gt; QPlasma</Name>
-          <Details> \Convert 200 L-Crystal to Q-Plasma\converts 2.5 QP/s over 80 s \ \200 LC + 80 E = 200 QP</Details>
+          <Details> \Convert 200 L-Crystal to Q-Plasma\converts 2.5 QP/s over 80 s \ \200 LC + 240 P + 80 E = 200 QP</Details>
+          <Resource1>240</Resource1>
           <Resource2>400</Resource2>
           <Resource6>80</Resource6>
         </Objective>
@@ -35033,7 +35598,7 @@ Weapons: 2X  regen. [+360 hp, +36/s]</Description>
               <Target>SELF</Target>
               <Type>P_POWER</Type>
               <ValueEval>ONE</ValueEval>
-              <Value>100</Value>
+              <Value>150</Value>
             </Step>
             <Step>
               <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -35244,13 +35809,13 @@ Weapons: 2X  regen. [+360 hp, +36/s]</Description>
               <ValueEval>SET_TO_VALUE</ValueEval>
               <Value>0</Value>
             </Step>
-            <!--Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>U_ENERGY</Type>
-                            <ValueEval>SET_TO_VALUE</ValueEval>
-                            <Value>100</Value>
-                        </Step-->
+            <Step>
+              <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+              <Target>SELF</Target>
+              <Type>U_ENERGY</Type>
+              <ValueEval>SET_TO_VALUE</ValueEval>
+              <Value>34</Value>
+            </Step>
             <Step>
               <PrimitiveAction>ACCUM_STATISTIC</PrimitiveAction>
               <Target>SELF</Target>
@@ -35772,7 +36337,7 @@ Weapons: 2X  regen. [+360 hp, +36/s]</Description>
               <Target>SELF</Target>
               <Type>P_L_CRYSTALS</Type>
               <ValueEval>ONE</ValueEval>
-              <Value>-50</Value>
+              <Value>-60</Value>
             </Step>
             <Step>
               <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -36250,7 +36815,7 @@ Weapons: 2X  regen. [+360 hp, +36/s]</Description>
           <Script>gs161_octo_rp</Script>
           <Name>Resource Processor</Name>
           <Details>   - place near resource bins\Assimilates resources: Power and Q-Plasma\Can convert Q-Plasma into Power\Cloaks and moves itself</Details>
-          <Resource1>100</Resource1>
+          <Resource1>150</Resource1>
           <Resource4>50</Resource4>
           <Resource6>0</Resource6>
           <ObjectiveControlShortcutNumber>10</ObjectiveControlShortcutNumber>
@@ -45222,7 +45787,7 @@ Detects cloaked units&#13;
               <Target>SELF</Target>
               <Type>P_L_CRYSTALS</Type>
               <ValueEval>ONE</ValueEval>
-              <Value>-50</Value>
+              <Value>-60</Value>
             </Step>
             <Step>
               <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -45513,8 +46078,8 @@ Detects cloaked units&#13;
           <ValidRadius>12</ValidRadius>
         </Objective>
         <Objective>
-          <ObjectiveNumber>16</ObjectiveNumber>
-          <Script>gs163_pharo_arct</Script>
+          <ObjectiveNumber>18</ObjectiveNumber>
+          <Script>gs183_pharo_arct</Script>
           <Name>Morph: Arcticus</Name>
           <Details> \Advanced progeneration hub\Produces base and Ligo class units\Cloaks and fertilizes all progenitors\in a large area</Details>
           <Resource1>600</Resource1>
@@ -45522,16 +46087,16 @@ Detects cloaked units&#13;
           <ObjectiveControlShortcutNumber>10</ObjectiveControlShortcutNumber>
         </Objective>
         <Objective>
-          <ObjectiveNumber>20</ObjectiveNumber>
-          <Script>gs203_pharo_spyre</Script>
+          <ObjectiveNumber>22</ObjectiveNumber>
+          <Script>gs223_pharo_spyre</Script>
           <Name>Spyre</Name>
           <Details> \Teleporter network node and \advanced-production support building \Enables progeneration of aerospace \and Ligo units in its vision radius</Details>
           <Resource4>150</Resource4>
           <ObjectiveControlShortcutNumber>12</ObjectiveControlShortcutNumber>
         </Objective>
         <Objective>
-          <ObjectiveNumber>21</ObjectiveNumber>
-          <Script>gs213_pharo_spyre_na</Script>
+          <ObjectiveNumber>23</ObjectiveNumber>
+          <Script>gs233_pharo_spyre_na</Script>
           <Name>Spyre</Name>
           <Details>   Not Available \    Requires Adv Structures upgrade</Details>
         </Objective>
@@ -45827,7 +46392,7 @@ Detects cloaked units&#13;
         </ControlShortcut>
         <ControlShortcut>
           <ControlNumber>10</ControlNumber>
-          <ControlObjectiveNumber>16</ControlObjectiveNumber>
+          <ControlObjectiveNumber>18</ControlObjectiveNumber>
           <MouseInputType>SHORTCUT_QUICK_4</MouseInputType>
           <ParameterType>POSITION_CLASS</ParameterType>
           <Parameter>1050</Parameter>
@@ -45853,7 +46418,7 @@ Detects cloaked units&#13;
         </ControlShortcut>
         <ControlShortcut>
           <ControlNumber>12</ControlNumber>
-          <ControlObjectiveNumber>20</ControlObjectiveNumber>
+          <ControlObjectiveNumber>22</ControlObjectiveNumber>
           <ParameterType>POSITION_CLASS</ParameterType>
           <Parameter>1070</Parameter>
           <KeyboardShortcut>$AchronKBSpyre</KeyboardShortcut>
@@ -45883,7 +46448,7 @@ Detects cloaked units&#13;
         </ControlShortcut>
         <ControlShortcut>
           <ControlNumber>13</ControlNumber>
-          <ControlObjectiveNumber>21</ControlObjectiveNumber>
+          <ControlObjectiveNumber>23</ControlObjectiveNumber>
           <ParameterType>NO_PARAMETER</ParameterType>
           <Parameter>0</Parameter>
           <KeyboardShortcut/>
@@ -48125,7 +48690,7 @@ Can progenerate base Octo and Sepi pair</Description>
               <Target>SELF</Target>
               <Type>P_L_CRYSTALS</Type>
               <ValueEval>ONE</ValueEval>
-              <Value>-180</Value>
+              <Value>-120</Value>
             </Step>
             <Step>
               <PrimitiveAction>CHANGE_CLASS</PrimitiveAction>
@@ -55768,6 +56333,37 @@ Cloaks when moving or idle</Description>
           </Steps>
         </Action>
         <Action>
+          <ActionNumber>13</ActionNumber>
+          <Identifier>ACTION_UN_REAPH</Identifier>
+          <TimeTaken>0</TimeTaken>
+          <ForceObjectAction>0</ForceObjectAction>
+          <InterruptCurrentAction>0</InterruptCurrentAction>
+          <MutexAction>0</MutexAction>
+          <FailOnInvalidTarget>0</FailOnInvalidTarget>
+          <PreserveParameter>0</PreserveParameter>
+          <AIScriptCanRun>0</AIScriptCanRun>
+          <SetParamZeroTicks>0</SetParamZeroTicks>
+          <AllowActionWhenStopped>0</AllowActionWhenStopped>
+          <LobProjectilePath>0</LobProjectilePath>
+          <Conditions/>
+          <Steps>
+            <Step>
+              <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+              <Target>SELF</Target>
+              <Type>P_POWER</Type>
+              <ValueEval>ONE</ValueEval>
+              <Value>-200</Value>
+            </Step>
+            <Step>
+              <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+              <Target>SELF</Target>
+              <Type>U_ENERGY</Type>
+              <ValueEval>ONE</ValueEval>
+              <Value>-20</Value>
+            </Step>
+          </Steps>
+        </Action>
+        <Action>
           <ActionNumber>20</ActionNumber>
           <Identifier>ACTION_CAST</Identifier>
           <TimeTaken>18</TimeTaken>
@@ -56452,7 +57048,7 @@ Cloaks when moving or idle</Description>
               <Target>SELF</Target>
               <Type>P_L_CRYSTALS</Type>
               <ValueEval>ONE</ValueEval>
-              <Value>-50</Value>
+              <Value>-60</Value>
             </Step>
             <Step>
               <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -56893,8 +57489,8 @@ Cloaks when moving or idle</Description>
           <ValidRadius>12</ValidRadius>
         </Objective>
         <Objective>
-          <ObjectiveNumber>16</ObjectiveNumber>
-          <Script>gs162_sepi_reaph</Script>
+          <ObjectiveNumber>17</ObjectiveNumber>
+          <Script>gs172_sepi_reaph</Script>
           <Name>Reaph</Name>
           <Details> \Defensive support building\Repairs friendly units and structures</Details>
           <Resource1>200</Resource1>
@@ -56903,8 +57499,8 @@ Cloaks when moving or idle</Description>
           <ObjectiveControlShortcutNumber>10</ObjectiveControlShortcutNumber>
         </Objective>
         <Objective>
-          <ObjectiveNumber>20</ObjectiveNumber>
-          <Script>gs202_sepi_mound</Script>
+          <ObjectiveNumber>21</ObjectiveNumber>
+          <Script>gs212_sepi_mound</Script>
           <Name>Morph: Mound</Name>
           <Details>Robust tech/comm and raider building\Performs tech tree and comm upgrades\ \Produces Cuttles: \ultra-light scout-raider aircraft</Details>
           <Resource4>50</Resource4>
@@ -57189,7 +57785,7 @@ Cloaks when moving or idle</Description>
         </ControlShortcut>
         <ControlShortcut>
           <ControlNumber>10</ControlNumber>
-          <ControlObjectiveNumber>16</ControlObjectiveNumber>
+          <ControlObjectiveNumber>17</ControlObjectiveNumber>
           <MouseInputType>SHORTCUT_QUICK_4</MouseInputType>
           <ParameterType>POSITION_CLASS</ParameterType>
           <Parameter>1060</Parameter>
@@ -57225,7 +57821,7 @@ Cloaks when moving or idle</Description>
         </ControlShortcut>
         <ControlShortcut>
           <ControlNumber>12</ControlNumber>
-          <ControlObjectiveNumber>20</ControlObjectiveNumber>
+          <ControlObjectiveNumber>21</ControlObjectiveNumber>
           <ParameterType>POSITION_CLASS</ParameterType>
           <Parameter>1064</Parameter>
           <KeyboardShortcut>$AchronKBCommMound</KeyboardShortcut>
@@ -59358,7 +59954,7 @@ Can progenerate base Octo and Pharo pair</Description>
               <Target>SELF</Target>
               <Type>P_L_CRYSTALS</Type>
               <ValueEval>ONE</ValueEval>
-              <Value>-240</Value>
+              <Value>-160</Value>
             </Step>
             <Step>
               <PrimitiveAction>CHANGE_CLASS</PrimitiveAction>
@@ -65652,6 +66248,13 @@ Can move itself</Description>
               <Value>1</Value>
             </Step>
             <Step>
+              <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+              <Target>SELF</Target>
+              <Type>P_L_CRYSTALS</Type>
+              <ValueEval>ONE</ValueEval>
+              <Value>-40</Value>
+            </Step>
+            <Step>
               <PrimitiveAction>CHANGE_CLASS</PrimitiveAction>
               <Target>SELF</Target>
               <Value>1250</Value>
@@ -65853,7 +66456,7 @@ Can move itself</Description>
       <Objectives>
         <Objective>
           <ObjectiveNumber>0</ObjectiveNumber>
-          <Script>Script313</Script>
+          <Script>gbs00a_arct_idle</Script>
           <Name/>
           <Details/>
         </Objective>
@@ -68837,7 +69440,8 @@ aerospace units.</Description>
           <Script>gs52p_progen_RP</Script>
           <Name>Resource Processor Dispatch</Name>
           <Details>   - place near resource bins\Assimilates resources: Power and Q-Plasma\Can bootstrap and convert Q-P into L-C\Can move itself</Details>
-          <Resource4>200</Resource4>
+          <Resource1>150</Resource1>
+          <Resource4>150</Resource4>
           <Resource6>5</Resource6>
         </Objective>
         <Objective>
@@ -71218,7 +71822,8 @@ aerospace units.</Description>
           <Script>gs52p_progen_RP</Script>
           <Name>Resource Processor Dispatch</Name>
           <Details>   - place near resource bins\Assimilates resources: Power and Q-Plasma\Can bootstrap and convert Q-P into L-C\Can move itself</Details>
-          <Resource4>200</Resource4>
+          <Resource1>150</Resource1>
+          <Resource4>150</Resource4>
           <Resource6>5</Resource6>
         </Objective>
         <Objective>
@@ -73599,7 +74204,8 @@ aerospace units.</Description>
           <Script>gs52p_progen_RP</Script>
           <Name>Resource Processor Dispatch</Name>
           <Details>   - place near resource bins\Assimilates resources: Power and Q-Plasma\Can bootstrap and convert Q-P into L-C\Can move itself</Details>
-          <Resource4>200</Resource4>
+          <Resource1>150</Resource1>
+          <Resource4>150</Resource4>
           <Resource6>5</Resource6>
         </Objective>
         <Objective>
@@ -75221,11 +75827,6 @@ Supremacy: upgradeable to Beam Cannon</Description>
           <AllowActionWhenStopped>0</AllowActionWhenStopped>
           <Conditions>
             <Condition>
-              <Resource>U_ACTION</Resource>
-              <Comparison>EQUAL</Comparison>
-              <Value>58</Value>
-            </Condition>
-            <Condition>
               <Resource>U_STATUS</Resource>
               <Comparison>BITMASK_NOT</Comparison>
               <Value>1</Value>
@@ -75439,6 +76040,13 @@ Supremacy: upgradeable to Beam Cannon</Description>
               <Type>UnitsDestroyed</Type>
               <ValueEval>ONE</ValueEval>
               <Value>1</Value>
+            </Step>
+            <Step>
+              <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+              <Target>SELF</Target>
+              <Type>P_L_CRYSTALS</Type>
+              <ValueEval>ONE</ValueEval>
+              <Value>-60</Value>
             </Step>
             <Step>
               <PrimitiveAction>CHANGE_CLASS</PrimitiveAction>
@@ -77224,7 +77832,7 @@ Can move itself</Description>
               <Target>SELF</Target>
               <Type>U_AMMO</Type>
               <ValueEval>SET_TO_VALUE</ValueEval>
-              <Value>30</Value>
+              <Value>100</Value>
             </Step>
             <Step>
               <PrimitiveAction>ACCUM_STATISTIC</PrimitiveAction>
@@ -77670,7 +78278,7 @@ Can move itself</Description>
             <Condition>
               <Resource>P_Q_PLASMA</Resource>
               <Comparison>GEQUAL</Comparison>
-              <Value>300</Value>
+              <Value>150</Value>
             </Condition>
           </Conditions>
           <Steps>
@@ -77684,7 +78292,7 @@ Can move itself</Description>
               <Target>SELF</Target>
               <Type>P_Q_PLASMA</Type>
               <ValueEval>ONE</ValueEval>
-              <Value>300</Value>
+              <Value>150</Value>
             </Step>
             <Step>
               <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -79122,7 +79730,7 @@ Can move itself</Description>
               <Target>SELF</Target>
               <Type>U_AMMO</Type>
               <ValueEval>SET_TO_VALUE</ValueEval>
-              <Value>30</Value>
+              <Value>100</Value>
             </Step>
             <Step>
               <PrimitiveAction>ACCUM_STATISTIC</PrimitiveAction>
@@ -80622,7 +81230,7 @@ Can move itself</Description>
         <Action>
           <ActionNumber>0</ActionNumber>
           <Identifier>ACTION_CREATE</Identifier>
-          <TimeTaken>240</TimeTaken>
+          <TimeTaken>540</TimeTaken>
           <ForceObjectAction>0</ForceObjectAction>
           <InterruptCurrentAction>0</InterruptCurrentAction>
           <MutexAction>0</MutexAction>
@@ -81662,6 +82270,13 @@ Can move itself</Description>
               <Type>UnitsDestroyed</Type>
               <ValueEval>ONE</ValueEval>
               <Value>1</Value>
+            </Step>
+            <Step>
+              <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+              <Target>SELF</Target>
+              <Type>P_L_CRYSTALS</Type>
+              <ValueEval>ONE</ValueEval>
+              <Value>-30</Value>
             </Step>
             <Step>
               <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -83055,7 +83670,7 @@ Can move itself</Description>
         <Action>
           <ActionNumber>0</ActionNumber>
           <Identifier>ACTION_CREATE</Identifier>
-          <TimeTaken>240</TimeTaken>
+          <TimeTaken>540</TimeTaken>
           <ForceObjectAction>0</ForceObjectAction>
           <InterruptCurrentAction>0</InterruptCurrentAction>
           <MutexAction>0</MutexAction>
@@ -98310,8 +98925,8 @@ Teleports units to any location&#13;
     <!--BEGIN Human\Turrets.xml-->
     <ObjectClass>
       <ClassNumber>115</ClassNumber>
-      <Name>Turret</Name>
-      <Description>TURRET:&#13;
+      <Name>Auto-Turret</Name>
+      <Description>AUTO-TURRET:&#13;
 Robust defensive weapon emplacement&#13;
 Detects cloaked units&#13;
 Can upgrade own weapon&#13;
@@ -98323,8 +98938,8 @@ Splash damage weapon&#13;
       <Rank>90</Rank>
       <Type>1</Type>
       <PrioritySelectionRank>0</PrioritySelectionRank>
-      <MaxHealth>600</MaxHealth>
-      <MaxEnergy>0</MaxEnergy>
+      <MaxHealth>400</MaxHealth>
+      <MaxEnergy>70</MaxEnergy>
       <MaxArmor>0</MaxArmor>
       <MaxAmmo>0</MaxAmmo>
       <SightRadius>30</SightRadius>
@@ -98615,7 +99230,7 @@ Splash damage weapon&#13;
               <Target>SELF</Target>
               <Type>U_HP</Type>
               <ValueEval>SET_TO_VALUE</ValueEval>
-              <Value>35</Value>
+              <Value>40</Value>
             </Step>
             <Step>
               <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -98628,8 +99243,8 @@ Splash damage weapon&#13;
               <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
               <Target>SELF</Target>
               <Type>U_ENERGY</Type>
-              <ValueEval>ONE</ValueEval>
-              <Value>-100</Value>
+              <ValueEval>SET_TO_VALUE</ValueEval>
+              <Value>0</Value>
             </Step>
           </Steps>
         </Action>
@@ -98993,6 +99608,91 @@ Splash damage weapon&#13;
           </Steps>
         </Action>
         <Action>
+          <ActionNumber>36</ActionNumber>
+          <Identifier>ACTION_GENERATE_ENERGY</Identifier>
+          <TimeTaken>0</TimeTaken>
+          <ForceObjectAction>1</ForceObjectAction>
+          <InterruptCurrentAction>1</InterruptCurrentAction>
+          <MutexAction>0</MutexAction>
+          <FailOnInvalidTarget>0</FailOnInvalidTarget>
+          <PreserveParameter>0</PreserveParameter>
+          <AIScriptCanRun>0</AIScriptCanRun>
+          <SetParamZeroTicks>0</SetParamZeroTicks>
+          <AllowActionWhenStopped>0</AllowActionWhenStopped>
+          <Conditions>
+            <Condition>
+              <Resource>U_AGE</Resource>
+              <Comparison>MODULO_IS_ZERO</Comparison>
+              <Value>18</Value>
+            </Condition>
+            <Condition>
+              <Resource>U_ENERGY</Resource>
+              <Comparison>LESS</Comparison>
+              <Value>70</Value>
+            </Condition>
+            <Condition>
+              <Resource>P_POWER</Resource>
+              <Comparison>GREATER</Comparison>
+              <Value>0</Value>
+            </Condition>
+          </Conditions>
+          <Steps>
+            <Step>
+              <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+              <Target>SELF</Target>
+              <Type>U_ENERGY</Type>
+              <ValueEval>ONE</ValueEval>
+              <Value>-1</Value>
+            </Step>
+          </Steps>
+        </Action>
+        <Action>
+          <ActionNumber>38</ActionNumber>
+          <Identifier>ACTION_SELF_HEAL</Identifier>
+          <TimeTaken>0</TimeTaken>
+          <ForceObjectAction>1</ForceObjectAction>
+          <InterruptCurrentAction>1</InterruptCurrentAction>
+          <MutexAction>0</MutexAction>
+          <FailOnInvalidTarget>0</FailOnInvalidTarget>
+          <PreserveParameter>0</PreserveParameter>
+          <AIScriptCanRun>0</AIScriptCanRun>
+          <SetParamZeroTicks>0</SetParamZeroTicks>
+          <AllowActionWhenStopped>0</AllowActionWhenStopped>
+          <Conditions>
+            <Condition>
+              <Resource>U_ENERGY</Resource>
+              <Comparison>GEQUAL</Comparison>
+              <Value>70</Value>
+            </Condition>
+            <Condition>
+              <Resource>U_HP</Resource>
+              <Comparison>LEQUAL</Comparison>
+              <Value>300</Value>
+            </Condition>
+            <Condition>
+              <Resource>U_SECOND_OWNER</Resource>
+              <Comparison>EQUAL</Comparison>
+              <Value>15</Value>
+            </Condition>
+          </Conditions>
+          <Steps>
+            <Step>
+              <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+              <Target>SELF</Target>
+              <Type>U_ENERGY</Type>
+              <ValueEval>ONE</ValueEval>
+              <Value>70</Value>
+            </Step>
+            <Step>
+              <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+              <Target>SELF</Target>
+              <Type>U_HP</Type>
+              <ValueEval>ONE</ValueEval>
+              <Value>-100</Value>
+            </Step>
+          </Steps>
+        </Action>
+        <Action>
           <ActionNumber>43</ActionNumber>
           <Identifier>ACTION_CLEAR_LAD</Identifier>
           <TimeTaken>0</TimeTaken>
@@ -99041,7 +99741,7 @@ Splash damage weapon&#13;
             <Condition>
               <Resource>TIMESTEP</Resource>
               <Comparison>MODULO_IS_ZERO</Comparison>
-              <Value>37</Value>
+              <Value>36</Value>
             </Condition>
             <Condition>
               <Resource>U_ACTION</Resource>
@@ -99060,7 +99760,7 @@ Splash damage weapon&#13;
               <Target>SELF</Target>
               <Type>U_HP</Type>
               <ValueEval>ONE</ValueEval>
-              <Value>-21</Value>
+              <Value>-20</Value>
             </Step>
           </Steps>
         </Action>

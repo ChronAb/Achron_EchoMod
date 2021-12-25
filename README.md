@@ -113,3 +113,16 @@ v0.400:
 - New Multiplayer/Skirmish Map: Echo MP (1-3v3) - Titanomachy 1.0.3
 - New Sandbox Map: Echo TEST (1) - GvG Shootout 1.0.0
 - Prototype Achronal-AI Scenario Monitor, for Titanomachy
+
+v0.410:
+- Team-play support added to the Echo scenario monitor: 
+    - Victory conditions are now assessed for the combined number of victory points owned by each team instead of for each player.
+    - Titanomachy AI script updated to no longer treat allied territory as equivalent to no-mans land and to execute cooperative strategies based on shared territory.
+- Echo MP (1-3v3) - Titanomachy updated to version 1.0.4.
+- Titanomachy AI script updated:
+    - AI players now procedurally construct their own bases that contribute to their production and tech advancement.
+    - All AI players now get a visible timewave that moves around the timeline to where major changes are taking place. 
+- Reduced pre-game micromanagement:
+    - Landing Probes can now be ordered to target a location instead of a specific Landing Site. They will fly there and claim the nearest site in vision automatically.
+- Unwanted Derelict Turrets can now be scuttled to reclaim some Power and LC.
+- Miscellaneous balance adjustments and bug fixes (mostly relating to resource usage). 
