@@ -1379,6 +1379,13 @@
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
+                            <Type>P_L_CRYSTALS</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>-30</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
                             <Type>P_FLAGS</Type>
                             <ValueEval>AND</ValueEval>
                             <Value>-5</Value>

@@ -937,6 +937,13 @@
                             <Value>1</Value>
                         </Step>
                         <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_L_CRYSTALS</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>-40</Value>
+                        </Step>
+                        <Step>
                             <PrimitiveAction>CHANGE_CLASS</PrimitiveAction>
                             <Target>SELF</Target>
                             <Value>1250</Value>
