@@ -731,11 +731,6 @@
                     <AllowActionWhenStopped>0</AllowActionWhenStopped>
                     <Conditions>
                         <Condition>
-                            <Resource>U_ACTION</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>58</Value>
-                        </Condition>
-                        <Condition>
                             <Resource>U_STATUS</Resource>
                             <Comparison>BITMASK_NOT</Comparison>
                             <Value>1</Value>
