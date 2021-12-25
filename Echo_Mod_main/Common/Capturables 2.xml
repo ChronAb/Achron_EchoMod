@@ -229,7 +229,7 @@
             <Objectives>
                 <Objective>
                     <ObjectiveNumber>0</ObjectiveNumber>
-                    <Script>Script414_vendor_idle</Script>
+                    <Script>cs00a_vendor_idle</Script>
                     <Name>vendor_idle</Name>
                     <Details>makes unit change its allegiances as-becomes convenient for it</Details>
                 </Objective>
@@ -450,6 +450,53 @@
                     </Steps>
                 </Action>
                 <Action>
+                    <ActionNumber>14</ActionNumber>
+                    <Identifier>ACTION_RECYCLE</Identifier>
+                    <TimeTaken>180</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>1</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CHANGE_CLASS</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Value>115</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_POWER</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>-200</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_L_CRYSTALS</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>-100</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_HP</Type>
+                            <ValueEval>SET_TO_VALUE</ValueEval>
+                            <Value>0</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CLEAR_STATUS</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>STATUS_STASIS</Type>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
                     <ActionNumber>15</ActionNumber>
                     <Identifier>ACTION_SELF_UPGRADE</Identifier>
                     <TimeTaken>180</TimeTaken>
@@ -487,6 +534,13 @@
                             <Type>U_HP</Type>
                             <ValueEval>SET_TO_VALUE</ValueEval>
                             <Value>200</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_ENERGY</Type>
+                            <ValueEval>SET_TO_VALUE</ValueEval>
+                            <Value>0</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CLEAR_STATUS</PrimitiveAction>
@@ -557,25 +611,56 @@
             <Objectives>
                 <Objective>
                     <ObjectiveNumber>0</ObjectiveNumber>
-                    <Script>Script414_vendor_idle</Script>
+                    <Script>cs00a_vendor_idle</Script>
                     <Name>vendor_idle</Name>
                     <Details>makes unit change its allegiances as-becomes convenient for it</Details>
                 </Objective>
                 <Objective>
-                    <ObjectiveNumber>19</ObjectiveNumber>
-                    <Script>Script308_amp_morph</Script>
+                    <ObjectiveNumber>20</ObjectiveNumber>
+                    <Script>cs20b_simple_upgrade</Script>
                     <Name>Activate Turret</Name>
-                    <Details>Activate and permanently claim this Turret</Details>
+                    <Details> \Activate and permanently claim this Turret</Details>
                     <Resource1>200</Resource1>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>21</ObjectiveNumber>
+                    <Script>cs21b_simple_downgrade</Script>
+                    <Name>Scuttle Turret</Name>
+                    <Details> \Destroy this Turret to salvage resources \  +100 LC, +200 P</Details>
                 </Objective>
             </Objectives>
             <ControlShortcuts>
                 <ControlShortcut>
                     <ControlNumber>0</ControlNumber>
-                    <ControlObjectiveNumber>19</ControlObjectiveNumber>
+                    <ControlObjectiveNumber>20</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
                     <KeyboardShortcut>$AchronKBUpgradeSelf</KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>360</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>U_IS_CARRIED</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>0</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+                <ControlShortcut>
+                    <ControlNumber>1</ControlNumber>
+                    <ControlObjectiveNumber>21</ControlObjectiveNumber>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut>$AchronKBStop</KeyboardShortcut>
                     <Flags>
                         <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
                         <EstTimeConstIsStart>0</EstTimeConstIsStart>

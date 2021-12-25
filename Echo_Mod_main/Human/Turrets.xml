@@ -59,14 +59,14 @@
     <ObjectClasses>
         <ObjectClass>
             <ClassNumber>115</ClassNumber>
-            <Name>Turret</Name>
-            <Description>TURRET:&#x0D;&#x0A;Robust defensive weapon emplacement&#x0D;&#x0A;Detects cloaked units&#x0D;&#x0A;Can upgrade own weapon&#x0D;&#x0A;Splash damage weapon&#x0D;&#x0A;[ Weapons Avg Damage/5secs ]&#x0D;&#x0A;   VS Ground: 57&#x0D;&#x0A;   VS Air: 105</Description>
+            <Name>Auto-Turret</Name>
+            <Description>AUTO-TURRET:&#x0D;&#x0A;Robust defensive weapon emplacement&#x0D;&#x0A;Detects cloaked units&#x0D;&#x0A;Can upgrade own weapon&#x0D;&#x0A;Splash damage weapon&#x0D;&#x0A;[ Weapons Avg Damage/5secs ]&#x0D;&#x0A;   VS Ground: 57&#x0D;&#x0A;   VS Air: 105</Description>
             <Model>./humans/turret.mdl</Model>
             <Rank>90</Rank>
             <Type>1</Type>
             <PrioritySelectionRank>0</PrioritySelectionRank>
-            <MaxHealth>600</MaxHealth>
-            <MaxEnergy>0</MaxEnergy>
+            <MaxHealth>400</MaxHealth>
+            <MaxEnergy>70</MaxEnergy>
             <MaxArmor>0</MaxArmor>
             <MaxAmmo>0</MaxAmmo>
             <SightRadius>30</SightRadius>
@@ -357,7 +357,7 @@
                             <Target>SELF</Target>
                             <Type>U_HP</Type>
                             <ValueEval>SET_TO_VALUE</ValueEval>
-                            <Value>35</Value>
+                            <Value>40</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -370,8 +370,8 @@
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>U_ENERGY</Type>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>-100</Value>
+                            <ValueEval>SET_TO_VALUE</ValueEval>
+                            <Value>0</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -735,6 +735,91 @@
                     </Steps>
                 </Action>
                 <Action>
+                    <ActionNumber>36</ActionNumber>
+                    <Identifier>ACTION_GENERATE_ENERGY</Identifier>
+                    <TimeTaken>0</TimeTaken>
+                    <ForceObjectAction>1</ForceObjectAction>
+                    <InterruptCurrentAction>1</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <Conditions>
+                        <Condition>
+                            <Resource>U_AGE</Resource>
+                            <Comparison>MODULO_IS_ZERO</Comparison>
+                            <Value>18</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_ENERGY</Resource>
+                            <Comparison>LESS</Comparison>
+                            <Value>70</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>P_POWER</Resource>
+                            <Comparison>GREATER</Comparison>
+                            <Value>0</Value>
+                        </Condition>
+                    </Conditions>
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_ENERGY</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>-1</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>38</ActionNumber>
+                    <Identifier>ACTION_SELF_HEAL</Identifier>
+                    <TimeTaken>0</TimeTaken>
+                    <ForceObjectAction>1</ForceObjectAction>
+                    <InterruptCurrentAction>1</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <Conditions>
+                        <Condition>
+                            <Resource>U_ENERGY</Resource>
+                            <Comparison>GEQUAL</Comparison>
+                            <Value>70</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_HP</Resource>
+                            <Comparison>LEQUAL</Comparison>
+                            <Value>300</Value>
+						</Condition>
+                        <Condition>
+                            <Resource>U_SECOND_OWNER</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>15</Value>
+                        </Condition>
+                    </Conditions>
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_ENERGY</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>70</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_HP</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>-100</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
                     <ActionNumber>43</ActionNumber>
                     <Identifier>ACTION_CLEAR_LAD</Identifier>
                     <TimeTaken>0</TimeTaken>
@@ -783,7 +868,7 @@
                         <Condition>
                             <Resource>TIMESTEP</Resource>
                             <Comparison>MODULO_IS_ZERO</Comparison>
-                            <Value>37</Value>
+                            <Value>36</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_ACTION</Resource>
@@ -802,7 +887,7 @@
                             <Target>SELF</Target>
                             <Type>U_HP</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-21</Value>
+                            <Value>-20</Value>
                         </Step>
                     </Steps>
                 </Action>

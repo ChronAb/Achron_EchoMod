@@ -2,7 +2,7 @@
 
 #include common/include/unit_common_header.aih
 
-PERFORM $ACTION_SELF_UPGRADE;
+PERFORM $ACTION_SELF_DOWNGRADE;
 
 int ap = unit->AdditionalParameters;
 

@@ -173,6 +173,15 @@
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/plant_dispatch.abn</Path>
         </AIScript>
         
+        <AIScript>
+            <Name>cs20b_simple_upgrade</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/simple_morph.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs21b_simple_downgrade</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/simple_unmorph.abn</Path>
+        </AIScript>
+        
         <!-- comm center scripts -->
         <AIScript>
             <Name>cs00c_commc_idle</Name>
