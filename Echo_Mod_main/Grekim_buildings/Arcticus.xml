@@ -1138,7 +1138,7 @@
             <Objectives>
                 <Objective>
                     <ObjectiveNumber>0</ObjectiveNumber>
-                    <Script>Script313</Script>
+                    <Script>gbs00a_arct_idle</Script>
                     <Name></Name>
                     <Details></Details>
                 </Objective>

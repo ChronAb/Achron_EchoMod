@@ -80,12 +80,12 @@ if (current == present && present == 1) {
 	target = $OBS_AF;
 	PERFORM SET_ACHRONAL_FIELD obsfield;
     
+    //Enable contender players' timewaves on the timeline
+    PERFORM SET_PLAYER_TIMEWAVE_VISIBILIY contenders;
+    
     //Update Player Count
     target = $PLAYERCOUNT_AF;
     PERFORM SET_ACHRONAL_FIELD playerCount;
-
-	PERFORM GET_PLAYER_TIMEWAVE_VISIBILIY;
-	PERFORM SET_PLAYER_TIMEWAVE_VISIBILIY perf_ret&(~(obs));
 
 	//Make all unused observers lose quietly
 	PERFORM PLAYER_LOST unusedObs;
@@ -127,6 +127,7 @@ if(current%9==3){
 	
     // Non-observers update their type:
     /*  * Contenders who surrender become Observers
+            (contenders with no units at the IP get surrendered by echoVictory.rsi)
         * Participants who get military assets become Contenders
     */
     if (~(obs>>x)&1) {
@@ -144,6 +145,7 @@ if(current%9==3){
             playerCount = playerCount - 1;
             target = $PLAYERCOUNT_AF;
             PERFORM SET_ACHRONAL_FIELD playerCount;
+            PERFORM SET_PLAYER_TIMEWAVE_VISIBILIY contenders;
             
             if ((af2 >> (15 + x) & 1) == 0) {
                 PERFORM PLAYER_LOST (1 << x); //player x lost
@@ -176,6 +178,7 @@ if(current%9==3){
                 playerCount = playerCount + 1;
                 target = $PLAYERCOUNT_AF;
                 PERFORM SET_ACHRONAL_FIELD playerCount;
+                PERFORM SET_PLAYER_TIMEWAVE_VISIBILIY contenders;
             }
         }
     }

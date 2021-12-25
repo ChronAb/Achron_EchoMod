@@ -2773,7 +2773,7 @@
                 </Action>
                 <Action>
                     <ActionNumber>9</ActionNumber>
-                    <Identifier>ACTION_2_7 RP2</Identifier>
+                    <Identifier>ACTION_0 RPx4</Identifier>
                     <TimeTaken>3</TimeTaken>
                     <ForceObjectAction>1</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
@@ -2786,18 +2786,18 @@
                     <Conditions>
                         <Condition>
                             <Resource>U_AMMO</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>30</Value>
-                        </Condition>
-                        <Condition>
-                            <Resource>U_ENERGY</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>13</Value>
+                            <Value>7</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_AMMO</Resource>
+                            <Comparison>LEQUAL</Comparison>
+                            <Value>10</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_ENERGY</Resource>
-                            <Comparison>LEQUAL</Comparison>
-                            <Value>39</Value>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>0</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -2817,7 +2817,7 @@
                 </Action>
                 <Action>
                     <ActionNumber>10</ActionNumber>
-                    <Identifier>ACTION_0_2 SEPIx2</Identifier>
+                    <Identifier>ACTION_0_2 SEPIx3</Identifier>
                     <TimeTaken>3</TimeTaken>
                     <ForceObjectAction>1</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
@@ -2836,7 +2836,7 @@
                         <Condition>
                             <Resource>U_AMMO</Resource>
                             <Comparison>LEQUAL</Comparison>
-                            <Value>1</Value>
+                            <Value>2</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_ENERGY</Resource>
@@ -2871,7 +2871,7 @@
                 </Action>
                 <Action>
                     <ActionNumber>11</ActionNumber>
-                    <Identifier>ACTION_0_1 OCTOx3</Identifier>
+                    <Identifier>ACTION_0_1 OCTOx4</Identifier>
                     <TimeTaken>3</TimeTaken>
                     <ForceObjectAction>1</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
@@ -2885,12 +2885,12 @@
                         <Condition>
                             <Resource>U_AMMO</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>2</Value>
+                            <Value>3</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_AMMO</Resource>
                             <Comparison>LEQUAL</Comparison>
-                            <Value>4</Value>
+                            <Value>6</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_ENERGY</Resource>
@@ -3019,13 +3019,13 @@
                             <ValueEval>ONE</ValueEval>
                             <Value>-1</Value>
                         </Step>
-                        <Step>
+                        <!--Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>P_ADVANCEMENTS</Type>
                             <ValueEval>OR</ValueEval>
                             <Value>64</Value>
-                        </Step>
+                        </Step-->
                     </Steps>
                 </Action>
                 <Action>
@@ -3113,7 +3113,7 @@
                         <Condition>
                             <Resource>P_Q_PLASMA</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>1700</Value>
+                            <Value>1000</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -3140,7 +3140,7 @@
                 </Action>
                 <Action>
                     <ActionNumber>19</ActionNumber>
-                    <Identifier>ACTION_6_7 Ppodx1</Identifier>
+                    <Identifier>ACTION_6_7 Ppodx2</Identifier>
                     <TimeTaken>3</TimeTaken>
                     <ForceObjectAction>1</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
@@ -3172,19 +3172,19 @@
                             <Value>42</Value>
                         </Condition>
                         <Condition>
+                            <Resource>P_ADVANCEMENTS</Resource>
+                            <Comparison>BITMASK</Comparison>
+                            <Value>192</Value>
+                        </Condition>
+                        <Condition>
                             <Resource>P_CUSTOM_FIELD_8</Resource>
                             <Comparison>GEQUAL</Comparison>
                             <Value>4096</Value>
                         </Condition>
                         <Condition>
-                            <Resource>P_CUSTOM_FIELD_8</Resource>
-                            <Comparison>LESS</Comparison>
-                            <Value>9216</Value>
-                        </Condition>
-                        <Condition>
                             <Resource>P_Q_PLASMA</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>1400</Value>
+                            <Value>0</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -3205,7 +3205,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>500</Value>
+                            <Value>200</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -3231,6 +3231,11 @@
                             <Resource>U_ENERGY</Resource>
                             <Comparison>EQUAL</Comparison>
                             <Value>48</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>P_ADVANCEMENTS</Resource>
+                            <Comparison>BITMASK</Comparison>
+                            <Value>128</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -3278,9 +3283,14 @@
                             <Value>60</Value>
                         </Condition>
                         <Condition>
+                            <Resource>P_ADVANCEMENTS</Resource>
+                            <Comparison>BITMASK</Comparison>
+                            <Value>128</Value>
+                        </Condition>
+                        <Condition>
                             <Resource>P_Q_PLASMA</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>1400</Value>
+                            <Value>400</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -3334,9 +3344,14 @@
                             <Value>66</Value>
                         </Condition>
                         <Condition>
+                            <Resource>P_ADVANCEMENTS</Resource>
+                            <Comparison>BITMASK</Comparison>
+                            <Value>128</Value>
+                        </Condition>
+                        <Condition>
                             <Resource>P_Q_PLASMA</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>1600</Value>
+                            <Value>400</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -3390,9 +3405,14 @@
                             <Value>84</Value>
                         </Condition>
                         <Condition>
+                            <Resource>P_ADVANCEMENTS</Resource>
+                            <Comparison>BITMASK</Comparison>
+                            <Value>128</Value>
+                        </Condition>
+                        <Condition>
                             <Resource>P_Q_PLASMA</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>1800</Value>
+                            <Value>0</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -3414,11 +3434,11 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>300</Value>
+                            <Value>100</Value>
                         </Step>
                     </Steps>
                 </Action>
-                <Action>
+                <!--Action>
                     <ActionNumber>30</ActionNumber>
                     <Identifier>ACTION_400QP_EARLY_D</Identifier>
                     <TimeTaken>3</TimeTaken>
@@ -3434,7 +3454,7 @@
                         <Condition>
                             <Resource>P_Q_PLASMA</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>2200</Value>
+                            <Value>1800</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_ENERGY</Resource>
@@ -3478,7 +3498,7 @@
                         <Condition>
                             <Resource>P_Q_PLASMA</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>2200</Value>
+                            <Value>1800</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_ENERGY</Resource>
@@ -3505,7 +3525,7 @@
                             <Value>100</Value>
                         </Step>
                     </Steps>
-                </Action>
+                </Action-->
                 <Action>
                     <ActionNumber>32</ActionNumber>
                     <Identifier>ACTION_400QP_HP</Identifier>
@@ -3547,7 +3567,7 @@
                 </Action>
                 <Action>
                     <ActionNumber>33</ActionNumber>
-                    <Identifier>ACTION_1200QP</Identifier>
+                    <Identifier>ACTION_1000QP</Identifier>
                     <TimeTaken>3</TimeTaken>
                     <ForceObjectAction>1</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
@@ -3561,7 +3581,7 @@
                         <Condition>
                             <Resource>P_Q_PLASMA</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>3000</Value>
+                            <Value>1000</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_HP</Resource>
@@ -3571,7 +3591,7 @@
                         <Condition>
                             <Resource>U_ENERGY</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>30</Value>
+                            <Value>15</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_AMMO</Resource>
@@ -3639,7 +3659,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>0</Value>
+                            <Value>100</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -3710,7 +3730,12 @@
                         <Condition>
                             <Resource>U_AMMO</Resource>
                             <Comparison>LEQUAL</Comparison>
-                            <Value>107</Value>
+                            <Value>109</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>P_ADVANCEMENTS</Resource>
+                            <Comparison>BITMASK</Comparison>
+                            <Value>192</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -3724,6 +3749,7 @@
                         <Step>
                             <PrimitiveAction>CREATE_UNIT</PrimitiveAction>
                             <Target>SELF</Target>
+                            <Probability>0.5</Probability>
                             <Value>1020</Value>
                         </Step>
                         <Step>
@@ -3731,7 +3757,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>400</Value>
+                            <Value>150</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -3778,7 +3804,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>100</Value>
+                            <Value>50</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -3830,7 +3856,7 @@
                 </Action>
                 <Action>
                     <ActionNumber>46</ActionNumber>
-                    <Identifier>ACTION_5_ Spodx2</Identifier>
+                    <Identifier>ACTION_5_ Spodx1</Identifier>
                     <TimeTaken>3</TimeTaken>
                     <ForceObjectAction>1</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
@@ -3857,9 +3883,14 @@
                             <Value>30</Value>
                         </Condition>
                         <Condition>
+                            <Resource>P_ADVANCEMENTS</Resource>
+                            <Comparison>BITMASK</Comparison>
+                            <Value>192</Value>
+                        </Condition>
+                        <Condition>
                             <Resource>P_Q_PLASMA</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>1800</Value>
+                            <Value>400</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -3873,6 +3904,7 @@
                         <Step>
                             <PrimitiveAction>CREATE_UNIT</PrimitiveAction>
                             <Target>SELF</Target>
+                            <Probability>0.5</Probability>
                             <Value>1020</Value>
                         </Step>
                         <Step>
@@ -3880,7 +3912,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>400</Value>
+                            <Value>200</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -3901,7 +3933,12 @@
                         <Condition>
                             <Resource>U_AGE</Resource>
                             <Comparison>MODULO_IS_ZERO</Comparison>
-                            <Value>180</Value>
+                            <Value>89</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_AGE</Resource>
+                            <Comparison>LESS</Comparison>
+                            <Value>6480</Value>
                         </Condition>
                         <Condition>
                             <Resource>P_Q_PLASMA</Resource>
@@ -3936,28 +3973,28 @@
                         <Condition>
                             <Resource>U_AGE</Resource>
                             <Comparison>MODULO_IS_ZERO</Comparison>
-                            <Value>180</Value>
+                            <Value>361</Value>
                         </Condition>
                         <Condition>
                             <Resource>P_L_CRYSTALS</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>20</Value>
+                            <Value>100</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
-                            <Type>P_Q_PLASMA</Type>
+                            <Type>P_L_CRYSTALS</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-20</Value>
+                            <Value>100</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
-                            <Type>P_L_CRYSTALS</Type>
+                            <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>20</Value>
+                            <Value>-50</Value>
                         </Step>
                     </Steps>
                 </Action>

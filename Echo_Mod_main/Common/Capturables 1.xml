@@ -1,19 +1,6 @@
 <?xml version="1.0" ?>
 <ResequenceObjectClassSet>
-    <AIScripts>
-        <AIScript>
-            <Name>Script308_amp_morph</Name>
-            <Path>./Achron_EchoMod/Echo_Mod_main/ais/simple_morph.abn</Path>
-        </AIScript>
-        <AIScript>
-            <Name>Script414_vendor_idle</Name>
-            <Path>./Achron_EchoMod/Echo_Mod_main/ais/vendor_idle.abn</Path>
-        </AIScript>
-        <AIScript>
-            <Name>Script418_freeze_beam</Name>
-            <Path>./Achron_EchoMod/Echo_Mod_main/ais/stopfreezebeam.abn</Path>
-        </AIScript>
-    </AIScripts>
+    <AIScripts />
     <Sounds />
     <EffectsResources />
     <GlobalGameResources />
@@ -25,7 +12,7 @@
             * Beam should have finite range - so it will be harder to use offensively
                 X - this range would need to be map dependent
             * Damaged AMPs should auto repair with time
-                - so the game will be less likely to stalemate
+                + - so the game will be less likely to stalemate
             * Damaged AMPs should auto repair when captured
                 X - Removing the ability to scorch earth breaks rush balance
             * Beam should kill - to open up more design space for using status effects 
@@ -36,7 +23,7 @@
             <Name>Subspace Amplifier Relay</Name>
             <Description>SUBSPACE AMPLIFIER:&#x0D;&#x0A;&#x0D;&#x0A;Secure 12 Supremacy Points at any point in the past to claim victory &#x0D;&#x0A;Makes resources at full control: &#x0D;&#x0A;  + 15 QP, P / 60s continuously&#x0D;&#x0A;  + 30 QP, LC at 120 s intervals while cores remain</Description>
             <Model>./humans/commcenter.mdl</Model>
-            <Rank>7</Rank>
+            <Rank>14</Rank>
             <Type>0</Type>
             <PrioritySelectionRank>0</PrioritySelectionRank>
             <MaxHealth>100</MaxHealth>
@@ -329,7 +316,7 @@
                             <Target>SELF</Target>
                             <Type>P_CUSTOM_FIELD_8</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-1024</Value>
+                            <Value>-32</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -379,7 +366,7 @@
                             <Target>SELF</Target>
                             <Type>P_CUSTOM_FIELD_8</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>1024</Value>
+                            <Value>32</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>SET_STATUS</PrimitiveAction>
@@ -581,7 +568,7 @@
                             <Target>SELF</Target>
                             <Type>P_CUSTOM_FIELD_8</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>1024</Value>
+                            <Value>32</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CHANGE_OWNER</PrimitiveAction>
@@ -592,7 +579,7 @@
                             <Target>SELF</Target>
                             <Type>P_CUSTOM_FIELD_8</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-1024</Value>
+                            <Value>-32</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -926,6 +913,151 @@
                     <Steps />
                 </Action>
                 <Action>
+                    <ActionNumber>32</ActionNumber>
+                    <Identifier>ACTION_REAPH</Identifier>
+                    <TimeTaken>3</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CREATE_UNIT_ANYWHERE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Value>1061</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_Q_PLASMA</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>0</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>33</ActionNumber>
+                    <Identifier>ACTION_DOME</Identifier>
+                    <TimeTaken>3</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CREATE_UNIT_ANYWHERE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Value>1066</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_Q_PLASMA</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>300</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>34</ActionNumber>
+                    <Identifier>ACTION_MOUND</Identifier>
+                    <TimeTaken>3</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CREATE_UNIT_ANYWHERE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Value>1064</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_Q_PLASMA</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>150</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>35</ActionNumber>
+                    <Identifier>ACTION_SPYRE</Identifier>
+                    <TimeTaken>3</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CREATE_UNIT_ANYWHERE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Value>1070</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_Q_PLASMA</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>250</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>36</ActionNumber>
+                    <Identifier>ACTION_ARCT</Identifier>
+                    <TimeTaken>3</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CREATE_UNIT_ANYWHERE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Value>1050</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_Q_PLASMA</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>200</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
                     <ActionNumber>38</ActionNumber>
                     <Identifier>ACTION_CHANGE</Identifier>
                     <TimeTaken>0</TimeTaken>
@@ -982,7 +1114,7 @@
                             <Target>SELF</Target>
                             <Type>P_CUSTOM_FIELD_8</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>1024</Value>
+                            <Value>32</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -1040,23 +1172,53 @@
             <Objectives>
                 <Objective>
                     <ObjectiveNumber>0</ObjectiveNumber>
-                    <Script>Script414_vendor_idle</Script>
+                    <Script>cs00a_vendor_idle</Script>
                     <Name>Idle</Name>
                     <Details>makes unit change its allegiances as-becomes convenient for it</Details>
                 </Objective>
                 <Objective>
-                    <ObjectiveNumber>20</ObjectiveNumber>
-                    <Script>Script418_freeze_beam</Script>
+                    <ObjectiveNumber>7</ObjectiveNumber>
+                    <Script>cs07a_freeze_beam</Script>
                     <Name>Chrono-Disruptor </Name>
                     <Details>Sacrifice this Amplifier Relay to \indefinitely Freeze or TSS-Break a single \target \ \(Can be used to disable enemy Amplifiers) </Details>
                     <Resource4>100</Resource4>
                     <ObjectiveControlShortcutNumber>3</ObjectiveControlShortcutNumber>
                 </Objective>
+                <Objective>
+                    <ObjectiveNumber>17</ObjectiveNumber>
+                    <Script>cs17a_amp_reaph</Script>
+                    <Name>Reaph</Name>
+                    <Details>spawn Reaph for AI player</Details>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>18</ObjectiveNumber>
+                    <Script>cs18a_amp_arct</Script>
+                    <Name>Arcticus</Name>
+                    <Details>spawn Arct for AI player</Details>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>20</ObjectiveNumber>
+                    <Script>cs20a_amp_dome</Script>
+                    <Name>Dome</Name>
+                    <Details>spawn Dome for AI player</Details>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>21</ObjectiveNumber>
+                    <Script>cs21a_amp_mound</Script>
+                    <Name>Mound</Name>
+                    <Details>spawn Mound for AI player</Details>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>22</ObjectiveNumber>
+                    <Script>cs22a_amp_spyre</Script>
+                    <Name>Spyre</Name>
+                    <Details>spawn Spyre for AI player</Details>
+                </Objective>
             </Objectives>
             <ControlShortcuts>
                 <ControlShortcut>
                     <ControlNumber>3</ControlNumber>
-                    <ControlObjectiveNumber>20</ControlObjectiveNumber>
+                    <ControlObjectiveNumber>7</ControlObjectiveNumber>
                     <ParameterType>UNIT</ParameterType>
                     <Parameter>0</Parameter>
                     <KeyboardShortcut>$AchronKBChronoFreeze</KeyboardShortcut>
@@ -1087,7 +1249,7 @@
             <Description>SUBSPACE AMPLIFIER:&#x0D;&#x0A;&#x0D;&#x0A;Secure 12 Supremacy Points at any point in the past to claim victory &#x0D;&#x0A;Makes resources at full control: &#x0D;&#x0A;  + 15 QP, P / 60s continuously&#x0D;&#x0A;  + 30 QP, LC at 120 s intervals while cores remain</Description>
             <!-- Start ping-ing when 8+ are controlled -->
             <Model>./humans/commcenter.mdl</Model>
-            <Rank>7</Rank>
+            <Rank>14</Rank>
             <Type>0</Type>
             <PrioritySelectionRank>0</PrioritySelectionRank>
             <MaxHealth>100</MaxHealth>
@@ -1326,7 +1488,7 @@
                             <Target>SELF</Target>
                             <Type>P_CUSTOM_FIELD_8</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-1024</Value>
+                            <Value>-32</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -1376,7 +1538,7 @@
                             <Target>SELF</Target>
                             <Type>P_CUSTOM_FIELD_8</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>1024</Value>
+                            <Value>32</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>SET_STATUS</PrimitiveAction>
@@ -1578,7 +1740,7 @@
                             <Target>SELF</Target>
                             <Type>P_CUSTOM_FIELD_8</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>1024</Value>
+                            <Value>32</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CHANGE_OWNER</PrimitiveAction>
@@ -1589,7 +1751,7 @@
                             <Target>SELF</Target>
                             <Type>P_CUSTOM_FIELD_8</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-1024</Value>
+                            <Value>-32</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -1877,6 +2039,151 @@
                     <Conditions />
                     <Steps />
                 </Action>
+<Action>
+                    <ActionNumber>32</ActionNumber>
+                    <Identifier>ACTION_REAPH</Identifier>
+                    <TimeTaken>3</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CREATE_UNIT_ANYWHERE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Value>1061</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_Q_PLASMA</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>0</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>33</ActionNumber>
+                    <Identifier>ACTION_DOME</Identifier>
+                    <TimeTaken>3</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CREATE_UNIT_ANYWHERE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Value>1066</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_Q_PLASMA</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>300</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>34</ActionNumber>
+                    <Identifier>ACTION_MOUND</Identifier>
+                    <TimeTaken>3</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CREATE_UNIT_ANYWHERE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Value>1064</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_Q_PLASMA</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>150</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>35</ActionNumber>
+                    <Identifier>ACTION_SPYRE</Identifier>
+                    <TimeTaken>3</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CREATE_UNIT_ANYWHERE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Value>1070</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_Q_PLASMA</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>250</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>36</ActionNumber>
+                    <Identifier>ACTION_ARCT</Identifier>
+                    <TimeTaken>3</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CREATE_UNIT_ANYWHERE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Value>1050</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_Q_PLASMA</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>200</Value>
+                        </Step>
+                    </Steps>
+                </Action>
                 <Action>
                     <ActionNumber>39</ActionNumber>
                     <Identifier>ACTION_CHANGE_BACK</Identifier>
@@ -1934,7 +2241,7 @@
                             <Target>SELF</Target>
                             <Type>P_CUSTOM_FIELD_8</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>1024</Value>
+                            <Value>32</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -1992,23 +2299,53 @@
             <Objectives>
                 <Objective>
                     <ObjectiveNumber>0</ObjectiveNumber>
-                    <Script>Script414_vendor_idle</Script>
+                    <Script>cs00a_vendor_idle</Script>
                     <Name>Idle</Name>
                     <Details>makes unit change its allegiances as-becomes convenient for it</Details>
                 </Objective>
                 <Objective>
-                    <ObjectiveNumber>20</ObjectiveNumber>
-                    <Script>Script418_freeze_beam</Script>
+                    <ObjectiveNumber>7</ObjectiveNumber>
+                    <Script>cs07a_freeze_beam</Script>
                     <Name>Chrono-Disruptor </Name>
                     <Details>Sacrifice this Amplifier Relay to \indefinitely Freeze or TSS-Break a single \target \ \(Can be used to disable enemy Amplifiers) </Details>
                     <Resource4>100</Resource4>
                     <ObjectiveControlShortcutNumber>3</ObjectiveControlShortcutNumber>
                 </Objective>
+                <Objective>
+                    <ObjectiveNumber>17</ObjectiveNumber>
+                    <Script>cs17a_amp_reaph</Script>
+                    <Name>Reaph</Name>
+                    <Details>spawn Reaph for AI player</Details>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>18</ObjectiveNumber>
+                    <Script>cs18a_amp_arct</Script>
+                    <Name>Arcticus</Name>
+                    <Details>spawn Arct for AI player</Details>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>20</ObjectiveNumber>
+                    <Script>cs20a_amp_dome</Script>
+                    <Name>Dome</Name>
+                    <Details>spawn Dome for AI player</Details>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>21</ObjectiveNumber>
+                    <Script>cs21a_amp_mound</Script>
+                    <Name>Mound</Name>
+                    <Details>spawn Mound for AI player</Details>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>22</ObjectiveNumber>
+                    <Script>cs22a_amp_spyre</Script>
+                    <Name>Spyre</Name>
+                    <Details>spawn Spyre for AI player</Details>
+                </Objective>
             </Objectives>
             <ControlShortcuts>
                 <ControlShortcut>
                     <ControlNumber>3</ControlNumber>
-                    <ControlObjectiveNumber>20</ControlObjectiveNumber>
+                    <ControlObjectiveNumber>7</ControlObjectiveNumber>
                     <ParameterType>UNIT</ParameterType>
                     <Parameter>0</Parameter>
                     <KeyboardShortcut>$AchronKBChronoFreeze</KeyboardShortcut>
@@ -2038,7 +2375,7 @@
             <Name>Damaged Relay</Name>
             <Description>SUBSPACE AMPLIFIER:&#x0D;&#x0A;&#x0D;&#x0A;Repair to restore resource generation and Supremacy functions</Description>
             <Model>./humans/commcenter.mdl</Model>
-            <Rank>7</Rank>
+            <Rank>15</Rank>
             <Type>0</Type>
             <PrioritySelectionRank>0</PrioritySelectionRank>
             <MaxHealth>100</MaxHealth>
@@ -2369,7 +2706,7 @@
                             <Target>SELF</Target>
                             <Type>P_CUSTOM_FIELD_8</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-1024</Value>
+                            <Value>-32</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -2521,7 +2858,7 @@
                             <Target>SELF</Target>
                             <Type>P_CUSTOM_FIELD_8</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-1024</Value>
+                            <Value>-32</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -2712,7 +3049,7 @@
                             <Target>SELF</Target>
                             <Type>P_CUSTOM_FIELD_8</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-1024</Value>
+                            <Value>-32</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -2785,15 +3122,15 @@
             <Objectives>
                 <Objective>
                     <ObjectiveNumber>0</ObjectiveNumber>
-                    <Script>Script414_vendor_idle</Script>
+                    <Script>cs00a_vendor_idle</Script>
                     <Name>Idle</Name>
                     <Details>makes unit change its allegiances as-becomes convenient for it</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>19</ObjectiveNumber>
-                    <Script>Script308_amp_morph</Script>
+                    <Script>cs20b_simple_upgrade</Script>
                     <Name>Repair Amplifier</Name>
-                    <Details>Reactivate this Amplifier Relay</Details>
+                    <Details> \Reactivate this Amplifier Relay</Details>
                     <Resource1>600</Resource1>
                     <Resource4>600</Resource4>
                 </Objective>

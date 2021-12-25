@@ -1828,8 +1828,8 @@
                 </Objective>
             
                 <Objective>
-                    <ObjectiveNumber>16</ObjectiveNumber>
-                    <Script>gs163_pharo_arct</Script>
+                    <ObjectiveNumber>18</ObjectiveNumber>
+                    <Script>gs183_pharo_arct</Script>
                     <Name>Morph: Arcticus</Name>
                     <Details> \Advanced progeneration hub\Produces base and Ligo class units\Cloaks and fertilizes all progenitors\in a large area</Details>
                     <Resource1>600</Resource1>
@@ -1837,16 +1837,16 @@
                     <ObjectiveControlShortcutNumber>10</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
-                    <ObjectiveNumber>20</ObjectiveNumber>
-                    <Script>gs203_pharo_spyre</Script>
+                    <ObjectiveNumber>22</ObjectiveNumber>
+                    <Script>gs223_pharo_spyre</Script>
                     <Name>Spyre</Name>
                     <Details> \Teleporter network node and \advanced-production support building \Enables progeneration of aerospace \and Ligo units in its vision radius</Details>
                     <Resource4>150</Resource4>
                     <ObjectiveControlShortcutNumber>12</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
-                    <ObjectiveNumber>21</ObjectiveNumber>
-                    <Script>gs213_pharo_spyre_na</Script>
+                    <ObjectiveNumber>23</ObjectiveNumber>
+                    <Script>gs233_pharo_spyre_na</Script>
                     <Name>Spyre</Name>
                     <Details>   Not Available \    Requires Adv Structures upgrade</Details>
                 </Objective>
@@ -2145,7 +2145,7 @@
 
                 <ControlShortcut>
                     <ControlNumber>10</ControlNumber>
-                    <ControlObjectiveNumber>16</ControlObjectiveNumber>
+                    <ControlObjectiveNumber>18</ControlObjectiveNumber>
                     <MouseInputType>SHORTCUT_QUICK_4</MouseInputType>
                     <ParameterType>POSITION_CLASS</ParameterType>
                     <Parameter>1050</Parameter>
@@ -2171,7 +2171,7 @@
                 </ControlShortcut>
                 <ControlShortcut>
                     <ControlNumber>12</ControlNumber>
-                    <ControlObjectiveNumber>20</ControlObjectiveNumber>
+                    <ControlObjectiveNumber>22</ControlObjectiveNumber>
                     <ParameterType>POSITION_CLASS</ParameterType>
                     <Parameter>1070</Parameter>
                     <KeyboardShortcut>$AchronKBSpyre</KeyboardShortcut>
@@ -2201,7 +2201,7 @@
                 </ControlShortcut>
                 <ControlShortcut>
                     <ControlNumber>13</ControlNumber>
-                    <ControlObjectiveNumber>21</ControlObjectiveNumber>
+                    <ControlObjectiveNumber>23</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
                     <KeyboardShortcut></KeyboardShortcut>

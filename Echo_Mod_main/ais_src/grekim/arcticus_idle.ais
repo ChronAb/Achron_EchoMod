@@ -19,13 +19,49 @@
 
 
 int ap = unit->AdditionalParameters;
-
 int I  = 0; $PRINT_AAP
 
-
-//clear the AP every 31 ticks if a 5-bit timestamp is stored
 PERFORM GET_CUR_TIME;
 int curtime = perf_ret;
+
+// Autopilot - Smart Production
+//  When the Arct hits full Energy it will try to spawn a Loligo
+//  if that is possible, and a base class if not.
+if (player->IsComputerPlayer && unit->Energy>=240 && curtime%90==unit%90) {
+    PERFORM RAND;
+    
+    // Try to make a Loligo
+    if (player->$QPlasma > 600 && 
+            (player->Advancements[$GREKIM_ADV_LOLIGO] ||
+            unit->Status[$CAP_BIT_5])){
+        if(perf_ret[1]==1){
+            PERFORM $ACTION_PROGEN_UP_O; // Oligo
+            PERFORM NOTHING;
+        }
+        if(perf_ret[0]==1){
+            PERFORM $ACTION_PROGEN_UP_S; // Sligo
+            PERFORM NOTHING;
+        }
+        PERFORM $ACTION_PROGEN_UP_P; // Pligo
+        PERFORM NOTHING;
+    }
+    
+    // Try to make a base class unit
+    if (player->$QPlasma > 100){
+        if(perf_ret[1]==1){
+            PERFORM $ACTION_PROGEN_SAME_O; // Octo
+            PERFORM NOTHING;
+        }
+        if(perf_ret[0]==1){
+            PERFORM $ACTION_PROGEN_SAME_S; // Sepi
+            PERFORM NOTHING;
+        }
+        PERFORM $ACTION_PROGEN_SAME_P; // Pharo
+        PERFORM NOTHING;
+    }
+}
+
+//clear the AP every 31 ticks if a 5-bit timestamp is stored
 if (curtime[0,5]) {
     if (curtime[0,5] == ap[11,5]) { //if timestamps line up, clear the AP
         if (ap[$ARCTICUS_COMMAND]) { //had an arcticus command, remember it so that units don't speed match

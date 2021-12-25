@@ -5,6 +5,17 @@
 #include common/include/unit_morph_rechronoport_check.ais
 
 int op = unit->ObjectiveParameters;
+
+// AMplifiers can spawn gratis buildings anywhere on the map 
+//  while controlled by a computer player
+if (unit.Rank == $AMPLIFIER_RANK && player->IsComputerPlayer) {
+	PERFORM $ACTION_AMP_MOUND op;
+	PERFORM SET_ADDITIONAL_PARAMS 0;
+    PERFORM SET_ADDITIONAL_PARAMS2 0;
+	PERFORM SET_OBJECTIVE 0;
+	PERFORM NOTHING;
+}
+
 if (unit->Position == op) {
 
 	if (player->$LCrystals < $MOUND_LC || player->$QPlasma < $MOUND_QP 

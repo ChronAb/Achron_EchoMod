@@ -40,25 +40,25 @@
         
         <!-- sepi buildings -->
         <AIScript>
-            <Name>gs162_sepi_reaph</Name>
+            <Name>gs172_sepi_reaph</Name>
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/sepi_reaph.abn</Path>
         </AIScript>
         <AIScript>
-            <Name>gs202_sepi_mound</Name>
+            <Name>gs212_sepi_mound</Name>
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/sepi_mound.abn</Path>
         </AIScript>
         
         <!-- pharo buildings -->
         <AIScript>
-            <Name>gs163_pharo_arct</Name>
+            <Name>gs183_pharo_arct</Name>
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/pharo_arcticus.abn</Path>
         </AIScript>
         <AIScript>
-            <Name>gs203_pharo_spyre</Name>
+            <Name>gs223_pharo_spyre</Name>
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/pharo_spyre.abn</Path>
         </AIScript>
         <AIScript>
-            <Name>gs213_pharo_spyre_na</Name>
+            <Name>gs233_pharo_spyre_na</Name>
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown.abn</Path>
         </AIScript>
         
@@ -280,6 +280,12 @@
         <AIScript>
             <Name>gbs00r_reaph_idle</Name>
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/reaph_idle.abn</Path>
+        </AIScript>
+        
+        <!-- arcticus -->
+        <AIScript>
+            <Name>gbs00a_arct_idle</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/arcticus_idle.abn</Path>
         </AIScript>
         
         <!-- spyre -->

@@ -1,0 +1,192 @@
+/********************************
+* Echo Mod Victory Condition controller by ChronA
+*
+* Award victory when a player achieves temporal supremacy in the playable past
+    * if any player has CustomField8 == 16,384 -> any player who is not allied with them loses
+    * if allied players don't have the same value for CustomField8 -> set it for them
+    * Warn players when a player reaches 8, 9, 10, 11, or 12 supremacy points
+    
+* af37 stores victory timestamp
+* af38 stores exit engine timestamp
+*
+********************************/
+
+int p = 0;
+int q = 0;
+int vps = 0;
+object envoy = 0;
+int winner = 15;
+allymask = 0;
+
+int totalSecs = current / $TPS;
+$CALCULATE_MIN_SEC_HOUR
+
+if(current%90==7){
+    
+    // Distribute VPs to teammates 
+    for (p = 0; p < 12; p=p+1){
+        player = p;
+        if ((contenders>>p)&1 && $TEAM_V_PTS < 16){
+            vps = 0;
+            for (q = 0; q < 12; q=q+1){
+                player = q;
+                allymask = player->Allies;
+                if ((contenders>>q)&1 && (p==q || (allymask>>p)&1)){
+                    vps = $PLAYER_V_PTS + vps;
+                }
+            }
+            player = p;
+            vps = (vps<<10)|(player->CustomField8[0,10]);
+            
+            // Find a unit belonging to the player to set CF8 with
+                // if there are none -> at IP edge have player surrender 
+            envoy = QUERY UNIT [unit] MIN [1] WHERE [ 
+                query->Owner == p &&
+                (query.Rank >= $FACTORY_RANK ||
+                query.Rank == $RACE_CHOOSER_RANK)
+                ];
+                
+            if (envoy>0) {
+                target = envoy;
+                PERFORM $SET_PLAYER_CF_8 vps;
+            } else {
+                // TODO: make player surrender if at edge of IP
+                //  (not a high priority because Achrons are immortal)
+            }
+        }
+	}
+    
+	//Check whether any player has enough VPs to win
+    for (p = 0; winner == 15 && p < 12; p=p+1){
+		player = p;
+        if ((contenders>>p)&1 && $TEAM_V_PTS >= 12) winner=p;
+	}
+    
+    // Yes -> Issue a warning and update the supremacy time if needed
+    if (winner!=15 && exitEngineTime==0){
+        for (p = 0; p < 14; p=p+1) {
+            player = p;
+            allymask = player->Allies;
+            
+            if (p==winner && current<=present && 
+                    (supremacyTime==0 || current<=supremacyTime)){
+                say_to_var "";
+                say "Temporal supremacy achieved at ";
+                $SAY_CALCULATED_TIME
+                say_to_var "";
+                say "Your Achron can claim victory";
+                say_to_var "playSaySound";
+                say 1;
+                say_to_var "";
+            }
+            
+            if (p==winner && (supremacyTime==0 || current<supremacyTime)){
+                say_to_var "DefeatedText";
+                say "Victory Conditions Achieved at ";
+                $SAY_CALCULATED_TIME
+                say_to_var "playSaySound";
+                say 1;
+                say_to_var "";
+            }
+            
+            if (p!=winner && (allymask >> winner)[0]==0 && 
+                    (supremacyTime==0 || current<supremacyTime)){
+                say_to_var "DefeatedText";
+                say "Defeat Conditions Detected at ";
+                $SAY_CALCULATED_TIME
+                
+                say_to_var "";
+                say "WARNING: temporal disparity detected at ";
+                $SAY_CALCULATED_TIME
+                say_to_var "";
+                say "Recapture AMPLIFIERS to prevent defeat";
+                say_to_var "playSaySound";
+                say 1;
+                say_to_var "";
+            }
+        }
+        
+        if(supremacyTime==0 || current<supremacyTime){
+            supremacyTime = current;
+            target = 37; PERFORM SET_ACHRONAL_FIELD supremacyTime; //save timestamp
+        }
+    }
+        
+    // No -> clear the supremacy time if it's been retconned
+    if (current==supremacyTime && winner==15){
+        supremacyTime = 0;
+        target = 37; PERFORM SET_ACHRONAL_FIELD supremacyTime; //save timestamp
+        
+        for (p = 0; p < 14; p=p+1) {
+            player = p;
+            say_to_var "DefeatedText";
+            say "";
+        }
+    }
+    
+    // Yes -> give the win to an AI Player who held their victory points for over 2 minutes
+    if (winner!=15 && current <= present && exitEngineTime==0){
+        player = winner;
+        if (player->IsComputerPlayer && current > supremacyTime + 120 $seconds){
+            // say what happened
+            for (p = 0; p < 14; p=p+1) {
+                player = p;
+                allymask = player->Allies;
+                if ( (allymask >> winner)[0]==1 ){
+                    say_to_var "endgameTime";
+                    say "Temporal supremacy won at ";
+                    $SAY_CALCULATED_TIME
+                }
+                
+                if (p!=winner && (allymask >> winner)[0]==0){
+                    say_to_var "endgameTime";
+                    say "Temporal parity lost at ";
+                    $SAY_CALCULATED_TIME
+                    if(current <= present) PERFORM PLAYER_LOST (1 << p); //player p lost
+                }
+            }
+            //save exit engine timestamp
+            exitEngineTime = present;
+            target = 38; PERFORM SET_ACHRONAL_FIELD exitEngineTime; 
+        }
+    }
+    
+    //Award victory if any Player team has claimed supremacy in the playable past
+    winner = 15;    
+    if(current <= present && exitEngineTime==0){
+        for (p = 0; winner == 15 && p < 14; p=p+1){
+            player = p;
+            if ($TEAM_V_PTS >= 16) winner=p;
+        }
+        
+        if (winner!=15){
+            // say what happened
+            for (p = 0; p < 14; p=p+1) {
+                player = p;
+                allymask = player->Allies;
+                if (p==winner || (allymask >> winner)[0]==1){
+                    say_to_var "endgameTime";
+                    say "Temporal supremacy secured at ";
+                    $SAY_CALCULATED_TIME
+                }
+                
+                if (p!=winner && (allymask >> winner)[0]==0){
+                    say_to_var "endgameTime";
+                    say "Temporal parity lost at ";
+                    $SAY_CALCULATED_TIME
+                    if(current <= present) PERFORM PLAYER_LOST (1 << p); //player p lost
+                }
+                
+            }
+            //save exit engine timestamp
+            exitEngineTime = present;
+            target = 38; PERFORM SET_ACHRONAL_FIELD exitEngineTime; 
+        }
+    }
+    
+    // After a short delay when victory is declared -> exit the engine
+    if(exitEngineTime>0 && present>=exitEngineTime+5 $seconds){
+        PERFORM END_SCENARIO;
+        PERFORM EXIT_ENGINE;
+    }
+}

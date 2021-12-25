@@ -2079,8 +2079,8 @@
                 </Objective>
                               
                 <Objective>
-                    <ObjectiveNumber>16</ObjectiveNumber>
-                    <Script>gs162_sepi_reaph</Script>
+                    <ObjectiveNumber>17</ObjectiveNumber>
+                    <Script>gs172_sepi_reaph</Script>
                     <Name>Reaph</Name>
                     <Details> \Defensive support building\Repairs friendly units and structures</Details>
                     <Resource1>200</Resource1>
@@ -2089,8 +2089,8 @@
                     <ObjectiveControlShortcutNumber>10</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
-                    <ObjectiveNumber>20</ObjectiveNumber>
-                    <Script>gs202_sepi_mound</Script>
+                    <ObjectiveNumber>21</ObjectiveNumber>
+                    <Script>gs212_sepi_mound</Script>
                     <Name>Morph: Mound</Name>
                     <Details>Robust tech/comm and raider building\Performs tech tree and comm upgrades\ \Produces Cuttles: \ultra-light scout-raider aircraft</Details>
                     <Resource4>50</Resource4>
@@ -2377,7 +2377,7 @@
 
                 <ControlShortcut>
                     <ControlNumber>10</ControlNumber>
-                    <ControlObjectiveNumber>16</ControlObjectiveNumber>
+                    <ControlObjectiveNumber>17</ControlObjectiveNumber>
                     <MouseInputType>SHORTCUT_QUICK_4</MouseInputType>
                     <ParameterType>POSITION_CLASS</ParameterType>
                     <Parameter>1060</Parameter>
@@ -2413,7 +2413,7 @@
                 </ControlShortcut>
                 <ControlShortcut>
                     <ControlNumber>12</ControlNumber>
-                    <ControlObjectiveNumber>20</ControlObjectiveNumber>
+                    <ControlObjectiveNumber>21</ControlObjectiveNumber>
                     <ParameterType>POSITION_CLASS</ParameterType>
                     <Parameter>1064</Parameter>
                     <KeyboardShortcut>$AchronKBCommMound</KeyboardShortcut>

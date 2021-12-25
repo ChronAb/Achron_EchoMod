@@ -12,4 +12,41 @@ object temp=0;
 
 int uclass = unit->Class;
 
+// Autopilot: Grekim should research Adv Str, 
+//  then chronoporting, 
+//  then weapons,
+//   then loligo tech
+if (player->IsComputerPlayer && uclass==$MOUND_CLASS && 
+        unit->Age%1620==630 && player->CustomControls==0) {
+    int advancements = player->Advancements;
+    
+    PERFORM RAND; // 1/4 chance to go loligo first
+    if (!advancements[$GREKIM_ADV_LOLIGO] && 
+            !advancements[$GREKIM_ADV_AUTODEFENCE] && 
+            perf_ret[0,2]<1){
+        PERFORM SET_OBJECTIVE $OBJ_BLDG_UPGRADE2;
+        PERFORM NOTHING;
+    }
+    
+    if (!advancements[$GREKIM_ADV_AUTODEFENCE]){
+        PERFORM SET_OBJECTIVE $OBJ_BLDG_UPGRADE1;
+        PERFORM NOTHING;
+    }
+        
+    if (!advancements[$GREKIM_ADV_GATE]){
+     PERFORM SET_OBJECTIVE $OBJ_BLDG_UPGRADE4;
+     PERFORM NOTHING;
+    }
+            
+    if (!advancements[$GREKIM_ADV_WEAPONS]){
+        PERFORM SET_OBJECTIVE $OBJ_BLDG_UPGRADE5;
+        PERFORM NOTHING;
+    }
+                
+    if (!advancements[$GREKIM_ADV_LOLIGO]){
+        PERFORM SET_OBJECTIVE $OBJ_BLDG_UPGRADE2;
+        PERFORM NOTHING;
+    }
+}
+
 #include common/include/unit_autopilot_building.ais

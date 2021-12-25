@@ -105,6 +105,36 @@
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/change_team.abn</Path>
         </AIScript>
 
+        <!-- amplifier scripts -->
+        <AIScript>
+            <Name>cs00a_vendor_idle</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/vendor_idle.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs07a_freeze_beam</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/stopfreezebeam.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs17a_amp_reaph</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/sepi_reaph.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs18a_amp_arct</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/pharo_arcticus.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs20a_amp_dome</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/octo_dome.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs21a_amp_mound</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/sepi_mound.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs22a_amp_spyre</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/pharo_spyre.abn</Path>
+        </AIScript>
+        
         <!-- general building scripts -->
         <AIScript>
             <Name>cs09b_relocate</Name>
