@@ -936,7 +936,7 @@
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>100</Value>
+                            <Value>150</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -1102,7 +1102,6 @@
                             <Comparison>GEQUAL</Comparison>
                             <Value>200</Value>
                         </Condition>
-                        
                         <Condition>
                             <Resource>U_ENERGY</Resource>
                             <Comparison>GEQUAL</Comparison>
@@ -1148,13 +1147,13 @@
                             <ValueEval>SET_TO_VALUE</ValueEval>
                             <Value>0</Value>
                         </Step>
-                        <!--Step>
+                        <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>U_ENERGY</Type>
                             <ValueEval>SET_TO_VALUE</ValueEval>
-                            <Value>100</Value>
-                        </Step-->
+                            <Value>34</Value>
+                        </Step>
                         <Step>
                             <PrimitiveAction>ACCUM_STATISTIC</PrimitiveAction>
                             <Target>SELF</Target>
@@ -2156,7 +2155,7 @@
                     <Script>gs161_octo_rp</Script>
                     <Name>Resource Processor</Name>
                     <Details>   - place near resource bins\Assimilates resources: Power and Q-Plasma\Can convert Q-Plasma into Power\Cloaks and moves itself</Details>
-                    <Resource1>100</Resource1>
+                    <Resource1>150</Resource1>
                     <Resource4>50</Resource4>
                     <Resource6>0</Resource6>
                     <ObjectiveControlShortcutNumber>10</ObjectiveControlShortcutNumber>

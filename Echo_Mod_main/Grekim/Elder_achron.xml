@@ -733,7 +733,7 @@
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>0</Value>
+                            <Value>240</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -1479,7 +1479,8 @@
                     <ObjectiveNumber>20</ObjectiveNumber>
                     <Script>gs200_convert</Script>
                     <Name>Revert LCrystal -&gt; QPlasma</Name>
-                    <Details> \Convert 200 L-Crystal to Q-Plasma\converts 2.5 QP/s over 80 s \ \200 LC + 80 E = 200 QP</Details>
+                    <Details> \Convert 200 L-Crystal to Q-Plasma\converts 2.5 QP/s over 80 s \ \200 LC + 240 P + 80 E = 200 QP</Details>
+                    <Resource1>240</Resource1>
                     <Resource2>400</Resource2>
                     <Resource6>80</Resource6>
                 </Objective>

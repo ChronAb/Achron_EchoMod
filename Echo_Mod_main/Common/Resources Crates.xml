@@ -172,7 +172,7 @@
                             <Target>SELF</Target>
                             <Type>U_ENERGY</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-3</Value>
+                            <Value>-4</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -638,7 +638,7 @@
         <ObjectClass>
             <ClassNumber>4004</ClassNumber>
             <Name>Q-Plasma Cell</Name>
-            <Description>QP CONDENSER CELL:&#x0D;&#x0A;Collect with a RP to gain resources&#x0D;&#x0A;Consumes 100 QP to activate&#x0D;&#x0A; &#x0D;&#x0A;Diminishing returns for additional RPs&#x0D;&#x0A;Maximum: 1 + 2 harvesters&#x0D;&#x0A;[60+30+30 QP / 60s]</Description>
+            <Description>QP CONDENSER CELL:&#x0D;&#x0A;Collect with a RP to gain resources&#x0D;&#x0A;Consumes 150 QP to activate&#x0D;&#x0A; &#x0D;&#x0A;Diminishing returns for additional RPs&#x0D;&#x0A;Maximum: 1 + 2 harvesters&#x0D;&#x0A;[60+30+30 QP / 60s]</Description>
             <Model>./humans/lcrystal.mdl</Model>
             <Rank>8</Rank>
             <Type>0</Type>

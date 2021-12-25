@@ -1477,7 +1477,8 @@
                     <Script>gs52p_progen_RP</Script>
                     <Name>Resource Processor Dispatch</Name>
                     <Details>   - place near resource bins\Assimilates resources: Power and Q-Plasma\Can bootstrap and convert Q-P into L-C\Can move itself</Details>
-                    <Resource4>200</Resource4>
+                    <Resource1>150</Resource1>
+                    <Resource4>150</Resource4>
                     <Resource6>5</Resource6>
                 </Objective>
                 <Objective>
@@ -3855,7 +3856,8 @@
                     <Script>gs52p_progen_RP</Script>
                     <Name>Resource Processor Dispatch</Name>
                     <Details>   - place near resource bins\Assimilates resources: Power and Q-Plasma\Can bootstrap and convert Q-P into L-C\Can move itself</Details>
-                    <Resource4>200</Resource4>
+                    <Resource1>150</Resource1>
+                    <Resource4>150</Resource4>
                     <Resource6>5</Resource6>
                 </Objective>
                 <Objective>
@@ -6233,7 +6235,8 @@
                     <Script>gs52p_progen_RP</Script>
                     <Name>Resource Processor Dispatch</Name>
                     <Details>   - place near resource bins\Assimilates resources: Power and Q-Plasma\Can bootstrap and convert Q-P into L-C\Can move itself</Details>
-                    <Resource4>200</Resource4>
+                    <Resource1>150</Resource1>
+                    <Resource4>150</Resource4>
                     <Resource6>5</Resource6>
                 </Objective>
                 <Objective>
