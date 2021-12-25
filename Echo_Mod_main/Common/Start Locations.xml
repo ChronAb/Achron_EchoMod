@@ -1076,6 +1076,7 @@
                     <Script>cs510_pick_grekim</Script>
                     <Name>Deploy Grekim</Name>
                     <Details>Play as the Grekim:\Devious masters of timetravel\Rely on self-chronoportation and air power\ \Hardest to learn for new players</Details>
+                    <ObjectiveControlShortcutNumber>8</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>52</ObjectiveNumber>
@@ -1203,7 +1204,7 @@
                     <ControlNumber>7</ControlNumber>
                     <ControlObjectiveNumber>50</ControlObjectiveNumber>
                     <MouseInputType>SHORTCUT_QUICK_1</MouseInputType>
-                    <ParameterType>UNIT</ParameterType>
+                    <ParameterType>POSITION_AUTO_HEIGHT</ParameterType>
                     <Parameter>0</Parameter>
                     <KeyboardShortcut>$AchronKBHuman</KeyboardShortcut>
                     <Flags>
@@ -1229,7 +1230,7 @@
                     <ControlNumber>8</ControlNumber>
                     <ControlObjectiveNumber>51</ControlObjectiveNumber>
                     <MouseInputType>SHORTCUT_QUICK_2</MouseInputType>
-                    <ParameterType>UNIT</ParameterType>
+                    <ParameterType>POSITION_AUTO_HEIGHT</ParameterType>
                     <Parameter>0</Parameter>
                     <KeyboardShortcut>$AchronKBGrekim</KeyboardShortcut>
                     <Flags>
@@ -1255,7 +1256,7 @@
                     <ControlNumber>9</ControlNumber>
                     <ControlObjectiveNumber>52</ControlObjectiveNumber>
                     <MouseInputType>SHORTCUT_QUICK_3</MouseInputType>
-                    <ParameterType>UNIT</ParameterType>
+                    <ParameterType>POSITION_AUTO_HEIGHT</ParameterType>
                     <Parameter>0</Parameter>
                     <KeyboardShortcut>$AchronKBVecgir</KeyboardShortcut>
                     <Flags>
@@ -1281,7 +1282,7 @@
                     <ControlNumber>10</ControlNumber>
                     <ControlObjectiveNumber>53</ControlObjectiveNumber>
                     <MouseInputType>SHORTCUT_QUICK_4</MouseInputType>
-                    <ParameterType>UNIT</ParameterType>
+                    <ParameterType>POSITION_AUTO_HEIGHT</ParameterType>
                     <Parameter>0</Parameter>
                     <KeyboardShortcut>$AchronKBRandom</KeyboardShortcut>
                     <Flags>
