@@ -10,8 +10,8 @@
     <UnitLists />
     <ActionStepModifiers>
         <ActionStepModifier>
-            <Name>Dome S.O.C</Name>
-            <StrengthBase>40</StrengthBase>
+            <Name>Dome anti_gnd</Name>
+            <StrengthBase>60</StrengthBase>
             <StrengthRange>0</StrengthRange>
             <StrengthCount>0</StrengthCount>
             <Flags>
@@ -32,9 +32,9 @@
             <SelfStatistic>DamageDealt</SelfStatistic>
             <TargetStatistic>DamageReceived</TargetStatistic>
         </ActionStepModifier>
-		<ActionStepModifier>
-            <Name>Dome S.O.C Crit</Name>
-            <StrengthBase>100</StrengthBase>
+        <ActionStepModifier>
+            <Name>Dome anti_air</Name>
+            <StrengthBase>60</StrengthBase>
             <StrengthRange>0</StrengthRange>
             <StrengthCount>0</StrengthCount>
             <Flags>
@@ -60,12 +60,12 @@
         <ObjectClass>
             <ClassNumber>1065</ClassNumber>
             <Name>Dome</Name>
-            <Description>DOME:&#x0D;&#x0A;Durable cloaked weapon emplacement&#x0D;&#x0A;Devastating versus aircraft&#x0D;&#x0A;Fires in four-shot bursts&#x0D;&#x0A; &#x0D;&#x0A;Detects cloaked units &#x0D;&#x0A;Upgradeable attack rate (Weapons Tech)&#x0D;&#x0A;Supremacy: upgradeable to Beam Cannon</Description>
+            <Description>DOME:&#x0D;&#x0A;Cloaked weapon emplacement&#x0D;&#x0A;Devastating versus aircraft&#x0D;&#x0A; &#x0D;&#x0A;Detects cloaked units &#x0D;&#x0A;Cloaked while QP > 400 &#x0D;&#x0A;Upgrade D-Tech: increase attack rate&#x0D;&#x0A;Supremacy: upgradeable to Beam Cannon (planned)</Description>
             <Model>./grekim/dome.mdl</Model>
             <Rank>90</Rank>
             <Type>2</Type>
             <PrioritySelectionRank>0</PrioritySelectionRank>
-            <MaxHealth>440</MaxHealth>
+            <MaxHealth>330</MaxHealth>
             <MaxEnergy>40</MaxEnergy>
             <MaxArmor>0</MaxArmor>
             <MaxAmmo>100</MaxAmmo>
@@ -407,7 +407,7 @@
                 <Action>
                     <ActionNumber>2</ActionNumber>
                     <Identifier>ACTION_ATTACK_grnd</Identifier>
-                    <TimeTaken>25</TimeTaken>
+                    <TimeTaken>12</TimeTaken>
                     <ForceObjectAction>0</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
                     <MutexAction>1</MutexAction>
@@ -426,7 +426,7 @@
                         <Condition>
                             <Resource>U_AGE</Resource>
                             <Comparison>MODULO_IS_ZERO</Comparison>
-                            <Value>27</Value>
+                            <Value>18</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -435,15 +435,7 @@
                             <Target>TARGET_UNIT</Target>
                             <ValueEval>ONE</ValueEval>
                             <Value>0</Value>
-                            <ActionStepModifier>Dome S.O.C</ActionStepModifier>
-                        </Step>
-                        <Step>
-                            <PrimitiveAction>ATTACK</PrimitiveAction>
-                            <Target>TARGET_UNIT</Target>
-							<Probability>0.8</Probability>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>0</Value>
-                            <ActionStepModifier>Dome S.O.C Crit</ActionStepModifier>
+                            <ActionStepModifier>Dome anti_gnd</ActionStepModifier>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -457,7 +449,7 @@
                 <Action>
                     <ActionNumber>3</ActionNumber>
                     <Identifier>ACTION_ATTACK</Identifier>
-                    <TimeTaken>50</TimeTaken>
+                    <TimeTaken>12</TimeTaken>
                     <ForceObjectAction>0</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
                     <MutexAction>1</MutexAction>
@@ -476,7 +468,7 @@
                         <Condition>
                             <Resource>U_AGE</Resource>
                             <Comparison>MODULO_IS_ZERO</Comparison>
-                            <Value>27</Value>
+                            <Value>18</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -485,15 +477,7 @@
                             <Target>TARGET_UNIT</Target>
                             <ValueEval>ONE</ValueEval>
                             <Value>0</Value>
-                            <ActionStepModifier>Dome S.O.C</ActionStepModifier>
-                        </Step>
-                        <Step>
-                            <PrimitiveAction>ATTACK</PrimitiveAction>
-                            <Target>TARGET_UNIT</Target>
-							<Probability>0.8</Probability>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>0</Value>
-                            <ActionStepModifier>Dome S.O.C Crit</ActionStepModifier>
+                            <ActionStepModifier>Dome anti_air</ActionStepModifier>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -674,7 +658,7 @@
                     <Steps />
                 </Action>
                 <Action>
-                    <ActionNumber>32</ActionNumber>
+                    <ActionNumber>31</ActionNumber>
                     <Identifier>ACTION_DECLOAK</Identifier>
                     <TimeTaken>1</TimeTaken>
                     <ForceObjectAction>1</ForceObjectAction>
@@ -718,6 +702,43 @@
                     </Steps>
                 </Action>
                 <Action>
+                    <ActionNumber>32</ActionNumber>
+                    <Identifier>ACTION_DECLOAK QP</Identifier>
+                    <TimeTaken>1</TimeTaken>
+                    <ForceObjectAction>1</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <Conditions>
+                        <Condition>
+                            <Resource>U_AGE</Resource>
+                            <Comparison>MODULO_IS_ZERO</Comparison>
+                            <Value>17</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>P_Q_PLASMA</Resource>
+                            <Comparison>LESS</Comparison>
+                            <Value>400</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_STATUS</Resource>
+                            <Comparison>BITMASK</Comparison>
+                            <Value>1</Value>
+                        </Condition>
+                    </Conditions>
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CLEAR_STATUS</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>STATUS_CLOAKED</Type>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
                     <ActionNumber>33</ActionNumber>
                     <Identifier>ACTION_AUTO_CLOAK</Identifier>
                     <TimeTaken>1</TimeTaken>
@@ -739,6 +760,11 @@
                             <Resource>U_ENERGY</Resource>
                             <Comparison>GEQUAL</Comparison>
                             <Value>40</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>P_Q_PLASMA</Resource>
+                            <Comparison>GEQUAL</Comparison>
+                            <Value>400</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_OWNER</Resource>
@@ -799,6 +825,11 @@
                             <Comparison>LESS</Comparison>
                             <Value>40</Value>
                         </Condition>
+                        <Condition>
+                            <Resource>P_POWER</Resource>
+                            <Comparison>GREATER</Comparison>
+                            <Value>800</Value>
+                        </Condition>
                     </Conditions>
                     <Steps>
                         <Step>
@@ -813,7 +844,7 @@
                 <Action>
                     <ActionNumber>37</ActionNumber>
                     <Identifier>ACTION_RELOAD</Identifier>
-                    <TimeTaken>7</TimeTaken>
+                    <TimeTaken>8</TimeTaken>
                     <ForceObjectAction>1</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
                     <MutexAction>0</MutexAction>
@@ -841,7 +872,7 @@
                         <Condition>
                             <Resource>U_AGE</Resource>
                             <Comparison>MODULO_IS_ZERO</Comparison>
-                            <Value>8</Value>
+                            <Value>9</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_AMMO</Resource>
@@ -860,14 +891,14 @@
                             <Target>SELF</Target>
                             <Type>U_AMMO</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-2</Value>
+                            <Value>-10</Value>
                         </Step>
                     </Steps>
                 </Action>
                 <Action>
                     <ActionNumber>38</ActionNumber>
                     <Identifier>ACTION_RELOAD_UPGRADED</Identifier>
-                    <TimeTaken>7</TimeTaken>
+                    <TimeTaken>5</TimeTaken>
                     <ForceObjectAction>1</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
                     <MutexAction>0</MutexAction>
@@ -895,7 +926,7 @@
                         <Condition>
                             <Resource>U_AGE</Resource>
                             <Comparison>MODULO_IS_ZERO</Comparison>
-                            <Value>8</Value>
+                            <Value>6</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_AMMO</Resource>
@@ -1019,7 +1050,7 @@
                         <Condition>
                             <Resource>U_HP</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>650</Value>
+                            <Value>320</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_SECOND_OWNER</Resource>
@@ -1047,7 +1078,7 @@
                     <ObjectiveNumber>8</ObjectiveNumber>
                     <Script>cs08b_turret_atk</Script>
                     <Name>Attack</Name>
-                    <Details>Attack specified target \Fire rate upgradable (Weapons tech)\[Weapons Avg Damage/10secs ]\Gnd: 50 (+150),  R 24\Air: 50 (+150),  R 24</Details>
+                    <Details>Attack specified target \Fire rate boosted with D-Tech\[Weapons Avg Damage/10secs ]\All: 100 (+50),  R 24
                     <ValidRadius>23</ValidRadius>
                     <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
                 </Objective>
@@ -1178,7 +1209,7 @@
             <Rank>90</Rank>
             <Type>2</Type>
             <PrioritySelectionRank>0</PrioritySelectionRank>
-            <MaxHealth>220</MaxHealth>
+            <MaxHealth>110</MaxHealth>
             <MaxEnergy>40</MaxEnergy>
             <MaxArmor>0</MaxArmor>
             <MaxAmmo>100</MaxAmmo>
@@ -1844,7 +1875,7 @@
                         <Condition>
                             <Resource>U_HP</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>320</Value>
+                            <Value>100</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_SECOND_OWNER</Resource>
