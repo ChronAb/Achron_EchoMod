@@ -37,7 +37,7 @@
         <ObjectClass>
             <ClassNumber>1023</ClassNumber>
             <Name>Vampire (Pharopod)</Name>
-            <Description>VAMPIRE/PHAROPOD:&#x0D;&#x0A;Biological, stealth strike-bomber&#x0D;&#x0A;Very high damage against ground targets&#x0D;&#x0A; &#x0D;&#x0A;Excellent raider and bunker buster&#x0D;&#x0A; &#x0D;&#x0A;Self-Cloaks and quickly heals out of combat&#x0D;&#x0A;Chrono Tech: Uses TSS when in danger</Description>
+            <Description>VAMPIRE/PHAROPOD:&#x0D;&#x0A;Biological, stealth strike-bomber&#x0D;&#x0A;Very high damage against ground targets&#x0D;&#x0A;Excellent raider and bunker buster&#x0D;&#x0A; &#x0D;&#x0A;Cloaked when not attacking&#x0D;&#x0A;Upgrade: &#x0D;&#x0A;C-Tech: Uses TSS when in danger</Description>
             <Model>./grekim/pharopod.mdl</Model>
             <Rank>238</Rank>
             <Type>2</Type>
@@ -249,6 +249,23 @@
                     </Conditions>
                 </Animation>
                 <Animation>
+                    <Identifier>ACTION_SELF_REPAIR</Identifier>
+                    <AnimationNum>1</AnimationNum>
+                    <Sound>Sound0</Sound>
+                    <AnimationTime>0</AnimationTime>
+                    <ShowProgress>1</ShowProgress>
+                    <MorphFromActionParameterClass>0</MorphFromActionParameterClass>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <RenderModelExplode>0</RenderModelExplode>
+                    <Conditions>
+                        <Condition>
+                            <Resource>U_ACTION</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>13</Value>
+                        </Condition>
+                    </Conditions>
+                </Animation>
+                <Animation>
                     <Identifier>ACTION_FINISH_PROGEN</Identifier>
                     <AnimationNum>6</AnimationNum>
                     <Sound>Sound0</Sound>
@@ -420,7 +437,7 @@
                 <Action>
                     <ActionNumber>2</ActionNumber>
                     <Identifier>ACTION_MOVE</Identifier>
-                    <TimeTaken>5</TimeTaken>
+                    <TimeTaken>6</TimeTaken>
                     <ForceObjectAction>0</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
                     <MutexAction>0</MutexAction>
@@ -553,7 +570,65 @@
                     <Steps />
                 </Action>
                 <Action>
-                    <ActionNumber>12</ActionNumber>
+                    <ActionNumber>13</ActionNumber>
+                    <Identifier>ACTION_SELF_REPAIR</Identifier>
+                    <TimeTaken>288</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_HP</Type>
+                            <ValueEval>SET_TO_VALUE</ValueEval>
+                            <Value>5</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>14</ActionNumber>
+                    <Identifier>ACTION_SELF_REPAIR2</Identifier>
+                    <TimeTaken>1</TimeTaken>
+                    <ForceObjectAction>1</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>1</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <Conditions>
+                        <Condition>
+                            <Resource>U_ACTION</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>13</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_HP</Resource>
+                            <Comparison>GREATER</Comparison>
+                            <Value>0</Value>
+                        </Condition>
+                    </Conditions>
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_HP</Type>
+                            <ValueEval>SET_TO_VALUE</ValueEval>
+                            <Value>360</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>16</ActionNumber>
                     <Identifier>ACTION_AUTO_TSS</Identifier>
                     <TimeTaken>0</TimeTaken>
                     <ForceObjectAction>1</ForceObjectAction>
@@ -602,7 +677,7 @@
                     </Steps>
                 </Action>
                 <Action>
-                    <ActionNumber>13</ActionNumber>
+                    <ActionNumber>17</ActionNumber>
                     <Identifier>ACTION_TSS_DRAIN</Identifier>
                     <TimeTaken>0</TimeTaken>
                     <ForceObjectAction>1</ForceObjectAction>
@@ -661,7 +736,7 @@
                     </Steps>
                 </Action>
                 <Action>
-                    <ActionNumber>14</ActionNumber>
+                    <ActionNumber>18</ActionNumber>
                     <Identifier>ACTION_TSS_END</Identifier>
                     <TimeTaken>0</TimeTaken>
                     <ForceObjectAction>1</ForceObjectAction>
@@ -982,7 +1057,7 @@
                         <Condition>
                             <Resource>U_AGE</Resource>
                             <Comparison>MODULO_IS_ZERO</Comparison>
-                            <Value>37</Value>
+                            <Value>73</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_HP</Resource>
@@ -995,9 +1070,9 @@
                             <Value>0</Value>
                         </Condition>
                         <Condition>
-                            <Resource>U_LAST_ATTACKED_DIR</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>0</Value>
+                            <Resource>P_POWER</Resource>
+                            <Comparison>GREATER</Comparison>
+                            <Value>400</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_ACTION</Resource>
@@ -1041,7 +1116,7 @@
                             <Target>SELF</Target>
                             <Type>U_HP</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-11</Value>
+                            <Value>-6</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -1096,7 +1171,7 @@
                         <Condition>
                             <Resource>P_POWER</Resource>
                             <Comparison>GREATER</Comparison>
-                            <Value>200</Value>
+                            <Value>800</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_STATUS</Resource>
@@ -1191,6 +1266,50 @@
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>U_AMMO</Type>
+                            <ValueEval>SET_TO_VALUE</ValueEval>
+                            <Value>0</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>42</ActionNumber>
+                    <Identifier>ACTION_LOW_HP_DIE</Identifier>
+                    <TimeTaken>0</TimeTaken>
+                    <ForceObjectAction>1</ForceObjectAction>
+                    <InterruptCurrentAction>1</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <Conditions>
+                        <Condition>
+                            <Resource>U_AGE</Resource>
+                            <Comparison>MODULO_IS_ZERO</Comparison>
+                            <Value>720</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_HP</Resource>
+                            <Comparison>LEQUAL</Comparison>
+                            <Value>50</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_ACTION</Resource>
+                            <Comparison>NOT_EQUAL</Comparison>
+                            <Value>13</Value>
+						</Condition>
+                        <Condition>
+                            <Resource>U_STATUS</Resource>
+                            <Comparison>BITMASK_NOT</Comparison>
+                            <Value>4</Value>
+                        </Condition>
+                    </Conditions>
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_HP</Type>
                             <ValueEval>SET_TO_VALUE</ValueEval>
                             <Value>0</Value>
                         </Step>
@@ -1339,7 +1458,7 @@
                     <ObjectiveNumber>1</ObjectiveNumber>
                     <Script>cs010_move</Script>
                     <Name>Move</Name>
-                    <Details> \Move to specified location \Move Speed: 7.2 (aircraft)\Vision Range: 30, Aggro Radius: 20 \Invisible in Fog of War</Details>
+                    <Details> \Move to specified location \Move Speed: 6 (aircraft)\Vision Range: 30, Aggro Radius: 20 \Invisible in Fog of War</Details>
                     <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
@@ -1444,6 +1563,13 @@
                     <Name>Offspring Dispatch</Name>
                     <Details></Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
+                </Objective>
+                
+                <Objective>
+                    <ObjectiveNumber>19</ObjectiveNumber>
+                    <Script>gs194_self_heal</Script>
+                    <Name>Regenerate Shields</Name>
+                    <Details> \Fully restores shields\ \Process duration: 16 s\Avoid using near combat</Details>
                 </Objective>
             </Objectives>
             <ControlShortcuts>
@@ -1649,13 +1775,40 @@
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
+                
+                <ControlShortcut>
+                    <ControlNumber>10</ControlNumber>
+                    <ControlObjectiveNumber>19</ControlObjectiveNumber>
+                    <MouseInputType>SHORTCUT_QUICK_4</MouseInputType>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut>$AchronKBFix</KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>288</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>U_IS_CARRIED</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>0</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
             </ControlShortcuts>
         </ObjectClass>
         <ObjectClass>
 			<!--Infant Pharopod - visible in FoW -->
             <ClassNumber>1024</ClassNumber>
             <Name>Vampire (Pharopod)</Name>
-            <Description>VAMPIRE/PHAROPOD:&#x0D;&#x0A;Biological, stealth strike-bomber&#x0D;&#x0A;Very high damage against ground targets&#x0D;&#x0A; &#x0D;&#x0A;Excellent raider and bunker buster&#x0D;&#x0A; &#x0D;&#x0A;Self-Cloaks and quickly heals out of combat&#x0D;&#x0A;Uses TSS when in danger</Description>
+            <Description>VAMPIRE/PHAROPOD:&#x0D;&#x0A;Biological, stealth strike-bomber&#x0D;&#x0A;Very high damage against ground targets&#x0D;&#x0A;Excellent raider and bunker buster&#x0D;&#x0A; &#x0D;&#x0A;Cloaked when not attacking&#x0D;&#x0A;Upgrade: &#x0D;&#x0A;C-Tech: Uses TSS when in danger</Description>
             <Model>./grekim/pharopod.mdl</Model>
             <Rank>238</Rank>
             <Type>2</Type>
@@ -1841,9 +1994,9 @@
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
-                            <Type>P_Q_PLASMA</Type>
+                            <Type>P_L_CRYSTALS</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-300</Value>
+                            <Value>-100</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -2015,7 +2168,7 @@
                     <ObjectiveNumber>1</ObjectiveNumber>
                     <Script>cs010_move</Script>
                     <Name>Move</Name>
-                    <Details> \Move to specified location \Move Speed: 7.2 (aircraft)\Vision Range: 30, Aggro Radius: 20 \Invisible in Fog of War</Details>
+                    <Details> \Move to specified location \Move Speed: 6 (aircraft)\Vision Range: 30, Aggro Radius: 20 \Invisible in Fog of War</Details>
                     <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
@@ -2120,6 +2273,13 @@
                     <Name>Offspring Dispatch</Name>
                     <Details></Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
+                </Objective>
+                
+                <Objective>
+                    <ObjectiveNumber>19</ObjectiveNumber>
+                    <Script>gs194_self_heal</Script>
+                    <Name>Regenerate Shields</Name>
+                    <Details> \Fully restores shields\ \Process duration: 16 s\Avoid using near combat</Details>
                 </Objective>
             </Objectives>
             <ControlShortcuts>
@@ -2322,6 +2482,33 @@
                             <Resource>P_ADVANCEMENTS</Resource>
                             <Comparison>BITMASK_NOT</Comparison>
                             <Value>512</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+                
+                <ControlShortcut>
+                    <ControlNumber>10</ControlNumber>
+                    <ControlObjectiveNumber>19</ControlObjectiveNumber>
+                    <MouseInputType>SHORTCUT_QUICK_4</MouseInputType>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut>$AchronKBFix</KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>288</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>U_IS_CARRIED</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>0</Value>
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
@@ -2637,7 +2824,7 @@
                 <Action>
                     <ActionNumber>2</ActionNumber>
                     <Identifier>ACTION_MOVE</Identifier>
-                    <TimeTaken>5</TimeTaken>
+                    <TimeTaken>6</TimeTaken>
                     <ForceObjectAction>0</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
                     <MutexAction>0</MutexAction>
@@ -3069,7 +3256,7 @@
                     <ObjectiveNumber>1</ObjectiveNumber>
                     <Script>cs010_move</Script>
                     <Name>Move</Name>
-                    <Details> \Move to specified location \Move Speed: 7.2 (aircraft)\Vision Range: 30, Aggro Radius: 20 \Invisible in Fog of War</Details>
+                    <Details> \Move to specified location \Move Speed: 6 (aircraft)\Vision Range: 30, Aggro Radius: 20 \Invisible in Fog of War</Details>
                     <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>

@@ -60,13 +60,13 @@
         <ObjectClass>
             <ClassNumber>1015</ClassNumber>
             <Name>Octopod</Name>
-            <Description>OCTOPOD:&#x0D;&#x0A;Biological main ground-assault armor&#x0D;&#x0A;Hard hitting AG sniper; No AA&#x0D;&#x0A;Long reload on AG cannon [8s]&#x0D;&#x0A;Advanced shield regeneration</Description>
+            <Description>OCTOPOD:&#x0D;&#x0A;Biological main ground-assault armor&#x0D;&#x0A;Hard hitting AG sniper; No AA&#x0D;&#x0A;Long reload on AG cannon [8s]&#x0D;&#x0A; &#x0D;&#x0A;Consumes Energy to resist critical damage&#x0D;&#x0A;  while weapon is fully charged</Description>
             <Model>./Achron_EchoMod/Echo_Mod_main/New_Models/octopod.mdl</Model>
             <Rank>165</Rank>
             <Type>2</Type>
             <PrioritySelectionRank>0</PrioritySelectionRank>
-            <MaxHealth>420</MaxHealth>
-            <MaxEnergy>40</MaxEnergy> <!-- Note: Energy is not currently used for anything -->
+            <MaxHealth>360</MaxHealth>
+            <MaxEnergy>60</MaxEnergy>
             <MaxArmor>0</MaxArmor>
             <MaxAmmo>100</MaxAmmo>
             <SightRadius>25</SightRadius>
@@ -113,7 +113,7 @@
                 <AlwaysAppearAsNoOwner>0</AlwaysAppearAsNoOwner>
                 <AlwaysHighlightUnitUnlessNoOwner>0</AlwaysHighlightUnitUnlessNoOwner>
                 <HideHealthField>0</HideHealthField>
-                <HideEnergyField>1</HideEnergyField>
+                <HideEnergyField>0</HideEnergyField>
                 <HideArmorField>0</HideArmorField>
                 <HideAmmoField>0</HideAmmoField>
                 <HideCapacityField>0</HideCapacityField>
@@ -143,14 +143,14 @@
                     <Target>SELF</Target>
                     <Type>U_HP</Type>
                     <ValueEval>ONE</ValueEval>
-                    <Value>-210</Value>
+                    <Value>-180</Value>
                 </Step>
                 <Step>
                     <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                     <Target>SELF</Target>
                     <Type>U_ENERGY</Type>
                     <ValueEval>ONE</ValueEval>
-                    <Value>-40</Value>
+                    <Value>-30</Value>
                 </Step>
             </ChronoportArrivedActionSteps>
             <Animations>
@@ -417,8 +417,8 @@
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>U_ENERGY</Type>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>-40</Value>
+                            <ValueEval>SET_TO_VALUE</ValueEval>
+                            <Value>0</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -516,7 +516,7 @@
                         <Condition>
                             <Resource>U_HP</Resource>
                             <Comparison>GREATER</Comparison>
-                            <Value>40</Value>
+                            <Value>80</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_AGE</Resource>
@@ -631,7 +631,7 @@
                             <Target>SELF</Target>
                             <Type>U_HP</Type>
                             <ValueEval>SET_TO_VALUE</ValueEval>
-                            <Value>420</Value>
+                            <Value>360</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -831,12 +831,12 @@
                         <Condition>
                             <Resource>U_HP</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>280</Value>
+                            <Value>240</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_AGE</Resource>
                             <Comparison>MODULO_IS_ZERO</Comparison>
-                            <Value>19</Value>
+                            <Value>37</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -845,7 +845,7 @@
                             <Target>SELF</Target>
                             <Type>U_HP</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>5</Value>
+                            <Value>6</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -870,12 +870,12 @@
                         <Condition>
                             <Resource>U_HP</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>280</Value>
+                            <Value>240</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_AGE</Resource>
                             <Comparison>MODULO_IS_ZERO</Comparison>
-                            <Value>19</Value>
+                            <Value>37</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -884,7 +884,7 @@
                             <Target>SELF</Target>
                             <Type>U_HP</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>5</Value>
+                            <Value>6</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -919,12 +919,12 @@
                         <Condition>
                             <Resource>U_AGE</Resource>
                             <Comparison>MODULO_IS_ZERO</Comparison>
-                            <Value>18</Value>
+                            <Value>71</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_HP</Resource>
                             <Comparison>LESS</Comparison>
-                            <Value>420</Value>
+                            <Value>360</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_HP</Resource>
@@ -934,7 +934,7 @@
                         <Condition>
                             <Resource>P_POWER</Resource>
                             <Comparison>GREATER</Comparison>
-                            <Value>200</Value>
+                            <Value>400</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_SECOND_OWNER</Resource>
@@ -948,7 +948,7 @@
                             <Target>SELF</Target>
                             <Type>U_HP</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-1</Value>
+                            <Value>-16</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -1032,17 +1032,17 @@
                         <Condition>
                             <Resource>U_AGE</Resource>
                             <Comparison>MODULO_IS_ZERO</Comparison>
-                            <Value>54</Value>
+                            <Value>73</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_ENERGY</Resource>
                             <Comparison>LESS</Comparison>
-                            <Value>40</Value>
+                            <Value>60</Value>
                         </Condition>
                         <Condition>
                             <Resource>P_POWER</Resource>
-                            <Comparison>GREATER</Comparison>
-                            <Value>200</Value>
+                            <Comparison>GEQUAL</Comparison>
+                            <Value>800</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_AMMO</Resource>
@@ -1056,13 +1056,13 @@
                             <Target>SELF</Target>
                             <Type>U_ENERGY</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-1</Value>
+                            <Value>-4</Value>
                         </Step>
                     </Steps>
                 </Action>
                 <Action>
                     <ActionNumber>38</ActionNumber>
-                    <Identifier>ACTION_GENERATE_HP</Identifier>
+                    <Identifier>ACTION_BUFFER_HP</Identifier>
                     <TimeTaken>0</TimeTaken>
                     <ForceObjectAction>1</ForceObjectAction>
                     <InterruptCurrentAction>1</InterruptCurrentAction>
@@ -1081,27 +1081,17 @@
                         <Condition>
                             <Resource>U_AGE</Resource>
                             <Comparison>MODULO_IS_ZERO</Comparison>
-                            <Value>18</Value>
+                            <Value>19</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_HP</Resource>
-                            <Comparison>LESS</Comparison>
-                            <Value>232</Value>
+                            <Comparison>LEQUAL</Comparison>
+                            <Value>100</Value>
                         </Condition>
                         <Condition>
-                            <Resource>U_HP</Resource>
-                            <Comparison>GREATER</Comparison>
-                            <Value>0</Value>
-                        </Condition>
-                        <Condition>
-                            <Resource>P_POWER</Resource>
-                            <Comparison>GREATER</Comparison>
-                            <Value>-400</Value>
-                        </Condition>
-                        <Condition>
-                            <Resource>U_ACTION</Resource>
-                            <Comparison>NOT_EQUAL</Comparison>
-                            <Value>13</Value>
+                            <Resource>U_ENERGY</Resource>
+                            <Comparison>GEQUAL</Comparison>
+                            <Value>10</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_AMMO</Resource>
@@ -1109,14 +1099,9 @@
                             <Value>100</Value>
                         </Condition>
                         <Condition>
-                            <Resource>U_LAST_ATTACKED_DIR</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>0</Value>
-                        </Condition>
-                        <Condition>
-                            <Resource>U_SECOND_OWNER</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>15</Value>
+                            <Resource>U_ACTION</Resource>
+                            <Comparison>NOT_EQUAL</Comparison>
+                            <Value>13</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -1124,8 +1109,15 @@
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>U_HP</Type>
+                            <ValueEval>SET_TO_VALUE</ValueEval>
+                            <Value>100</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_ENERGY</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-20</Value>
+                            <Value>10</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -1227,13 +1219,18 @@
                         <Condition>
                             <Resource>U_HP</Resource>
                             <Comparison>LEQUAL</Comparison>
-                            <Value>126</Value>
+                            <Value>108</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_ACTION</Resource>
                             <Comparison>NOT_EQUAL</Comparison>
                             <Value>13</Value>
 						</Condition>
+                        <Condition>
+                            <Resource>U_ENERGY</Resource>
+                            <Comparison>LESS</Comparison>
+                            <Value>10</Value>
+                        </Condition>
                     </Conditions>
                     <Steps>
                         <Step>
@@ -1268,7 +1265,7 @@
                 <Action>
                     <ActionNumber>50</ActionNumber>
                     <Identifier>ACTION_MOVE_SLOW</Identifier>
-                    <TimeTaken>6</TimeTaken>
+                    <TimeTaken>9</TimeTaken>
                     <ForceObjectAction>0</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
                     <MutexAction>0</MutexAction>
@@ -1333,7 +1330,7 @@
                         <Condition>
                             <Resource>U_HP</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>410</Value>
+                            <Value>350</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_SECOND_OWNER</Resource>
@@ -1471,7 +1468,7 @@
                     <ObjectiveNumber>19</ObjectiveNumber>
                     <Script>gs194_self_heal</Script>
                     <Name>Regenerate Shields</Name>
-                    <Details>Active: Fully restores shields (8 s)\Avoid using near combat\ \Passive: +20 HP/s when below 60% HP</Details>
+                    <Details> \Fully restores shields\ \Process duration: 8 s\Avoid using near combat</Details>
                 </Objective>
             </Objectives>
             <ControlShortcuts>

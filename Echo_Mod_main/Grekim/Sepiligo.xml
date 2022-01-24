@@ -58,6 +58,7 @@
     </ActionStepModifiers>
     <ObjectClasses>
         <ObjectClass>
+            <!-- Special ability: can grab & carry an allied or enemy unit of lesser max HP -->
             <ClassNumber>1105</ClassNumber>
             <Name>Hydra (Sepiligo)</Name>
             <Description>HYDRA/SEPILIGO:&#x0D;&#x0A;Heavy biological air supremacy platform&#x0D;&#x0A;Rate-of-fire depends on Weapon Energy&#x0D;&#x0A;  Energy drains while moving&#x0D;&#x0A;Extremely vulnerable when not energized&#x0D;&#x0A;Otherwise, devastating vs other aircraft&#x0D;&#x0A;Effective in groups vs ground&#x0D;&#x0A; &#x0D;&#x0A;Can progenerate base Octo and Pharo pair</Description>
@@ -65,7 +66,7 @@
             <Rank>245</Rank>
             <Type>2</Type>
             <PrioritySelectionRank>0</PrioritySelectionRank>
-            <MaxHealth>420</MaxHealth>
+            <MaxHealth>480</MaxHealth>
             <MaxEnergy>40</MaxEnergy>
             <MaxArmor>0</MaxArmor>
             <MaxAmmo>60</MaxAmmo>
@@ -131,8 +132,15 @@
 					<Target>SELF</Target>
 					<Type>U_HP</Type>
 					<ValueEval>ONE</ValueEval>
-					<Value>-210</Value>
+					<Value>-240</Value>
 				</Step>
+                <Step>
+                    <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                    <Target>SELF</Target>
+                    <Type>U_ENERGY</Type>
+                    <ValueEval>ONE</ValueEval>
+                    <Value>-20</Value>
+                </Step>
 				<Step>
 					<PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
 					<Target>SELF</Target>
@@ -296,23 +304,6 @@
                     </Conditions>
                 </Animation>
                 <Animation>
-                    <Identifier>ACTION_PROGEN_OLIGO</Identifier>
-                    <AnimationNum>0</AnimationNum>
-                    <Sound>Sound0</Sound>
-                    <AnimationTime>0</AnimationTime>
-                    <ShowProgress>1</ShowProgress>
-                    <MorphFromActionParameterClass>0</MorphFromActionParameterClass>
-                    <LobProjectilePath>0</LobProjectilePath>
-                    <RenderModelExplode>0</RenderModelExplode>
-                    <Conditions>
-                        <Condition>
-                            <Resource>U_ACTION</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>16</Value>
-                        </Condition>
-                    </Conditions>
-                </Animation>
-                <Animation>
                     <Identifier>ACTION_BANK_LEFT</Identifier>
                     <AnimationNum>5</AnimationNum>
                     <Sound>Sound0</Sound>
@@ -330,8 +321,8 @@
                     </Conditions>
                 </Animation>
                 <Animation>
-                    <Identifier>ACTION_PROGEN_OPOD</Identifier>
-                    <AnimationNum>0</AnimationNum>
+                    <Identifier>ACTION_SELF_REPAIR</Identifier>
+                    <AnimationNum>1</AnimationNum>
                     <Sound>Sound0</Sound>
                     <AnimationTime>0</AnimationTime>
                     <ShowProgress>1</ShowProgress>
@@ -697,9 +688,43 @@
                     </Steps>
                 </Action>
                 <Action>
+                    <ActionNumber>12</ActionNumber>
+                    <Identifier>ACTION_SELF_REPAIR2</Identifier>
+                    <TimeTaken>1</TimeTaken>
+                    <ForceObjectAction>1</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>1</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <Conditions>
+                        <Condition>
+                            <Resource>U_ACTION</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>13</Value>
+						</Condition>
+                        <Condition>
+                            <Resource>U_HP</Resource>
+                            <Comparison>GREATER</Comparison>
+                            <Value>0</Value>
+                        </Condition>
+                    </Conditions>
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_HP</Type>
+                            <ValueEval>SET_TO_VALUE</ValueEval>
+                            <Value>480</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
                     <ActionNumber>13</ActionNumber>
-                    <Identifier>ACTION_PROGEN_SAME_O</Identifier>
-                    <TimeTaken>540</TimeTaken>
+                    <Identifier>ACTION_SELF_REPAIR</Identifier>
+                    <TimeTaken>288</TimeTaken>
                     <ForceObjectAction>0</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
                     <MutexAction>0</MutexAction>
@@ -709,37 +734,14 @@
                     <SetParamZeroTicks>0</SetParamZeroTicks>
                     <AllowActionWhenStopped>0</AllowActionWhenStopped>
                     <LobProjectilePath>0</LobProjectilePath>
-                    <Conditions>
-                        <Condition>
-                            <Resource>U_STATUS</Resource>
-                            <Comparison>BITMASK_NOT</Comparison>
-                            <Value>32</Value>
-                        </Condition>
-                    </Conditions>
+                    <Conditions />
                     <Steps>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
-                            <Type>P_Q_PLASMA</Type>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>300</Value>
-                        </Step>
-                        <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>P_POWER</Type>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>0</Value>
-                        </Step>
-                        <Step>
-                            <PrimitiveAction>CREATE_CARRIED_UNIT</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Value>1015</Value>
-                        </Step>
-                        <Step>
-                            <PrimitiveAction>SET_STATUS</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>STATUS_CAPABILITY_2</Type>
+                            <Type>U_HP</Type>
+                            <ValueEval>SET_TO_VALUE</ValueEval>
+                            <Value>5</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -767,53 +769,6 @@
                             <PrimitiveAction>MOVE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Value>3</Value>
-                        </Step>
-                    </Steps>
-                </Action>
-                <Action>
-                    <ActionNumber>16</ActionNumber>
-                    <Identifier>ACTION_PROGEN_UP_S</Identifier>
-                    <TimeTaken>360</TimeTaken>
-                    <ForceObjectAction>0</ForceObjectAction>
-                    <InterruptCurrentAction>0</InterruptCurrentAction>
-                    <MutexAction>0</MutexAction>
-                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
-                    <PreserveParameter>0</PreserveParameter>
-                    <AIScriptCanRun>0</AIScriptCanRun>
-                    <SetParamZeroTicks>0</SetParamZeroTicks>
-                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <LobProjectilePath>0</LobProjectilePath>
-                    <Conditions>
-                        <Condition>
-                            <Resource>U_STATUS</Resource>
-                            <Comparison>BITMASK_NOT</Comparison>
-                            <Value>32</Value>
-                        </Condition>
-                    </Conditions>
-                    <Steps>
-                        <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>P_Q_PLASMA</Type>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>600</Value>
-                        </Step>
-                        <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>P_POWER</Type>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>0</Value>
-                        </Step>
-                        <Step>
-                            <PrimitiveAction>CREATE_CARRIED_UNIT</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Value>1100</Value>
-                        </Step>
-                        <Step>
-                            <PrimitiveAction>SET_STATUS</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>STATUS_CAPABILITY_2</Type>
                         </Step>
                     </Steps>
                 </Action>
@@ -1196,6 +1151,11 @@
                             <Comparison>LEQUAL</Comparison>
                             <Value>58</Value>
                         </Condition>
+                        <Condition>
+                            <Resource>P_Q_PLASMA</Resource>
+                            <Comparison>GEQUAL</Comparison>
+                            <Value>400</Value>
+                        </Condition>
                     </Conditions>
                     <Steps>
                         <Step>
@@ -1331,7 +1291,7 @@
                         <Condition>
                             <Resource>P_POWER</Resource>
                             <Comparison>GREATER</Comparison>
-                            <Value>-100</Value>
+                            <Value>800</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -1344,7 +1304,7 @@
                         </Step>
                     </Steps>
                 </Action>
-                <Action>
+                <!--Action>
                     <ActionNumber>37</ActionNumber>
                     <Identifier>ACTION_GENERATE_HP</Identifier>
                     <TimeTaken>0</TimeTaken>
@@ -1397,7 +1357,7 @@
                             <Value>-15</Value>
                         </Step>
                     </Steps>
-                </Action>
+                </Action-->
                 <Action>
                     <ActionNumber>39</ActionNumber>
                     <Identifier>ACTION_SET_OBJECTIVE_RELEASE</Identifier>
@@ -1501,12 +1461,12 @@
                         <Condition>
                             <Resource>U_AGE</Resource>
                             <Comparison>MODULO_IS_ZERO</Comparison>
-                            <Value>720</Value>
+                            <Value>1440</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_HP</Resource>
                             <Comparison>LEQUAL</Comparison>
-                            <Value>84</Value>
+                            <Value>144</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -1559,9 +1519,9 @@
 						<Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
-                            <Type>P_Q_PLASMA</Type>
+                            <Type>P_L_CRYSTALS</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-480</Value>
+                            <Value>-160</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>DIE</PrimitiveAction>
@@ -1683,7 +1643,7 @@
                         <Condition>
                             <Resource>U_HP</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>410</Value>
+                            <Value>470</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_SECOND_OWNER</Resource>
@@ -1820,33 +1780,14 @@
                 </Objective>
 
                 <Objective>
-                    <ObjectiveNumber>38</ObjectiveNumber>
-                    <Script>gs41p_progen_opod</Script>
-                    <Name>Gestate Octopod</Name>
-                    <Details>Biological main ground-assault armor\Mobile, high impact AG-only sniper\Low durability but can self-heal\Can construct Vecgir Foundations</Details>
-                    <Resource4>300</Resource4>
+                    <ObjectiveNumber>19</ObjectiveNumber>
+                    <Script>gs194_self_heal</Script>
+                    <Name>Regenerate Shields</Name>
+                    <Details> \Fully restores shields\ \Process duration: 16 s\Avoid using near combat</Details>
                 </Objective>
+                
                 <Objective>
-                    <ObjectiveNumber>39</ObjectiveNumber>
-                    <Script>gs47p_progen_opod_na</Script>
-                    <Name>Gestate Octopod</Name>
-                    <Details>   Not Available \    Requires the Loligo Tech upgrade</Details>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>41</ObjectiveNumber>
-                    <Script>gs41q_progen_oligo</Script>
-                    <Name>Gestate Cthulhu/Octoligo</Name>
-                    <Details>Biological heavy-support armor\Provides high-impact swarm supression\Devastating vs infantry and grouped aircraft\Can progenerate base Sepi and Pharo pair\Can Nanite Infect (req. Specials tech)</Details>
-                    <Resource4>600</Resource4>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>42</ObjectiveNumber>
-                    <Script>gs52q_progen_oligo_na</Script>
-                    <Name>Gestate Cthulhu/Octoligo</Name>
-                    <Details>   Not Available \    Requires the Loligo Tech upgrade</Details>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>40</ObjectiveNumber>
+                    <ObjectiveNumber>30</ObjectiveNumber>
                     <Script>gs405_split_down</Script>
                     <Name>Meiotic Progenesis</Name>
                     <Details> \Create an OCTO and a PHARO</Details>
@@ -1854,19 +1795,19 @@
                     <Resource6>12</Resource6>
                 </Objective>
                 <Objective>
-                    <ObjectiveNumber>43</ObjectiveNumber>
+                    <ObjectiveNumber>33</ObjectiveNumber>
                     <Script>gs435_split_down_na</Script>
                     <Name>Meiotic Progenesis/Gestation</Name>
                     <Details>   Not Available \    Requires the Loligo Tech upgrade</Details>
                 </Objective>
-                <Objective>
-                    <ObjectiveNumber>12</ObjectiveNumber>
-                    <Script>gs125_sligo_release</Script>
+                <!--Objective>
+                    <ObjectiveNumber>35</ObjectiveNumber>
+                    <Script>gs355_sligo_release</Script>
                     <Name>Release Offspring</Name>
                     <Details>Release at location</Details>
-                    <ObjectiveControlShortcutNumber>21</ObjectiveControlShortcutNumber>
+                    <ObjectiveControlShortcutNumber>18</ObjectiveControlShortcutNumber>
                     <ParameterType>POSITION</ParameterType>
-                </Objective>
+                </Objective-->
             </Objectives>
             <ControlShortcuts>
             <!-- Note: layout of command grid is set by the script order in (X)_Scripts.xml
@@ -2074,9 +2015,10 @@
                     </ControlConditions>
                 </ControlShortcut>
 
-                <ControlShortcut> <!-- spawn opod -->
-                    <ControlNumber>10</ControlNumber>
-                    <ControlObjectiveNumber>38</ControlObjectiveNumber>
+                <ControlShortcut>
+                    <ControlNumber>9</ControlNumber>
+                    <ControlObjectiveNumber>19</ControlObjectiveNumber>
+                    <MouseInputType>SHORTCUT_QUICK_4</MouseInputType>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
                     <KeyboardShortcut>$AchronKBFix</KeyboardShortcut>
@@ -2088,7 +2030,7 @@
                         <ButtonInvisible>0</ButtonInvisible>
                         <SelectTarget>0</SelectTarget>
                     </Flags>
-                    <EstTimeConst>540</EstTimeConst>
+                    <EstTimeConst>288</EstTimeConst>
                     <EstTimeDist>0</EstTimeDist>
                     <Sound>Sound0</Sound>
                     <ControlConditions>
@@ -2097,121 +2039,12 @@
                             <Comparison>EQUAL</Comparison>
                             <Value>0</Value>
                         </ControlCondition>
-                        <ControlCondition>
-                            <Resource>U_STATUS</Resource>
-                            <Comparison>BITMASK_NOT</Comparison>
-                            <Value>32</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>P_ADVANCEMENTS</Resource>
-                            <Comparison>BITMASK</Comparison>
-                            <Value>128</Value>
-                        </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
-                <ControlShortcut> <!-- opod NA -->
-                    <ControlNumber>11</ControlNumber>
-                    <ControlObjectiveNumber>39</ControlObjectiveNumber>
-                    <ParameterType>NO_PARAMETER</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut></KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>1</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>U_IS_CARRIED</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>0</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>P_ADVANCEMENTS</Resource>
-                            <Comparison>BITMASK_NOT</Comparison>
-                            <Value>128</Value>
-                        </ControlCondition>
-                    </ControlConditions>
-                </ControlShortcut>
-                <ControlShortcut> <!-- spawn oligo -->
-                    <ControlNumber>12</ControlNumber>
-                    <ControlObjectiveNumber>41</ControlObjectiveNumber>
-                    <ParameterType>NO_PARAMETER</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut>$AchronKBChronoFreeze</KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>360</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>U_IS_CARRIED</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>0</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>U_STATUS</Resource>
-                            <Comparison>BITMASK_NOT</Comparison>
-                            <Value>32</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>P_ADVANCEMENTS</Resource>
-                            <Comparison>BITMASK</Comparison>
-                            <Value>128</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>NUM_UNITS_SELECTED</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>1</Value>
-                        </ControlCondition>
-                    </ControlConditions>
-                </ControlShortcut>
-                <ControlShortcut> <!-- oligo NA -->
-                    <ControlNumber>15</ControlNumber>
-                    <ControlObjectiveNumber>42</ControlObjectiveNumber>
-                    <ParameterType>NO_PARAMETER</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut></KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>1</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>U_IS_CARRIED</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>0</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>P_ADVANCEMENTS</Resource>
-                            <Comparison>BITMASK_NOT</Comparison>
-                            <Value>128</Value>
-                        </ControlCondition>
-                    </ControlConditions>
-                </ControlShortcut>
+                
                 <ControlShortcut>
-                    <ControlNumber>16</ControlNumber>
-                    <ControlObjectiveNumber>40</ControlObjectiveNumber>
+                    <ControlNumber>10</ControlNumber>
+                    <ControlObjectiveNumber>30</ControlObjectiveNumber>
                     <MouseInputType>SHORTCUT_QUICK_2</MouseInputType>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
@@ -2241,8 +2074,8 @@
                     </ControlConditions>
                 </ControlShortcut>
                 <ControlShortcut> <!-- split down NA -->
-                    <ControlNumber>17</ControlNumber>
-                    <ControlObjectiveNumber>43</ControlObjectiveNumber>
+                    <ControlNumber>11</ControlNumber>
+                    <ControlObjectiveNumber>33</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
                     <KeyboardShortcut></KeyboardShortcut>
@@ -2272,7 +2105,7 @@
                 </ControlShortcut>
                 <ControlShortcut>
                     <ControlNumber>18</ControlNumber>
-                    <ControlObjectiveNumber>12</ControlObjectiveNumber>
+                    <ControlObjectiveNumber>35</ControlObjectiveNumber>
                     <MouseInputType>SHORTCUT_QUICK_4</MouseInputType>
                     <ParameterType>POSITION</ParameterType>
                     <Parameter>0</Parameter>
@@ -2293,47 +2126,6 @@
                             <Resource>U_IS_CARRIED</Resource>
                             <Comparison>EQUAL</Comparison>
                             <Value>0</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>U_STATUS</Resource>
-                            <Comparison>BITMASK</Comparison>
-                            <Value>32</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>NUM_UNITS_SELECTED</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>1</Value>
-                        </ControlCondition>
-                    </ControlConditions>
-                </ControlShortcut>
-                <ControlShortcut>
-                    <ControlNumber>19</ControlNumber>
-                    <ControlObjectiveNumber>12</ControlObjectiveNumber>
-                    <MouseInputType>SHORTCUT_QUICK_4</MouseInputType>
-                    <ParameterType>POSITION</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut>$AchronKBReleaseCargo</KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>0</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>2</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>U_IS_CARRIED</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>0</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>NUM_UNITS_SELECTED</Resource>
-                            <Comparison>GREATER</Comparison>
-                            <Value>1</Value>
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
