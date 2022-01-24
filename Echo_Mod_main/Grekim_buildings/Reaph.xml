@@ -30,12 +30,37 @@
             <EffectSplashRadius>0</EffectSplashRadius>
             <EffectSplashEffectiveRadius>0</EffectSplashEffectiveRadius>
         </ActionStepModifier>
+        <ActionStepModifier>
+            <Name>Reaph Recover</Name>
+            <StrengthBase>0</StrengthBase>
+            <StrengthRange>0</StrengthRange>
+            <StrengthCount>0</StrengthCount>
+            <Flags>
+                <Permeating>1</Permeating>
+                <LimitDistance>1</LimitDistance>
+                <SetLastAttackedDirection>0</SetLastAttackedDirection>
+                <ContinueActionOnStepFailure>0</ContinueActionOnStepFailure>
+            </Flags>
+            <AccuracyMultiplier>1</AccuracyMultiplier>
+            <EffectTimeout>0</EffectTimeout>
+            <MinEffectRadius>0</MinEffectRadius>
+            <EffectRadius>26</EffectRadius>
+            <EffectHeight>30</EffectHeight>
+            <MaxEffectAngle>360</MaxEffectAngle>
+            <EffectSplashHeight>0</EffectSplashHeight>
+            <EffectSplashRadius>0</EffectSplashRadius>
+            <EffectSplashEffectiveRadius>0</EffectSplashEffectiveRadius>
+            <TargetClass1>
+                <Min>1</Min>
+                <Max>4000</Max>
+            </TargetClass1>
+        </ActionStepModifier>
     </ActionStepModifiers>
     <ObjectClasses>
         <ObjectClass>
             <ClassNumber>1060</ClassNumber>
             <Name>Reaph</Name>
-            <Description>REAPH:&#x0D;&#x0A; &#x0D;&#x0A;Defensive support building&#x0D;&#x0A; &#x0D;&#x0A;Repairs shields of nearby units: &#x0D;&#x0A;  +2 hp/s, R: 24 &#x0D;&#x0A; &#x0D;&#x0A;Can move itself</Description>
+            <Description>REAPH:&#x0D;&#x0A; &#x0D;&#x0A;Defensive support building &#x0D;&#x0A;Repairs shields of nearby units: &#x0D;&#x0A;  +2 hp/s, R: 24  &#x0D;&#x0A;Revives frozen and jammed allies &#x0D;&#x0A; &#x0D;&#x0A;Can move itself</Description>
             <Model>./grekim/reaph_mound.mdl</Model>
             <Rank>60</Rank>
             <Type>2</Type>
@@ -468,6 +493,48 @@
                     <Steps />
                 </Action>
                 <Action>
+                    <ActionNumber>12</ActionNumber>
+                    <Identifier>ACTION_BLDG_RECOVER</Identifier>
+                    <TimeTaken>16</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>1</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions>
+                        <Condition>
+                            <Resource>U_ENERGY</Resource>
+                            <Comparison>GEQUAL</Comparison>
+                            <Value>60</Value>
+                        </Condition>
+                    </Conditions>
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CLEAR_STATUS</PrimitiveAction>
+                            <Target>TARGET_UNIT</Target>
+                            <Type>STATUS_STOP</Type>
+                            <ActionStepModifier>Reaph Recover</ActionStepModifier>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CLEAR_STATUS</PrimitiveAction>
+                            <Target>TARGET_UNIT</Target>
+                            <Type>STATUS_COMMJAM</Type>
+                            <ActionStepModifier>Reaph Recover</ActionStepModifier>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_ENERGY</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>60</Value>
+                        </Step>
+                    </Steps>    
+                </Action>
+                <Action>
                     <ActionNumber>13</ActionNumber>
                     <Identifier>ACTION_BLDG_HEAL</Identifier>
                     <TimeTaken>12</TimeTaken>
@@ -624,7 +691,7 @@
                         <Condition>
                             <Resource>P_POWER</Resource>
                             <Comparison>GREATER</Comparison>
-                            <Value>0</Value>
+                            <Value>800</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -1376,7 +1443,7 @@
                         <Condition>
                             <Resource>P_POWER</Resource>
                             <Comparison>GREATER</Comparison>
-                            <Value>-0</Value>
+                            <Value>800</Value>
                         </Condition>
                     </Conditions>
                     <Steps>

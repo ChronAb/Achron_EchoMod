@@ -21,7 +21,7 @@
         <ObjectClass>
             <ClassNumber>4020</ClassNumber>
             <Name>Subspace Amplifier Relay</Name>
-            <Description>SUBSPACE AMPLIFIER:&#x0D;&#x0A;&#x0D;&#x0A;Secure 12 Supremacy Points at any point in the past to claim victory &#x0D;&#x0A;Makes resources at full control: &#x0D;&#x0A;  + 15 QP, P / 60s continuously&#x0D;&#x0A;  + 30 QP, LC at 120 s intervals while cores remain</Description>
+            <Description>SUBSPACE AMPLIFIER:&#x0D;&#x0A;&#x0D;&#x0A;Secure 12 Amplifier Supremacy Points at any point in the past to claim victory &#x0D;&#x0A;Makes resources at full control: &#x0D;&#x0A;  + 15 QP, P / 60s continuously&#x0D;&#x0A;  + 30 QP, LC at 120 s intervals while &#x0D;&#x0A;  cores remain</Description>
             <Model>./humans/commcenter.mdl</Model>
             <Rank>14</Rank>
             <Type>0</Type>
@@ -394,7 +394,17 @@
                     <AllowActionWhenStopped>0</AllowActionWhenStopped>
                     <Conditions>
                         <Condition>
+                            <Resource>P_POWER</Resource>
+                            <Comparison>GEQUAL</Comparison>
+                            <Value>600</Value>
+                        </Condition>
+                        <Condition>
                             <Resource>P_Q_PLASMA</Resource>
+                            <Comparison>GEQUAL</Comparison>
+                            <Value>200</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_HP</Resource>
                             <Comparison>GEQUAL</Comparison>
                             <Value>100</Value>
                         </Condition>
@@ -403,9 +413,16 @@
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
+                            <Type>P_POWER</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>600</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>100</Value>
+                            <Value>200</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>ACCUM_STATISTIC</PrimitiveAction>
@@ -1122,8 +1139,10 @@
                     <Script>cs07a_freeze_beam</Script>
                     <Name>Chrono-Disruptor </Name>
                     <Details>Sacrifice this Amplifier Relay to \indefinitely Freeze or TSS-Break a single \target \ \(Can be used to disable enemy Amplifiers) </Details>
-                    <Resource4>100</Resource4>
-                    <ObjectiveControlShortcutNumber>3</ObjectiveControlShortcutNumber>
+                    <Resource1>600</Resource1>
+                    <Resource4>200</Resource4>
+                    <Resource5>100</Resource5>
+                    <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>10</ObjectiveNumber>
@@ -1167,7 +1186,7 @@
             </Objectives>
             <ControlShortcuts>
                 <ControlShortcut>
-                    <ControlNumber>3</ControlNumber>
+                    <ControlNumber>0</ControlNumber>
                     <ControlObjectiveNumber>7</ControlObjectiveNumber>
                     <ParameterType>UNIT</ParameterType>
                     <Parameter>0</Parameter>
@@ -1211,7 +1230,7 @@
         <ObjectClass>
             <ClassNumber>4021</ClassNumber>
             <Name>Subspace Amplifier Relay</Name>
-            <Description>SUBSPACE AMPLIFIER:&#x0D;&#x0A;&#x0D;&#x0A;Secure 12 Supremacy Points at any point in the past to claim victory &#x0D;&#x0A;Makes resources at full control: &#x0D;&#x0A;  + 15 QP, P / 60s continuously&#x0D;&#x0A;  + 30 QP, LC at 120 s intervals while cores remain</Description>
+            <Description>SUBSPACE AMPLIFIER:&#x0D;&#x0A;&#x0D;&#x0A;Secure 12 Amplifier Supremacy Points at any point in the past to claim victory &#x0D;&#x0A;Makes resources at full control: &#x0D;&#x0A;  + 15 QP, P / 60s continuously&#x0D;&#x0A;  + 30 QP, LC at 120 s intervals while &#x0D;&#x0A;  cores remain</Description>
             <!-- Start ping-ing when 8+ are controlled -->
             <Model>./humans/commcenter.mdl</Model>
             <Rank>14</Rank>
@@ -1510,7 +1529,17 @@
                     <AllowActionWhenStopped>0</AllowActionWhenStopped>
                     <Conditions>
                         <Condition>
+                            <Resource>P_POWER</Resource>
+                            <Comparison>GEQUAL</Comparison>
+                            <Value>600</Value>
+                        </Condition>
+                        <Condition>
                             <Resource>P_Q_PLASMA</Resource>
+                            <Comparison>GEQUAL</Comparison>
+                            <Value>200</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_HP</Resource>
                             <Comparison>GEQUAL</Comparison>
                             <Value>100</Value>
                         </Condition>
@@ -1519,9 +1548,16 @@
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
+                            <Type>P_POWER</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>600</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>100</Value>
+                            <Value>200</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>ACCUM_STATISTIC</PrimitiveAction>
@@ -2234,6 +2270,16 @@
                     <Details>makes unit change its allegiances as-becomes convenient for it</Details>
                 </Objective>
                 <Objective>
+                    <ObjectiveNumber>7</ObjectiveNumber>
+                    <Script>cs07a_freeze_beam</Script>
+                    <Name>Chrono-Disruptor </Name>
+                    <Details>Sacrifice this Amplifier Relay to \indefinitely Freeze or TSS-Break a single \target \ \(Can be used to disable enemy Amplifiers) </Details>
+                    <Resource1>600</Resource1>
+                    <Resource4>200</Resource4>
+                    <Resource5>100</Resource5>
+                    <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
+                </Objective>
+                <Objective>
                     <ObjectiveNumber>10</ObjectiveNumber>
                     <Script>cs20b_simple_upgrade</Script>
                     <Name>Clone</Name>
@@ -2276,6 +2322,26 @@
             <ControlShortcuts>
                 <ControlShortcut>
                     <ControlNumber>0</ControlNumber>
+                    <ControlObjectiveNumber>7</ControlObjectiveNumber>
+                    <ParameterType>UNIT</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut>$AchronKBChronoFreeze</KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                    </ControlConditions>
+                </ControlShortcut>
+                <ControlShortcut>
+                    <ControlNumber>1</ControlNumber>
                     <ControlObjectiveNumber>10</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
