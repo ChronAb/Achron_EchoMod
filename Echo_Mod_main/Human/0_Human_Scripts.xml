@@ -1,0 +1,42 @@
+<?xml version="1.0" ?>
+<ResequenceObjectClassSet>
+    <AIScripts>
+    <!-- Note: The order of the AI scripts here determines the order they are fitted 
+        onto unit command grids. The naming-scheme is just for readability. -->
+        
+        <!-- Spawner production -->
+        <AIScript>
+            <Name>hs02s_make_marine</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/armory_marine.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hs03s_make_spec_ops</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/armory_sop.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hs04s_make_athc</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/factory_athc.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hs05s_make_lancer</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/factory_lancer.abn</Path>
+        </AIScript>
+        
+         
+        <!-- ************* -->
+        <!-- production -->
+        <!-- ************* -->
+
+        
+        <!-- *** Building Scripts *** -->
+        
+         
+    </AIScripts>
+    <Sounds />
+    <EffectsResources />
+    <GlobalGameResources />
+    <TimelineStatistics />
+    <UnitLists />
+    <ActionStepModifiers />
+    <ObjectClasses />
+</ResequenceObjectClassSet>
