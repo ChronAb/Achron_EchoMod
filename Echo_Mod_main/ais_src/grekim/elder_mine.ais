@@ -1,0 +1,48 @@
+//Echo Ops Mod - original script
+//Contributed by Dallas "ChronAberant" Joder
+
+#include common/include/unit_common_header.aih
+
+int op = unit->ObjectiveParameters;
+op[$Zpos] = 0;
+
+// Not in range yet, so move closer
+if (op <_> unit > 16) {
+    int dir = 0; 
+    dir = QUERY BESTMOVE [unit, $ACTION_MOVE] MIN [query <_> op] WHERE [1];
+    
+    if (dir==0) {
+        say "Path to target is obstructed";
+        PERFORM SET_OBJECTIVE 0;
+        PERFORM NOTHING;
+    } else {
+        PERFORM RAND;
+        if (perf_ret < $LAD_CLEAR) {
+            PERFORM CLEAR_LAST_ATTACKED_DIRECTION; 
+        }
+        PERFORM $ACTION_MOVE dir;
+        PERFORM NOTHING;
+    }
+} 
+
+// Done mining
+if (unit->Ammo < 15 && unit->Action == $ACTION_ASSIMILATE_QP) { 
+    PERFORM SET_OBJECTIVE 0;    
+    PERFORM NOTHING;
+}
+
+// Not enough charge to start mining
+if (unit->Ammo < 120 && unit->Action != $ACTION_ASSIMILATE_QP) { 
+    $SAY_CHARGE
+    PERFORM $ACTION_ERROR1;
+    PERFORM SET_OBJECTIVE 0;    
+    PERFORM NOTHING;
+}
+
+// Find crate and mine from it
+query_vis_distance = 19;
+target = QUERY UNIT [unit] MAX [ query->Energy ] WHERE [ query.Rank==$RESOURCE_RANK ];
+if (target->IsAlive==1) {
+    PERFORM $ACTION_ASSIMILATE_QP;
+    PERFORM NOTHING;
+}
