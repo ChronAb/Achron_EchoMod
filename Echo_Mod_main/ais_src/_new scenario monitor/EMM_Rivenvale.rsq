@@ -1,0 +1,545 @@
+//Echo Ops Mod - original script
+//Contributed by Dallas "ChronAberant" Joder
+
+#include EchoModMonitor.rsq
+#include include/dropshipNarration.rsi
+if (present < 108 || current < 108) PERFORM NOTHING;
+
+//----------------------------------------------
+// Echo Ops Mod:
+// Rivenvale - AI Gameplay
+//----------------------------------------------
+
+// Definitions
+//*******************************
+//*******************************
+
+// Time Coordinates:
+//*******************************
+// Big attack start metatime: -90 seconds;
+#define BigAtkMT -1620
+//#define BigAtkMT (2*present) <| (720 $seconds)
+
+// Small attack start metatime: -150 seconds
+#define SmlAtkMT -2700
+//#define SmlAtkMT (2*present) <| (720 $seconds);
+
+// Map Locations:
+//*******************************
+#define midx 180
+#define midy 180
+#define XYa1 _dest[$Xpos] = 45; _dest[$Ypos] = 50;
+#define XYb1 _dest[$Xpos] = 315; _dest[$Ypos] = 310;
+#define XYa2 _dest[$Xpos] = 205; _dest[$Ypos] = 40;
+#define XYb2 _dest[$Xpos] = 155; _dest[$Ypos] = 320;
+#define XYa3 _dest[$Xpos] = 170; _dest[$Ypos] = 95;
+#define XYb3 _dest[$Xpos] = 190; _dest[$Ypos] = 265;
+#define XYa4 _dest[$Xpos] = 60; _dest[$Ypos] = 190;
+#define XYb4 _dest[$Xpos] = 300; _dest[$Ypos] = 170;
+#define XYa5 _dest[$Xpos] = 120; _dest[$Ypos] = 210;
+#define XYb5 _dest[$Xpos] = 240; _dest[$Ypos] = 150;
+#define XYa6 _dest[$Xpos] = 55; _dest[$Ypos] = 320;
+#define XYb6 _dest[$Xpos] = 305; _dest[$Ypos] = 40;
+
+// Capturable Unit IDs and owners:
+//*******************************
+object AMPa1 = 67;
+object AMPb1 = 94;
+
+object AMPa2 =  62;
+object AMPb2 =  98;
+
+object AMPa3 = 64;
+object AMPb3 = 97;
+
+object AMPa4 =  63;
+object AMPb4 =  95;
+
+object AMPa5 =  66;
+object AMPb5 =  96;
+
+object AMPa6 = 60;
+object AMPb6 = 65;
+
+object TURnw = 34;
+object TURse = 129;
+
+object TURw = 32;
+object TURe = 128;
+
+object TURne = 127;
+object TURsw = 72;
+
+
+int tAMPa1 = 0; tAMPa1 = AMPa1->Owner; int tAMPb1 = 0; tAMPb1 = AMPb1->Owner;
+int tAMPa2 = 0; tAMPa2 = AMPa2->Owner; int tAMPb2 = 0; tAMPb2 = AMPb2->Owner;
+int tAMPa3 = 0; tAMPa3 = AMPa3->Owner; int tAMPb3 = 0; tAMPb3 = AMPb3->Owner;
+int tAMPa4 = 0; tAMPa4 = AMPa4->Owner; int tAMPb4 = 0; tAMPb4 = AMPb4->Owner;
+int tAMPa5 = 0; tAMPa5 = AMPa5->Owner; int tAMPb5 = 0; tAMPb5 = AMPb5->Owner;
+int tAMPa6 = 0; tAMPa6 = AMPa6->Owner; int tAMPb6 = 0; tAMPb6 = AMPb6->Owner;
+
+
+// Ally Cooperation Voodoo
+//*******************************
+player = tAMPa5; uOwnerAllies = player->Allies;
+if (uOwnerAllies>>tAMPb5 & 1 > 0) tAMPb5 = tAMPa5;
+if (uOwnerAllies>>tAMPa3 & 1 > 0) tAMPa3 = tAMPa5;
+if (uOwnerAllies>>tAMPa4 & 1 > 0) tAMPa4 = tAMPa5;
+if (uOwnerAllies>>tAMPa6 & 1 > 0) tAMPa6 = tAMPa5;
+if (uOwnerAllies>>tAMPb2 & 1 > 0) tAMPb2 = tAMPa5;
+
+player = tAMPb5; uOwnerAllies = player->Allies;
+if (uOwnerAllies>>tAMPb3 & 1 > 0) tAMPb3 = tAMPb5;
+if (uOwnerAllies>>tAMPb4 & 1 > 0) tAMPb4 = tAMPb5;
+if (uOwnerAllies>>tAMPb6 & 1 > 0) tAMPb6 = tAMPb5;
+if (uOwnerAllies>>tAMPa2 & 1 > 0) tAMPa2 = tAMPb5;
+
+player = tAMPa3; uOwnerAllies = player->Allies;
+if (uOwnerAllies>>tAMPa1 & 1 > 0) tAMPa1 = tAMPa3;
+if (uOwnerAllies>>tAMPa2 & 1 > 0) tAMPa2 = tAMPa3;
+
+player = tAMPb3; uOwnerAllies = player->Allies;
+if (uOwnerAllies>>tAMPb1 & 1 > 0) tAMPb1 = tAMPb3;
+if (uOwnerAllies>>tAMPb2 & 1 > 0) tAMPb2 = tAMPb3;
+
+// Game-State Detection
+//*******************************
+PERFORM GET_ACHRONAL_FIELD 70; 
+int quadrants = perf_ret[0,4]; // AI portals in the NW/NE/SW/SE quadrants?
+int endgame = tAMPa3==tAMPb3 && tAMPa5==tAMPb5 && tAMPa3==tAMPa5;
+
+if (current==2700 && current==present) {
+    int portals = 0;
+    portals = $GET_UNIT_COUNT [ query.Rank == $RACE_CHOOSER_RANK && 
+        query->XPosition <= $midx && query->YPosition <= $midy
+        ];
+    if (portals>0) quadrants[0]=1; // NW
+    
+    portals = $GET_UNIT_COUNT [ query.Rank == $RACE_CHOOSER_RANK && 
+        query->XPosition >= $midx && query->YPosition <= $midy
+        ];
+    if (portals>0) quadrants[1]=1; // NE
+    
+    portals = $GET_UNIT_COUNT [ query.Rank == $RACE_CHOOSER_RANK && 
+        query->XPosition <= $midx && query->YPosition >= $midy
+        ];
+    if (portals>0) quadrants[2]=1; // SW
+
+    portals = $GET_UNIT_COUNT [ query.Rank == $RACE_CHOOSER_RANK && 
+        query->XPosition >= $midx && query->YPosition >= $midy
+        ];
+    if (portals>0) quadrants[3]=1; // SE   
+
+    target = 70; PERFORM SET_ACHRONAL_FIELD quadrants;    
+}
+
+
+// Randomization
+/********************************
+Should AI players rush (0-1), turtle (2-4), or boom (5-7) ?
+
+When should AI players push the center?
+    [0] = 0 -> 1st attack at 5:12
+    [0] = 1 -> 1st attack at 6:22
+    [1] = 0 -> 2nd attack proceeds at +2:53 (8:05/9:15)
+    [1] = 1 -> 2nd attack offset -1:10 (6:55/8:05)
+
+Should AMP3 push target AMPt4, AMP6, or AMPc1?
+    [2,3] = 0-1 -> target AMPc1
+    [2,3] = 2 -> target AMP6
+    [2,3] = 3 -> target AMPt4
+
+Should AMP4 help push AMPc1 or attack AMPt6?
+    [4,5] = 0-2 -> target AMPc1
+    [4,5] = 3 -> target AMPt6
+
+Should a player who owns both AMP3 & AMP6 rally at AMP3, AMP6, or both?
+    [6,7] = 0-1 -> rally at AMP3
+    [6,7] = 2 -> rally at AMP3 and AMP6
+    [6,7] = 3 -> rally at AMP6
+
+    Should a player who controls AMP2 get ground or air?
+        [8] = 0 -> get ground
+        [8] = 1 -> get air
+*/
+PERFORM GET_ACHRONAL_FIELD 65; 
+int af65 = perf_ret;
+PERFORM GET_ACHRONAL_FIELD 66; 
+int af66 = perf_ret;
+PERFORM GET_ACHRONAL_FIELD 67; 
+int af67 = perf_ret;
+PERFORM GET_ACHRONAL_FIELD 68; 
+object whippingBoy = perf_ret;
+
+int r1a50 = 1; // random binary var 1A with 50% probability
+int r1b50 = 1; // random binary var 1B with 50% probability
+int r2a50 = 1; // random binary var 2A with 50% probability
+int r2b50 = 1; // random binary var 2B with 50% probability
+
+// initialize  randomization seeds:
+// *******************************
+if (1) {
+    // initialize achronal seeds:
+    // *******************************
+    // use arbitrary unit's data to pick a time to pull butterfly seeds
+    if (af65==0 && present>1094 && current==2175) {
+        object seedling1 = 0;
+        seedling1 = QUERY UNIT [unit] MIN [query->HP + query->Timestamp] WHERE [ 
+            query.Rank >= $MARINE_RANK && 
+            query->Owner < 12 && 
+            query->HP > 0 ];
+        
+        af65 = (seedling1->Position * seedling1->Age)%8100+1;
+        target = 65; PERFORM SET_ACHRONAL_FIELD af65; //save randomizer seeder
+        
+        if (0 || DMDebug>0) {
+            int x = 0;
+            for(x=0;x<15;x=x+1){
+                player = x;
+                say " germinating seeds at ", af65/18;
+            }
+        }
+    }
+
+    if (af66==0 && af65>0 && current==af65) {
+        PERFORM RAND; 
+        af66 = perf_ret;
+        target = 66; PERFORM SET_ACHRONAL_FIELD af66;
+        
+        PERFORM RAND; 
+        af67 = perf_ret;
+        target = 67; PERFORM SET_ACHRONAL_FIELD af67;
+        
+        if (0 || DMDebug>0) {
+            int x = 0;
+            for(x=0;x<15;x=x+1){
+                player = x;
+                say " af66 seed = ", af66, " af67 seed = ", af67, " rush ", af66[0,3];
+            }
+        }
+    }
+    //test value of af67: 9142
+    
+    // set temporary seeds off achronal seed:
+    //*******************************
+    if (af66 > 0) {
+        PERFORM RAND;
+        int temp1 = perf_ret[0,4];
+        if (1&(af66>>temp1)) r1a50 = 0;
+        
+        temp1 = perf_ret[4,4];
+        if (1&(af66>>temp1)) r1b50 = 0;
+        
+        temp1 = perf_ret[8,4];
+        if (1&(af66>>temp1)) r2a50 = 0;
+        
+        temp1 = perf_ret[12,4];
+        if (1&(af66>>temp1)) r2b50 = 0;
+    }
+}
+
+// Achronal Feedback
+/********************************
+    AMPa4 -> AMPb6
+        What was the timestamp of the 1st raid on AMPb6 from AMPa4?
+        What was the game-time stamp?
+        Who owned APMa4?
+        Was it successful at +80s?
+        
+    AMPa3 -> AMPc1
+        What was the timestamp of the 1st attack on AMPc1 from AMPa3?
+        What was the game-time stamp?
+        Who owned APMa3?
+        Was it successful at +120s?
+        
+    AMP3 + AMPc1 -> AMPt4
+        What was the timestamp of the 1st attack on AMPt4 from AMPc1?
+        What was the game-time stamp?
+        Who owned APMc1?
+        Was it successful at +80s?
+        
+    AMP6 + AMPc1 -> AMP3
+        What was the timestamp of the 1st attack on AMP3 from AMPc1?
+        What was the game-time stamp?
+        Who owned APMc1?
+        Was it successful at +80s?
+*/
+
+// Grab vulnerable assets
+/********************************
+Always:
+    AMP5 / AMP6 -> OBH
+    Claim Unclaimed AMPs
+Early Game:
+    AMP2 -> AMP3
+    AMP2 -> AMP6 -5:00
+    AMP4 -> AMPt6 
+    AMP4 -> AMPt3 -5:00
+Mid Game:
+    AMP2 -> AMP3 -4:00
+    AMP2 -> AMP6 -4:00
+    AMP4 -> AMPt3 -4:00
+    AMP4 -> AMPt6 -4:00
+Late Game:
+    AMP2 -> AMP1
+    AMP1 + AMP4 -> AMP2 -3:00
+    AMPC + AMP3 -> AMP4 -3:00
+   */
+_minT = 60 $seconds ; _maxT = 1800 $seconds ;
+_everyT = 110 $seconds ; _recruit = 2;
+_uOwner = -1;
+_minX = 0; _maxX = 360;
+_minY = 0; _maxY = 360;
+
+/* Always:
+*************************/
+if (1) {
+    // Claim Unclaimed AMPs
+    _uOwner = -1;
+    _minX = 0; _maxX = 360;
+    _minY = 0; _maxY = 360;
+    if (tAMPa1>11) {$XYa1 $DEPLOY_MINIONS}
+    if (tAMPb1>11) {$XYb1 $DEPLOY_MINIONS}
+    if (tAMPa2>11) {$XYa2 $DEPLOY_MINIONS}
+    if (tAMPb2>11) {$XYb2 $DEPLOY_MINIONS}
+    if (tAMPa3>11) {$XYa3 $DEPLOY_MINIONS}
+    if (tAMPb3>11) {$XYb3 $DEPLOY_MINIONS}
+    if (tAMPa4>11) {$XYa4 $DEPLOY_MINIONS}
+    if (tAMPb4>11) {$XYb4 $DEPLOY_MINIONS}
+    if (tAMPa5>11) {$XYa5 $DEPLOY_MINIONS}
+    if (tAMPb5>11) {$XYb5 $DEPLOY_MINIONS}
+    if (tAMPa6>11) {$XYa6 $DEPLOY_MINIONS}
+    if (tAMPb6>11) {$XYb6 $DEPLOY_MINIONS}
+    
+    _everyT = 160 $seconds ; _recruit = 8;
+    
+    // AMP1 <-> AMP3 :
+    _minT = 120 $seconds ;
+    if (tAMPa1!=tAMPa3) {
+        _uOwner = tAMPa1;
+        $XYa3 $DEPLOY_MINIONS
+        
+        _uOwner = tAMPa3;
+        $XYa1 $DEPLOY_MINIONS
+    }
+    if (tAMPb1!=tAMPb3) {
+        _uOwner = tAMPb1;
+        $XYb3 $DEPLOY_MINIONS
+        
+        _uOwner = tAMPb3;
+        $XYb1 $DEPLOY_MINIONS
+    }
+    
+    // AMP2 <-> AMP3 :
+    _minT = 140 $seconds ;
+    if (tAMPa2!=tAMPa3) {
+        _uOwner = tAMPa2;
+        $XYa3 $DEPLOY_MINIONS
+        
+        _uOwner = tAMPa3;
+        $XYa1 $DEPLOY_MINIONS
+    }
+    if (tAMPb2!=tAMPb3) {
+        _uOwner = tAMPb2;
+        $XYb3 $DEPLOY_MINIONS
+        
+        _uOwner = tAMPb3;
+        $XYb1 $DEPLOY_MINIONS
+    }
+    
+    // AMP4 <-> AMP6 :
+    _minT = 160 $seconds ;
+    if (tAMPa4!=tAMPa6) {
+        _uOwner = tAMPa4;
+        $XYa6 $DEPLOY_MINIONS
+        
+        _uOwner = tAMPa6;
+        $XYa4 $DEPLOY_MINIONS
+    }
+    if (tAMPb4!=tAMPb6) {
+        _uOwner = tAMPb4;
+        $XYb6 $DEPLOY_MINIONS
+        
+        _uOwner = tAMPb6;
+        $XYb4 $DEPLOY_MINIONS
+    }
+    
+    // AMP3 <-> AMPt5 :
+    _minT = 170 $seconds ;
+    if (tAMPa3!=tAMPb5) {
+        _uOwner = tAMPa3;
+        $XYb5 $DEPLOY_MINIONS
+        
+        _uOwner = tAMPb5;
+        $XYa3 $DEPLOY_MINIONS
+    }
+    if (tAMPb3!=tAMPa5) {
+        _uOwner = tAMPb3;
+        $XYa5 $DEPLOY_MINIONS
+        
+        _uOwner = tAMPa5;
+        $XYb3 $DEPLOY_MINIONS
+    }
+    
+    // AMP3 <-> AMP4 :
+    _minT = 210 $seconds ;
+    if (tAMPa3!=tAMPa4) {
+        _uOwner = tAMPa3;
+        $XYa4 $DEPLOY_MINIONS
+        
+        _uOwner = tAMPa4;
+        $XYa3 $DEPLOY_MINIONS
+    }
+    if (tAMPb3!=tAMPb4) {
+        _uOwner = tAMPb3;
+        $XYb4 $DEPLOY_MINIONS
+        
+        _uOwner = tAMPb4;
+        $XYb3 $DEPLOY_MINIONS
+    }
+    
+    // AMP5 <-> AMP6 :
+    _minT = 220 $seconds ;
+    if (tAMPa5!=tAMPa6) {
+        _uOwner = tAMPa5;
+        $XYa6 $DEPLOY_MINIONS
+        
+        _uOwner = tAMPa6;
+        $XYa5 $DEPLOY_MINIONS
+    }
+    if (tAMPb5!=tAMPb6) {
+        _uOwner = tAMPb5;
+        $XYb6 $DEPLOY_MINIONS
+        
+        _uOwner = tAMPb6;
+        $XYb5 $DEPLOY_MINIONS
+    }
+    
+    // AMP2 <-> AMPt6 :
+    _minT = 260 $seconds ;
+    if (tAMPa2!=tAMPb6) {
+        _uOwner = tAMPa2;
+        $XYb6 $DEPLOY_MINIONS
+        
+        _uOwner = tAMPb6;
+        $XYa2 $DEPLOY_MINIONS
+    }
+    if (tAMPb2!=tAMPa6) {
+        _uOwner = tAMPb2;
+        $XYa6 $DEPLOY_MINIONS
+        
+        _uOwner = tAMPa6;
+        $XYb2 $DEPLOY_MINIONS
+    }
+    
+}
+
+
+// AI Players Move Around the Timeline
+//*******************************
+if (1 && current == present) {
+    //loop through the 14 players
+    int x = 0;
+	for (x = 0; x<14; x=x+1) {
+        player = x;
+		if((enabled>>x)&1 && (contenders>>x)&1 && player->IsComputerPlayer){
+            if (present == 10 $seconds) { // 0:10 - First Pass
+                PERFORM SET_PLAYER_TIME_RATE 3;
+            }
+            if (present == 278 $seconds) { // 4:40 - edge rush (might be a feint)
+                PERFORM SET_PLAYER_TIME (158 $seconds); // 2:40
+                PERFORM SET_PLAYER_TIME_RATE 2;
+            }
+            if (present == 498 $seconds) { // 8:20 - EG edge attacks on Amp3, Amp6
+                PERFORM SET_PLAYER_TIME (198 $seconds); // 3:20
+            }
+            if (present == 508 $seconds) { // 8:30 - late game push
+                PERFORM SET_PLAYER_TIME (388 $seconds); // 6:30
+            }
+            
+            /*
+            
+            if (present == 340 $seconds) { // 7:25 - pantomime replaying early-mid
+                PERFORM SET_PLAYER_TIME (205 $seconds); // 3:25
+            }
+            
+            if (present == 490 $seconds) { // 8:10 - EG edge attacks on Amp3, Amp6
+                PERFORM SET_PLAYER_TIME (198 $seconds); // 3:10
+                PERFORM SET_PLAYER_TIME_RATE 2;
+            }
+            
+            if (present == 440 $seconds) { // 7:20 - EG edge attack on Amp3
+                PERFORM SET_PLAYER_TIME (98 $seconds); // 1:40
+            }
+            if (present == 550 $seconds) { // 9:10 - MG edge attacks + UPPercut
+                PERFORM SET_PLAYER_TIME (308 $seconds); // 5:10
+            }
+            
+            if (present == 700 $seconds) { // 11:40 - LG edge attacks on Amp2
+                PERFORM SET_PLAYER_TIME (518 $seconds); // 8:40
+            }
+            if (present == 800 $seconds) { // 13:20 - LG UPPercut on Amp2
+                PERFORM SET_PLAYER_TIME (518 $seconds); // 8:40
+            }
+            if (present == 820 $seconds) { // 13:40 - LG edge attacks
+                PERFORM SET_PLAYER_TIME (638 $seconds); // 10:40
+            }
+
+            if (present == 880 $seconds) { // 14:40 - overtime push
+                PERFORM SET_PLAYER_TIME (878 $seconds); // 14:40
+                PERFORM SET_PLAYER_TIME_RATE 3;
+            }
+            if (present == 700 $seconds) { // 17:40 - OT edge attacks on Amp2
+                PERFORM SET_PLAYER_TIME (878 $seconds); // 14:40
+                PERFORM SET_PLAYER_TIME_RATE 2;
+            }
+            if (present == 800 $seconds) { // 19:20 - OT UPPercut on Amp2
+                PERFORM SET_PLAYER_TIME (878 $seconds); // 14:40
+            }
+            if (present == 820 $seconds) { // 19:40 - OT edge attacks
+                PERFORM SET_PLAYER_TIME (998 $seconds); // 16:40
+            }*/
+		}
+	}
+}
+
+
+// Coup-de-grace edge rush
+/*******************************
+1. Pick a random achron, portal, or progenitor to become the global whipping boy
+2. Send everyone, starting with the furthest away, A-moving to its position
+*/
+if (0 && af66[0,3]<5) {
+    // 1. Pick global whipping boy
+    if (present==105 $seconds && current == present){
+        whippingBoy = QUERY UNIT [unit] 
+                MIN [8*((query->Owner)->IsComputerPlayer) + 
+                (query + af66)&15] 
+                WHERE [ 
+                (query->Owner)<14 &&
+                (query.Rank == $ACHRON_RANK ||
+                query.Rank == $RACE_CHOOSER_RANK ||
+                query.Rank == $GREKIM_PROGENERATION_RANK)
+            ];
+        target = 68; PERFORM SET_ACHRONAL_FIELD whippingBoy;
+    }
+        
+    // 2. A-move to its position
+    if (present >280 $seconds && current%36 == 3 &&
+            current >= 160 $seconds && current < 190 $seconds
+            ) {
+        object underling1 = 0;
+        underling1 = QUERY UNIT [unit] MAX [query<_>whippingBoy] WHERE [ 
+                query.Rank >= $MARINE_RANK && 
+                (query->Owner)->IsComputerPlayer
+            ];
+        
+        if (underling1!=0) {
+            _dest = whippingBoy->Position;
+            _dest[$Zpos] = 0;
+            target = underling1;
+            _obj = $OBJECTIVE_ATTACKPOS_DISPATCH;
+            $DISPATCH_OBJECTIVE
+        }
+    }
+}
