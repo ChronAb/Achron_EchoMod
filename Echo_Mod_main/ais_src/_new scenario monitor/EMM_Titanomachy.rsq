@@ -1,5 +1,9 @@
+//Echo Ops Mod - original script
 //Contributed by Dallas "ChronAberant" Joder
+
 #include EchoModMonitor.rsq
+#include include/dropshipNarration.rsi
+if (present < 108 || current < 108) PERFORM NOTHING;
 
 //----------------------------------------------
 // Echo Ops Mod:

@@ -1,0 +1,56 @@
+/********************************
+* Echo Mod Drop Ship Narration by ChronA
+*
+* Flavor text for maps with player selected start locations
+*
+********************************/
+int x = 0;
+for(x=0;x<12;x=x+1){
+    PERFORM GET_PLAYER_TIME x;
+    if( current==perf_ret && ((enabled>>x)&1) ){
+        player = x;
+
+        if (current== 3 $seconds) {
+            say_to_var "Obj1Text";
+            say "Insertion teleport-link secured.";
+            say_to_var "playSaySound";
+            say 1;
+            say_to_var "";
+            
+        }
+        
+        if (current== 4 $seconds) {
+            say_to_var "Obj2Text";
+            say "Select drop points while awaiting \nTeleporter Lock for Achron transit";
+            say_to_var "playSaySound";
+            say 1;
+            say_to_var "";
+        }
+
+        if (current== 40 $seconds) {
+            say_to_var "Obj1Text";
+            say "Teleporter Lock: select operation assets";
+            say_to_var "Obj2Text";
+            say "";
+            say_to_var "playSaySound";
+            say 1;
+            say_to_var "";
+        }
+        
+        if (current== 120 $seconds) {
+            say_to_var "Obj1Text";
+            say "Contact lost with insertion teleporter";
+            say_to_var "playSaySound";
+            say 1;
+            say_to_var "";
+        }
+        
+        if (current== 122 $seconds) {
+            say_to_var "Obj2Text";
+            say "Good hunting, Achron-Commander";
+            say_to_var "playSaySound";
+            say 1;
+            say_to_var "";
+        }
+    }
+}

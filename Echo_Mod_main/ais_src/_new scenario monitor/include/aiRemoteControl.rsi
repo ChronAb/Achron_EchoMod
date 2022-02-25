@@ -1,0 +1,100 @@
+/********************************
+* Echo Mod AI Remote Control Setup by ChronA
+
+* Computer Player Nanite Delegation:
+* 1. Enemy Veto Opportunity (T 0:02)
+    * Give nanite control of any computer Species Selector 
+      or Landing Probe to the nearest ENEMY human player.
+* 2. Allied Delegation (T 0:20 to 1:00 every 20s)
+    * Give nanite control of the same to the nearest ALLIED human player.
+    * If there is none, give it to the nearest non-ally human player,
+      or failing that, the lowest number human player available. 
+********************************/
+
+#define SECOND_CHOICES if (herald==0) { \
+    herald = QUERY UNIT [unit] MIN [query<_>chooser] WHERE [ \
+            (queryOwnr = query->Owner)->IsComputerPlayer == 0 \
+            ]; \
+} \
+if (herald>0) { \
+    humanity = herald->Owner; \
+} else { \
+    int p = 0; \
+    for (p = 0; p < 15; p=p+1) { \
+        player = p; \
+        if (player->IsComputerPlayer == 0) break; \
+    } \
+    humanity = p; \
+} 
+
+// 1. Enemy Veto Opportunity (T 0:02)
+if(current >= 36 && current <= 80){
+	player = (current-36)%12;
+    allymask = player->Allies;
+    object chooser = 0;
+    object herald = 0;
+    int humanity = 15;
+	
+    // Look for a chooser type unit that's not been nanited yet
+    if (player->IsComputerPlayer) {
+        chooser = QUERY UNIT [unit] MIN [1] WHERE [ 
+                (query.Rank == $RACE_CHOOSER_RANK ||
+                query.Rank == $SPAWNER_RANK) &&
+                query->Owner == player &&
+                query->SecondOwner == 15
+                ];
+    }
+    
+    // Look for the nearest Enemy human player
+    if (chooser>0) {
+        herald = QUERY UNIT [unit] MIN [query<_>chooser] WHERE [ 
+                (queryOwnr = query->Owner)->IsComputerPlayer == 0 &&
+                (allymask & 1<<queryOwnr) < 1
+                ];
+    }
+    
+    // None found; then look for the nearest any human player,
+    // and otherwise pick the first human player from the list
+    $SECOND_CHOICES
+    
+    if (humanity != 15){
+        target = chooser;
+        PERFORM $ACTION_SM_NANITE humanity; 
+    }
+}
+
+// 2. Allied Delegation (T 0:20 to 1:00 every 20s)
+if(current >= 360 && current <= 1091 && current%360 >= 0 && current%360 <= 11 ){
+	player = (current-360)%12;
+    allymask = player->Allies;
+    object chooser = 0;
+    object herald = 0;
+    int humanity = 15;
+	
+    // Look for a chooser type unit that's not been nanited yet
+    if (player->IsComputerPlayer) {
+        chooser = QUERY UNIT [unit] MIN [1] WHERE [ 
+                (query.Rank == $RACE_CHOOSER_RANK ||
+                query.Rank == $SPAWNER_RANK) &&
+                query->Owner == player &&
+                query->SecondOwner == 15
+                ];
+    }
+    
+    // Look for the nearest friendly human player
+    if (chooser>0) {
+        herald = QUERY UNIT [unit] MIN [query<_>chooser] WHERE [ 
+                (queryOwnr = query->Owner)->IsComputerPlayer == 0 &&
+                (allymask & 1<<queryOwnr) > 0
+                ];
+    }
+    
+    // None found; then look for the nearest any human player,
+    // and otherwise pick the first human player from the list
+    $SECOND_CHOICES
+    
+    if (humanity != 15){
+        target = chooser;
+        PERFORM $ACTION_SM_NANITE humanity; 
+    }
+}

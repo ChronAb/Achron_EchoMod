@@ -31,9 +31,9 @@
 
 
 /***********************************************
-    Intitialize observer status of active players
+    Initialize observer status of active players
 ***********************************************/
-if (current == present && present == 1) {
+if (current == present && present == 2) {
 	int num = 0;
     int obsMe = 1;
 	int x = 0;

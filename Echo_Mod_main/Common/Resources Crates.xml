@@ -17,7 +17,7 @@
             <Type>0</Type>
             <PrioritySelectionRank>0</PrioritySelectionRank>
             <MaxHealth>600</MaxHealth>
-            <MaxEnergy>4</MaxEnergy>
+            <MaxEnergy>8</MaxEnergy>
             <MaxArmor>3</MaxArmor>
             <MaxAmmo>0</MaxAmmo>
             <SightRadius>0</SightRadius>
@@ -172,7 +172,7 @@
                             <Target>SELF</Target>
                             <Type>U_ENERGY</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-4</Value>
+                            <Value>-8</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -1135,7 +1135,7 @@
                             <Target>SELF</Target>
                             <Type>U_ENERGY</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-4</Value>
+                            <Value>-8</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>

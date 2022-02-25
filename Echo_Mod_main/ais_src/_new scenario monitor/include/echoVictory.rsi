@@ -36,6 +36,7 @@ if(current%90==7){
                 }
             }
             player = p;
+            vps = vps <| 12;
             vps = (vps<<10)|(player->CustomField8[0,10]);
             
             // Find a unit belonging to the player to set CF8 with
@@ -50,7 +51,7 @@ if(current%90==7){
                 target = envoy;
                 PERFORM $SET_PLAYER_CF_8 vps;
             } else {
-                // TODO: make player surrender if at edge of IP
+                // TODO: make player surrender if all dead at edge of IP
                 //  (not a high priority because Achrons are immortal)
             }
         }
@@ -68,19 +69,21 @@ if(current%90==7){
             player = p;
             allymask = player->Allies;
             
-            if (p==winner && current<=present && 
+            // Winner team alert
+            if ( (p==winner || (allymask >> winner)[0]>0) && current<=present && 
                     (supremacyTime==0 || current<=supremacyTime)){
                 say_to_var "";
-                say "Temporal supremacy achieved at ";
+                say "Temporal superiority achieved at ";
                 $SAY_CALCULATED_TIME
                 say_to_var "";
-                say "Your Achron can claim victory";
+                say "Your Achron can initiate victory";
                 say_to_var "playSaySound";
                 say 1;
                 say_to_var "";
             }
             
-            if (p==winner && (supremacyTime==0 || current<supremacyTime)){
+            // Winner team bulletin
+            if ( (p==winner || (allymask >> winner)[0]>0) && (supremacyTime==0 || current<supremacyTime)){
                 say_to_var "DefeatedText";
                 say "Victory Conditions Achieved at ";
                 $SAY_CALCULATED_TIME
@@ -89,12 +92,14 @@ if(current%90==7){
                 say_to_var "";
             }
             
-            if (p!=winner && (allymask >> winner)[0]==0 && 
+            if (p!=winner && (allymask >> winner)[0]<1 && 
                     (supremacyTime==0 || current<supremacyTime)){
+                // Loser team bulletin
                 say_to_var "DefeatedText";
                 say "Defeat Conditions Detected at ";
                 $SAY_CALCULATED_TIME
                 
+                // Loser team alert
                 say_to_var "";
                 say "WARNING: temporal disparity detected at ";
                 $SAY_CALCULATED_TIME
@@ -185,7 +190,7 @@ if(current%90==7){
     }
     
     // After a short delay when victory is declared -> exit the engine
-    if(exitEngineTime>0 && present>=exitEngineTime+5 $seconds){
+    if(exitEngineTime>0 && present>=exitEngineTime + 5 $seconds){
         PERFORM END_SCENARIO;
         PERFORM EXIT_ENGINE;
     }

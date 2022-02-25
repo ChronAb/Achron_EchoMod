@@ -1,4 +1,6 @@
+//Echo Ops Mod - original script
 //Contributed by Dallas "ChronAberant" Joder
+
 #include include/monitorHeader.rsh
 
 //----------------------------------------------
@@ -157,16 +159,41 @@ if(current == present && present == 1){
 //----------------------------------------------
 
 /***********************************************
-    Slow Timeline:
-        Set the timeline speed to 0.5 (because Echo Mod is really busy)
+    Slow Timeline Options:
+        Sets the timeline speed to 0.5 (because Echo Mod is really busy)
+        Or pause the present at match start until a player moves up the timeline
 ***********************************************/
-if(1 && current == present && present == 1){
-    PERFORM GET_PRESENT_TIME_WAVE_TIME_RATE;
-    int presentRate = perf_ret_float;
-        
+PERFORM GET_PRESENT_TIME_WAVE_TIME_RATE;
+int presentRate = perf_ret_float;
+
+// Slow Timeline:
+if(0 && current == present && present == 1){    
     if(presentRate >0.5) {
         perf_ret_float=0.5;
         PERFORM SET_PRESENT_TIME_WAVE_TIME_RATE;
+    }
+}
+// Paused Timeline:
+if(1){
+    //start pause
+    if(current == present && present == 90){
+        if(presentRate >0){
+            perf_ret_float=0;
+            PERFORM SET_PRESENT_TIME_WAVE_TIME_RATE;
+        }
+    }
+}
+    
+//end pause
+if(presentRate==0){
+    int x = 0;
+    for(x=0;x<15;x=x+1){
+        PERFORM GET_PLAYER_TIME x;
+        if(current==perf_ret && current >= 2160 && 
+                ((contenders>>x)&1 || (obs>>x)&1)){
+            perf_ret_float=1;
+            PERFORM SET_PRESENT_TIME_WAVE_TIME_RATE;
+        }   
     }
 }
 //**********************************************
@@ -214,7 +241,7 @@ if(pre_game_settings[$MP_ASSASSIN_MODE] && presentRate > 0){
 #include include/checkConnected.rsi
 
 //Initialize nonPlayers, aiPlayers, & neutral players
-if(1 && current == present && present == 1){
+if(1 && current == present && present == 2){
 	int x = 0;
 	for (x = 0; x<15; x = x + 1){
         player = x;
@@ -255,7 +282,7 @@ if(1 && current == present && present == 1){
         Share vision between allies and to observers
 ***********************************************/
 // auto-share vision between allies at game start
-if(current == 1){
+if(current == 3){
 	int p = 0;
     allymask = 0;
 	
@@ -270,60 +297,10 @@ if(current == 1){
 
 /***********************************************
     Computer Player Nanite Delegation:
-        Give nanite control of any idle computer Species Selector 
-        or Landing Probe to the nearest allied human player.
-        If there is none, give it to the nearest non-ally human player,
-        or failing that, the lowest number human player available 
+        At game start, give nanite control of any computer controlled 
+        Species Selector or Landing Probe to the nearest human player.
 ***********************************************/
-if(current >= 360 && current <= 1091 && current%360 >= 0 && current%360 <= 11 ){
-	player = (current-360)%12;
-    allymask = player->Allies;
-    object chooser = 0;
-    object herald = 0;
-    int humanity = 15;
-	
-    // Look for a chooser type unit that's not been nanited yet
-    if (player->IsComputerPlayer) {
-        chooser = QUERY UNIT [unit] MIN [1] WHERE [ 
-                query.Rank == $RACE_CHOOSER_RANK &&
-                query->Owner == player &&
-                query->SecondOwner == 15
-                ];
-    }
-    
-    // Look for the nearest friendly human player
-    if (chooser>0) {
-        herald = QUERY UNIT [unit] MIN [query<_>chooser] WHERE [ 
-                (queryOwnr = query->Owner)->IsComputerPlayer == 0 &&
-                (allymask & 1<<queryOwnr) > 0
-                ];
-    }
-    
-    // none found; then look for the nearest any human player
-    if (herald==0) {
-        herald = QUERY UNIT [unit] MIN [query<_>chooser] WHERE [ 
-                (queryOwnr = query->Owner)->IsComputerPlayer == 0
-                ];
-    }
-    
-    // none found; then pick the first human player from the list
-    if (herald>0) {
-        humanity = herald->Owner;
-    } else {
-        int p = 0;
-        
-        for (p = 0; p < 15; p=p+1) {
-            player = p;
-            if (player->IsComputerPlayer == 0) break;
-        }
-        humanity = p;
-    }
-    
-    if (humanity != 15){
-        target = chooser;
-        PERFORM $ACTION_SM_NANITE humanity; 
-    }
-}
+#include include/aiRemoteControl.rsi
 
 //----------------------------------------------
 // Victory Conditions
@@ -408,7 +385,7 @@ if(current >= 360 && current <= 1091 && current%360 >= 0 && current%360 <= 11 ){
     }
     
 #define MAKA_MOUND player = _uOwner; \
-    if ($MAKING_TIMER  && player->$QPlasma > 700) { \
+    if ($MAKING_TIMER  && player->$QPlasma > 1100) { \
         if (_underling->Class != $SEPI_CLASS && _underling.Rank != $AMPLIFIER_RANK) { \
             _underling = 0; \
             _underling = QUERY UNIT [unit] MIN [query<_>_dest - query->HP] \
@@ -429,7 +406,7 @@ if(current >= 360 && current <= 1091 && current%360 >= 0 && current%360 <= 11 ){
     }
     
 #define MAKA_SPYRE player = _uOwner; \
-    if ($MAKING_TIMER && player->$QPlasma > 700 && \
+    if ($MAKING_TIMER && player->$QPlasma > 0 && \
             (player->Advancements)[$GREKIM_ADV_AUTODEFENCE]) { \
         if (_underling->Class != $PHARO_CLASS && _underling.Rank != $AMPLIFIER_RANK) { \
             _underling = 0; \
@@ -451,7 +428,7 @@ if(current >= 360 && current <= 1091 && current%360 >= 0 && current%360 <= 11 ){
     }
     
 #define MAKA_ARCT player = _uOwner; \
-    if ($MAKING_TIMER && player->$QPlasma > 600) { \
+    if ($MAKING_TIMER && player->$QPlasma > 0) { \
         if (_underling->Class != $PHARO_CLASS && _underling.Rank != $AMPLIFIER_RANK) { \
             _underling = 0; \
             _underling = QUERY UNIT [unit] MIN [query<_>_dest - query->HP] \
@@ -472,7 +449,7 @@ if(current >= 360 && current <= 1091 && current%360 >= 0 && current%360 <= 11 ){
     }
     
 #define MAKA_TURRET player = _uOwner; \
-    if ($MAKING_TIMER && player->$QPlasma > 700) { \
+    if ($MAKING_TIMER && player->$QPlasma > 1200) { \
         if (_underling->Class != $OCTO_CLASS && _underling.Rank != $AMPLIFIER_RANK) { \
             _underling = 0; \
             _underling = QUERY UNIT [unit] MIN [query<_>_dest - query->HP] \
@@ -495,7 +472,7 @@ if(current >= 360 && current <= 1091 && current%360 >= 0 && current%360 <= 11 ){
 // AI-Processes variable initialization
 object _underling = 0;
 int _uOwner = -1; int _maxOwner = 11;
-int _minM = -600 $seconds; int _maxM = (2*present) <| (720 $seconds); 
+int _minM = -10800; int _maxM = 12960;
     // IP: -600, UPP: -390, present: 0, UP future: 120
 int _minX = 0; int _maxX = 0;
 int _minY = 0; int _maxY = 0;
@@ -518,6 +495,7 @@ if (1 && current%108 == 83) {
     object enemy1 = 0;
     underling1 = QUERY UNIT [unit] MAX [query->Age] WHERE [ 
             query->Class == $TODARO_CLASS && 
+            query->Energy <60 && 
             query->Objective == 0 && 
             (query->Owner)->IsComputerPlayer
         ];
@@ -544,7 +522,7 @@ if (1 && current%108 == 83) {
 }
 
 // Idle RP taskmaster:
-if (1 && current>120$seconds && current%(18$seconds) == 13$seconds) {
+if (1 && current>120$seconds && current%(9$seconds) == 5$seconds) {
     // - Idle RPs get tasked to the nearest red crate < 150 sq distant
     // - if no red crate is found -> send to the nearest blue crate with an opening
     // - check and send one order every 18 s

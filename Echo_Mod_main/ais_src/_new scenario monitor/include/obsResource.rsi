@@ -110,7 +110,7 @@ for (y=0; y<14; y=y+1){
         //***********************************
         // Send information as bits 0-3: Number of players
         //            bits 4-18: Bitmask of all 15 players.
-        if (current == present && TwicePerSecond && present >= 720){
+        if (current == present && TwicePerSecond && present >= 1080){
           player = y;
           say_to_var "SMObsPlayerNum";
           say (playerCount | (contenders<<4));

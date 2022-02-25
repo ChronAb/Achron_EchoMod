@@ -80,15 +80,26 @@ if(1) {
 				int materials = player->$LCrystals;
 				int raremat = player->$QPlasma;
 				int reserve = player->$ReserveSoldiers;
+                int cesoRace = (player->CustomField8)[0];
+                int grekimRace = (player->CustomField8)[1];
 				
 				//compute geometric mean of resources
 				float accum = 1.0;
-				accum = accum * (power+1);
-				accum = accum * (materials+1);
-				accum = accum * (raremat+1);
-				accum = accum * (reserve+1);
+                accum = accum * (raremat+1);
+				accum = accum * (0.5*power+1);
+                if (grekimRace==1) {
+                    accum = accum * (1+0.5*(raremat>400)) * (1+0.5*(power>800));
+                }
+                
+				if (cesoRace==1) {
+                    accum = accum * (materials+1);
+                    accum = accum * (reserve+1);
+                    accum = (accum - 1.0) ** 0.25; //find geometric mean of four resources
+                } else {
+                    accum = (accum - 1.0) ** 0.5; //find geometric mean of two resources
+                }
 
-				accum = (accum - 1.0) ** 0.25;		//find geometric mean of four resources
+				
 
 				int resources = accum;
 				target = 5;
