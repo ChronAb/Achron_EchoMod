@@ -34,7 +34,7 @@
         </ActionStepModifier>
         <ActionStepModifier>
             <Name>Cuttle anti_air 1</Name>
-            <StrengthBase>2</StrengthBase>
+            <StrengthBase>12</StrengthBase>
             <StrengthRange>0</StrengthRange>
             <StrengthCount>0</StrengthCount>
             <Flags>
@@ -89,7 +89,7 @@
             <Type>2</Type>
             <PrioritySelectionRank>0</PrioritySelectionRank>
             <MaxHealth>40</MaxHealth>
-            <MaxEnergy>150</MaxEnergy>
+            <MaxEnergy>240</MaxEnergy>
             <MaxArmor>0</MaxArmor>
             <MaxAmmo>0</MaxAmmo>
             <SightRadius>25</SightRadius>
@@ -413,7 +413,7 @@
                             <Target>SELF</Target>
                             <Type>U_ENERGY</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-150</Value>
+                            <Value>-240</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -870,7 +870,7 @@
                     <ObjectiveNumber>3</ObjectiveNumber>
                     <Script>cs030_atk_move</Script>
                     <Name>Attack</Name>
-                    <Details>Attack target or Attack-Move to location \60 damage air last-hit \[Weapons Avg Damage/10secs ]\Gnd: 120,  R 8,  SR 2,  Sta C\Air: 20,  R 1,  Sta C</Details>
+                    <Details>Attack target or Attack-Move to location \60 damage air last-hit \[Weapons Avg Damage/10secs]\Gnd: 120,  R 8,  SR 2,  Sta C\Air: 120,  R 1,  Sta C</Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
                     <ParameterType>POSITION</ParameterType>
                 </Objective>

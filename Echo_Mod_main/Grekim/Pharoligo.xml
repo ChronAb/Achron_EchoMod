@@ -134,7 +134,7 @@
         <ObjectClass>
             <ClassNumber>1110</ClassNumber>
             <Name>Medusa (Pharoligo)</Name>
-            <Description>MEDUSA/PHAROLIGO:&#x0D;&#x0A;Slow biological siege aircraft&#x0D;&#x0A;Powerful standoff-range strategic bomber&#x0D;&#x0A; &#x0D;&#x0A;Fires slow moving explosive projectile&#x0D;&#x0A;Devastating vs buildings and infantry&#x0D;&#x0A;Can progenerate base Octo and Sepi pair</Description>
+            <Description>MEDUSA/PHAROLIGO:&#x0D;&#x0A;Slow, standoff-range, saturation bio-bomber&#x0D;&#x0A;Fires slow moving, explosive energy blasts&#x0D;&#x0A;Devastating vs buildings and infantry&#x0D;&#x0A; &#x0D;&#x0A;Upgrades: &#x0D;&#x0A;C-Tech: Unlocks TSS siege state&#x0D;&#x0A;D/S-Tech: Enables Disruptor Beam&#x0D;&#x0A;L-Tech: Progenerate Octo+Sepi pair</Description>
             <Model>./grekim/pharoligo.mdl</Model>
             <Rank>260</Rank>
             <Type>2</Type>
@@ -142,7 +142,7 @@
             <MaxHealth>220</MaxHealth>
             <MaxEnergy>40</MaxEnergy>
             <MaxArmor>0</MaxArmor>
-            <MaxAmmo>200</MaxAmmo>
+            <MaxAmmo>125</MaxAmmo>
             <SightRadius>37</SightRadius>
             <ForwardMinSightRadius>0</ForwardMinSightRadius>
             <ReverseMaxSightRadius>0</ReverseMaxSightRadius>
@@ -212,7 +212,7 @@
 					<Target>SELF</Target>
 					<Type>U_AMMO</Type>
 					<ValueEval>SET_TO_VALUE</ValueEval>
-					<Value>120</Value>
+					<Value>110</Value>
 				</Step>
             </ChronoportArrivedActionSteps>
             <Animations>
@@ -553,7 +553,7 @@
                             <Target>SELF</Target>
                             <Type>U_AMMO</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-200</Value>
+                            <Value>0</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -1235,7 +1235,7 @@
                         <Condition>
                             <Resource>U_AMMO</Resource>
                             <Comparison>LESS</Comparison>
-                            <Value>200</Value>
+                            <Value>125</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -1399,7 +1399,7 @@
                         <Condition>
                             <Resource>P_POWER</Resource>
                             <Comparison>GREATER</Comparison>
-                            <Value>-100</Value>
+                            <Value>800</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -1557,7 +1557,7 @@
                         <Condition>
                             <Resource>U_HP</Resource>
                             <Comparison>LEQUAL</Comparison>
-                            <Value>44</Value>
+                            <Value>66</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_ACTION</Resource>
@@ -1615,9 +1615,9 @@
 						<Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
-                            <Type>P_Q_PLASMA</Type>
+                            <Type>P_L_CRYSTALS</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-360</Value>
+                            <Value>-120</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>DIE</PrimitiveAction>
@@ -1736,7 +1736,7 @@
                     <ObjectiveNumber>1</ObjectiveNumber>
                     <Script>cs010_move</Script>
                     <Name>Move</Name>
-                    <Details>Move to specified location\ \Takes time to accelerate \Move Speed: 4.5 (aircraft)\Vision Range: 36, Aggro Radius: 33</Details>
+                    <Details> \Move to specified location\ \Move Speed: 4.5 (aircraft)\Vision Range: 36, Aggro Radius: 33</Details>
                     <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
@@ -1750,7 +1750,7 @@
                     <ObjectiveNumber>3</ObjectiveNumber>
                     <Script>cs030_atk_move</Script>
                     <Name>Attack</Name>
-					<Details>Attack target or Attack-Move to location \Temporary invulnerability while firing at rest \[Weapons Avg Damage/10secs ]\Gnd Resting: 400,  R 30,  SR 9,  Sta S\Gnd Moving: 200,  R 30,  SR 5,  Sta S</Details>
+					<Details>Attack target or Attack-Move to location \Chrono Tech: 2X atk + TSS firing at rest \[Weapons Avg Damage/10secs]\Gnd (Moving): 200,  R 30,  SR 5,  Sta S\Gnd C-Tech, Resting: 400,  SR 9</Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
                     <ParameterType>POSITION</ParameterType>
                 </Objective>
@@ -1821,7 +1821,7 @@
                     <ObjectiveNumber>12</ObjectiveNumber>
                     <Script>cs120_cport_na</Script>
                     <Name>Chronoport</Name>
-                    <Details>   Not Available\    Requires Chronoporting upgrade</Details>
+                    <Details>   Not Available\    Requires C-Tech\    upgrade at the MOUND</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>13</ObjectiveNumber>
@@ -1861,7 +1861,7 @@
                     <ObjectiveNumber>43</ObjectiveNumber>
                     <Script>gs435_split_down_na</Script>
                     <Name>Meiotic Progenesis</Name>
-                    <Details>   Not Available \    Requires the Loligo Tech upgrade</Details>
+                    <Details>   Not Available\    Requires L-Tech\    upgrade at the MOUND</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>48</ObjectiveNumber>
@@ -1876,7 +1876,7 @@
                     <ObjectiveNumber>49</ObjectiveNumber>
                     <Script>gs494_freezebeam_na</Script>
                     <Name>Fire Temporal Disruption Beam</Name>
-                    <Details>   Not Available \    Requires the Specials or Weapons\    upgrade at the MOUND</Details>
+                    <Details>   Not Available \    Requires D-Tech or S-Tech\    upgrade at the MOUND</Details>
                 </Objective>
             </Objectives>
             <ControlShortcuts>
@@ -2014,7 +2014,7 @@
                         <SelectTarget>0</SelectTarget>
                     </Flags>
                     <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>6</EstTimeDist>
+                    <EstTimeDist>0</EstTimeDist>
                     <Sound>Sound0</Sound>
                     <ControlConditions>
                         <ControlCondition>
@@ -2242,7 +2242,7 @@
         <ObjectClass>
             <ClassNumber>1111</ClassNumber>
             <Name>Medusa (Pharoligo)</Name><!-- Moving: Reduced attack and defense-->
-            <Description>MEDUSA/PHAROLIGO:&#x0D;&#x0A;Slow biological siege aircraft&#x0D;&#x0A;Powerful standoff-range strategic bomber&#x0D;&#x0A; &#x0D;&#x0A;Fires slow moving explosive projectile&#x0D;&#x0A;Devastating vs buildings and infantry&#x0D;&#x0A;Can progenerate base Octo and Sepi pair</Description>
+            <Description>MEDUSA/PHAROLIGO:&#x0D;&#x0A;Slow, standoff-range, saturation bio-bomber&#x0D;&#x0A;Fires slow moving, explosive energy blasts&#x0D;&#x0A;Devastating vs buildings and infantry&#x0D;&#x0A; &#x0D;&#x0A;Upgrades: &#x0D;&#x0A;C-Tech: Unlocks TSS siege state&#x0D;&#x0A;D/S-Tech: Enables Disruptor Beam&#x0D;&#x0A;L-Tech: Progenerate Octo+Sepi pair</Description>
             <Model>./grekim/pharoligo.mdl</Model>
             <Rank>260</Rank>
             <Type>2</Type>
@@ -2250,7 +2250,7 @@
             <MaxHealth>220</MaxHealth>
             <MaxEnergy>40</MaxEnergy>
             <MaxArmor>0</MaxArmor>
-            <MaxAmmo>200</MaxAmmo>
+            <MaxAmmo>125</MaxAmmo>
             <SightRadius>37</SightRadius>
             <ForwardMinSightRadius>0</ForwardMinSightRadius>
             <ReverseMaxSightRadius>0</ReverseMaxSightRadius>
@@ -2320,7 +2320,7 @@
 					<Target>SELF</Target>
 					<Type>U_AMMO</Type>
 					<ValueEval>SET_TO_VALUE</ValueEval>
-					<Value>80</Value>
+					<Value>110</Value>
 				</Step>
             </ChronoportArrivedActionSteps>
             <Animations>
@@ -3326,7 +3326,7 @@
                         <Condition>
                             <Resource>U_AMMO</Resource>
                             <Comparison>LESS</Comparison>
-                            <Value>200</Value>
+                            <Value>125</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -3455,6 +3455,11 @@
                             <Comparison>GREATER</Comparison>
                             <Value>100</Value>
                         </Condition>
+                        <Condition>
+                            <Resource>P_ADVANCEMENTS</Resource>
+                            <Comparison>BITMASK</Comparison>
+                            <Value>512</Value>
+                        </Condition>
                     </Conditions>
                     <Steps>
                         <Step>
@@ -3490,7 +3495,7 @@
                         <Condition>
                             <Resource>P_POWER</Resource>
                             <Comparison>GREATER</Comparison>
-                            <Value>-100</Value>
+                            <Value>800</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -3648,7 +3653,7 @@
                         <Condition>
                             <Resource>U_HP</Resource>
                             <Comparison>LEQUAL</Comparison>
-                            <Value>44</Value>
+                            <Value>66</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_ACTION</Resource>
@@ -3825,7 +3830,7 @@
                     <ObjectiveNumber>1</ObjectiveNumber>
                     <Script>cs010_move</Script>
                     <Name>Move</Name>
-                    <Details>Move to specified location\ \Takes time to accelerate \Move Speed: 4.5 (aircraft)\Vision Range: 36, Aggro Radius: 33</Details>
+                    <Details> \Move to specified location\ \Move Speed: 4.5 (aircraft)\Vision Range: 36, Aggro Radius: 33</Details>
                     <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
@@ -3839,7 +3844,7 @@
                     <ObjectiveNumber>3</ObjectiveNumber>
                     <Script>cs030_atk_move</Script>
                     <Name>Attack</Name>
-					<Details>Attack target or Attack-Move to location \Temporary invulnerability while firing at rest \[Weapons Avg Damage/10secs ]\Gnd Resting: 400,  R 30,  SR 9,  Sta S\Gnd Moving: 200,  R 30,  SR 5,  Sta S</Details>
+					<Details>Attack target or Attack-Move to location \Chrono Tech: 2X atk + TSS firing at rest \[Weapons Avg Damage/10secs]\Gnd (Moving): 200,  R 30,  SR 5,  Sta S\Gnd C-Tech, Resting: 400,  SR 9</Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
                     <ParameterType>POSITION</ParameterType>
                 </Objective>
@@ -3910,7 +3915,7 @@
                     <ObjectiveNumber>12</ObjectiveNumber>
                     <Script>cs120_cport_na</Script>
                     <Name>Chronoport</Name>
-                    <Details>   Not Available\    Requires Chronoporting upgrade</Details>
+                    <Details>   Not Available\    Requires C-Tech\    upgrade at the MOUND</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>13</ObjectiveNumber>
@@ -3950,7 +3955,7 @@
                     <ObjectiveNumber>43</ObjectiveNumber>
                     <Script>gs435_split_down_na</Script>
                     <Name>Meiotic Progenesis</Name>
-                    <Details>   Not Available \    Requires the Loligo Tech upgrade</Details>
+                    <Details>   Not Available\    Requires L-Tech\    upgrade at the MOUND</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>48</ObjectiveNumber>
@@ -3965,7 +3970,7 @@
                     <ObjectiveNumber>49</ObjectiveNumber>
                     <Script>gs494_freezebeam_na</Script>
                     <Name>Fire Temporal Disruption Beam</Name>
-                    <Details>   Not Available \    Requires the Specials or Weapons\    upgrade at the MOUND</Details>
+                    <Details>   Not Available \    Requires D-Tech or S-Tech\    upgrade at the MOUND</Details>
                 </Objective>
             </Objectives>
             <ControlShortcuts>
@@ -4101,7 +4106,7 @@
                         <SelectTarget>0</SelectTarget>
                     </Flags>
                     <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>6</EstTimeDist>
+                    <EstTimeDist>0</EstTimeDist>
                     <Sound>Sound0</Sound>
                     <ControlConditions>
                         <ControlCondition>
@@ -5082,7 +5087,7 @@
                     <ObjectiveNumber>3</ObjectiveNumber>
                     <Script>cs030_atk_move</Script>
                     <Name>Attack</Name>
-                    <Details>Attack target or Attack-Move to location \+25% TSS Energy per attack \[Weapons Avg Damage/10secs ]\Gnd: 50,  R 1,  SR 3,  Sta C</Details>
+                    <Details>Attack target or Attack-Move to location \+25% TSS Energy per attack \[Weapons Avg Damage/10secs]\Gnd: 50,  R 1,  SR 3,  Sta C</Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
                     <ParameterType>POSITION</ParameterType>
                 </Objective>

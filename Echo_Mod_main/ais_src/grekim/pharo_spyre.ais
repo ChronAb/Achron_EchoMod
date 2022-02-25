@@ -16,8 +16,6 @@ if (unit.Rank == $AMPLIFIER_RANK && player->IsComputerPlayer) {
 	PERFORM NOTHING;
 }
 
-if (!player->Advancements[$GREKIM_ADV_AUTODEFENCE]) { PERFORM SET_OBJECTIVE 0; PERFORM NOTHING; }
-
 if (unit->Position == op) {
 	if (player->$LCrystals < $SPYRE_LC || player->$QPlasma < $SPYRE_QP) {
 		PERFORM SET_OBJECTIVE 0;    

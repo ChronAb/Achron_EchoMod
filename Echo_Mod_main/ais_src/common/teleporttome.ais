@@ -1,0 +1,46 @@
+//Echo Ops Mod - original script
+//Contributed by Dallas "ChronAberant" Joder
+
+#include common/include/unit_common_header.aih
+
+/*
+Purpose:
+Teleport an allied target to the caster from anywhere on the map
+*/
+
+int uclass = unit->Class;
+target = unit->ObjectiveParameters;
+
+//cannot pickup tssed units
+if (target->IsStasis) { 
+    $SAY_TELEPORT_TSS
+	PERFORM SET_OBJECTIVE 0; 
+	PERFORM SET_ADDITIONAL_PARAMS2 0;
+	PERFORM SET_ADDITIONAL_PARAMS 0;
+	PERFORM NOTHING; 
+}
+
+//cannot pickup self, non-allied units, or non-player units
+if (target==unit || !target->IsAlly || !target->IsAllyToUnit || target->Owner>11) { 
+    $SAY_TARGET
+	PERFORM SET_OBJECTIVE 0; 
+	PERFORM SET_ADDITIONAL_PARAMS2 0;
+	PERFORM SET_ADDITIONAL_PARAMS 0;
+	PERFORM NOTHING; 
+}
+
+// Cannot pick up things if already full
+if (uclass==$LANDING_PROBE_CLASS && unit->Energy<100) {
+    say "Teleport buffer is occupied";
+	PERFORM SET_OBJECTIVE 0; 
+	PERFORM SET_ADDITIONAL_PARAMS2 0;
+	PERFORM SET_ADDITIONAL_PARAMS 0;
+	PERFORM NOTHING; 
+}
+
+//teleport
+PERFORM $ACTION_TAKE_UNIT 0;
+PERFORM SET_OBJECTIVE 0; 
+PERFORM SET_ADDITIONAL_PARAMS2 0;
+PERFORM SET_ADDITIONAL_PARAMS 0;
+

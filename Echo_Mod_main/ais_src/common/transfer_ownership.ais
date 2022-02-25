@@ -1,0 +1,29 @@
+//Echo Ops Mod - original script
+//Contributed by Dallas "ChronAberant" Joder
+
+#include common/include/unit_common_header.ais
+
+target = unit->ObjectiveParameters;
+if (target->IsAlive!=1 || target->IsAlly!=1){
+    $SAY_TARGET
+    PERFORM SET_OBJECTIVE 0;
+    PERFORM SET_ADDITIONAL_PARAMS2 0;
+    PERFORM NOTHING;
+}
+
+if (target->Owner!=unit->Owner) {
+    PERFORM $ACTION_JOIN_TEAM target->Owner; //join team
+    PERFORM NOTHING;
+}
+
+object cargo = unit->NextCarriedUnit;
+while (cargo > 0){
+    if (cargo->Class == $RACE_CHOOSER_CLASS) {
+        target = cargo;
+        PERFORM $ACTION_CHANGE_TARGET_OWNER unit->Owner;
+    }
+    cargo = unit->NextCarriedUnit;
+}
+
+PERFORM SET_OBJECTIVE 0;
+PERFORM SET_ADDITIONAL_PARAMS2 0;

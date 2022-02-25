@@ -210,7 +210,7 @@
         <ObjectClass>
             <ClassNumber>1100</ClassNumber>
             <Name>Cthulhu (Octoligo)</Name>
-            <Description>CTHULHU/OCTOLIGO:&#x0D;&#x0A;Biological heavy-support armor&#x0D;&#x0A;Slow, high-impact brawler&#x0D;&#x0A;Devastating vs aircraft and groups&#x0D;&#x0A;Critically vulnerable to burst damage&#x0D;&#x0A; &#x0D;&#x0A;Can Subvert enemies (req. Specials tech) &#x0D;&#x0A;Can progenerate (req. Loligo tech)</Description>
+            <Description>CTHULHU/OCTOLIGO:&#x0D;&#x0A;Biological heavy-support armor&#x0D;&#x0A;Slow, high-impact brawler&#x0D;&#x0A;Devastating vs aircraft and swarms&#x0D;&#x0A;Critically vulnerable to burst damage&#x0D;&#x0A; &#x0D;&#x0A;Upgrades: &#x0D;&#x0A;S-Tech: Comm Spike &#x0D;&#x0A;L-Tech: Progenerate Sepi+Pharo pair</Description>
             <Model>./Achron_EchoMod/Echo_Mod_main/New_Models/octoligo.mdl</Model>
             <Rank>197</Rank>
             <Type>2</Type>
@@ -825,7 +825,7 @@
                 <Action>
                     <ActionNumber>5</ActionNumber>
                     <Identifier>ACTION_FINISH_PROGEN</Identifier>
-                    <TimeTaken>333</TimeTaken>
+                    <TimeTaken>441</TimeTaken>
                     <ForceObjectAction>1</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
                     <MutexAction>0</MutexAction>
@@ -1483,7 +1483,7 @@
                         <Condition>
                             <Resource>P_POWER</Resource>
                             <Comparison>GREATER</Comparison>
-                            <Value>-100</Value>
+                            <Value>800</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -1594,7 +1594,7 @@
                         <Condition>
                             <Resource>U_HP</Resource>
                             <Comparison>LEQUAL</Comparison>
-                            <Value>480</Value>
+                            <Value>360</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_ACTION</Resource>
@@ -1865,7 +1865,7 @@
                     <ObjectiveNumber>3</ObjectiveNumber>
                     <Script>cs030_atk_move</Script>
                     <Name>Attack</Name>
-                    <Details>Attack target or Attack-Move to location\ \[Weapons Avg Damage/10secs ]\Gnd: 200,  R 16,  SR 4,  Sta A\Air: 80,  R 30,  SR 15,  Sta A</Details>
+                    <Details>Attack target or Attack-Move to location\ \[Weapons Avg Damage/10secs]\Gnd: 200,  R 16,  SR 4,  Sta A\Air: 80,  R 30,  SR 15,  Sta A</Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
                     <ParameterType>POSITION</ParameterType>
                 </Objective>
@@ -1936,7 +1936,7 @@
                     <ObjectiveNumber>12</ObjectiveNumber>
                     <Script>cs120_cport_na</Script>
                     <Name>Chronoport</Name>
-                    <Details>   Not Available\    Requires Chronoporting upgrade</Details>
+                    <Details>   Not Available\    Requires C-Tech\    upgrade at the MOUND</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>13</ObjectiveNumber>
@@ -1976,7 +1976,7 @@
                     <ObjectiveNumber>43</ObjectiveNumber>
                     <Script>gs435_split_down_na</Script>
                     <Name>Meiotic Progenesis</Name>
-                    <Details>   Not Available \    Requires the Loligo Tech upgrade</Details>
+                    <Details>   Not Available\    Requires L-Tech\    upgrade at the MOUND</Details>
                 </Objective>
                 
                 <Objective>
@@ -1998,7 +1998,7 @@
                     <ObjectiveNumber>47</ObjectiveNumber>
                     <Script>gs474_comm_nanites_na</Script>
                     <Name>Comm Spike</Name>
-                    <Details>   Not Available \    Requires the Specials Tech upgrade</Details>
+                    <Details>   Not Available\    Requires S-Tech\    upgrade at the MOUND</Details>
                 </Objective>
             </Objectives>
             <ControlShortcuts>
@@ -2136,7 +2136,7 @@
                         <SelectTarget>0</SelectTarget>
                     </Flags>
                     <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>6</EstTimeDist>
+                    <EstTimeDist>0</EstTimeDist>
                     <Sound>Sound0</Sound>
                     <ControlConditions>
                         <ControlCondition>
@@ -3614,7 +3614,7 @@
                     <ObjectiveNumber>3</ObjectiveNumber>
                     <Script>cs030_atk_move</Script>
                     <Name>Attack</Name>
-                    <Details>Attack target or Attack-Move to location\ \[Weapons Avg Damage/10secs ]\Gnd: 400,  R 16,  SR 4,  Sta C</Details>
+                    <Details>Attack target or Attack-Move to location\ \[Weapons Avg Damage/10secs]\Gnd: 400,  R 16,  SR 4,  Sta C</Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
                     <ParameterType>POSITION</ParameterType>
                 </Objective>
@@ -3685,7 +3685,7 @@
                     <ObjectiveNumber>12</ObjectiveNumber>
                     <Script>cs120_cport_na</Script>
                     <Name>Chronoport</Name>
-                    <Details>   Not Available\    Requires Chronoporting upgrade</Details>
+                    <Details>   Not Available\    Requires C-Tech\    upgrade at the MOUND</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>13</ObjectiveNumber>
@@ -3840,7 +3840,7 @@
                         <SelectTarget>0</SelectTarget>
                     </Flags>
                     <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>6</EstTimeDist>
+                    <EstTimeDist>0</EstTimeDist>
                     <Sound>Sound0</Sound>
                     <ControlConditions>
                         <ControlCondition>

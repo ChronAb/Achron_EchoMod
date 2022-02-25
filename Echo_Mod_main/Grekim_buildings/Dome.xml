@@ -92,7 +92,7 @@
                 <ShowVisibilityRange>1</ShowVisibilityRange>
                 <ShowThroughFogOfWar>0</ShowThroughFogOfWar>
                 <AlwaysShowVisibility>0</AlwaysShowVisibility>
-                <SeeThroughObjects>0</SeeThroughObjects>
+                <SeeThroughObjects>1</SeeThroughObjects>
                 <ActiveLocatorBeacon>0</ActiveLocatorBeacon>
                 <AlwaysHighlightUnit>0</AlwaysHighlightUnit>
                 <AlwaysSelectable>0</AlwaysSelectable>
@@ -1078,7 +1078,7 @@
                     <ObjectiveNumber>8</ObjectiveNumber>
                     <Script>cs08b_turret_atk</Script>
                     <Name>Attack</Name>
-                    <Details>Attack specified target \Fire rate boosted with D-Tech\[Weapons Avg Damage/10secs ]\All: 100 (+50),  R 24
+                    <Details>Attack specified target \Fire rate boosted with D-Tech\[Weapons Avg Damage/10secs]\All: 100 (+50),  R 24</Details>
                     <ValidRadius>23</ValidRadius>
                     <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
                 </Objective>

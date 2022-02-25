@@ -38,7 +38,7 @@ if(uclass == $PHARO_FACTORY_CLASS){
 }
 
 if(curtime%period==unit%90+offset){//Is this tick my turn?
-	if (apidle!=0 && unit->Armour==0 && player->$QPlasma>=$QP_SMART_THRESHOLD
+	if (apidle!=0 && unit->Armour==0 && player->$QPlasma > $QP_SMART_THRESHOLD
 		&& player->$Power > $POWER_SMART_THRESHOLD) {//are the common smart-production conditions met?
 		
 		int oprogen = apidle + 37;

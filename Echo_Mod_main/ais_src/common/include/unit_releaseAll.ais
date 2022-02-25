@@ -32,8 +32,8 @@ if ((o.Flags)[0]) {
 }
 
 
-//when further than 3 spots away, just move towards the location
-if (unit <_> op > 9 ) {
+//when further than 10 spots away, just move towards the location
+if (unit <_> op > 100 ) {
 	//don't land
 	if (op[$Zpos]==0) {
 		PERFORM GET_MAP_NEXT_Z_POSITION_UP op;
@@ -162,6 +162,9 @@ int length = o.Length;
 int mult = length;
 int xoffset = length; 
 int yoffset = 0;
+
+PERFORM CAN_CLASS_FIT_AT location;
+spotClear = perf_ret; 
 while (spotClear != 255) {
 
     location[$Xpos] = x + xoffset;

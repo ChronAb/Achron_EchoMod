@@ -10,7 +10,7 @@
     <UnitLists />
     <ActionStepModifiers>
         <ActionStepModifier>
-            <Name>Lightning Coil</Name>
+            <Name>Turret anti_all</Name>
             <StrengthBase>30</StrengthBase>
             <StrengthRange>0</StrengthRange>
             <StrengthCount>0</StrengthCount>
@@ -33,10 +33,10 @@
             <TargetStatistic>DamageReceived</TargetStatistic>
         </ActionStepModifier>
         <ActionStepModifier>
-            <Name>Ultra Lightning Coil</Name>
-            <StrengthBase>20</StrengthBase>
-            <StrengthRange>9</StrengthRange>
-            <StrengthCount>1</StrengthCount>
+            <Name>Turret2 anti_all</Name>
+            <StrengthBase>30</StrengthBase>
+            <StrengthRange>0</StrengthRange>
+            <StrengthCount>0</StrengthCount>
             <Flags>
                 <Permeating>1</Permeating>
                 <LimitDistance>1</LimitDistance>
@@ -69,7 +69,7 @@
             <MaxEnergy>70</MaxEnergy>
             <MaxArmor>0</MaxArmor>
             <MaxAmmo>0</MaxAmmo>
-            <SightRadius>30</SightRadius>
+            <SightRadius>31</SightRadius>
             <ForwardMinSightRadius>0</ForwardMinSightRadius>
             <ReverseMaxSightRadius>0</ReverseMaxSightRadius>
             <ReverseMinSightRadius>0</ReverseMinSightRadius>
@@ -89,7 +89,7 @@
                 <GainKillExperience>1</GainKillExperience>
                 <RemainUpright>1</RemainUpright>
                 <NonGroupSelection>1</NonGroupSelection>
-                <ShowVisibilityRange>1</ShowVisibilityRange>
+                <ShowVisibilityRange>0</ShowVisibilityRange>
                 <ShowThroughFogOfWar>1</ShowThroughFogOfWar>
                 <AlwaysShowVisibility>0</AlwaysShowVisibility>
                 <SeeThroughObjects>1</SeeThroughObjects>
@@ -420,7 +420,7 @@
                     <TimeTaken>4</TimeTaken>
                     <ForceObjectAction>0</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
-                    <MutexAction>0</MutexAction>
+                    <MutexAction>1</MutexAction>
                     <FailOnInvalidTarget>0</FailOnInvalidTarget>
                     <PreserveParameter>1</PreserveParameter>
                     <AIScriptCanRun>0</AIScriptCanRun>
@@ -434,7 +434,7 @@
                             <Target>TARGET_UNIT</Target>
                             <ValueEval>ONE</ValueEval>
                             <Value>0</Value>
-                            <ActionStepModifier>Lightning Coil</ActionStepModifier>
+                            <ActionStepModifier>Turret anti_all</ActionStepModifier>
                         </Step>
                     </Steps>
                 </Action>
@@ -444,7 +444,7 @@
                     <TimeTaken>4</TimeTaken>
                     <ForceObjectAction>0</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
-                    <MutexAction>0</MutexAction>
+                    <MutexAction>1</MutexAction>
                     <FailOnInvalidTarget>0</FailOnInvalidTarget>
                     <PreserveParameter>1</PreserveParameter>
                     <AIScriptCanRun>0</AIScriptCanRun>
@@ -464,7 +464,7 @@
                             <Target>TARGET_UNIT</Target>
                             <ValueEval>ONE</ValueEval>
                             <Value>0</Value>
-                            <ActionStepModifier>Lightning Coil</ActionStepModifier>
+                            <ActionStepModifier>Turret anti_all</ActionStepModifier>
                         </Step>
                     </Steps>
                 </Action>
@@ -595,7 +595,7 @@
                 </Action>
                 <Action>
                     <ActionNumber>24</ActionNumber>
-                    <Identifier>ACTION_Attack_w0_delay</Identifier>
+                    <Identifier>ACTION_Attack_w01_delay</Identifier>
                     <TimeTaken>16</TimeTaken>
                     <ForceObjectAction>1</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
@@ -609,29 +609,12 @@
                     <Conditions>
                         <Condition>
                             <Resource>U_ACTION</Resource>
-                            <Comparison>EQUAL</Comparison>
+                            <Comparison>GEQUAL</Comparison>
                             <Value>3</Value>
                         </Condition>
-                    </Conditions>
-                    <Steps />
-                </Action>
-                <Action>
-                    <ActionNumber>25</ActionNumber>
-                    <Identifier>ACTION_Attack_w1_delay</Identifier>
-                    <TimeTaken>16</TimeTaken>
-                    <ForceObjectAction>1</ForceObjectAction>
-                    <InterruptCurrentAction>0</InterruptCurrentAction>
-                    <MutexAction>1</MutexAction>
-                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
-                    <PreserveParameter>1</PreserveParameter>
-                    <AIScriptCanRun>0</AIScriptCanRun>
-                    <SetParamZeroTicks>0</SetParamZeroTicks>
-                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <LobProjectilePath>0</LobProjectilePath>
-                    <Conditions>
                         <Condition>
                             <Resource>U_ACTION</Resource>
-                            <Comparison>EQUAL</Comparison>
+                            <Comparison>LEQUAL</Comparison>
                             <Value>4</Value>
                         </Condition>
                     </Conditions>
@@ -639,7 +622,7 @@
                 </Action>
                 <Action>
                     <ActionNumber>26</ActionNumber>
-                    <Identifier>ACTION_Attack_w0_delay2</Identifier>
+                    <Identifier>ACTION_Attack_w01_delay2</Identifier>
                     <TimeTaken>7</TimeTaken>
                     <ForceObjectAction>1</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
@@ -655,28 +638,6 @@
                             <Resource>U_ACTION</Resource>
                             <Comparison>EQUAL</Comparison>
                             <Value>24</Value>
-                        </Condition>
-                    </Conditions>
-                    <Steps />
-                </Action>
-                <Action>
-                    <ActionNumber>27</ActionNumber>
-                    <Identifier>ACTION_Attack_w1_delay2</Identifier>
-                    <TimeTaken>7</TimeTaken>
-                    <ForceObjectAction>1</ForceObjectAction>
-                    <InterruptCurrentAction>0</InterruptCurrentAction>
-                    <MutexAction>0</MutexAction>
-                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
-                    <PreserveParameter>1</PreserveParameter>
-                    <AIScriptCanRun>0</AIScriptCanRun>
-                    <SetParamZeroTicks>0</SetParamZeroTicks>
-                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <LobProjectilePath>0</LobProjectilePath>
-                    <Conditions>
-                        <Condition>
-                            <Resource>U_ACTION</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>25</Value>
                         </Condition>
                     </Conditions>
                     <Steps />
@@ -895,19 +856,20 @@
             <Objectives>
                 <Objective>
                     <ObjectiveNumber>0</ObjectiveNumber>
-                    <Script>Script69</Script>
+                    <Script>cs00b_turret_idle</Script>
                     <Name>Defend</Name>
-                    <Details> \Defend current location </Details>
+                    <Details>Defend current location\ \Vision Range: 30</Details>
+                    <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>8</ObjectiveNumber>
-                    <Script>Script67</Script>
-                    <Name>Attack Unit</Name>
-                    <Details> \Attack specified target</Details>
-                    <ValidRadius>19</ValidRadius>
-                    <ObjectiveControlShortcutNumber>2</ObjectiveControlShortcutNumber>
+                    <Script>cs08b_turret_atk</Script>
+                    <Name>Attack</Name>
+                    <Details>Attack specified target \ \[Weapons Avg Damage/10secs]\All: 200,  R 25,  SR 2</Details>
+                    <ValidRadius>23</ValidRadius>
+                    <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
                 </Objective>
-                <Objective>
+                <!--Objective>
                     <ObjectiveNumber>12</ObjectiveNumber>
                     <Script>Script231</Script>
                     <Name>Upgrade</Name>
@@ -929,7 +891,7 @@
                     <Details> \Imrove the Turret&apos;s weapon,\energy recharge rate\and vision range</Details>
                     <Resource2>10</Resource2>
                     <Resource4>8</Resource4>
-                </Objective>
+                </Objective-->
                 <Objective>
                     <ObjectiveNumber>50</ObjectiveNumber>
                     <Script>Script40</Script>
@@ -1397,7 +1359,7 @@
                     <TimeTaken>2</TimeTaken>
                     <ForceObjectAction>0</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
-                    <MutexAction>0</MutexAction>
+                    <MutexAction>1</MutexAction>
                     <FailOnInvalidTarget>0</FailOnInvalidTarget>
                     <PreserveParameter>1</PreserveParameter>
                     <AIScriptCanRun>0</AIScriptCanRun>
@@ -1411,7 +1373,7 @@
                             <Target>TARGET_UNIT</Target>
                             <ValueEval>ONE</ValueEval>
                             <Value>0</Value>
-                            <ActionStepModifier>Ultra Lightning Coil</ActionStepModifier>
+                            <ActionStepModifier>Turret2 anti_all</ActionStepModifier>
                         </Step>
                     </Steps>
                 </Action>
@@ -1421,7 +1383,7 @@
                     <TimeTaken>2</TimeTaken>
                     <ForceObjectAction>0</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
-                    <MutexAction>0</MutexAction>
+                    <MutexAction>1</MutexAction>
                     <FailOnInvalidTarget>0</FailOnInvalidTarget>
                     <PreserveParameter>1</PreserveParameter>
                     <AIScriptCanRun>0</AIScriptCanRun>
@@ -1441,7 +1403,7 @@
                             <Target>TARGET_UNIT</Target>
                             <ValueEval>ONE</ValueEval>
                             <Value>0</Value>
-                            <ActionStepModifier>Ultra Lightning Coil</ActionStepModifier>
+                            <ActionStepModifier>Turret2 anti_all</ActionStepModifier>
                         </Step>
                     </Steps>
                 </Action>

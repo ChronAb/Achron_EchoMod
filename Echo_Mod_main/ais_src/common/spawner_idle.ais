@@ -1,0 +1,52 @@
+//Echo Ops Mod - original script
+//Contributed by Dallas "ChronAberant" Joder
+
+#include common/include/unit_common_header.aih
+
+int uclass = unit->Class;
+int uage = unit->Age;
+
+if(player->IsComputerPlayer){
+    
+    // HUMAN SCOUT SPAWNER
+    if(uclass==$SCOUT_SPAWNER_H){
+        if (unit%4==3 && uage>=344 && uage%4==0) {
+            PERFORM $ACTION_PROGEN_UP_S; // 2 Lancers
+            PERFORM NOTHING;
+        }
+        if (unit%4==2 && uage>=344 && uage%4==0) {
+            PERFORM $ACTION_PROGEN_UP_O; // 2 ATHCs
+            PERFORM NOTHING;
+        }
+        if (uage==344) {
+            PERFORM $ACTION_PROGEN_SAME_P; // 1 Mechs
+            PERFORM NOTHING;
+        }
+        if (unit%4==1 && uage>=352 && uage%4==0) {
+            PERFORM $ACTION_PROGEN_SAME_S; // 2 SOPs
+            PERFORM NOTHING;
+        }
+        if (uage>=352 && uage%4==0) {
+            PERFORM $ACTION_PROGEN_SAME_O; // 2 marines
+            PERFORM NOTHING;
+        }
+    }
+    
+    // GREKIM SCOUT SPAWNER
+    if(uclass==$SCOUT_SPAWNER_G){
+        if (uage==344) {
+            PERFORM $ACTION_PROGEN_SAME_O; // 1 octo
+            PERFORM NOTHING;
+        }
+        if (uage==348) {
+            PERFORM $ACTION_PROGEN_SAME_P; // 1 pharo
+            PERFORM NOTHING;
+        }
+        if (uage>=352 && uage%4==0) {
+            PERFORM $ACTION_PROGEN_SAME_S; // 2 sepis
+            PERFORM NOTHING;
+        }
+    }
+    
+}
+

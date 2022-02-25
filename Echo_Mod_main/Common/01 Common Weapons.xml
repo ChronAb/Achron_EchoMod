@@ -10,7 +10,7 @@
         <!-- wreckage action modifiers -->
         <ActionStepModifier>
             <Name>Tiny Pop</Name>
-            <StrengthBase>16</StrengthBase>
+            <StrengthBase>8</StrengthBase>
             <StrengthRange>0</StrengthRange>
             <StrengthCount>0</StrengthCount>
             <Flags>
@@ -32,7 +32,7 @@
         </ActionStepModifier>
         <ActionStepModifier>
             <Name>Small Pop</Name>
-            <StrengthBase>30</StrengthBase>
+            <StrengthBase>15</StrengthBase>
             <StrengthRange>0</StrengthRange>
             <StrengthCount>0</StrengthCount>
             <Flags>
@@ -54,7 +54,7 @@
         </ActionStepModifier>
         <ActionStepModifier>
             <Name>Med Pop</Name>
-            <StrengthBase>60</StrengthBase>
+            <StrengthBase>30</StrengthBase>
             <StrengthRange>0</StrengthRange>
             <StrengthCount>0</StrengthCount>
             <Flags>
@@ -76,7 +76,7 @@
         </ActionStepModifier>
         <ActionStepModifier>
             <Name>Big Pop</Name>
-            <StrengthBase>120</StrengthBase>
+            <StrengthBase>60</StrengthBase>
             <StrengthRange>0</StrengthRange>
             <StrengthCount>0</StrengthCount>
             <Flags>

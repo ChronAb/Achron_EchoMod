@@ -13,6 +13,8 @@ if ($IS_GREKIM){
 //Heal target (SOPs and Ghosts)
 target = unit->ObjectiveParameters;
 
+// SOPs should not try to heal moving units because they are too slow 
+//  and will never catch them
 if (target.Type != $TYPE_BIOLOGICAL || target->Action==2 || target->Action==50 ) {
 	PERFORM SET_ADDITIONAL_PARAMS2 0;
     PERFORM SET_ADDITIONAL_PARAMS 0;

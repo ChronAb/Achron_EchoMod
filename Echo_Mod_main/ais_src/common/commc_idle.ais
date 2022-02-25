@@ -20,10 +20,8 @@ if (player->IsComputerPlayer && uclass==$MOUND_CLASS &&
         unit->Age%1620==630 && player->CustomControls==0) {
     int advancements = player->Advancements;
     
-    PERFORM RAND; // 1/4 chance to go loligo first
-    if (!advancements[$GREKIM_ADV_LOLIGO] && 
-            !advancements[$GREKIM_ADV_AUTODEFENCE] && 
-            perf_ret[0,2]<1){
+    PERFORM RAND; // 25% chance to go loligo first
+    if (!advancements[$GREKIM_ADV_LOLIGO] && perf_ret[0,2]<1){
         PERFORM SET_OBJECTIVE $OBJ_BLDG_UPGRADE2;
         PERFORM NOTHING;
     }

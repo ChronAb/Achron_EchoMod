@@ -55,7 +55,7 @@
         </ActionStepModifier>
         <ActionStepModifier>
             <Name>Octo anti_gnd 2</Name>
-            <StrengthBase>8</StrengthBase>
+            <StrengthBase>4</StrengthBase>
             <StrengthRange>0</StrengthRange>
             <StrengthCount>0</StrengthCount>
             <Flags>
@@ -78,7 +78,7 @@
         </ActionStepModifier>
         <ActionStepModifier>
             <Name>Octo burst</Name>
-            <StrengthBase>90</StrengthBase>
+            <StrengthBase>60</StrengthBase>
             <StrengthRange>0</StrengthRange>
             <StrengthCount>0</StrengthCount>
             <Flags>
@@ -99,34 +99,12 @@
             <SelfStatistic>DamageDealt</SelfStatistic>
             <TargetStatistic>DamageReceived</TargetStatistic>
         </ActionStepModifier>
-        <ActionStepModifier>
-            <Name>Octo death</Name>
-            <StrengthBase>120</StrengthBase>
-            <StrengthRange>0</StrengthRange>
-            <StrengthCount>0</StrengthCount>
-            <Flags>
-                <Permeating>1</Permeating>
-                <LimitDistance>1</LimitDistance>
-                <SetLastAttackedDirection>1</SetLastAttackedDirection>
-                <ContinueActionOnStepFailure>0</ContinueActionOnStepFailure>
-            </Flags>
-            <AccuracyMultiplier>1</AccuracyMultiplier>
-            <EffectTimeout>0</EffectTimeout>
-            <MinEffectRadius>0</MinEffectRadius>
-            <EffectRadius>2</EffectRadius>
-            <EffectHeight>4</EffectHeight>
-            <MaxEffectAngle>360</MaxEffectAngle>
-            <EffectSplashHeight>6</EffectSplashHeight>
-            <EffectSplashRadius>9</EffectSplashRadius>
-            <EffectSplashEffectiveRadius>10</EffectSplashEffectiveRadius>
-            <TargetStatistic>DamageReceived</TargetStatistic>
-        </ActionStepModifier>
     </ActionStepModifiers>
     <ObjectClasses>
         <ObjectClass>
             <ClassNumber>1000</ClassNumber>
             <Name>Octo</Name>
-            <Description>OCTO:&#x0D;&#x0A;Resilient melee assault trooper&#x0D;&#x0A;Good at absorbing enemy fire&#x0D;&#x0A;Morphs into Mound and Dome&#x0D;&#x0A; &#x0D;&#x0A;Upgradable defensive abilities:&#x0D;&#x0A;Adv Str: Cloaks when stationary &#x0D;&#x0A;    Shield regen. [+180 hp, +18/s] &#x0D;&#x0A;Weapons: 2X  regen. [+360 hp, +36/s]</Description>
+            <Description>OCTO:&#x0D;&#x0A;Resilient melee assault trooper&#x0D;&#x0A;Good at absorbing enemy fire&#x0D;&#x0A;Morphs into Mound and Dome&#x0D;&#x0A; &#x0D;&#x0A;Upgradable defensive abilities:&#x0D;&#x0A;B-Tech: Cloaks when stationary &#x0D;&#x0A;    Shield regen. [+180 hp, +18/s] &#x0D;&#x0A;D-Tech: 2X  regen. [+360 hp, +36/s]</Description>
             <Model>./Achron_EchoMod/Echo_Mod_main/New_Models/octo.mdl</Model>
             <Rank>122</Rank>
             <Type>2</Type>
@@ -153,7 +131,7 @@
                 <WeaponReaction>
                     <ActionStepModifier>Octo anti_gnd 1</ActionStepModifier>
                     <Type>ONE</Type>
-                    <Value>5</Value>
+                    <Value>6</Value>
                 </WeaponReaction>
                 <WeaponReaction>
                     <ActionStepModifier>Octo anti_gnd 2</ActionStepModifier>
@@ -163,7 +141,7 @@
                 <WeaponReaction>
                     <ActionStepModifier>Octo burst</ActionStepModifier>
                     <Type>ONE</Type>
-                    <Value>0.2</Value>
+                    <Value>0.5</Value>
                 </WeaponReaction>
             </WeaponReactions>
             <Flags>
@@ -191,8 +169,8 @@
             </Flags>
             <Cloaking>
                 <Gradar>0</Gradar>
-                <Detector>0</Detector>
-                <Visible>0</Visible>
+                <Detector>1</Detector>
+                <Visible>1</Visible>
             </Cloaking>
             <Sensing>
                 <Gradar>0</Gradar>
@@ -773,7 +751,7 @@
                             <Target>SELF</Target>
                             <Type>U_AMMO</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>25</Value>
+                            <Value>30</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>SET_STATUS</PrimitiveAction>
@@ -884,7 +862,7 @@
                             <Target>SELF</Target>
                             <Type>U_AMMO</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-25</Value>
+                            <Value>-10</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -936,7 +914,7 @@
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>150</Value>
+                            <Value>0</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -1100,7 +1078,7 @@
                         <Condition>
                             <Resource>P_Q_PLASMA</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>200</Value>
+                            <Value>50</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_ENERGY</Resource>
@@ -1114,14 +1092,14 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>200</Value>
+                            <Value>50</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>200</Value>
+                            <Value>150</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -1325,7 +1303,7 @@
                 <Action>
                     <ActionNumber>25</ActionNumber>
                     <Identifier>ACTION_STASIS_END</Identifier>
-                    <TimeTaken>6</TimeTaken>
+                    <TimeTaken>9</TimeTaken>
                     <ForceObjectAction>1</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
                     <MutexAction>0</MutexAction>
@@ -1359,7 +1337,7 @@
                 <Action>
                     <ActionNumber>26</ActionNumber>
                     <Identifier>ACTION_STASIS</Identifier>
-                    <TimeTaken>360</TimeTaken>
+                    <TimeTaken>324</TimeTaken>
                     <ForceObjectAction>1</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
                     <MutexAction>0</MutexAction>
@@ -1429,8 +1407,8 @@
                 </Action>
                 <Action>
                     <ActionNumber>34</ActionNumber>
-                    <Identifier>ACTION_IDLE_GENERATE_HP</Identifier>
-                    <TimeTaken>54</TimeTaken>
+                    <Identifier>ACTION_BASE_GENERATE_HP</Identifier>
+                    <TimeTaken>0</TimeTaken>
                     <ForceObjectAction>1</ForceObjectAction>
                     <InterruptCurrentAction>1</InterruptCurrentAction>
                     <MutexAction>0</MutexAction>
@@ -1444,11 +1422,6 @@
                             <Resource>U_OWNER</Resource>
                             <Comparison>LESS</Comparison>
                             <Value>15</Value>
-                        </Condition>
-                        <Condition>
-                            <Resource>U_ACTION</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>58</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_AGE</Resource>
@@ -1468,12 +1441,7 @@
                         <Condition>
                             <Resource>P_POWER</Resource>
                             <Comparison>GREATER</Comparison>
-                            <Value>200</Value>
-                        </Condition>
-                        <Condition>
-                            <Resource>U_LAST_ATTACKED_DIR</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>0</Value>
+                            <Value>400</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_SECOND_OWNER</Resource>
@@ -1537,7 +1505,7 @@
                         <Condition>
                             <Resource>P_POWER</Resource>
                             <Comparison>GREATER</Comparison>
-                            <Value>200</Value>
+                            <Value>800</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_STATUS</Resource>
@@ -2042,7 +2010,7 @@
                     <ObjectiveNumber>3</ObjectiveNumber>
                     <Script>cs030_atk_move</Script>
                     <Name>Attack</Name>
-                    <Details>Attack target or Attack-Move to location \+25% TSS Energy per attack \[Weapons Avg Damage/10secs ]\Gnd: 50,  R 1,  SR 3,  Sta C</Details>
+                    <Details>Attack target or Attack-Move to location \+10% TSS Energy per attack \[Weapons Avg Damage/10secs]\Gnd: 30,  R 1,  SR 3,  Sta B</Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
                     <ParameterType>POSITION</ParameterType>
                 </Objective>
@@ -2113,7 +2081,7 @@
                     <ObjectiveNumber>12</ObjectiveNumber>
                     <Script>cs120_cport_na</Script>
                     <Name>Chronoport</Name>
-                    <Details>   Not Available\    Requires Chronoporting upgrade</Details>
+                    <Details>   Not Available\    Requires C-Tech\    upgrade at the MOUND</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>13</ObjectiveNumber>
@@ -2155,7 +2123,7 @@
                     <Script>gs161_octo_rp</Script>
                     <Name>Resource Processor</Name>
                     <Details>   - place near resource bins\Assimilates resources: Power and Q-Plasma\Can convert Q-Plasma into Power\Cloaks and moves itself</Details>
-                    <Resource1>150</Resource1>
+                    <Resource1>0</Resource1>
                     <Resource4>50</Resource4>
                     <Resource6>0</Resource6>
                     <ObjectiveControlShortcutNumber>10</ObjectiveControlShortcutNumber>
@@ -2164,7 +2132,7 @@
                     <ObjectiveNumber>17</ObjectiveNumber>
                     <Script></Script>
                     <Name>Morph: Resource Processor</Name>
-                    <Details>   Not Available \    Requires Adv Structures upgrade</Details>
+                    <Details>   Not Available\    Requires B-Tech\    upgrade at the MOUND</Details>
                 </Objective-->
                 <Objective>
                     <ObjectiveNumber>18</ObjectiveNumber>
@@ -2177,9 +2145,9 @@
                     <ObjectiveNumber>20</ObjectiveNumber>
                     <Script>gs201_octo_dome</Script>
                     <Name>Morph: Dome</Name>
-                    <Details> \Durable cloaked weapon emplacement \Devastating to aircraft \Can move itself \Detects cloaked units</Details>
-                    <Resource1>200</Resource1>
-                    <Resource4>200</Resource4>
+                    <Details> \Cloaked weapon emplacement \Devastating to aircraft \Detects cloaked units \Cloaks and moves itself</Details>
+                    <Resource1>150</Resource1>
+                    <Resource4>50</Resource4>
                     <Resource6>0</Resource6>
                     <ObjectiveControlShortcutNumber>12</ObjectiveControlShortcutNumber>
                 </Objective>
@@ -2187,7 +2155,7 @@
                     <ObjectiveNumber>21</ObjectiveNumber>
                     <Script></Script>
                     <Name>Morph: Dome</Name>
-                    <Details>   Not Available \    Requires Adv Structures \    Tech upgrade</Details>
+                    <Details>   Not Available\    Requires B-Tech\    upgrade at the MOUND</Details>
                 </Objective-->
             </Objectives>
             <ControlShortcuts>
@@ -2323,7 +2291,7 @@
                         <SelectTarget>0</SelectTarget>
                     </Flags>
                     <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>6</EstTimeDist>
+                    <EstTimeDist>0</EstTimeDist>
                     <Sound>Sound0</Sound>
                     <ControlConditions>
                         <ControlCondition>
@@ -2414,11 +2382,6 @@
                     <Sound>Sound0</Sound>
                     <ControlConditions>
                         <ControlCondition>
-                            <Resource>SCENARIO_CONSTRAINTS</Resource>
-                            <Comparison>BITMASK_NOT</Comparison>
-                            <Value>4</Value>
-                        </ControlCondition>
-                        <ControlCondition>
                             <Resource>NUM_UNITS_SELECTED</Resource>
                             <Comparison>EQUAL</Comparison>
                             <Value>1</Value>
@@ -2449,11 +2412,6 @@
                     <EstTimeDist>0</EstTimeDist>
                     <Sound>Sound0</Sound>
                     <ControlConditions>
-                        <ControlCondition>
-                            <Resource>SCENARIO_CONSTRAINTS</Resource>
-                            <Comparison>BITMASK_NOT</Comparison>
-                            <Value>4</Value>
-                        </ControlCondition>
                         <ControlCondition>
                             <Resource>NUM_UNITS_SELECTED</Resource>
                             <Comparison>GREATER</Comparison>
@@ -2494,46 +2452,6 @@
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
-                <!--ControlShortcut>
-                    <ControlNumber>9</ControlNumber>
-                    <ControlObjectiveNumber>17</ControlObjectiveNumber>
-                    <ParameterType>NO_PARAMETER</ParameterType>
-                    <Parameter>0</Parameter>
-                    <KeyboardShortcut></KeyboardShortcut>
-                    <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>1</ButtonDisabled>
-                        <UserControlsCustom>0</UserControlsCustom>
-                        <ButtonInvisible>0</ButtonInvisible>
-                        <SelectTarget>0</SelectTarget>
-                    </Flags>
-                    <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
-                    <ControlConditions>
-                        <ControlCondition>
-                            <Resource>SCENARIO_CONSTRAINTS</Resource>
-                            <Comparison>BITMASK_NOT</Comparison>
-                            <Value>262144</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>P_ADVANCEMENTS</Resource>
-                            <Comparison>BITMASK_NOT</Comparison>
-                            <Value>32768</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>P_ADVANCEMENTS</Resource>
-                            <Comparison>BITMASK_NOT</Comparison>
-                            <Value>64</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>U_IS_CARRIED</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>0</Value>
-                        </ControlCondition>
-                    </ControlConditions>
-                </ControlShortcut-->
                 <ControlShortcut>
                     <ControlNumber>12</ControlNumber>
                     <ControlObjectiveNumber>20</ControlObjectiveNumber>
@@ -2552,11 +2470,6 @@
                     <EstTimeDist>6</EstTimeDist>
                     <Sound>Sound0</Sound>
                     <ControlConditions>
-                        <ControlCondition>
-                            <Resource>SCENARIO_CONSTRAINTS</Resource>
-                            <Comparison>BITMASK_NOT</Comparison>
-                            <Value>262144</Value>
-                        </ControlCondition>
                         <ControlCondition>
                             <Resource>P_ADVANCEMENTS</Resource>
                             <Comparison>BITMASK_NOT</Comparison>
@@ -3082,7 +2995,7 @@
                             <Target>SELF</Target>
                             <ValueEval>ONE</ValueEval>
                             <Value>0</Value>
-                            <ActionStepModifier>Octo death</ActionStepModifier>
+                            <ActionStepModifier>Small Pop</ActionStepModifier>
                         </Step>
                     </Steps>
                 </Action>

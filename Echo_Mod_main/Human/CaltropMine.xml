@@ -38,7 +38,7 @@
             <ClassNumber>202</ClassNumber>
             <Name>Caltrop Mine</Name>
             <Description>CALTROP MINE:&#x0D;&#x0A;Cloaked remote weapon platform&#x0D;&#x0A;Limited ammo and cloak duration&#x0D;&#x0A;Detects cloaked units&#x0D;&#x0A;[Weapons Avg Damage/10secs]&#x0D;&#x0A;All: 50,  R 12,  SR 3,  Sta B</Description>
-            <Model>./humans/mech.mdl</Model>
+            <Model>./Achron_EchoMod/Echo_Mod_main/New_Models/caltrop.mdl</Model>
             <Rank>145</Rank>
             <Type>1</Type>
             <PrioritySelectionRank>0</PrioritySelectionRank>

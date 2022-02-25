@@ -1749,7 +1749,7 @@
                         <SelectTarget>0</SelectTarget>
                     </Flags>
                     <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>6</EstTimeDist>
+                    <EstTimeDist>4</EstTimeDist>
                     <Sound>Sound0</Sound>
                     <ControlConditions />
                 </ControlShortcut>
@@ -1769,7 +1769,7 @@
                         <SelectTarget>0</SelectTarget>
                     </Flags>
                     <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>6</EstTimeDist>
+                    <EstTimeDist>4</EstTimeDist>
                     <Sound>Sound0</Sound>
                     <ControlConditions>
                         <ControlCondition>
@@ -1865,7 +1865,7 @@
                         <SelectTarget>0</SelectTarget>
                     </Flags>
                     <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>6</EstTimeDist>
+                    <EstTimeDist>0</EstTimeDist>
                     <Sound>Sound0</Sound>
                     <ControlConditions>
                         <ControlCondition>

@@ -184,7 +184,7 @@ if ( closesttport.Rank==$SPYRE_RANK && (!to_unit || goal_dist>14400 ) ){
 
 // 3. If there isn't a 'porter nearby -> Attempt to self skip, then return to idle
 //********************************************************************
-if (closesttport==0 && ( player->Advancements[$HUMAN_ADV_GATE] || $IS_GREKIM ) ) {
+if (closesttport==0 && ( 1 || player->Advancements[$HUMAN_ADV_GATE] || $IS_GREKIM ) ) {
             
     // check for sufficient Power
     if (player->$Power <= 0) {

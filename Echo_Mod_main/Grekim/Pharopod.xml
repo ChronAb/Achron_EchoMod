@@ -1472,7 +1472,7 @@
                     <ObjectiveNumber>3</ObjectiveNumber>
                     <Script>cs030_atk_move</Script>
                     <Name>Attack</Name>
-                    <Details>Attack target or Attack-Move to location\Uncloaks to fire \[Weapons Avg Damage/10secs ]\Gnd: 300,  R 15,  SR 2,  Sta S</Details>
+                    <Details>Attack target or Attack-Move to location\Uncloaks to fire \[Weapons Avg Damage/10secs]\Gnd: 300,  R 15,  SR 2,  Sta S</Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
                     <ParameterType>POSITION</ParameterType>
                 </Objective>
@@ -1543,7 +1543,7 @@
                     <ObjectiveNumber>12</ObjectiveNumber>
                     <Script>cs120_cport_na</Script>
                     <Name>Chronoport</Name>
-                    <Details>   Not Available\    Requires Chronoporting upgrade</Details>
+                    <Details>   Not Available\    Requires C-Tech\    upgrade at the MOUND</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>13</ObjectiveNumber>
@@ -1705,7 +1705,7 @@
                         <SelectTarget>0</SelectTarget>
                     </Flags>
                     <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>3</EstTimeDist>
+                    <EstTimeDist>0</EstTimeDist>
                     <Sound>Sound0</Sound>
                     <ControlConditions>
                         <ControlCondition>
@@ -2182,7 +2182,7 @@
                     <ObjectiveNumber>3</ObjectiveNumber>
                     <Script>cs030_atk_move</Script>
                     <Name>Attack</Name>
-                    <Details>Attack target or Attack-Move to location\ \[Weapons Avg Damage/10secs ]\Gnd: 300,  R 15,  SR 2,  Sta S</Details>
+                    <Details>Attack target or Attack-Move to location\ \[Weapons Avg Damage/10secs]\Gnd: 300,  R 15,  SR 2,  Sta S</Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
                     <ParameterType>POSITION</ParameterType>
                 </Objective>
@@ -2253,7 +2253,7 @@
                     <ObjectiveNumber>12</ObjectiveNumber>
                     <Script>cs120_cport_na</Script>
                     <Name>Chronoport</Name>
-                    <Details>   Not Available\    Requires Chronoporting upgrade</Details>
+                    <Details>   Not Available\    Requires C-Tech\    upgrade at the MOUND</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>13</ObjectiveNumber>
@@ -2415,7 +2415,7 @@
                         <SelectTarget>0</SelectTarget>
                     </Flags>
                     <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>3</EstTimeDist>
+                    <EstTimeDist>0</EstTimeDist>
                     <Sound>Sound0</Sound>
                     <ControlConditions>
                         <ControlCondition>
@@ -3270,7 +3270,7 @@
                     <ObjectiveNumber>3</ObjectiveNumber>
                     <Script>cs030_atk_move</Script>
                     <Name>Attack</Name>
-                    <Details>Attack target or Attack-Move to location\ \[Weapons Avg Damage/10secs ]\Gnd: 300,  R 15,  SR 2,  Sta S</Details>
+                    <Details>Attack target or Attack-Move to location\ \[Weapons Avg Damage/10secs]\Gnd: 300,  R 15,  SR 2,  Sta S</Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
                     <ParameterType>POSITION</ParameterType>
                 </Objective>

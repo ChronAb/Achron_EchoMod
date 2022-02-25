@@ -15,7 +15,7 @@ if(unit.Rank == $RP_RANK){
 	}
 	else {
 		if (unit->Ammo < 20) {
-			say "Not enough Charge";
+			$SAY_CHARGE
 			PERFORM $ACTION_ERROR1;
 		}
 		else {

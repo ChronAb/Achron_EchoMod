@@ -10,6 +10,21 @@
 
 int ap = unit->AdditionalParameters;
 
+// *Spawners* have their own logic
+if (unit.Rank==$SPAWNER_RANK) {
+    if (unit->Ammo < 2 && $OBJECT > $SOP_CLASS) {
+        PERFORM SET_OBJECTIVE 0;
+		PERFORM NOTHING;
+    }
+    if ($OBJECT == $MARINE_CLASS) PERFORM $ACTION_PROGEN_SAME_O;
+    else if ($OBJECT == $SOP_CLASS) PERFORM $ACTION_PROGEN_SAME_S;
+    else if ($OBJECT == $MECH_CLASS) PERFORM $ACTION_PROGEN_SAME_P;
+    else if ($OBJECT == $ATHC_CLASS) PERFORM $ACTION_PROGEN_UP_O;
+    else if ($OBJECT == $LANCER_CLASS) PERFORM $ACTION_PROGEN_UP_S;
+    PERFORM SET_OBJECTIVE 0;
+    PERFORM NOTHING;
+}
+
 //verify that the newly created unit can fit into the building and is not over capacity
 if ($OBJECT::Size + unit->TotalCarriedSize > unit.CarryingCapacity) {
     $SAY_ENQUEUE

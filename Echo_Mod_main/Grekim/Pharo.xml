@@ -652,7 +652,7 @@
                     <Identifier>ACTION_SHIELD_UP</Identifier>
                     <TimeTaken>18</TimeTaken>
                     <ForceObjectAction>1</ForceObjectAction>
-                    <InterruptCurrentAction>1</InterruptCurrentAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
                     <MutexAction>0</MutexAction>
                     <FailOnInvalidTarget>0</FailOnInvalidTarget>
                     <PreserveParameter>0</PreserveParameter>
@@ -664,11 +664,6 @@
                             <Resource>U_HP</Resource>
                             <Comparison>LESS</Comparison>
                             <Value>180</Value>
-                        </Condition>
-                        <Condition>
-                            <Resource>U_HP</Resource>
-                            <Comparison>GREATER</Comparison>
-                            <Value>0</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_ENERGY</Resource>
@@ -744,7 +739,7 @@
                 <Action>
                     <ActionNumber>10</ActionNumber>
                     <Identifier>ACTION_CHANGE_ARCTICUS</Identifier>
-                    <TimeTaken>54</TimeTaken>
+                    <TimeTaken>288</TimeTaken>
                     <ForceObjectAction>0</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
                     <MutexAction>0</MutexAction>
@@ -802,7 +797,7 @@
                             <Target>SELF</Target>
                             <Type>U_ENERGY</Type>
                             <ValueEval>SET_TO_VALUE</ValueEval>
-                            <Value>0</Value>
+                            <Value>150</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -1885,7 +1880,7 @@
                     <ObjectiveNumber>3</ObjectiveNumber>
                     <Script>cs030_atk_move</Script>
                     <Name>Attack</Name>
-                    <Details>Attack target or Attack-Move to location \ \[Weapons Avg Damage/10secs ]\Gnd: 30,  R 10,  SR 5,  Sta C</Details>
+                    <Details>Attack target or Attack-Move to location \ \[Weapons Avg Damage/10secs]\Gnd: 30,  R 10,  SR 5,  Sta C</Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
                     <ParameterType>POSITION</ParameterType>
                 </Objective>
@@ -1956,7 +1951,7 @@
                     <ObjectiveNumber>12</ObjectiveNumber>
                     <Script>cs120_cport_na</Script>
                     <Name>Chronoport</Name>
-                    <Details>   Not Available\    Requires Chronoporting upgrade</Details>
+                    <Details>   Not Available\    Requires C-Tech\    upgrade at the MOUND</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>13</ObjectiveNumber>
@@ -2002,11 +1997,18 @@
                     <Resource4>100</Resource4>
                     <ObjectiveControlShortcutNumber>10</ObjectiveControlShortcutNumber>
                 </Objective>
+                <!--Objective>
+                    <ObjectiveNumber>19</ObjectiveNumber>
+                    <Script>gs193_pharo_arct_na</Script>
+                    <Name>Arcticus</Name>
+                    <Details>   Not Available\    Requires B-Tech\    upgrade at the MOUND</Details>
+                </Objective-->
                 <Objective>
                     <ObjectiveNumber>22</ObjectiveNumber>
                     <Script>gs223_pharo_spyre</Script>
-                    <Name>Spyre</Name>
+                    <Name>Morph: Spyre</Name>
                     <Details> \Teleporter network node and \advanced-production support building \Enables progeneration of aerospace \and Ligo units in its vision radius</Details>
+                    <Resource1>0</Resource1>
                     <Resource4>150</Resource4>
                     <ObjectiveControlShortcutNumber>12</ObjectiveControlShortcutNumber>
                 </Objective>
@@ -2014,7 +2016,7 @@
                     <ObjectiveNumber>23</ObjectiveNumber>
                     <Script>gs233_pharo_spyre_na</Script>
                     <Name>Spyre</Name>
-                    <Details>   Not Available \    Requires Adv Structures upgrade</Details>
+                    <Details>   Not Available\    Requires B-Tech\    upgrade at the MOUND</Details>
                 </Objective>
                 
                 <Objective>
@@ -2029,7 +2031,7 @@
                     <ObjectiveNumber>41</ObjectiveNumber>
                     <Script>gs410_sp_probe_na</Script>
                     <Name>Spawn Spider Probe</Name>
-                    <Details>   Not Available \    Requires the Specials upgrade\    at the MOUND</Details>
+                    <Details>   Not Available\    Requires S-Tech\    upgrade at the MOUND</Details>
                 </Objective>
             </Objectives>
             <ControlShortcuts>
@@ -2165,7 +2167,7 @@
                         <SelectTarget>0</SelectTarget>
                     </Flags>
                     <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>9</EstTimeDist>
+                    <EstTimeDist>0</EstTimeDist>
                     <Sound>Sound0</Sound>
                     <ControlConditions>
                         <ControlCondition>
@@ -2256,11 +2258,6 @@
                     <Sound>Sound0</Sound>
                     <ControlConditions>
                         <ControlCondition>
-                            <Resource>SCENARIO_CONSTRAINTS</Resource>
-                            <Comparison>BITMASK_NOT</Comparison>
-                            <Value>4</Value>
-                        </ControlCondition>
-                        <ControlCondition>
                             <Resource>NUM_UNITS_SELECTED</Resource>
                             <Comparison>EQUAL</Comparison>
                             <Value>1</Value>
@@ -2291,11 +2288,6 @@
                     <EstTimeDist>0</EstTimeDist>
                     <Sound>Sound0</Sound>
                     <ControlConditions>
-                        <ControlCondition>
-                            <Resource>SCENARIO_CONSTRAINTS</Resource>
-                            <Comparison>BITMASK_NOT</Comparison>
-                            <Value>4</Value>
-                        </ControlCondition>
                         <ControlCondition>
                             <Resource>NUM_UNITS_SELECTED</Resource>
                             <Comparison>GREATER</Comparison>
@@ -2333,6 +2325,41 @@
                             <Comparison>EQUAL</Comparison>
                             <Value>0</Value>
                         </ControlCondition>
+                        <!--ControlCondition>
+                            <Resource>P_ADVANCEMENTS</Resource>
+                            <Comparison>BITMASK</Comparison>
+                            <Value>64</Value>
+                        </ControlCondition-->
+                    </ControlConditions>
+                </ControlShortcut>
+                <ControlShortcut>
+                    <ControlNumber>11</ControlNumber> <!-- Arct NA -->
+                    <ControlObjectiveNumber>19</ControlObjectiveNumber>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut></KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>1</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>U_IS_CARRIED</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>0</Value>
+                        </ControlCondition>
+                        <ControlCondition>
+                            <Resource>P_ADVANCEMENTS</Resource>
+                            <Comparison>BITMASK_NOT</Comparison>
+                            <Value>64</Value>
+                        </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
                 <ControlShortcut>
@@ -2366,7 +2393,7 @@
                     </ControlConditions>
                 </ControlShortcut>
                 <ControlShortcut>
-                    <ControlNumber>13</ControlNumber>
+                    <ControlNumber>13</ControlNumber> <!-- Spyre NA -->
                     <ControlObjectiveNumber>23</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
@@ -2383,11 +2410,6 @@
                     <EstTimeDist>0</EstTimeDist>
                     <Sound>Sound0</Sound>
                     <ControlConditions>
-                        <ControlCondition>
-                            <Resource>SCENARIO_CONSTRAINTS</Resource>
-                            <Comparison>BITMASK_NOT</Comparison>
-                            <Value>8</Value>
-                        </ControlCondition>
                         <ControlCondition>
                             <Resource>U_IS_CARRIED</Resource>
                             <Comparison>EQUAL</Comparison>

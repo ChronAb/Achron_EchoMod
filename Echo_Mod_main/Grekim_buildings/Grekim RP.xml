@@ -39,7 +39,7 @@
         <ObjectClass>
             <ClassNumber>1055</ClassNumber>
             <Name>Resource Processor</Name>
-            <Description>RESOURCE PROCESSOR (RP):&#x0D;&#x0A;&#x0D;&#x0A;Assimilates resources:&#x0D;&#x0A;  Power and Q-Plasma&#x0D;&#x0A;Can convert QP into Power&#x0D;&#x0A;Can move itself</Description>
+            <Description>RESOURCE PROCESSOR (RP):&#x0D;&#x0A; &#x0D;&#x0A;Assimilates resources: Power and Q-Plasma&#x0D;&#x0A;Can convert QP into Power&#x0D;&#x0A; &#x0D;&#x0A;Cloaked while QP > 400 &#x0D;&#x0A;Can move itself</Description>
             <Model>./grekim/resource_processor.mdl</Model>
             <Rank>10</Rank>
             <Type>2</Type>
@@ -594,33 +594,6 @@
                     </Steps>
                 </Action>
                 <Action>
-                    <ActionNumber>9</ActionNumber>
-                    <Identifier>ACTION_CREATE_CLOAK</Identifier>
-                    <TimeTaken>1</TimeTaken>
-                    <ForceObjectAction>1</ForceObjectAction>
-                    <InterruptCurrentAction>0</InterruptCurrentAction>
-                    <MutexAction>0</MutexAction>
-                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
-                    <PreserveParameter>0</PreserveParameter>
-                    <AIScriptCanRun>0</AIScriptCanRun>
-                    <SetParamZeroTicks>0</SetParamZeroTicks>
-                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <Conditions>
-                        <Condition>
-                            <Resource>U_ACTION</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>0</Value>
-                        </Condition>
-                    </Conditions>
-                    <Steps>
-                        <Step>
-                            <PrimitiveAction>SET_STATUS</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>STATUS_CLOAKED</Type>
-                        </Step>
-                    </Steps>
-                </Action>
-                <Action>
                     <ActionNumber>10</ActionNumber>
                     <Identifier>ACTION_CHANGE</Identifier>
                     <TimeTaken>144</TimeTaken>
@@ -634,33 +607,6 @@
                     <AllowActionWhenStopped>0</AllowActionWhenStopped>
                     <Conditions />
                     <Steps />
-                </Action>
-                <Action>
-                    <ActionNumber>11</ActionNumber>
-                    <Identifier>ACTION_MORPH_CLOAK</Identifier>
-                    <TimeTaken>1</TimeTaken>
-                    <ForceObjectAction>1</ForceObjectAction>
-                    <InterruptCurrentAction>0</InterruptCurrentAction>
-                    <MutexAction>0</MutexAction>
-                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
-                    <PreserveParameter>0</PreserveParameter>
-                    <AIScriptCanRun>0</AIScriptCanRun>
-                    <SetParamZeroTicks>0</SetParamZeroTicks>
-                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <Conditions>
-                        <Condition>
-                            <Resource>U_ACTION</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>10</Value>
-                        </Condition>
-                    </Conditions>
-                    <Steps>
-                        <Step>
-                            <PrimitiveAction>SET_STATUS</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>STATUS_CLOAKED</Type>
-                        </Step>
-                    </Steps>
                 </Action>
                 <Action>
                     <ActionNumber>12</ActionNumber>
@@ -764,7 +710,7 @@
                         <Condition>
                             <Resource>P_Q_PLASMA</Resource>
                             <Comparison>LEQUAL</Comparison>
-                            <Value>1500</Value>
+                            <Value>2000</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -863,7 +809,7 @@
 						<Condition>
                             <Resource>P_Q_PLASMA</Resource>
                             <Comparison>LEQUAL</Comparison>
-                            <Value>1500</Value>
+                            <Value>2000</Value>
                         </Condition>
                         <Condition>
                             <Resource>P_POWER</Resource>
@@ -1153,7 +1099,7 @@
                         <Condition>
                             <Resource>P_POWER</Resource>
                             <Comparison>LESS</Comparison>
-                            <Value>800</Value>
+                            <Value>2000</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -1377,7 +1323,7 @@
                     <ActionNumber>45</ActionNumber>
                     <Identifier>ACTION_UNCLOAK</Identifier>
                     <TimeTaken>1</TimeTaken>
-                    <ForceObjectAction>0</ForceObjectAction>
+                    <ForceObjectAction>1</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
                     <MutexAction>0</MutexAction>
                     <FailOnInvalidTarget>0</FailOnInvalidTarget>
@@ -1390,6 +1336,11 @@
                             <Resource>U_STATUS</Resource>
                             <Comparison>BITMASK</Comparison>
                             <Value>1</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>P_Q_PLASMA</Resource>
+                            <Comparison>LESS</Comparison>
+                            <Value>400</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -1404,7 +1355,7 @@
                     <ActionNumber>46</ActionNumber>
                     <Identifier>ACTION_CLOAK</Identifier>
                     <TimeTaken>1</TimeTaken>
-                    <ForceObjectAction>0</ForceObjectAction>
+                    <ForceObjectAction>1</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
                     <MutexAction>0</MutexAction>
                     <FailOnInvalidTarget>0</FailOnInvalidTarget>
@@ -1417,6 +1368,11 @@
                             <Resource>U_STATUS</Resource>
                             <Comparison>BITMASK_NOT</Comparison>
                             <Value>1</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>P_Q_PLASMA</Resource>
+                            <Comparison>GEQUAL</Comparison>
+                            <Value>400</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -1935,7 +1891,7 @@
         <ObjectClass>
             <ClassNumber>1056</ClassNumber>
             <Name>R. P. (Closed)</Name>
-            <Description>RESOURCE PROCESSOR (RP):&#x0D;&#x0A;&#x0D;&#x0A;Assimilates resources:&#x0D;&#x0A;  Power and Q-Plasma&#x0D;&#x0A;Can convert QP into Power&#x0D;&#x0A;Can move itself</Description>
+            <Description>RESOURCE PROCESSOR (RP):&#x0D;&#x0A; &#x0D;&#x0A;Assimilates resources: Power and Q-Plasma&#x0D;&#x0A;Can convert QP into Power&#x0D;&#x0A; &#x0D;&#x0A;Cloaked while QP > 400 &#x0D;&#x0A;Can move itself</Description>
             <Model>./grekim/resource_processor.mdl</Model>
             <Rank>10</Rank>
             <Type>2</Type>
@@ -2442,33 +2398,6 @@
                     <Steps />
                 </Action>
                 <Action>
-                    <ActionNumber>9</ActionNumber>
-                    <Identifier>ACTION_CREATE_CLOAK</Identifier>
-                    <TimeTaken>1</TimeTaken>
-                    <ForceObjectAction>1</ForceObjectAction>
-                    <InterruptCurrentAction>0</InterruptCurrentAction>
-                    <MutexAction>0</MutexAction>
-                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
-                    <PreserveParameter>0</PreserveParameter>
-                    <AIScriptCanRun>0</AIScriptCanRun>
-                    <SetParamZeroTicks>0</SetParamZeroTicks>
-                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <Conditions>
-                        <Condition>
-                            <Resource>U_ACTION</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>0</Value>
-                        </Condition>
-                    </Conditions>
-                    <Steps>
-                        <Step>
-                            <PrimitiveAction>SET_STATUS</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>STATUS_CLOAKED</Type>
-                        </Step>
-                    </Steps>
-                </Action>
-                <Action>
                     <ActionNumber>10</ActionNumber>
                     <Identifier>ACTION_CHANGE</Identifier>
                     <TimeTaken>144</TimeTaken>
@@ -2482,33 +2411,6 @@
                     <AllowActionWhenStopped>0</AllowActionWhenStopped>
                     <Conditions />
                     <Steps />
-                </Action>
-                <Action>
-                    <ActionNumber>11</ActionNumber>
-                    <Identifier>ACTION_MORPH_CLOAK</Identifier>
-                    <TimeTaken>1</TimeTaken>
-                    <ForceObjectAction>1</ForceObjectAction>
-                    <InterruptCurrentAction>0</InterruptCurrentAction>
-                    <MutexAction>0</MutexAction>
-                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
-                    <PreserveParameter>0</PreserveParameter>
-                    <AIScriptCanRun>0</AIScriptCanRun>
-                    <SetParamZeroTicks>0</SetParamZeroTicks>
-                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <Conditions>
-                        <Condition>
-                            <Resource>U_ACTION</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>10</Value>
-                        </Condition>
-                    </Conditions>
-                    <Steps>
-                        <Step>
-                            <PrimitiveAction>SET_STATUS</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>STATUS_CLOAKED</Type>
-                        </Step>
-                    </Steps>
                 </Action>
                 <Action>
                     <ActionNumber>14</ActionNumber>
@@ -2690,7 +2592,7 @@
                         </Step>
                     </Steps>
                 </Action>
-                <Action>
+                <!--Action>
                     <ActionNumber>33</ActionNumber>
                     <Identifier>ACTION_MOVE_PROCESS</Identifier>
                     <TimeTaken>0</TimeTaken>
@@ -2740,7 +2642,7 @@
                             <Value>5</Value>
                         </Step>
                     </Steps>
-                </Action>
+                </Action-->
                 <Action>
                     <ActionNumber>34</ActionNumber>
                     <Identifier>ACTION_REGEN_P</Identifier>
@@ -2923,7 +2825,7 @@
                     <ActionNumber>45</ActionNumber>
                     <Identifier>ACTION_UNCLOAK</Identifier>
                     <TimeTaken>1</TimeTaken>
-                    <ForceObjectAction>0</ForceObjectAction>
+                    <ForceObjectAction>1</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
                     <MutexAction>0</MutexAction>
                     <FailOnInvalidTarget>0</FailOnInvalidTarget>
@@ -2936,6 +2838,11 @@
                             <Resource>U_STATUS</Resource>
                             <Comparison>BITMASK</Comparison>
                             <Value>1</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>P_Q_PLASMA</Resource>
+                            <Comparison>LESS</Comparison>
+                            <Value>400</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -2950,7 +2857,7 @@
                     <ActionNumber>46</ActionNumber>
                     <Identifier>ACTION_CLOAK</Identifier>
                     <TimeTaken>1</TimeTaken>
-                    <ForceObjectAction>0</ForceObjectAction>
+                    <ForceObjectAction>1</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
                     <MutexAction>0</MutexAction>
                     <FailOnInvalidTarget>0</FailOnInvalidTarget>
@@ -2963,6 +2870,11 @@
                             <Resource>U_STATUS</Resource>
                             <Comparison>BITMASK_NOT</Comparison>
                             <Value>1</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>P_Q_PLASMA</Resource>
+                            <Comparison>GEQUAL</Comparison>
+                            <Value>400</Value>
                         </Condition>
                     </Conditions>
                     <Steps>

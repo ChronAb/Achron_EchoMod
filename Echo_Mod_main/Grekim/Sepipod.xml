@@ -11,7 +11,7 @@
     <ActionStepModifiers>
 	    <ActionStepModifier>
             <Name>Spod anti_gnd 1</Name>
-            <StrengthBase>6</StrengthBase>
+            <StrengthBase>18</StrengthBase>
             <StrengthRange>0</StrengthRange>
             <StrengthCount>0</StrengthCount>
             <Flags>
@@ -34,7 +34,7 @@
         </ActionStepModifier>
         <ActionStepModifier>
             <Name>Spod anti_air 1</Name>
-            <StrengthBase>6</StrengthBase>
+            <StrengthBase>18</StrengthBase>
             <StrengthRange>0</StrengthRange>
             <StrengthCount>0</StrengthCount>
             <Flags>
@@ -59,8 +59,8 @@
     <ObjectClasses>
         <ObjectClass>
             <ClassNumber>1020</ClassNumber>
-            <Name>Humbolt (Sepipod)</Name>
-            <Description>HUMBOLT/SEPIPOD:&#x0D;&#x0A;Tactical air superiority biofighter-bomber&#x0D;&#x0A;Good scout, raider, and interceptor&#x0D;&#x0A;Weapons use regenerating Ammo&#x0D;&#x0A; &#x0D;&#x0A;Detects cloaked units &#x0D;&#x0A;Tech upgrade: can deploy Chronobombs</Description>
+            <Name>Humboldt (Sepipod)</Name>
+            <Description>HUMBOLDT/SEPIPOD:&#x0D;&#x0A;Tactical air superiority biofighter-bomber&#x0D;&#x0A;Good scout, raider, and interceptor&#x0D;&#x0A;Weapons use regenerating Ammo&#x0D;&#x0A; &#x0D;&#x0A;Detects cloaked units &#x0D;&#x0A;Upgrade: &#x0D;&#x0A;C+S-Tech: Can deploy Chronobombs</Description>
             <Model>./grekim/sepipod.mdl</Model>
             <Rank>220</Rank>
             <Type>2</Type>
@@ -1151,6 +1151,11 @@
                             <Value>40</Value>
                         </Condition>
                         <Condition>
+                            <Resource>P_Q_PLASMA</Resource>
+                            <Comparison>GEQUAL</Comparison>
+                            <Value>400</Value>
+                        </Condition>
+                        <Condition>
                             <Resource>U_ACTION</Resource>
                             <Comparison>NOT_EQUAL</Comparison>
                             <Value>3</Value>
@@ -1203,6 +1208,65 @@
                 </Action>
                 <Action>
                     <ActionNumber>36</ActionNumber>
+                    <Identifier>ACTION_GENERATE_AMMO</Identifier>
+                    <TimeTaken>0</TimeTaken>
+                    <ForceObjectAction>1</ForceObjectAction>
+                    <InterruptCurrentAction>1</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <Conditions>
+                        <Condition>
+                            <Resource>U_AGE</Resource>
+                            <Comparison>MODULO_IS_ZERO</Comparison>
+                            <Value>12</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_AMMO</Resource>
+                            <Comparison>LESS</Comparison>
+                            <Value>4</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>P_Q_PLASMA</Resource>
+                            <Comparison>LESS</Comparison>
+                            <Value>400</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_ACTION</Resource>
+                            <Comparison>NOT_EQUAL</Comparison>
+                            <Value>3</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_ACTION</Resource>
+                            <Comparison>NOT_EQUAL</Comparison>
+                            <Value>4</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_ACTION</Resource>
+                            <Comparison>NOT_EQUAL</Comparison>
+                            <Value>24</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_ACTION</Resource>
+                            <Comparison>NOT_EQUAL</Comparison>
+                            <Value>25</Value>
+                        </Condition>
+                    </Conditions>
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_AMMO</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>-1</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>37</ActionNumber>
                     <Identifier>ACTION_GENERATE_ENERGY</Identifier>
                     <TimeTaken>0</TimeTaken>
                     <ForceObjectAction>1</ForceObjectAction>
@@ -1227,7 +1291,7 @@
                         <Condition>
                             <Resource>P_POWER</Resource>
                             <Comparison>GREATER</Comparison>
-                            <Value>200</Value>
+                            <Value>800</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -1237,45 +1301,6 @@
                             <Type>U_ENERGY</Type>
                             <ValueEval>ONE</ValueEval>
                             <Value>-1</Value>
-                        </Step>
-                    </Steps>
-                </Action>
-                <Action>
-                    <ActionNumber>38</ActionNumber>
-                    <Identifier>ACTION_LOW_HP_DIE</Identifier>
-                    <TimeTaken>0</TimeTaken>
-                    <ForceObjectAction>1</ForceObjectAction>
-                    <InterruptCurrentAction>1</InterruptCurrentAction>
-                    <MutexAction>0</MutexAction>
-                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
-                    <PreserveParameter>0</PreserveParameter>
-                    <AIScriptCanRun>0</AIScriptCanRun>
-                    <SetParamZeroTicks>0</SetParamZeroTicks>
-                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <Conditions>
-                        <Condition>
-                            <Resource>U_AGE</Resource>
-                            <Comparison>MODULO_IS_ZERO</Comparison>
-                            <Value>720</Value>
-                        </Condition>
-                        <Condition>
-                            <Resource>U_HP</Resource>
-                            <Comparison>LEQUAL</Comparison>
-                            <Value>36</Value>
-                        </Condition>
-                        <Condition>
-                            <Resource>U_ACTION</Resource>
-                            <Comparison>NOT_EQUAL</Comparison>
-                            <Value>13</Value>
-						</Condition>
-                    </Conditions>
-                    <Steps>
-                        <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>U_HP</Type>
-                            <ValueEval>SET_TO_VALUE</ValueEval>
-                            <Value>0</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -1491,6 +1516,45 @@
                     </Steps>
                 </Action>
                 <Action>
+                    <ActionNumber>45</ActionNumber>
+                    <Identifier>ACTION_LOW_HP_DIE</Identifier>
+                    <TimeTaken>0</TimeTaken>
+                    <ForceObjectAction>1</ForceObjectAction>
+                    <InterruptCurrentAction>1</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <Conditions>
+                        <Condition>
+                            <Resource>U_AGE</Resource>
+                            <Comparison>MODULO_IS_ZERO</Comparison>
+                            <Value>1440</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_HP</Resource>
+                            <Comparison>LEQUAL</Comparison>
+                            <Value>54</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_ACTION</Resource>
+                            <Comparison>NOT_EQUAL</Comparison>
+                            <Value>13</Value>
+						</Condition>
+                    </Conditions>
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_HP</Type>
+                            <ValueEval>SET_TO_VALUE</ValueEval>
+                            <Value>0</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
                     <ActionNumber>46</ActionNumber>
                     <Identifier>ACTION_DEATH_YOUNG</Identifier>
                     <TimeTaken>20</TimeTaken>
@@ -1530,9 +1594,9 @@
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
-                            <Type>P_Q_PLASMA</Type>
+                            <Type>P_L_CRYSTALS</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-240</Value>
+                            <Value>-80</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>DIE</PrimitiveAction>
@@ -1663,7 +1727,7 @@
                     <ObjectiveNumber>3</ObjectiveNumber>
                     <Script>cs030_atk_move</Script>
                     <Name>Attack</Name>
-                    <Details>Attack target or Attack-Move to location\1/3X rate-of-fire when Ammo is empty \[Weapons Avg Damage/10secs ]\Gnd: 90 (-60),  R 15,  SR 2,  Sta C\Air: 90 (-60),  R 15,  SR 2,  Sta C</Details>
+                    <Details>Attack target or Attack-Move to location\Reduced DPS when Ammo is empty \[Weapons Avg Damage/10secs]\Gnd: 270 (-180),  R 15,  SR 2,  Sta C\Air: 270 (-180),  R 15,  SR 2,  Sta C</Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
                     <ParameterType>POSITION</ParameterType>
                 </Objective>
@@ -1734,7 +1798,7 @@
                     <ObjectiveNumber>12</ObjectiveNumber>
                     <Script>cs120_cport_na</Script>
                     <Name>Chronoport</Name>
-                    <Details>   Not Available\    Requires Chronoporting upgrade</Details>
+                    <Details>   Not Available\    Requires C-Tech\    upgrade at the MOUND</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>13</ObjectiveNumber>
@@ -1776,7 +1840,7 @@
                     <ObjectiveNumber>21</ObjectiveNumber>
                     <Script>gs214_chronobomb_na</Script>
                     <Name>Deploy Chrono-Bomb</Name>
-                    <Details>   Not Available \    Requires Specials and Chronoporting</Details>
+                    <Details>   Not Available\    Requires C-Tech and S-Tech\    upgrade at the MOUND</Details>
                 </Objective>
             </Objectives>
             <ControlShortcuts>
@@ -1912,7 +1976,7 @@
                         <SelectTarget>0</SelectTarget>
                     </Flags>
                     <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>2</EstTimeDist>
+                    <EstTimeDist>0</EstTimeDist>
                     <Sound>Sound0</Sound>
                     <ControlConditions>
                         <ControlCondition>
@@ -2152,6 +2216,237 @@
                     </ControlConditions>
                 </ControlShortcut>
             </ControlShortcuts>
+        </ObjectClass>
+        <ObjectClass>
+            <ClassNumber>1021</ClassNumber>
+            <Name>Humboldt (Sepipod)</Name>
+            <Description></Description>
+            <Model>./grekim/sepipod.mdl</Model>
+            <Rank>220</Rank>
+            <Type>2</Type>
+            <PrioritySelectionRank>0</PrioritySelectionRank>
+            <MaxHealth>180</MaxHealth>
+            <MaxEnergy>40</MaxEnergy>
+            <MaxArmor>0</MaxArmor>
+            <MaxAmmo>40</MaxAmmo>
+            <SightRadius>21</SightRadius>
+            <ForwardMinSightRadius>0</ForwardMinSightRadius>
+            <ReverseMaxSightRadius>0</ReverseMaxSightRadius>
+            <ReverseMinSightRadius>0</ReverseMinSightRadius>
+            <ForwardSightAngleOfView>360</ForwardSightAngleOfView>
+            <SightHeight>30</SightHeight>
+            <DistanceIndicatorRadius>0</DistanceIndicatorRadius>
+            <AgilityMultiplier>0.82</AgilityMultiplier>
+            <CarryingCapacity>0</CarryingCapacity>
+            <MaxTerrainAngle>45</MaxTerrainAngle>
+            <TicksToTurn45Degrees>1.18</TicksToTurn45Degrees>
+            <HealthFieldName>Shielding</HealthFieldName>
+            <EnergyFieldName></EnergyFieldName>
+            <AmmoFieldName></AmmoFieldName>
+            <Flags>
+                <VerticalMovementAllowed>1</VerticalMovementAllowed>
+                <UnaffectedByTerrain>1</UnaffectedByTerrain>
+                <GainKillExperience>0</GainKillExperience>
+                <RemainUpright>0</RemainUpright>
+                <NonGroupSelection>0</NonGroupSelection>
+                <ShowVisibilityRange>0</ShowVisibilityRange>
+                <ShowThroughFogOfWar>1</ShowThroughFogOfWar>
+                <AlwaysShowVisibility>0</AlwaysShowVisibility>
+                <SeeThroughObjects>1</SeeThroughObjects>
+                <ActiveLocatorBeacon>0</ActiveLocatorBeacon>
+                <AlwaysHighlightUnit>0</AlwaysHighlightUnit>
+                <AlwaysSelectable>0</AlwaysSelectable>
+                <AlwaysShowDistanceIndicator>0</AlwaysShowDistanceIndicator>
+                <AppearAsNoOwnerUnlessVisible>0</AppearAsNoOwnerUnlessVisible>
+                <AlwaysAppearAsNoOwner>0</AlwaysAppearAsNoOwner>
+                <AlwaysHighlightUnitUnlessNoOwner>0</AlwaysHighlightUnitUnlessNoOwner>
+                <HideHealthField>0</HideHealthField>
+                <HideEnergyField>0</HideEnergyField>
+                <HideArmorField>0</HideArmorField>
+                <HideAmmoField>0</HideAmmoField>
+                <HideCapacityField>0</HideCapacityField>
+            </Flags>
+            <Cloaking>
+                <Gradar>0</Gradar>
+                <Detector>0</Detector>
+                <Visible>0</Visible>
+            </Cloaking>
+            <Sensing>
+                <Gradar>1</Gradar>
+                <Detector>1</Detector>
+                <Visible>1</Visible>
+            </Sensing>
+            <StoppedActionSteps />
+            <ChronoportedActionSteps />
+            <ChronoportArrivedActionSteps>
+                <Step>
+                    <PrimitiveAction>ACCUM_STATISTIC</PrimitiveAction>
+                    <Target>SELF</Target>
+                    <Type>CPortArrivals</Type>
+                    <ValueEval>ONE</ValueEval>
+                    <Value>1</Value>
+                </Step>
+				<Step>
+					<PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+					<Target>SELF</Target>
+					<Type>U_HP</Type>
+					<ValueEval>ONE</ValueEval>
+					<Value>-90</Value>
+				</Step>
+				<Step>
+					<PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+					<Target>SELF</Target>
+					<Type>U_AMMO</Type>
+					<ValueEval>ONE</ValueEval>
+					<Value>-20</Value>
+				</Step>
+            </ChronoportArrivedActionSteps>
+            <Animations>
+                <Animation>
+                    <Identifier>ACTION_DESTROY</Identifier>
+                    <AnimationNum>6</AnimationNum>
+                    <Sound>Sound18</Sound>
+                    <AnimationTime>0</AnimationTime>
+                    <ShowProgress>0</ShowProgress>
+                    <MorphFromActionParameterClass>0</MorphFromActionParameterClass>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <RenderModelExplode>1</RenderModelExplode>
+                    <Conditions>
+                        <Condition>
+                            <Resource>U_ACTION</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>1</Value>
+                        </Condition>
+                    </Conditions>
+                </Animation>
+                <Animation>
+                    <Identifier>ACTION_CREATE</Identifier>
+                    <AnimationNum>3</AnimationNum>
+                    <Sound>Sound34</Sound>
+                    <VertShaderEffect>INV_QUADRATIC_SCALE</VertShaderEffect>
+                    <FragShaderEffect>BEIGE_TO_COLOR</FragShaderEffect>
+                    <AnimationTime>0</AnimationTime>
+                    <ShowProgress>0</ShowProgress>
+                    <MorphFromActionParameterClass>0</MorphFromActionParameterClass>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <RenderModelExplode>0</RenderModelExplode>
+                    <Conditions>
+                        <Condition>
+                            <Resource>U_ACTION</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>0</Value>
+                        </Condition>
+                    </Conditions>
+                </Animation>
+                <Animation>
+                    <Identifier>idle</Identifier>
+                    <AnimationNum>0</AnimationNum>
+                    <Sound>Sound0</Sound>
+                    <AnimationTime>24</AnimationTime>
+                    <ShowProgress>0</ShowProgress>
+                    <MorphFromActionParameterClass>0</MorphFromActionParameterClass>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <RenderModelExplode>0</RenderModelExplode>
+                    <Conditions />
+                </Animation>
+            </Animations>
+            <Actions>
+                <Action>
+                    <ActionNumber>0</ActionNumber>
+                    <Identifier>ACTION_CREATE</Identifier>
+                    <TimeTaken>9</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>ACCUM_STATISTIC</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>UnitsCreated</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>1</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_ENERGY</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>-40</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_AMMO</Type>
+                            <ValueEval>SET_TO_VALUE</ValueEval>
+                            <Value>4</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>1</ActionNumber>
+                    <Identifier>ACTION_DESTROY</Identifier>
+                    <TimeTaken>12</TimeTaken>
+                    <ForceObjectAction>1</ForceObjectAction>
+                    <InterruptCurrentAction>1</InterruptCurrentAction>
+                    <MutexAction>1</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <Conditions>
+                        <Condition>
+                            <Resource>U_HP</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>0</Value>
+                        </Condition>
+                    </Conditions>
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>ACCUM_STATISTIC</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>UnitsDestroyed</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>1</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>36</ActionNumber>
+                    <Identifier>ACTION_CHANGE</Identifier>
+                    <TimeTaken>1</TimeTaken>
+                    <ForceObjectAction>1</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <Conditions>
+                        <Condition>
+                            <Resource>U_CLASS</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>1021</Value>
+                        </Condition>
+                    </Conditions>
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CHANGE_CLASS</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Value>1020</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+            </Actions>
+            <Objectives />
+            <ControlShortcuts />
         </ObjectClass>
         
         <ObjectClass>
@@ -2909,7 +3204,7 @@
                     <ObjectiveNumber>3</ObjectiveNumber>
                     <Script>cs030_atk_move</Script>
                     <Name>Attack</Name>
-                    <Details>Attack target or Attack-Move to location \+25% TSS Energy per attack \[Weapons Avg Damage/10secs ]\Gnd: 50,  R 1,  SR 3,  Sta C</Details>
+                    <Details>Attack target or Attack-Move to location \+25% TSS Energy per attack \[Weapons Avg Damage/10secs]\Gnd: 50,  R 1,  SR 3,  Sta C</Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
                     <ParameterType>POSITION</ParameterType>
                 </Objective>

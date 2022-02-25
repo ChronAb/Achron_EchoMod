@@ -22,15 +22,30 @@ int uclass = unit->Class;
 
 //LANDING PROBE
 if (uclass==$LANDING_PROBE_CLASS) {
-    target = unit->ObjectiveParameters;
-    if (target->Class != $RACE_CHOOSER_CLASS) {
-        say "Must target a designated Landing Site";
-        PERFORM SET_OBJECTIVE 0;
-        PERFORM NOTHING;
-    }
-    int ownerTeam = unit->Owner;
-	PERFORM $ACTION_HUMAN0 ownerTeam; //order human base
-	PERFORM NOTHING;
+    int op = unit->ObjectiveParameters;
+    op[$Zpos] = 0;
+    if (op <_> unit > 36) { // Not in range yet, so move closer
+        int dir = 0; 
+        dir = QUERY BESTMOVE [unit, $ACTION_MOVE] MIN [query <_> op] WHERE [1];
+        
+        if (dir==0) {
+            say "Path to target is obstructed";
+            PERFORM SET_OBJECTIVE 0;
+            PERFORM NOTHING;
+        } else {
+            PERFORM RAND;
+            if (perf_ret < $LAD_CLEAR) {
+                PERFORM CLEAR_LAST_ATTACKED_DIRECTION; 
+            }
+            PERFORM $ACTION_MOVE dir;
+            PERFORM NOTHING;
+        }
+    } 
+    
+    // Place Human spawner
+    PERFORM $ACTION_HUMAN0 op;
+    PERFORM SET_OBJECTIVE 0;
+    PERFORM NOTHING;
 }
 
 //TECH BEACON

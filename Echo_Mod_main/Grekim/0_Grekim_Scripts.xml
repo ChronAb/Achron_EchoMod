@@ -16,6 +16,14 @@
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/mfb_recover.abn</Path>
         </AIScript>
         <AIScript>
+            <Name>gs180_elder_mine</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/elder_mine.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gs190_convert_na</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown.abn</Path>
+        </AIScript>
+        <AIScript>
             <Name>gs200_convert</Name>
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/convert_qp.abn</Path>
         </AIScript>
@@ -52,6 +60,10 @@
         <AIScript>
             <Name>gs183_pharo_arct</Name>
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/pharo_arcticus.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gs193_pharo_arct_na</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown.abn</Path>
         </AIScript>
         <AIScript>
             <Name>gs223_pharo_spyre</Name>
@@ -106,7 +118,7 @@
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown.abn</Path>
         </AIScript>
         <AIScript>
-            <Name>gs125_sligo_release</Name>
+            <Name>gs355_sligo_release</Name>
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/releaseAll.abn</Path>
         </AIScript>
         

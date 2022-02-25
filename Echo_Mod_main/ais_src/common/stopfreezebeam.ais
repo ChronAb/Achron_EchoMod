@@ -7,8 +7,8 @@ target = unit->ObjectiveParameters;
 
 //special freezebeam for Subspace Amplifiers 
 if ($IS_VICTORY_CLASS) {
-    if (player->$QPlasma < 100){
-        $SAY_QP
+    if (player->$QPlasma < 200 || player->$Power < 600){
+        $SAY_RESOURCES
         PERFORM SET_OBJECTIVE 0;
         PERFORM SET_ADDITIONAL_PARAMS2 0;
         PERFORM NOTHING;
@@ -40,7 +40,7 @@ if ( target->IsAlly==1 && (player.ScenarioConstraints)[0] ) {
 if (target->IsAlive==1) {
 
 	if (unit->Energy >= energy && player->$QPlasma >= 200) {
-		if (target->IsVisible && target<^>unit <= 900 && target<_>unit<=1225) { //max freezebeam range is 35(-1), 30
+		if (!target->IsStasis && target->IsVisible && target<^>unit <= 900 && target<_>unit<=1225) { //max freezebeam range is 35(-1), 30
 
 			PERFORM $ACTION_STOP target; 
 			PERFORM SET_OBJECTIVE 0;
@@ -95,10 +95,12 @@ if (target->IsAlive==1) {
 	else {
 		PERFORM SET_ADDITIONAL_PARAMS2 0;
 		PERFORM SET_OBJECTIVE 0;
-		$SAY_ENOUGH
-		if (unit->Energy < energy) $SAY_ENERGY
-		else if (player->$QPlasma < 200) $SAY_QP
-		else $SAY_TSSED
+        if (target->IsStasis) $SAY_TSSED
+        else {
+            $SAY_ENOUGH
+            if (unit->Energy < energy) $SAY_ENERGY
+            else if (player->$QPlasma < 200) $SAY_QP
+        }
 		PERFORM $ACTION_ERROR2;
 	}
 }

@@ -4,6 +4,28 @@
     <!-- Note: The order of the AI scripts here determines the order they are fitted 
         onto unit command grids. The naming-scheme is just for readability. -->
         
+        <!-- Marine & Spec Ops abilities -->
+        <AIScript>
+            <Name>hs000_sop_idle</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/sop_idle.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hs170_marine_cloak</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/cloak.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hs200_marine_uncloak</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/uncloak.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hs210_hitch_ride</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/marine_hitch.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hs220_sop_heal</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/sop_heal.abn</Path>
+        </AIScript>
+        
         <!-- Spawner production -->
         <AIScript>
             <Name>hs02s_make_marine</Name>
@@ -14,11 +36,15 @@
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/armory_sop.abn</Path>
         </AIScript>
         <AIScript>
-            <Name>hs04s_make_athc</Name>
+            <Name>hs04s_make_mech</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/factory_8080.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hs05s_make_athc</Name>
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/factory_athc.abn</Path>
         </AIScript>
         <AIScript>
-            <Name>hs05s_make_lancer</Name>
+            <Name>hs06s_make_lancer</Name>
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/factory_lancer.abn</Path>
         </AIScript>
         

@@ -26,11 +26,11 @@ if (unit->Age%18==0) {//only look for healing targets once per s to save CPU
 	
 object buddy = 0;
 //Search an ally that's either commjammed or stopped 
-/*if (unitEnergy >= 60) {
+if (unitEnergy >= 60) {
 	int qstatus = 0;
 	buddy =  QUERY UNIT [unit] MIN [ unit <=> query ] WHERE [query->IsAlly==1 && 
 				( ((qstatus=query->Status)&$FROZEN_COMMJAM ) && !qstatus[$TSS_BIT] )  ];
-}*/
+}
 
 //Search for an Ally to heal
 if (unitEnergy >= 1 && buddy <= 0) {
@@ -50,13 +50,13 @@ if (unitEnergy >= 1 && buddy <= 0) {
 
 
 if (buddy>0) { //found a nearby unit that needs help
-	/*if (buddy->IsCommjam || buddy->IsStop ) { //buddy needs recovering
+	if (buddy->IsCommjam || buddy->IsStop ) { //buddy needs recovering
 		if (unitEnergy >= 60 ) { //enough energy to recover
 				target = buddy;
 				PERFORM $ACTION_BLDG_RECOVER target;
 				PERFORM NOTHING;
 		}
-	}*/
+	}
                 
 	if (buddy->HP <= (buddy.MaxHP-4)  && buddy->HP !=0) { //check if it needs repair  
 		target = buddy;

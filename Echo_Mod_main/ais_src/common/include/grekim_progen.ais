@@ -2,10 +2,10 @@
 
 /* NOTES:
 *Values of AdditionalParameters2 are used to coordinate the multi-tick progen process
-*AP2=0 -> Step 1: Check whether progen conditions are met														(tick 1)
-*AP2=4 -> Step 2: Conditions met, perform first energy deduction 										(tick 1)
-*AP2=3 -> Step 3: Perform second energy deduction 																	(tick 1)
-*AP2=2 -> Step 4: Produce the unit 																									(tick 1)
+*AP2=0 -> Step 1: Check whether progen conditions are met							    (tick 1)
+*AP2=4 -> Step 2: Conditions met, perform first energy deduction 						(tick 1)
+*AP2=3 -> Step 3: Perform second energy deduction 										(tick 1)
+*AP2=2 -> Step 4: Produce the unit 														(tick 1)
 *AP2=1 -> Final Step: Unit produced, now transfer hierarchy and movement orders 		(tick 2+)
 */
 
@@ -17,28 +17,45 @@ int objective = unit->Objective;
 int oidle = objective - 16;
 int apidle = objective - 37;
 int insuf = 0;
+int special = urank==$ARCTICUS_RANK || urank==$ACHRON_RANK || urank==$SPAWNER_RANK;
+int vanguard = player->Advancements[$GREKIM_ADV_VANGUARD];
 
 PERFORM GET_CUR_TIME;
 int current = perf_ret[0,14];
 query_vis_distance = -1;
 
-if( (urank==$ARCTICUS_RANK || urank==$ACHRON_RANK) && unit->AdditionalParameters2==0 ){
-//Step 0: Articii and Achrons have special rules and can skip to the final step (AP2=1)
+if( special && unit->AdditionalParameters2==0 ){
+//Step 0: Articii, Achrons, & Spawners have special rules and can skip to the final step (AP2=1)
 
 	if (urank==$ARCTICUS_RANK){
+        if( (player->CustomField8)[1] != 1 ){
+            say "Unable to produce progeny";
+            PERFORM SET_OBJECTIVE 0;
+            PERFORM SET_ADDITIONAL_PARAMS3 0;
+            PERFORM NOTHING;
+        }
+        
 		if (player->$LCrystals < $LC || player->$QPlasma < $QP) {
 			$SAY_RESOURCES
 			insuf =1;
 		} else {
-			if (unit->Energy < 60) {
+			if (unit->Energy < 150 && (PROGEN_CLASS == $OCTOLIGO_CLASS || PROGEN_CLASS == $SEPILIGO_CLASS || PROGEN_CLASS == $PHAROLIGO_CLASS)) {
 				$SAY_ENERGY
 				insuf =1;
-			}
+			} 
+            else if (unit->Energy < 50) {
+				$SAY_ENERGY
+				insuf =1;
+			} 
 		}
 	}
-	else if (urank==$ACHRON_RANK) {
+	if (urank==$ACHRON_RANK) {
 		if (unit->Ammo < 1) insuf =1;
 		else if (PROGEN_CLASS == $OCTOPOD_CLASS && unit->Ammo < 2) insuf =1;
+	}
+    if (urank==$SPAWNER_RANK) {
+		if (unit->Ammo < 1) insuf =1;
+		else if (unit->Ammo < 4 && (PROGEN_CLASS == $OCTOPOD_CLASS || PROGEN_CLASS == $SEPIPOD_CLASS)) insuf =1;
 	}
 	
 	if(insuf){
@@ -50,10 +67,12 @@ if( (urank==$ARCTICUS_RANK || urank==$ACHRON_RANK) && unit->AdditionalParameters
 	if(PROGEN_CLASS == $OCTO_CLASS) PERFORM $ACTION_PROGEN_SAME_O;
 	else if(PROGEN_CLASS == $SEPI_CLASS) PERFORM $ACTION_PROGEN_SAME_S;
 	else if(PROGEN_CLASS == $PHARO_CLASS) PERFORM $ACTION_PROGEN_SAME_P;
-	else if(PROGEN_CLASS == $OCTOLIGO_CLASS) PERFORM $ACTION_PROGEN_UP_O;
-	else if(PROGEN_CLASS == $SEPILIGO_CLASS) PERFORM $ACTION_PROGEN_UP_S;
-	else if(PROGEN_CLASS == $PHAROLIGO_CLASS) PERFORM $ACTION_PROGEN_UP_P;
-	else if(PROGEN_CLASS == $OCTOPOD_CLASS) PERFORM $ACTION_PROGEN_UP_O;
+	else if(PROGEN_CLASS == $OCTOLIGO_CLASS || PROGEN_CLASS == $OCTOPOD_CLASS)
+        PERFORM $ACTION_PROGEN_UP_O;
+	else if(PROGEN_CLASS == $SEPILIGO_CLASS || PROGEN_CLASS == $SEPIPOD_CLASS) 
+        PERFORM $ACTION_PROGEN_UP_S;
+	else if(PROGEN_CLASS == $PHAROLIGO_CLASS || PROGEN_CLASS == $PHAROPOD_CLASS) 
+        PERFORM $ACTION_PROGEN_UP_P;
 	PERFORM NOTHING;
 }
 
@@ -61,16 +80,16 @@ if( (urank==$ARCTICUS_RANK || urank==$ACHRON_RANK) && unit->AdditionalParameters
 if(unit->AdditionalParameters2==0){
 //Step 1: Check whether progen conditions are met
 
-	/*
-	PERFORM RAND;
-	// 1/4 chance to run each tick (de-syncs production to avoid mistakes) 	
-	if (perf_ret > 8192 )  {
-		PERFORM NOTHING;
-	}*/
-	
+	if( (player->CustomField8)[1] != 1 ){
+			say "Unable to produce progeny";
+			PERFORM SET_OBJECTIVE 0;
+			PERFORM SET_ADDITIONAL_PARAMS3 0;
+			PERFORM NOTHING;
+	}
+
 	object mate = 0;
 	object mate2 =0;
-	int menergy1 = 0;//vanguard tech energy modifiers
+	int menergy1 = 0;//vanguard tech energy modifiers (vestigial)
 	int menergy2 = 0;
 
 	if( !(unit->Status[$CAP_BIT_1]) && (PROGEN_CLASS == $SEPIPOD_CLASS || PROGEN_CLASS == $PHAROPOD_CLASS || PROGEN_CLASS == $SEPILIGO_CLASS || PROGEN_CLASS == $PHAROLIGO_CLASS || PROGEN_CLASS == $OCTOLIGO_CLASS) ){
@@ -87,12 +106,15 @@ if(unit->AdditionalParameters2==0){
 
 //***Find your mates
 	if (!insuf) {
-		//**First check if there is an Arcticus to mate with 
-		query_vis_distance = 60; 
-		mate2 = QUERY UNIT [unit] MAX [query->Energy] WHERE [query->Class == $ARCTICUS_CLASS && query->HP != 0 && query->IsAlly==1];
+		//**First check if there is an Arcticus to mate with
+        //  or Vanguard tech is enabled
+        query_vis_distance = 60; 
+        if(vanguard) mate2 = unit;
+        else mate2 = QUERY UNIT [unit] MAX [query->Energy] WHERE [query->Class == 
+                            $ARCTICUS_CLASS && query->HP != 0 && query->IsAlly==1];
 		query_vis_distance = -1;
 		
-		if( mate2 >= 1 ) {
+		if( mate2 >= 1) {
 			//say "Found an Arcticus mate";
 			mate = unit;
 			if (unit->Energy < ENERGY) {
@@ -140,20 +162,18 @@ if(unit->AdditionalParameters2==0){
 		int replace = 0;
 		if(mate < 1){replace = 1;}
 		else{ if(MYENERGY >= mate->Energy) replace = 1; }
-		/*This roundabout implementation is because there is a weird bug where
-		the script breaks if it tries to look at the Monitor's energy, 
-		but only for players > 0 (WTF!!!)*/
+        
 		if(replace==1 && MYHP > 0){
 			if(uclass == mclass && MYENERGY >= ENERGY){
 				mate = unit;
 				menergy1 = 1;
 			}
-			else{
+			/*else{
 				if(player->Advancements[$GREKIM_ADV_VANGUARD] && MYENERGY >= (2*ENERGY)){
 					mate = unit;
 					menergy1 = 2;
 				}
-			}
+			}*/
 		}
 		
 		replace = 0;
@@ -165,12 +185,12 @@ if(unit->AdditionalParameters2==0){
 				mate2 = unit;
 				menergy2 = 1;
 			}
-			else{
+			/*else{
 				if(player->Advancements[$GREKIM_ADV_VANGUARD] && (MYENERGY-ENERGY*menergy1) >= (2*ENERGY)){
 					mate2 = unit;
 					menergy2 = 2;
 				}
-			}
+			}*/
 		}
 	}
 
@@ -209,16 +229,16 @@ if(unit->AdditionalParameters2==0){
 	if(unit->AdditionalParameters2==4){//Step 2: Perform first energy deductions
 		target = mate;
 		PERFORM $ACTION_PROGEN_ENERGY target;
-		if(menergy1==2) PERFORM $ACTION_PROGEN_ENERGY target;
+		//if(menergy1==2) PERFORM $ACTION_PROGEN_ENERGY target;
 		PERFORM SET_ADDITIONAL_PARAMS2 3;
 	}
 	else{say "; failed at step 2";}
 
 	if(unit->AdditionalParameters2==3){//Step 3: Perform second energy deduction
-		if (mate2->Class != $ARCTICUS_CLASS){
+		if (mate2->Class != $ARCTICUS_CLASS && !vanguard){
 			target = mate2;
 			PERFORM $ACTION_PROGEN_ENERGY target;
-			if(menergy2==2) PERFORM $ACTION_PROGEN_ENERGY target;
+			//if(menergy2==2) PERFORM $ACTION_PROGEN_ENERGY target;
 		}
 		PERFORM SET_ADDITIONAL_PARAMS2 2;
 	}
@@ -254,7 +274,7 @@ if(unit->AdditionalParameters2==1){ //Step 5: Transfer orders
 	
 	if (target->IsAlive==1) {
 		if (unit->Objective==$OBJECTIVE_PROGEN_OCTO_RP){		
-			if (target->Class==$OCTO_CLASS) {
+			if (target->Class==$OCTO_CLASS || target->Class==1001) {
 				PERFORM SET_OTHER_OBJECTIVE $OBJECTIVE_MORPH_DISPATCH; // script is octo_rp.ais
 				PERFORM SET_OTHER_OBJECTIVE_PARAMS (unit->ObjectiveParameters)[0,24]; //ground location
 				say "Dispatching RP";
@@ -280,7 +300,7 @@ if(unit->AdditionalParameters2==1){ //Step 5: Transfer orders
 else{say "; failed at step 5";}
 
 if (unit->AdditionalParameters2==0) {//Task complete, now go to idle
-	if (urank==$ARCTICUS_RANK || urank==$ACHRON_RANK){
+	if (special){
 		PERFORM SET_OBJECTIVE 0;
 		PERFORM NOTHING;
 	}

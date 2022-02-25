@@ -1333,11 +1333,6 @@
                             <Comparison>LESS</Comparison>
                             <Value>240</Value>
                         </Condition>
-                        <Condition>
-                            <Resource>P_POWER</Resource>
-                            <Comparison>GREATER</Comparison>
-                            <Value>-100</Value>
-                        </Condition>
                     </Conditions>
                     <Steps>
                         <Step>
@@ -1521,8 +1516,8 @@
                 <Objective>
                     <ObjectiveNumber>24</ObjectiveNumber>
                     <Script>gbs24m_advStr</Script>
-                    <Name>Upgrade Adv Structures</Name>
-                    <Details> \Enable building Spyres \Enable OCTO cloak + regen L1 \Unlock Chronoporting tech and Weapons \tech upgrades</Details>
+                    <Name>Upgrade B-Tech</Name>
+                    <Details> \Enable OCTO cloak + regen L1 \Enable Keeper LC -&gt; QP reversion \Unlock C-Tech and D-Tech upgrades \Unlock Spyre Morph</Details>
                     <Resource1>200</Resource1>
                     <Resource4>50</Resource4>
                 </Objective>
@@ -1535,15 +1530,15 @@
                 <Objective>
                     <ObjectiveNumber>40</ObjectiveNumber>
                     <Script>gbs40m_advStr_working</Script>
-                    <Name>Upgrade Adv Structures</Name>
+                    <Name>Upgrade B-Tech</Name>
                     <Details></Details>
                 </Objective>
                 
                 <Objective>
                     <ObjectiveNumber>26</ObjectiveNumber>
                     <Script>gbs26m_ligo</Script>
-                    <Name>Upgrade Loligo Splicing</Name>
-                    <Details>  \Enable Meiotic Progenesis (Ligos)\Enable Gestation ability (Hydra/Sepiligo)\Remove progen Spyre checks</Details>
+                    <Name>Upgrade L-Tech</Name>
+                    <Details>  \Enable Meiotic Progenesis (Ligos)\Remove progen Spyre checks</Details>
                     <Resource1>500</Resource1>
                     <Resource4>150</Resource4>
                 </Objective>
@@ -1556,15 +1551,15 @@
                 <Objective>
                     <ObjectiveNumber>42</ObjectiveNumber>
                     <Script>gbs42m_ligo_working</Script>
-                    <Name>Upgrade Loligo Splicing</Name>
+                    <Name>Upgrade L-Tech</Name>
                     <Details></Details>
                 </Objective>
                 
                 <Objective>
                     <ObjectiveNumber>28</ObjectiveNumber>
                     <Script>gbs28m_specials</Script>
-                    <Name>Upgrade Specials</Name>
-                    <Details>  \Enable special abilities:\Explosive Spider Probe, Comm Jam, \and Disruptor Beam \Blocks Weapons tech</Details>
+                    <Name>Upgrade S-Tech</Name>
+                    <Details>  \Enable special abilities:\Explosive Spider Probe, Comm Jam, \and Disruptor Beam \Blocks D-Tech</Details>
                     <Resource1>300</Resource1>
                     <Resource4>50</Resource4>
                 </Objective>
@@ -1577,15 +1572,15 @@
                 <Objective>
                     <ObjectiveNumber>41</ObjectiveNumber>
                     <Script>gbs41m_specials_working</Script>
-                    <Name>Upgrade Specials</Name>
+                    <Name>Upgrade S-Tech</Name>
                     <Details></Details>
                 </Objective>
                 
                 <Objective>
                     <ObjectiveNumber>30</ObjectiveNumber>
                     <Script>gbs30m_gate</Script>
-                    <Name>Upgrade Chronoporting</Name>
-                    <Details> \Enable Grekim units to self chronoport \Enable Vampire/Pharopod TSS defense</Details>
+                    <Name>Upgrade C-Tech</Name>
+                    <Details> \Enable Grekim units to self chronoport \Enable Vampire/Pharopod TSS defense \Enable Medusa/Pharoligo siege mode</Details>
                     <Resource1>600</Resource1>
                     <Resource4>50</Resource4>
                 </Objective>
@@ -1598,21 +1593,21 @@
                 <Objective>
                     <ObjectiveNumber>36</ObjectiveNumber>
                     <Script>gbs36m_gate_working</Script>
-                    <Name>Upgrade Chronoporting</Name>
+                    <Name>Upgrade C-Tech</Name>
                     <Details></Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>37</ObjectiveNumber>
                     <Script>gbs37m_gate_na</Script>
-                    <Name>Upgrade Chronoporting</Name>
-                    <Details> \Enable Grekim units to self chronoport \ \Must upgrade Adv Structures</Details>
+                    <Name>Upgrade C-Tech</Name>
+                    <Details> \Enable Grekim units to self chronoport \ \Must upgrade B-Tech</Details>
                 </Objective>
                 
                 <Objective>
                     <ObjectiveNumber>32</ObjectiveNumber>
                     <Script>gbs32m_weapons</Script>
-                    <Name>Upgrade Weapons</Name>
-                    <Details> \Enable OCTO shield regen L2\and Medusa/Pharoligo Disruptor Beam\Increase Dome rate-of-fire\Blocks Specials tech</Details>
+                    <Name>Upgrade D-Tech</Name>
+                    <Details> \Enable OCTO shield regen L2\and Medusa/Pharoligo Disruptor Beam\Increase Dome rate-of-fire\Blocks S-Tech</Details>
                     <Resource1>500</Resource1>
                     <Resource4>150</Resource4>
                 </Objective>
@@ -1625,14 +1620,14 @@
                 <Objective>
                     <ObjectiveNumber>38</ObjectiveNumber>
                     <Script>gbs38m_weapons_working</Script>
-                    <Name>Upgrade Weapons</Name>
+                    <Name>Upgrade D-Tech</Name>
                     <Details></Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>39</ObjectiveNumber>
                     <Script>gbs39m_weapons_na</Script>
-                    <Name>Upgrade Weapons</Name>
-                    <Details> \Upgrade advanced weaponry\ \Must upgrade Adv Structures</Details>
+                    <Name>Upgrade D-Tech</Name>
+                    <Details> \Upgrade advanced weaponry\ \Must upgrade B-Tech</Details>
                 </Objective>
                 
                 <Objective>
@@ -2974,11 +2969,6 @@
                             <Comparison>MODULO_IS_ZERO</Comparison>
                             <Value>18</Value>
                         </Condition>
-                        <Condition>
-                            <Resource>P_POWER</Resource>
-                            <Comparison>GREATER</Comparison>
-                            <Value>-100</Value>
-                        </Condition>
                     </Conditions>
                     <Steps>
                         <Step>
@@ -3907,11 +3897,6 @@
                             <Comparison>LESS</Comparison>
                             <Value>240</Value>
                         </Condition>
-                        <Condition>
-                            <Resource>P_POWER</Resource>
-                            <Comparison>GREATER</Comparison>
-                            <Value>-100</Value>
-                        </Condition>
                     </Conditions>
                     <Steps>
                         <Step>
@@ -3949,13 +3934,6 @@
                             <Type>UnitsDestroyed</Type>
                             <ValueEval>ONE</ValueEval>
                             <Value>1</Value>
-                        </Step>
-                        <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>P_POWER</Type>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>400</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CHANGE_CLASS</PrimitiveAction>
@@ -4323,8 +4301,8 @@
         </ObjectClass>
         <ObjectClass>
             <ClassNumber>1161</ClassNumber>
-            <Name>Adv Structures Mound</Name>
-            <Description>Adv Structures:&#x0D;&#x0A; &#x0D;&#x0A;This Mound is now a dedicated Tech support building&#x0D;&#x0A; &#x0D;&#x0A;Visible to all factions through Fog of War&#x0D;&#x0A;Produces Cuttles</Description>
+            <Name>B-Tech Mound</Name>
+            <Description>B-Tech:&#x0D;&#x0A; &#x0D;&#x0A;This Mound is now a dedicated Tech support building&#x0D;&#x0A; &#x0D;&#x0A;Visible to all factions through Fog of War&#x0D;&#x0A;Produces Cuttles</Description>
             <Model>./grekim/comm_mound.mdl</Model>
             <Rank>50</Rank>
             <Type>2</Type>
@@ -5451,11 +5429,6 @@
                             <Comparison>LESS</Comparison>
                             <Value>240</Value>
                         </Condition>
-                        <Condition>
-                            <Resource>P_POWER</Resource>
-                            <Comparison>GREATER</Comparison>
-                            <Value>-100</Value>
-                        </Condition>
                     </Conditions>
                     <Steps>
                         <Step>
@@ -5544,13 +5517,6 @@
                             <Type>UnitsDestroyed</Type>
                             <ValueEval>ONE</ValueEval>
                             <Value>1</Value>
-                        </Step>
-                        <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>P_POWER</Type>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>400</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -5969,8 +5935,8 @@
         </ObjectClass>
         <ObjectClass>
             <ClassNumber>1162</ClassNumber>
-            <Name>Loligo Splicing Mound</Name>
-            <Description>Loligo Splicing:&#x0D;&#x0A; &#x0D;&#x0A;This Mound is now a dedicated Tech support building&#x0D;&#x0A; &#x0D;&#x0A;Visible to all factions through Fog of War</Description>
+            <Name>L-Tech Mound</Name>
+            <Description>L-Tech:&#x0D;&#x0A; &#x0D;&#x0A;This Mound is now a dedicated Tech support building&#x0D;&#x0A; &#x0D;&#x0A;Visible to all factions through Fog of War</Description>
             <Model>./grekim/comm_mound.mdl</Model>
             <Rank>60</Rank>
             <Type>2</Type>
@@ -6884,11 +6850,6 @@
                             <Comparison>NOT_EQUAL</Comparison>
                             <Value>13</Value>
                         </Condition>
-                        <Condition>
-                            <Resource>P_POWER</Resource>
-                            <Comparison>GREATER</Comparison>
-                            <Value>-100</Value>
-                        </Condition>
                     </Conditions>
                     <Steps>
                         <Step>
@@ -6977,13 +6938,6 @@
                             <Type>UnitsDestroyed</Type>
                             <ValueEval>ONE</ValueEval>
                             <Value>1</Value>
-                        </Step>
-                        <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>P_POWER</Type>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>400</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -7368,8 +7322,8 @@
         </ObjectClass>
         <ObjectClass>
             <ClassNumber>1163</ClassNumber>
-            <Name>Special Abilities Mound</Name>
-            <Description>Special Abilities:&#x0D;&#x0A; &#x0D;&#x0A;This Mound is now a dedicated Tech support building&#x0D;&#x0A; &#x0D;&#x0A;Visible to all factions through Fog of War</Description>
+            <Name>S-Tech Mound</Name>
+            <Description>S-Tech:&#x0D;&#x0A; &#x0D;&#x0A;This Mound is now a dedicated Tech support building&#x0D;&#x0A; &#x0D;&#x0A;Visible to all factions through Fog of War</Description>
             <Model>./grekim/comm_mound.mdl</Model>
             <Rank>60</Rank>
             <Type>2</Type>
@@ -8283,11 +8237,6 @@
                             <Comparison>NOT_EQUAL</Comparison>
                             <Value>13</Value>
                         </Condition>
-                        <Condition>
-                            <Resource>P_POWER</Resource>
-                            <Comparison>GREATER</Comparison>
-                            <Value>-100</Value>
-                        </Condition>
                     </Conditions>
                     <Steps>
                         <Step>
@@ -8376,13 +8325,6 @@
                             <Type>UnitsDestroyed</Type>
                             <ValueEval>ONE</ValueEval>
                             <Value>1</Value>
-                        </Step>
-                        <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>P_POWER</Type>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>400</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -8767,8 +8709,8 @@
         </ObjectClass>
         <ObjectClass>
             <ClassNumber>1164</ClassNumber>
-            <Name>Chronoporting Mound</Name>
-            <Description>Chronoporting:&#x0D;&#x0A; &#x0D;&#x0A;This Mound is now a dedicated Tech support building&#x0D;&#x0A; &#x0D;&#x0A;Visible to all factions through Fog of War</Description>
+            <Name>C-Tech</Name>
+            <Description>C-Tech:&#x0D;&#x0A; &#x0D;&#x0A;This Mound is now a dedicated Tech support building&#x0D;&#x0A; &#x0D;&#x0A;Visible to all factions through Fog of War</Description>
             <Model>./grekim/comm_mound.mdl</Model>
             <Rank>60</Rank>
             <Type>2</Type>
@@ -9667,11 +9609,6 @@
                             <Comparison>NOT_EQUAL</Comparison>
                             <Value>13</Value>
                         </Condition>
-                        <Condition>
-                            <Resource>P_POWER</Resource>
-                            <Comparison>GREATER</Comparison>
-                            <Value>-100</Value>
-                        </Condition>
                     </Conditions>
                     <Steps>
                         <Step>
@@ -9760,13 +9697,6 @@
                             <Type>UnitsDestroyed</Type>
                             <ValueEval>ONE</ValueEval>
                             <Value>1</Value>
-                        </Step>
-                        <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>P_POWER</Type>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>400</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -10151,8 +10081,8 @@
         </ObjectClass>
         <ObjectClass>
             <ClassNumber>1165</ClassNumber>
-            <Name>Weapons Mound</Name>
-            <Description>Advanced Weapons:&#x0D;&#x0A; &#x0D;&#x0A;This Mound is now a dedicated Tech support building&#x0D;&#x0A; &#x0D;&#x0A;Visible to all factions through Fog of War</Description>
+            <Name>D-Tech Mound</Name>
+            <Description>D-Tech:&#x0D;&#x0A; &#x0D;&#x0A;This Mound is now a dedicated Tech support building&#x0D;&#x0A; &#x0D;&#x0A;Visible to all factions through Fog of War</Description>
             <Model>./grekim/comm_mound.mdl</Model>
             <Rank>60</Rank>
             <Type>2</Type>
@@ -11066,11 +10996,6 @@
                             <Comparison>NOT_EQUAL</Comparison>
                             <Value>13</Value>
                         </Condition>
-                        <Condition>
-                            <Resource>P_POWER</Resource>
-                            <Comparison>GREATER</Comparison>
-                            <Value>-100</Value>
-                        </Condition>
                     </Conditions>
                     <Steps>
                         <Step>
@@ -11159,13 +11084,6 @@
                             <Type>UnitsDestroyed</Type>
                             <ValueEval>ONE</ValueEval>
                             <Value>1</Value>
-                        </Step>
-                        <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>P_POWER</Type>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>400</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>

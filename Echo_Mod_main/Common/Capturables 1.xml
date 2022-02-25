@@ -260,23 +260,16 @@
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
-                            <Type>P_CUSTOM_FIELD_8</Type>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>-32</Value>
-                        </Step>
-                        <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-                            <Target>SELF</Target>
                             <Type>U_ENERGY</Type>
                             <ValueEval>SET_TO_VALUE</ValueEval>
-                            <Value>4</Value>
+                            <Value>0</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>U_AMMO</Type>
                             <ValueEval>SET_TO_VALUE</ValueEval>
-                            <Value>1</Value>
+                            <Value>0</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -593,7 +586,7 @@
                         <Condition>
                             <Resource>P_POWER</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>600</Value>
+                            <Value>1200</Value>
                         </Condition>
                         <Condition>
                             <Resource>P_Q_PLASMA</Resource>
@@ -612,7 +605,7 @@
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>600</Value>
+                            <Value>1200</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -703,10 +696,15 @@
                             <Value>12</Value>
                         </Condition>
                         <Condition>
+                            <Resource>P_Q_PLASMA</Resource>
+                            <Comparison>NOT_EQUAL</Comparison>
+                            <Value>0</Value>
+                        </Condition>
+                        <!--Condition>
                             <Resource>P_POWER</Resource>
                             <Comparison>LESS</Comparison>
-                            <Value>400</Value>
-                        </Condition>
+                            <Value>1200</Value>
+                        </Condition-->
                         <Condition>
                             <Resource>U_HP</Resource>
                             <Comparison>EQUAL</Comparison>
@@ -737,7 +735,7 @@
                         </Step>
                     </Steps>
                 </Action>
-                <Action>
+                <!--Action>
                     <ActionNumber>26</ActionNumber>
                     <Identifier>ACTION_GENERATE_RESOURCES_P_HIGH</Identifier>
                     <TimeTaken>0</TimeTaken>
@@ -762,9 +760,14 @@
                             <Value>12</Value>
                         </Condition>
                         <Condition>
+                            <Resource>P_Q_PLASMA</Resource>
+                            <Comparison>NOT_EQUAL</Comparison>
+                            <Value>0</Value>
+                        </Condition>
+                        <Condition>
                             <Resource>P_POWER</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>400</Value>
+                            <Value>1200</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_HP</Resource>
@@ -788,7 +791,7 @@
                             <Value>0</Value>
                         </Step>
                     </Steps>
-                </Action>
+                </Action-->
                 <Action>
                     <ActionNumber>28</ActionNumber>
                     <Identifier>ACTION_BONUS_RESOURCES</Identifier>
@@ -812,6 +815,11 @@
                             <Resource>U_OWNER</Resource>
                             <Comparison>LESS</Comparison>
                             <Value>12</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>P_Q_PLASMA</Resource>
+                            <Comparison>NOT_EQUAL</Comparison>
+                            <Value>0</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_ENERGY</Resource>
@@ -924,7 +932,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>300</Value>
+                            <Value>150</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -982,7 +990,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>250</Value>
+                            <Value>0</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -1011,7 +1019,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>200</Value>
+                            <Value>0</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -1145,11 +1153,18 @@
                     <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
+                    <ObjectiveNumber>9</ObjectiveNumber>
+                    <Script>cs09a_change_team</Script>
+                    <Name>Change Team</Name>
+                    <Details> \Change allegiance: \    Join the target ally-unit's team</Details>
+                    <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
+                </Objective>
+                <Objective>
                     <ObjectiveNumber>10</ObjectiveNumber>
                     <Script>cs20b_simple_upgrade</Script>
                     <Name>Clone</Name>
                     <Details> \Spawn an adjacent Amplifier Relay</Details>
-                    <Resource1>600</Resource1>
+                    <Resource1>1200</Resource1>
                     <Resource4>600</Resource4>
                     <Resource5>100</Resource5>
                 </Objective>
@@ -1205,8 +1220,27 @@
                     <ControlConditions>
                     </ControlConditions>
                 </ControlShortcut>
-                <ControlShortcut>
+                <ControlShortcut> <!-- change teams -->
                     <ControlNumber>1</ControlNumber>
+                    <ControlObjectiveNumber>9</ControlObjectiveNumber>
+                    <ParameterType>UNIT</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut></KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions />
+                </ControlShortcut>
+                <ControlShortcut>
+                    <ControlNumber>2</ControlNumber>
                     <ControlObjectiveNumber>10</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
@@ -1728,7 +1762,7 @@
                         <Condition>
                             <Resource>P_POWER</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>600</Value>
+                            <Value>1200</Value>
                         </Condition>
                         <Condition>
                             <Resource>P_Q_PLASMA</Resource>
@@ -1747,7 +1781,7 @@
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>600</Value>
+                            <Value>1200</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -1838,10 +1872,15 @@
                             <Value>12</Value>
                         </Condition>
                         <Condition>
+                            <Resource>P_Q_PLASMA</Resource>
+                            <Comparison>NOT_EQUAL</Comparison>
+                            <Value>0</Value>
+                        </Condition>
+                        <!--Condition>
                             <Resource>P_POWER</Resource>
                             <Comparison>LESS</Comparison>
-                            <Value>400</Value>
-                        </Condition>
+                            <Value>1200</Value>
+                        </Condition-->
                         <Condition>
                             <Resource>U_HP</Resource>
                             <Comparison>EQUAL</Comparison>
@@ -1872,7 +1911,7 @@
                         </Step>
                     </Steps>
                 </Action>
-                <Action>
+                <!--Action>
                     <ActionNumber>26</ActionNumber>
                     <Identifier>ACTION_GENERATE_RESOURCES_P_HIGH</Identifier>
                     <TimeTaken>0</TimeTaken>
@@ -1897,9 +1936,14 @@
                             <Value>12</Value>
                         </Condition>
                         <Condition>
+                            <Resource>P_Q_PLASMA</Resource>
+                            <Comparison>NOT_EQUAL</Comparison>
+                            <Value>0</Value>
+                        </Condition>
+                        <Condition>
                             <Resource>P_POWER</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>400</Value>
+                            <Value>1200</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_HP</Resource>
@@ -1923,7 +1967,7 @@
                             <Value>0</Value>
                         </Step>
                     </Steps>
-                </Action>
+                </Action-->
                 <Action>
                     <ActionNumber>28</ActionNumber>
                     <Identifier>ACTION_BONUS_RESOURCES</Identifier>
@@ -1947,6 +1991,11 @@
                             <Resource>U_OWNER</Resource>
                             <Comparison>LESS</Comparison>
                             <Value>12</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>P_Q_PLASMA</Resource>
+                            <Comparison>NOT_EQUAL</Comparison>
+                            <Value>0</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_ENERGY</Resource>
@@ -2059,7 +2108,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>300</Value>
+                            <Value>150</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -2117,7 +2166,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>250</Value>
+                            <Value>0</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -2146,7 +2195,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>200</Value>
+                            <Value>0</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -2284,7 +2333,7 @@
                     <Script>cs20b_simple_upgrade</Script>
                     <Name>Clone</Name>
                     <Details> \Spawn an adjacent Amplifier Relay</Details>
-                    <Resource1>600</Resource1>
+                    <Resource1>1200</Resource1>
                     <Resource4>600</Resource4>
                     <Resource5>100</Resource5>
                 </Objective>

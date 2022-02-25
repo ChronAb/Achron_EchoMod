@@ -68,12 +68,42 @@
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/change_commander_carry.abn</Path>
         </AIScript>
         
+        <AIScript>
+            <Name>cs180_human_build</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/human_build.abn</Path>
+        </AIScript>
+        
+        <AIScript>
+            <Name>cs200_simple_upgrade</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/simple_morph.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs210_simple_downgrade</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/simple_unmorph.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs220_release_all</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/releaseAll.abn</Path>
+        </AIScript>
+        
         <!-- Species Selection -->
         <AIScript>
             <Name>cs001_chooser_idle</Name>
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/chooser_idle.abn</Path>
         </AIScript>
+        <AIScript>
+            <Name>cs00s_spawner_idle</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/spawner_idle.abn</Path>
+        </AIScript>
         
+        <AIScript>
+            <Name>cs110_teleport_to_me</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/teleporttome.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs120_release_RTB</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/releaseAll.abn</Path>
+        </AIScript>
         <AIScript>
             <Name>cs170_cloak</Name>
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/cloak.abn</Path>
@@ -97,12 +127,16 @@
         </AIScript>
         
         <AIScript>
-            <Name>cs200_nanite</Name>
+            <Name>cs20s_nanite</Name>
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/nanite.abn</Path>
         </AIScript>
 		<AIScript>
-            <Name>cs220_change_team</Name>
-            <Path>./Achron_EchoMod/Echo_Mod_main/ais/change_team.abn</Path>
+            <Name>cs20s_change_team</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/transfer_ownership.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs21s_simple_downgrade</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/simple_unmorph.abn</Path>
         </AIScript>
 
         <!-- amplifier scripts -->
@@ -113,6 +147,10 @@
         <AIScript>
             <Name>cs07a_freeze_beam</Name>
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/stopfreezebeam.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs09a_change_team</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/transfer_ownership.abn</Path>
         </AIScript>
         <AIScript>
             <Name>cs17a_amp_reaph</Name>

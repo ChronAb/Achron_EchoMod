@@ -146,16 +146,11 @@
                     <Value>-45</Value>
                 </Step>
                 <Step>
-                    <PrimitiveAction>CLEAR_STATUS</PrimitiveAction>
-                    <Target>SELF</Target>
-                    <Type>STATUS_CLOAKED</Type>
-                </Step>
-                <Step>
                     <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                     <Target>SELF</Target>
-                    <Type>U_ARMOUR</Type>
-                    <ValueEval>SET_TO_VALUE</ValueEval>
-                    <Value>0</Value>
+                    <Type>U_ENERGY</Type>
+                    <ValueEval>ONE</ValueEval>
+                    <Value>-10</Value>
                 </Step>
             </ChronoportArrivedActionSteps>
             <Animations>
@@ -928,7 +923,7 @@
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>200</Value>
+                            <Value>100</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -971,7 +966,7 @@
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-200</Value>
+                            <Value>-100</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -1132,6 +1127,11 @@
                             <Comparison>GEQUAL</Comparison>
                             <Value>10</Value>
                         </Condition>
+                        <Condition>
+                            <Resource>P_Q_PLASMA</Resource>
+                            <Comparison>GEQUAL</Comparison>
+                            <Value>400</Value>
+                        </Condition>
                     </Conditions>
                     <Steps>
                         <Step>
@@ -1211,7 +1211,7 @@
                 <Action>
                     <ActionNumber>26</ActionNumber>
                     <Identifier>ACTION_MORPH_COMM</Identifier>
-                    <TimeTaken>540</TimeTaken>
+                    <TimeTaken>228</TimeTaken>
                     <ForceObjectAction>0</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
                     <MutexAction>0</MutexAction>
@@ -1856,7 +1856,7 @@
                         <Condition>
                             <Resource>P_POWER</Resource>
                             <Comparison>GREATER</Comparison>
-                            <Value>200</Value>
+                            <Value>400</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_LAST_ATTACKED_DIR</Resource>
@@ -1905,7 +1905,7 @@
                         <Condition>
                             <Resource>P_POWER</Resource>
                             <Comparison>GREATER</Comparison>
-                            <Value>200</Value>
+                            <Value>800</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -2001,7 +2001,7 @@
                     <ObjectiveNumber>3</ObjectiveNumber>
                     <Script>cs030_atk_move</Script>
                     <Name>Attack</Name>
-                    <Details>Attack target or Attack-Move to location \2X ground attack when above 60 HP, 10 E\[Weapons Avg Damage/10secs ]\Gnd: 30 (+30),  R 28,  Sta B\Air: 60,  R 24,  SR 4,  Sta C</Details>
+                    <Details>Attack target or Attack-Move to location \2X gnd atk when > 60 HP, 10 E, 400 QP\[Weapons Avg Damage/10secs]\Gnd: 30 (+30),  R 28,  Sta B\Air: 60,  R 24,  SR 4,  Sta C</Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
                     <ParameterType>POSITION</ParameterType>
                 </Objective>
@@ -2072,7 +2072,7 @@
                     <ObjectiveNumber>12</ObjectiveNumber>
                     <Script>cs120_cport_na</Script>
                     <Name>Chronoport</Name>
-                    <Details>   Not Available\    Requires Chronoporting upgrade</Details>
+                    <Details>   Not Available\    Requires C-Tech\    upgrade at the MOUND</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>13</ObjectiveNumber>
@@ -2113,8 +2113,8 @@
                     <ObjectiveNumber>17</ObjectiveNumber>
                     <Script>gs172_sepi_reaph</Script>
                     <Name>Reaph</Name>
-                    <Details> \Defensive support building\Repairs friendly units and structures</Details>
-                    <Resource1>200</Resource1>
+                    <Details> \Defensive support building\Repairs friendly units and structures\ \Revives frozen and jammed allies</Details>
+                    <Resource1>100</Resource1>
                     <Resource4>0</Resource4>
                     <Resource6>20</Resource6>
                     <ObjectiveControlShortcutNumber>10</ObjectiveControlShortcutNumber>
@@ -2262,7 +2262,7 @@
                         <SelectTarget>0</SelectTarget>
                     </Flags>
                     <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>6</EstTimeDist>
+                    <EstTimeDist>0</EstTimeDist>
                     <Sound>Sound0</Sound>
                     <ControlConditions>
                         <ControlCondition>
@@ -2353,11 +2353,6 @@
                     <Sound>Sound0</Sound>
                     <ControlConditions>
                         <ControlCondition>
-                            <Resource>SCENARIO_CONSTRAINTS</Resource>
-                            <Comparison>BITMASK_NOT</Comparison>
-                            <Value>4</Value>
-                        </ControlCondition>
-                        <ControlCondition>
                             <Resource>NUM_UNITS_SELECTED</Resource>
                             <Comparison>EQUAL</Comparison>
                             <Value>1</Value>
@@ -2388,11 +2383,6 @@
                     <EstTimeDist>0</EstTimeDist>
                     <Sound>Sound0</Sound>
                     <ControlConditions>
-                        <ControlCondition>
-                            <Resource>SCENARIO_CONSTRAINTS</Resource>
-                            <Comparison>BITMASK_NOT</Comparison>
-                            <Value>4</Value>
-                        </ControlCondition>
                         <ControlCondition>
                             <Resource>NUM_UNITS_SELECTED</Resource>
                             <Comparison>GREATER</Comparison>
@@ -2425,11 +2415,6 @@
                     <EstTimeDist>6</EstTimeDist>
                     <Sound>Sound0</Sound>
                     <ControlConditions>
-                        <ControlCondition>
-                            <Resource>SCENARIO_CONSTRAINTS</Resource>
-                            <Comparison>BITMASK_NOT</Comparison>
-                            <Value>8</Value>
-                        </ControlCondition>
                         <Condition>
                             <Resource>P_ADVANCEMENTS</Resource>
                             <Comparison>BITMASK_NOT</Comparison>
@@ -2456,15 +2441,10 @@
                         <ButtonInvisible>0</ButtonInvisible>
                         <SelectTarget>0</SelectTarget>
                     </Flags>
-                    <EstTimeConst>540</EstTimeConst>
+                    <EstTimeConst>228</EstTimeConst>
                     <EstTimeDist>6</EstTimeDist>
                     <Sound>Sound0</Sound>
                     <ControlConditions>
-                        <ControlCondition>
-                            <Resource>SCENARIO_CONSTRAINTS</Resource>
-                            <Comparison>BITMASK_NOT</Comparison>
-                            <Value>8</Value>
-                        </ControlCondition>
                         <ControlCondition>
                             <Resource>U_IS_CARRIED</Resource>
                             <Comparison>EQUAL</Comparison>

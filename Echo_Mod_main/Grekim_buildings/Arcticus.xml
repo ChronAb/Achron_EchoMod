@@ -13,13 +13,13 @@
         <ObjectClass>
             <ClassNumber>1050</ClassNumber>
             <Name>Arcticus</Name>
-            <Description>ARCTICUS:&#x0D;&#x0A;&#x0D;&#x0A;Advanced progeneration hub&#x0D;&#x0A; &#x0D;&#x0A;Produces base and Ligo class units&#x0D;&#x0A;Cloaks and activates basic progenitors&#x0D;&#x0A;Can move itself</Description>
+            <Description>ARCTICUS:&#x0D;&#x0A;&#x0D;&#x0A;Advanced progeneration hub&#x0D;&#x0A; &#x0D;&#x0A;Produces Base and Loligo class Grekim&#x0D;&#x0A;Cloaks and activates basic progenitors&#x0D;&#x0A;Can move itself</Description>
             <Model>./grekim/arcticus.mdl</Model>
             <Rank>88</Rank>
             <Type>2</Type>
             <PrioritySelectionRank>0</PrioritySelectionRank>
             <MaxHealth>1000</MaxHealth>
-            <MaxEnergy>240</MaxEnergy>
+            <MaxEnergy>250</MaxEnergy>
             <MaxArmor>0</MaxArmor>
             <MaxAmmo>1</MaxAmmo>
             <SightRadius>26</SightRadius>
@@ -43,7 +43,7 @@
                 <RemainUpright>1</RemainUpright>
                 <NonGroupSelection>1</NonGroupSelection>
                 <ShowVisibilityRange>0</ShowVisibilityRange>
-                <ShowThroughFogOfWar>0</ShowThroughFogOfWar>
+                <ShowThroughFogOfWar>1</ShowThroughFogOfWar>
                 <AlwaysShowVisibility>0</AlwaysShowVisibility>
                 <SeeThroughObjects>1</SeeThroughObjects>
                 <ActiveLocatorBeacon>0</ActiveLocatorBeacon>
@@ -237,7 +237,7 @@
                 <Action>
                     <ActionNumber>0</ActionNumber>
                     <Identifier>ACTION_CREATE</Identifier>
-                    <TimeTaken>180</TimeTaken>
+                    <TimeTaken>288</TimeTaken>
                     <ForceObjectAction>0</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
                     <MutexAction>0</MutexAction>
@@ -248,7 +248,15 @@
                     <AllowActionWhenStopped>0</AllowActionWhenStopped>
                     <LobProjectilePath>0</LobProjectilePath>
                     <Conditions />
-                    <Steps />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_ENERGY</Type>
+                            <ValueEval>SET_TO_VALUE</ValueEval>
+                            <Value>150</Value>
+                        </Step>
+                    </Steps>
                 </Action>
                 <Action>
                     <ActionNumber>1</ActionNumber>
@@ -467,7 +475,7 @@
                             <Target>SELF</Target>
                             <Type>U_ENERGY</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>60</Value>
+                            <Value>50</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CREATE_UNIT</PrimitiveAction>
@@ -575,7 +583,7 @@
                             <Target>SELF</Target>
                             <Type>U_ENERGY</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>60</Value>
+                            <Value>50</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CREATE_UNIT</PrimitiveAction>
@@ -683,7 +691,7 @@
                             <Target>SELF</Target>
                             <Type>U_ENERGY</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>60</Value>
+                            <Value>50</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CREATE_UNIT</PrimitiveAction>
@@ -776,7 +784,7 @@
                         <Condition>
                             <Resource>U_ENERGY</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>240</Value>
+                            <Value>150</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -785,7 +793,7 @@
                             <Target>SELF</Target>
                             <Type>U_ENERGY</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>240</Value>
+                            <Value>150</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -798,6 +806,9 @@
                 </Action>
                 <Action>
                     <ActionNumber>20</ActionNumber>
+                    <!-- vestigial feature: 
+                    This allows sacrificing the Arct to build at low E 
+                    Currently disabled by ai script-->
                     <Identifier>ACTION_LIGO_E_DIE</Identifier>
                     <TimeTaken>1</TimeTaken>
                     <ForceObjectAction>1</ForceObjectAction>
@@ -822,7 +833,7 @@
                         <Condition>
                             <Resource>U_ENERGY</Resource>
                             <Comparison>LESS</Comparison>
-                            <Value>240</Value>
+                            <Value>150</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -896,7 +907,7 @@
                         <Condition>
                             <Resource>U_ENERGY</Resource>
                             <Comparison>LESS</Comparison>
-                            <Value>240</Value>
+                            <Value>250</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -1126,7 +1137,7 @@
                         <Condition>
                             <Resource>U_HP</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>190</Value>
+                            <Value>990</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_SECOND_OWNER</Resource>
@@ -1282,7 +1293,7 @@
                     <Name>Produce Octo</Name>
                     <Details>Resilient melee assault trooper\Good at absorbing enemy fire\Cannot attack air targets\Morphs into RP or Dome\Invisible in Fog of War</Details>
                     <Resource4>100</Resource4>
-                    <Resource6>60</Resource6>
+                    <Resource6>50</Resource6>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>39</ObjectiveNumber>
@@ -1290,7 +1301,7 @@
                     <Name>Produce Squiddy/Sepi</Name>
                     <Details>Cloaking support sharpshooter\Low HP, high DPS vs ground and air\Cloaks while moving or idle\Morphs into Mound or Reaph\Invisible in Fog of War</Details>
                     <Resource4>100</Resource4>
-                    <Resource6>60</Resource6>
+                    <Resource6>50</Resource6>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>40</ObjectiveNumber>
@@ -1298,31 +1309,31 @@
                     <Name>Produce Pharo</Name>
                     <Details>Heavily armored shock grenadier\Detects cloaked enemies\Only effective vs light ground targets\Morphs into Spyre or Arcticus\Invisible in Fog of War</Details>
                     <Resource4>100</Resource4>
-                    <Resource6>60</Resource6>
+                    <Resource6>50</Resource6>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>41</ObjectiveNumber>
                     <Script>gs41q_progen_oligo</Script>
                     <Name>Produce Cthulhu/Octoligo</Name>
-                    <Details>Biological heavy-support armor\Provides high-impact swarm supression\Devastating vs infantry and grouped aircraft\Can progenerate base Sepi and Pharo pair\Can Nanite Infect (req. Specials tech)</Details>
+                    <Details>Biological heavy-support armor\Slow, high-impact brawler\Devastating vs aircraft and swarms\ \Vulnerable to burst damage</Details>
                     <Resource4>400</Resource4>
-                    <Resource6>240</Resource6>
+                    <Resource6>150</Resource6>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>42</ObjectiveNumber>
                     <Script>gs42q_progen_sligo</Script>
                     <Name>Produce Hydra/Sepiligo</Name>
-                    <Details>Very fast biological air supremacy platform\Variable rate of fire\Devastating vs other aircraft\Effective in groups vs ground\Can progenerate base Octo and Pharo pair</Details>
+                    <Details> \Durable air supremacy bio-gunship\Very fast, but attacks slowly after moving\Devastating vs aircraft when energized</Details>
                     <Resource4>600</Resource4>
-                    <Resource6>240</Resource6>
+                    <Resource6>150</Resource6>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>43</ObjectiveNumber>
                     <Script>gs43q_progen_pligo</Script>
                     <Name>Produce Medusa/Pharoligo</Name>
-                    <Details>Slow biological siege aircraft\Fires slow moving explosive energy blasts\Strong vs long range stationary targets\Can progenerate base Octo and Sepi pair\Disruption beam (Specials research)</Details>
+                    <Details> \Slow, standoff-range, saturation bio-bomber\Fires slow moving, explosive energy blasts\Devastating vs buildings and infantry</Details>
                     <Resource4>400</Resource4>
-                    <Resource6>240</Resource6>
+                    <Resource6>150</Resource6>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>50</ObjectiveNumber>
@@ -1334,19 +1345,19 @@
                     <ObjectiveNumber>52</ObjectiveNumber>
                     <Script>gs52q_progen_oligo_na</Script>
                     <Name>Cthulhu/Octoligo</Name>
-                    <Details> \Must be near a Spyre or research\ Loligo Tech</Details>
+                    <Details> \Must be near a Spyre\or upgrade L-Tech</Details>
                 </Objective>					
                 <Objective>
                     <ObjectiveNumber>53</ObjectiveNumber>
                     <Script>gs53q_progen_sligo_na</Script>
                     <Name>Hydra/Sepiligo</Name>
-                    <Details> \Must be near a Spyre or research\ Loligo Tech</Details>
+                    <Details> \Must be near a Spyre\or upgrade L-Tech</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>54</ObjectiveNumber>
                     <Script>gs54q_progen_pligo_na</Script>
                     <Name>Medusa/Pharoligo</Name>
-                    <Details> \Must be near a Spyre or research\ Loligo Tech</Details>
+                    <Details> \Must be near a Spyre\or upgrade L-Tech</Details>
                 </Objective>
             </Objectives>
             <ControlShortcuts>
@@ -1440,7 +1451,7 @@
                         <ButtonInvisible>0</ButtonInvisible>
                         <SelectTarget>0</SelectTarget>
                     </Flags>
-                    <EstTimeConst>360</EstTimeConst>
+                    <EstTimeConst>468</EstTimeConst>
                     <EstTimeDist>6</EstTimeDist>
                     <Sound>Sound0</Sound>
                     <ControlConditions>
@@ -1587,7 +1598,7 @@
             <Type>2</Type>
             <PrioritySelectionRank>0</PrioritySelectionRank>
             <MaxHealth>250</MaxHealth>
-            <MaxEnergy>240</MaxEnergy>
+            <MaxEnergy>250</MaxEnergy>
             <MaxArmor>0</MaxArmor>
             <MaxAmmo>1</MaxAmmo>
             <SightRadius>35</SightRadius>
@@ -1848,7 +1859,15 @@
                     <AllowActionWhenStopped>0</AllowActionWhenStopped>
                     <LobProjectilePath>0</LobProjectilePath>
                     <Conditions />
-                    <Steps />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_ENERGY</Type>
+                            <ValueEval>SET_TO_VALUE</ValueEval>
+                            <Value>150</Value>
+                        </Step>
+                    </Steps>
                 </Action>
                 <Action>
                     <ActionNumber>1</ActionNumber>
