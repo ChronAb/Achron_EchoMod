@@ -1,5 +1,13 @@
 <?xml version="1.0" ?>
 <ResequenceObjectClassSet>
+    <!-- Pharoligo
+        cost: 400 QP, 150 Arct E (= 400-800 QP)
+        speed: 4.5 sq/s
+        HP: 220 (0.55 HP/QP)
+        AG: 20/s (5 dps/100QP, *2.75)
+            siege: 40/s (10 dps/100QP, *5.5)
+        AA: 0
+    -->
     <AIScripts />
     <Sounds>
         <!-- specific -->

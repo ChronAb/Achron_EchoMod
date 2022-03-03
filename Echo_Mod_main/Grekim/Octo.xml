@@ -1,5 +1,14 @@
 <?xml version="1.0" ?>
 <ResequenceObjectClassSet>
+    <!-- Octo
+        cost: 100 QP, 5 progen E
+        speed: 3 sq/s
+        HP: 120 (1.2 HP/QP)
+            B-tech: 300 (3 HP/QP)
+            D-tech: 480 (4.8 HP/QP)
+        AG: 3/s (3 dps/100QP, *3.6, *9, *14.4)
+        AA: 0/s
+    -->
     <AIScripts />
     <Sounds>
         <!-- specific -->

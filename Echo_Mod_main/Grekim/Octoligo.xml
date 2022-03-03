@@ -1,5 +1,12 @@
 <?xml version="1.0" ?>
 <ResequenceObjectClassSet>
+    <!-- Octoligo
+        cost: 400 QP, 150 Arct E (= 400-800 QP)
+        speed: 1.8 sq/s
+        HP: 1200 (3 HP/QP)
+        AG: 20/s (5 dps/100QP, *15.0)
+        AA: 8/s (2 dps/100QP, *6.0)
+    -->
     <AIScripts />
     <Sounds>
         <!-- specific -->

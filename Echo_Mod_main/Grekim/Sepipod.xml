@@ -1,5 +1,14 @@
 <?xml version="1.0" ?>
 <ResequenceObjectClassSet>
+    <!-- Sepipod
+        cost: 400 QP, 5 progen E
+        speed: 9 sq/s
+        HP: 180 (0.45 HP/QP)
+        AG: 27/s (6.75 dps/100QP, *3.0), 360 sta
+            empty: 9/s (2.25 dps/100QP, *1.0)
+        AA: 27/s (6.75 dps/100QP, *3.0), 360 sta
+            empty: 9/s (2.25 dps/100QP, *1.0)
+    -->
     <AIScripts />
     <Sounds>
         <!-- specific -->

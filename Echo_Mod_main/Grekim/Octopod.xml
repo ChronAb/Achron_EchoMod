@@ -1,5 +1,12 @@
 <?xml version="1.0" ?>
 <ResequenceObjectClassSet>
+    <!-- Octopod
+        cost: 300 QP, 5 progen E
+        speed: 3 sq/s
+        HP: 360 (1.2 HP/QP)
+        AG: 15/s (5 dps/100QP, *6)
+        AA: 0/s
+    -->
     <AIScripts />
     <Sounds>
         <!-- specific -->

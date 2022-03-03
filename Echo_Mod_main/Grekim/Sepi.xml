@@ -1,5 +1,13 @@
 <?xml version="1.0" ?>
 <ResequenceObjectClassSet>
+    <!-- Sepi
+        cost: 100 QP, 5 progen E
+        speed: 3 sq/s
+        HP: 90 (0.9 HP/QP)
+        AG: 3/s (3 dps/100QP, *2.7)
+            400qp bonus: 6/s (6 dps/100QP, *3.6)
+        AA: 6/s (6 dps/100QP, *5.4)
+    -->
     <AIScripts />
     <Sounds>
         <!-- specific -->

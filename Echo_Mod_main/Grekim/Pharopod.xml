@@ -1,5 +1,12 @@
 <?xml version="1.0" ?>
 <ResequenceObjectClassSet>
+    <!-- Pharopod
+        cost: 500 QP, 5 progen E
+        speed: 6 sq/s
+        HP: 165 (0.33 HP/QP)
+        AG: 30/s (6 dps/100QP, *1.98)
+        AA: 0
+    -->
     <AIScripts />
     <Sounds>
         <!-- specific -->

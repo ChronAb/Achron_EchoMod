@@ -1,5 +1,13 @@
 <?xml version="1.0" ?>
 <ResequenceObjectClassSet>
+    <!-- Pharo
+        cost: 100 QP, 5 progen E
+        speed: 2 sq/s
+        HP: 360 (3.6 HP/QP)
+        HP (shield): 540 (5.4 HP/QP)
+        AG: 3/s (3 dps/100QP, *10.8)
+        AA: 0/s
+    -->
     <AIScripts />
     <Sounds>
         <!-- specific -->
