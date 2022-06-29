@@ -1,0 +1,952 @@
+To use the skin compiler:
+
+ResequenceSkinCompiler someskin.sks
+
+This will produce the file someskin.skn.  All referenced images should be placed relative to the sks file.
+File extensions for images, png and jpg, and file extensions for sounds, ogg and wav, are not needed, the skin will automatically assume png over jpg, and ogg over wav.
+
+See skins/example_skin/smallskin.sks for a working example.
+
+Overall skin file format for *.sks files:
+
+Header
+ required fields
+ required textures
+Body
+ code
+
+===================================================================
+required fields at start of file
+
+resolution = width, height			//width and height of the skin.  if width is 0, then the engine will
+									// scale the width to match the height via the resolution's aspect ratio
+									// (useful for making a skin that doesn't stretch, but rather moves windows around)
+font
+font_color
+warning_font_color
+point_width
+unit_icon_width
+num_unit_icon_colums
+control_color
+time_slider_static_hashes
+time_slider_dynamic_hashes
+time_wave_default_color
+unit_messages_history
+team_color_image
+gauge_image
+chronoenergy_gauge_image
+status_icon_image
+resource_icon_image
+background_music
+
+------------------------------------
+required textures at start of file
+
+MouseOverTile
+HighlightCommander
+CommanderArrowLine
+HighlightPreChronoportee
+PreChronoporteeArrowLine
+SelectedAlly
+SelectedEnemy
+SelectedNoOwner
+HighlightUnit
+MarkTerrainTile
+PositionClassOK
+PositionClassBad
+UnitVisibilityRange
+UnitDistanceIndicator
+TimelineUpdater
+TimelineUndo
+TimelineChronoportBoundary
+TimelineEstimatedObjectiveCompletionTime
+TimelineChronoenergyLimit
+
+===================================================================
+Data types:
+
+float, e.g. 3.9,  -4.4e-8
+integer, e.g. 4, -8, 0x1A
+string, e.g. "this is a string"
+
+===================================================================
+keywords / code expression:
+	macro <filename> <replacement list>
+			includes filename with macros.  replacement list is a list of key value pairs, separated by "=" and ",",
+			all surrounded by < >'s, which in which the keys in the replacement list are used to replace variables preceeded
+			by a $ in filename.  for example,
+			macro somefile.ski <paramA = some_var, paramB = other_var>
+			would replace all occurences of $paramA in somefile.ski with some_var, and $paramB with other_var
+	when <list of variables, !infront means 'NOT'> <action>
+			if all of the conditions are true, perform the action
+	when <list of variables, !infront means 'NOT'> { <action1> <action2> ...}
+			conditional execution of the entire group of actions
+			the group may include any other set of actions, including another when block
+			be careful when putting entire windows in conditional execution -make sure the parent window
+			has size 0,0 if none of the child window's code will be run
+	persistent <variable_name>
+			indicates that the variable is persistant and will remain in its current state between
+			even after the game exits
+	export <variable_name>
+			indicates that the variable is to be exported so that it can be set by in-game scripting
+	synchronized <variable_name>
+			indicates that the variable is to be synchronized to all players
+	origin <x> <y>
+			sets the origin of the window's position relative to the parent window
+			<x> and <y> should be on the range [0.0, 1.0].  for x, 0.0 = left, 1.0 = right,
+			and for y, 0.0 = top, 1.0 = bottom.  defaults to 0.0,0.0 if not specified.
+	pos <x> <y>
+			set the window position to x,y
+			will interrupt and reset a smooth_pos or slide_pos
+	pos_x_scale <variable> <variable_minimum> <variable_maximum> <x_minimum> <x_maximum>
+			takes the variable, in the range of [variable_minimum,variable_maximum], and sets the corresponding position interpolated in [x_minimum,x_maximum]
+	pos_y_scale <variable> <variable_minimum> <variable_maximum> <y_minimum> <y_maximum>
+			like pos_x_scale, but with y axis
+	pos_mouse
+			set the window position to that of the mouse
+	pos_mouse_center
+			sets the window position such that it is centered at the mouse.
+			note that the size must be set properly before pos_mouse_center
+	pos_size_selected
+			sets the window's position and size so that it matches the box area selected by the user
+	slide_pos = <time> <x_start> <y_start>  <x_end> <y_end>
+			slides the position from start to end over the specified time (constant velocity)
+			need to do a regular 'pos', or a different 'slide/smooth_pos' to reset and reanimate
+	smooth_pos = <time> <x_start> <y_start>  <x_end> <y_end>
+			smoothly slides the position from start to end over the specified time, accelerating and decelerating
+			need to do a regular 'pos', or a different 'slide/smooth_pos' to reset and reanimate
+	size <x> <y>   -use 0, 0 to indicate not to draw window
+			set the size of the window to x width, and y height
+			will interrupt and reset a smooth_size or slide_size
+			if either x or y is negative, then the number is treated as the distance the child window goes
+			to the edge of the parent window.  e.g. x = -15 would mean 15 units to the left of where the
+			parent window ends
+	slide_size = <time> <x_start> <y_start>  <x_end> <y_end>
+			slides the size from start to end over the specified time (constant velocity)
+			need to do a regular 'size', or a different 'slide/smooth_size' to reset and reanimate
+	smooth_size = <time> <x_start> <y_start>  <x_end> <y_end>
+			smoothly slides the size from start to end over the specified time, accelerating and decelerating
+			need to do a regular 'size', or a different 'slide/smooth_size' to reset and reanimate
+	texture = <texture_name> <x_start_coord> <y_start_coord> <x_end_coord> <y_end_coord>
+			set the texture to texture_name (without the pcx suffix), with corresponding texture coordinates (based on texturemap pixels distances)
+	animated_texture = <time_in_seconds>
+	{
+		<time_fraction1>  <texture_name1> <x_start_coord1> <y_start_coord1> <x_end_coord1> <y_end_coord1>
+		<time_fraction2>  <texture_name2> <x_start_coord2> <y_start_coord2> <x_end_coord2> <y_end_coord2>
+	}
+			animates the texture over the course of time_in_seconds.  time_fractionX is from 0.0->1.0, representing
+			the fraction of time_in_seconds.  the rest of the parameters are like the 'texture' keyword
+	looped_texture
+			just like animated_texture, except that it loops
+	play_sound = <channel_number> <sound_file_name>
+		starts playing the sound specified by sound_file_name.  note that file suffixes should be left off
+		can only play one sound at a time, and play_sound should only be called during transitions (not repeatedly)
+		channel_number specifies which channel to use.  0 is typically music, 1 is menu sounds (that do not change speeds), and 2 and 3 are designated for cinematics (that do change speeds)
+
+	built_in <built-in window type>
+			sets the texturemap to be a built-in window
+	text <optional font> <string | variable>
+			draws the string to the screen, wrapped around the window width.  either a skin variable or a string must be supplied.
+			a string must be surrounded by double quotes. escaped characters are: \n \" \\
+			optional font must be in the form of:  {"Font Name", fontsize}
+	warning_text <string | variable>
+			just like text command, but draws specified text as warning
+	color_text <r> <g> <b> <a> <string | variable>
+			just like text command, but preceeded by rgba color
+
+	set <variable>
+			sets the variable to 'true'
+	clear <variable>
+			sets the variable to 'false'
+	toggle <variable>
+			toggles the variable between 'true' and 'false'
+	setval <variable> <string | float | integer | variable>
+			sets the variable's value to the string or variable specified
+	setval_readable_absolute_time <variable> <variable>
+			sets the variable to a human readable string representing the absolute time specified
+	setval_readable_relative_time <variable> <variable>
+			sets the variable to a human readable string representing the RELATIVE time specified
+	setval_mouse_x_scale <variable> <variable_minimum> <variable_maximum> <x_minimum> <x_maximum>
+			sets the variable's value to the position of the mouse within [x_minimum,x_maximum], scaled to [variable_minimum,variable_maximum]
+	setval_mouse_y_scale <variable> <variable_minimum> <variable_maximum> <y_minimum> <y_maximum>
+		like setval_mouse_x_scale but for y axis
+	eval <variable> = <variable> <operator> <variable>
+		or
+	eval <variable> = <operator> <variable>
+		performs an operation on variables based on the operator, storing the result in the first variable
+		if either variable is a float or string, the result will generally be converted to a float or string
+		for operations involving two variables (storing in a third), the operator may be one of:
+			+			add
+			-			subtract
+			*			multiply
+			/			divide
+			%			modulus
+			|>			max
+			<|			min
+			**			raise to the power of
+			atan2		arctangent
+			==			equals; if both are strings, then it will only evaluate to true if both strings are identical
+			<			less than
+			<=			less than or equal to
+			>			greater than
+			>=			greater than or equal to
+			!=			not equal to; if both are strings, then it will only evaluate to false if both strings are identical
+			||			logical or
+			&&			logical and
+			!			logical not
+			|			bitwise or
+			&			bitwise and
+			~			bitwise not
+			concat		concatenates the two strings together
+			chop		if the first string ends with the second string, that part is removed
+		for operations involving one variable (storing in a second), the operator may be one of:
+			sin			sine
+			cos			cosine
+			tan			tangent
+			log			logarithm
+			abs			absolute value
+			asin		arcsine
+			acos		arccosine
+			!			logical not
+			int			convert to integer
+			float		convert to float
+
+	set_console <string | variable>
+			sets the console's value to the string or variable specified
+	get_console <variable>
+			gets the console's value and copies it to the variable specified
+	set_after <variable> <time>
+			sets the variable after the time (in seconds) given
+			-can only have one of these active per window at a time (if do two set_after's, then the first one will not be set)
+	clear_after <variable> <time>
+			just like set_after, except clears the variable
+
+	set_achievement_state <variable_achievement> <variable_value>
+			sets the achievement specified by the contents of variable_achievement to the value of variable_value
+	get_achievement_state <variable_achievement> <variable_value>
+			gets the achievement specified by the contents of variable_achievement and stores it into variable_value
+
+	get_player_name <variable_player_number> <variable_value>
+			gets the player name specified by the player number and stores it into variable_value
+
+	get_selected_unit_number <variable_selection_index> <variable>
+			gets the unit number of the unit specified by the selection index and stores it into variable
+
+	get_group_unit_number <variable_group_number> <variable_group_index> <variable>
+			gets the unit number of the unit specified by the group_number and group_index and stores it into variable
+
+	get_unit_attribute <variable_unit_number> <variable_field_name> <variable>
+			gets the value of the unit's specified field (by field_name) and stores it into variable
+
+	bind press <variable | "keyname"> <variable>
+			when the key specified by keyname is pressed, the 2nd variable will be set (skin is responsible for clearing it to receive another notification)
+	bind release <variable | "keyname"> <variable | string>
+			when the key specified by keyname is released, the 2nd variable will be set (skin is responsible for clearing it to receive another notification)
+	bind down <variable | "keyname"> <variable | string>
+			the variable will be set to true when the key is down, false when it is up
+	unbind press <variable | keyname> <variable | string>
+			unbinds the key press variable
+	unbind release <variable | keyname> <variable | string>
+			unbinds the key release variable
+	unbind down <variable | keyname> <variable | string>
+			unbinds the key down variable
+
+===================================================================
+built-in variables:
+
+Name										//Description
+----------------------------------------------------------
+
+Init										//window initialized
+EngineReady									//engine is ready and connected (not set when engine isn't running, e.g., main menu, editor, etc.)
+MouseOver									//mouse is over the current window
+MouseOverTopWindow							//mouse is over the current window and the current window is the top one rendered under the mouse
+IgnoreMouse									//when set, the window is still rendered, but interaction with the mouse is ignored
+MouseOverUnit								//if mouse is over unit, set to the unit number it is over. otherwise, it is set to 0
+MouseOverEnemy								//mouse is over enemy unit (if not set, then could be over non-enemy)
+MouseOverOwnTeam							//mouse is over own team unit (if not set, then could be over another team's unit)
+MouseLeftClick								//left mouse button down
+MouseLeftDblClick							//left mouse button double clicked
+MouseRightClick								//right mouse button down
+MouseMiddleClick							//middle mouse button down
+MouseLeftRelease							//left mouse button up
+MouseRightRelease							//right mouse button up
+MouseMiddleRelease							//middle mouse button up
+MouseWheelPositionDelta						//amount that the mouse wheel has moved. should be reset to 0 after it is read to accumulate the new deltas
+MouseSelectedTiles							//true when the mouse should select a location
+NextClickTerrain							//clicked a command, and need to click on terrain next
+NextClickUnit								//clicked a command, and need to click on unit next
+NextClickTime								//clicked a command, and need to click on timeslider next
+ClearNextClick								//when set, clears the current command selection (and clears NextClickXXXXX)
+SelectionBox								//when set, the user has dragged the mouse to select an area
+MouseMapPositionX							//x position that the mouse is pointing to on the playable area
+MouseMapPositionY							//y position that the mouse is pointing to on the playable area
+MouseMapPositionZ							//z position that the mouse is pointing to on the playable area
+
+PresentTime									//current present time in time ticks
+CurrentTime									//current time being viewed in time ticks
+TimeWindowStartTime							//current start of the time window in time ticks
+TimeWindowEndTime							//current start of the time window in time ticks
+MouseOverTime								//time under mouse in time ticks
+EstimatedCompletionTime						//when controls estimate a time, set to the estimated completion time in time ticks
+
+WindowOpacity								//defaults to 1.0 for each window.  can be set per-window to the opacity desired, [0.0-1.0]
+WindowColoredByPlayer						//defaults to -1.  if set to a player number, then will apply that player's color to the window
+
+QuickControl1Enabled						//when quick controls are rendered, no quick control 1 exists, this variable is set
+QuickControl2Enabled						//when quick controls are rendered, no quick control 1 exists, this variable is set
+QuickControl3Enabled						//when quick controls are rendered, no quick control 1 exists, this variable is set
+QuickControl4Enabled						//when quick controls are rendered, no quick control 1 exists, this variable is set
+UnitControlsCustom							//custom field used by unit controls for menus, etc.
+UnitResourceValue0							//custom value used to check conditions for unit controls, etc.
+UnitResourceValue1
+UnitResourceValue2
+UnitResourceValue3
+UnitResourceValue4
+UnitResourceValue5
+UnitResourceValue6
+UnitResourceValue7
+SetupUnitControlShortcutKeys				//when set, sets up unit control shortcut keys (using exported variables for those starting with a dollar sign, e.g., $unitcontrol)
+SelectedPlayer								//a player is selected for creating or breaking alliances
+SelectedPlayerNumber						//number of the selected player
+PlayerNumber								//number of the current player
+CreateAlliance								//creates alliance with selected player
+BreakAlliance								//breaks alliance with selected player
+ShareVisibilityWithPlayer					//allows selected player to see everything your units see
+RevokeVisibilityFromPlayer					//revokes selected player's ability to see everything your units see
+ShareCommandWithPlayer						//allows selected player to command your units
+RevokeCommandFromPlayer						//revokes selected player's ability to command your units
+ShareAchronalCommandWithPlayer				//allows selected player to command your units across the entire timeline
+RevokeAchronalCommandFromPlayer				//revokes selected player's ability to command your units across the entire timeline
+
+JumpToPresent								//jumps to the present time (if possible)
+DeleteCommandsTo							//delete commands to (for timeslider) for all selected units
+DeleteAllFutureCommands						//deletes all future commands for all selected units
+DeleteNextCommandAndJumpToTime				//deletes the next earliest command among the group of selected units (only will delete the commands issued to all selected units at the same time) and jumps to the time that it was undone.
+DeletePreviousCommandAndJumpToTime			//deletes the previous command among the group of selected units (only will delete the commands issued to all selected units at the same time) and jumps to the time that it was undone.
+PauseEngine									//pause engine
+UnpauseEngine								//unpause engine
+EnginePaused								//engine is paused
+EnginePausedUnbreakable						//engine is paused and unbreakable by current player
+IgnorePlayerChronalInput					//when set, ignores all player's input to control units and other chronal engine input
+IgnorePlayerMetaTimeInput 					//when set, ignores all player's input to control the time position, time rate, or any timeline manipulation
+GlobalTimeRate								//float in [0.0,infty) that is the current speed multiplier of the game. Defaults to the configuration value of DefaultGlobalTimeRate. When changed, it will change the game rate if permitted.
+ExitToMenu									//exit to main menu (can use while in game or in pre-game chat)
+Exit										//exit engine
+Surrender									//surrenders your side
+Surrendered									//acknowledgement that you have surrendered
+Disconnected								//message that the client has been disconnected  (error in SKW_CONNECTION_ERROR)
+																		// clear the variable when it is acknowledged
+																		// ignore the error being set if either WON or LOST is set	
+DisconnectionReason							//when Disconnected is set, contains the reason for the disconnection
+Reconnect									//set to attempt to reconnect to the server - if InReplay is set (and the server is in replay mode), then will reconnect as player selected on ALLIES window
+Lost										//when set, player has lost
+Won											//when set, player has won (and game is over)
+NextCampaignLevel							//set to go on to next level in the campaign (if in campaign)
+																		//if just won level, will procede to next, otherwise will restart current level
+																		//if not in campaign, it will behave the same as EXITTOMENU
+RestartLevel								//when set, restarts level
+
+ConnectToCommunityChat						//when set, if not already open, attempts to open a connection to CommunityChatServer, CommunityChatPort, CommunityChatChannel
+CommunityChatServer							//server name / IP address of community chat server
+CommunityChatPort							//port of community server
+CommunityChatChannel						//specific channel to talk on
+CommunityChatDisconnectionReason			//if disconnected, sets to a text description of reason
+CommunityChatStatusMessage					//the text of the status message to show in the community
+UpdateCommunityChatStatusMessage			//when set, updates the community status message to the string specified by CommunityChatStatusMessage
+
+MusicOn										//when set, background music turned on
+MusicVolume									//float in [0.0,1.0] to control loudness with SetMusicVolume
+SetMusicVolume								//when set, puts music volume at the value set by MusicVolume
+EffectsVolume								//float in [0.0,1.0] to control loudness with SetEffectsVolume
+SetEffectsVolume							//when set, puts music volume at the value set by EffectsVolume
+CinematicVolume								//float in [0.0,1.0] to control loudness with SetCinematicVolume
+SetCinematicVolume							//when set, puts cinematics (e.g., voice) volume at the value set by CinematicVolume
+WideScreen									//when set, screen aspect ratio is widescreen
+TeamColorAmount								//value from -1 to 1 representing amount of team color. < 0 means none at all, 0 means only team color map, 0-1 is range of team color glow
+ActiveCamoAmount							//value from -1 to > 1 representing amount of active camo transparency. -1 means full camo oposite of view, 0 means full camo facing view, 1 means minimal camo, > 1 means no camo
+TimeCloudEffect								//when set, renders time cloud effect and desaturates the rendering when at points in time far from present
+TimeBlurEffect								//when set, renders full-screen time blur effect
+Bloom										//when set, enables overbrightness blurring
+DepthOfField								//value from 0 to 2. 0 means no Depth of Field blur, 1 means a Depth of Field blur that doesn't test if a sampled pixel is part of a more foreground object, 2 meas a Depth of Field blur that respects object depth in scene
+DepthOfFieldManualFocus						//When set, Depth of Field Blur effect uses DepthOfFieldFocusDepth and DepthOfFieldApertureSize for determining blur
+DepthOfFieldFocusDepth						//value from 0 to 1 for distance for Depth of Field focus point when DepthOfFieldManualFocus is set
+DepthOfFieldApertureSize					//value from 0 to 1 for size of aperture for Depth of Field blur. The larger it is, the more of the scene is in focus 
+AmbientOcclusion							//when set, enables Ambient Occlusion effect
+
+MoveCameraUp								//move camera up
+MoveCameraDown								//move camera down
+MoveCameraSouth								//move camera south
+MoveCameraNorth								//move camera north
+MoveCameraEast								//move camera east
+MoveCameraWest								//move camera west
+MoveCameraMouse								//when set, move camera via the mouse position
+
+RotCameraLeft								//rotate camera left
+RotCameraRight								//rotate camera right
+RotCameraDown								//rotate camera down
+RotCameraUp									//rotate camera up
+RotCameraMouse								//when set, rotate camera via the mouse position
+
+ResetCameraOrientation						//when set, resets the camera orientation
+CameraQuickness								//value that controls how crisp/quickly the camera moves: 0-immovable, 7-normal, 10000-instant
+CameraRotationSpeed							//specifies how quickly the camera rotates
+
+CameraMinXRotation							//minimum x rotation in degrees
+CameraMaxXRotation							//maximum x rotation in degrees
+ConstrainCameraToMap						//if set, then camera will be constrained to stay within map boundaries
+
+LookAt										//when set, the camera looks at LookAtX, LookAtY, LookAtZ
+LookAtX										//X coordinate to use with LookAt
+LookAtY										//Y coordinate to use with LookAt
+LookAtZ										//Z coordinate to use with LookAt
+
+SetCameraPosition							//when set, makes the camera look at the values stored in CameraPositionX, CameraPositionY, CameraPositionZ, CameraRotationX, CameraRotationY
+CameraPositionX								//X coordinate of the camera - can be overwritten to use with SetCameraPosition
+CameraPositionY								//Y coordinate of the camera - can be overwritten to use with SetCameraPosition
+CameraPositionZ								//Z coordinate of the camera - can be overwritten to use with SetCameraPosition
+CameraRotationX								//X rotation of the camera (degrees) - can be overwritten to use with SetCameraPosition
+CameraRotationY								//Y rotation of the camera (degrees) - can be overwritten to use with SetCameraPosition
+
+CameraFollowSelectedUnit					//when set, camera follows the selected unit
+FollowSelectedUnitThroughTime				//when set, player follows the selected unit when it travels through time
+											// note that the action parameter (not target) must be preserved in the unit's chronoporting action for this to work
+
+MoveZSelectionUp							//moves z position of cursor up one level
+MoveZSelectionDown							//moves z position of cursor down one level
+CameraZoomInFixedCursor						//when set, MoveCameraDown keep the cursor stationary
+CameraZoomOutFixedCursor					//when set, MoveCameraUp keep the cursor stationary
+
+Select3DPosition							//when set, mouse selects a 3d position
+SelectCommanders							//when set, commanders are selected by the mouse instead of the units
+SelectAdditional							//when set, tells the engine to select "in addition to" whatever was selected, such as another unit
+EnqueueCommand								//when set, commands issued to units are enqueued rather than issued
+PreserveCommandQueue						//when set, commands issued to units are overwrite current command, but do not clear queue
+EnableBookmarkStorage						//when set, the times and units are stored into the F# and # keys respectively when pressed
+
+LastKeyboardKeyPressed						//when cleared, it gets filled in with the next keyboard shortcut that is pressed
+ReadFromKeyboard							//when set, reads in keyboard keys for console
+ConsoleExpectEnter							//when set, console gets the return key as a character
+ObscureConsole								//when set, console is displayed as asterisks (useful for hiding passwords)
+SubmitConsoleInput							//when set, submits the console input to the engine
+ConsoleMessageReceived						//set when a new message has been received by the console.
+															//the skin may clear this variable to detect when the next message is received
+SubmitCommunityChatMessage					//when set, submits the console input to community chat
+CommunityChatMessageReceived				//set when a new message has been received by the community chat
+															//the skin may clear this variable to detect when the next message is received
+UnitMessageReceived							//set when a new unit message has been received.
+															//the skin may clear this variable to detect when the next message is received
+UnitMessageAvailable						//set when messages are available / visible, cleared when the messages expire
+		
+OpenProfile									//open the player profile. if ProfileSelected is set, then loads from list.  otherwise, loads profile based on string that OpenProfile is set to
+AddProfile									//when set to a string, adds a new profile of the string name
+DeleteProfile								//delete selected profile
+ActiveProfile								//set to true if a profile is currently successfully loaded
+ProfileName									//set to the name of the profile (Anonymous if none)
+ProfileSelected								//set when the player selects a profile
+
+AccountName									//account name to connect to game matching service
+AccountPassword								//account password to connect to game matching service
+AuthenticateAccount							//when set, attempts to connect to game matching service using AccountName and AccountPassword
+ProfileAccountName							//account name to use for stats when connecting to game matching service
+ProfileAccountPassword						//account password to use for stats when connecting to game matching service
+AccountAuthenticationSucceeded				//set when AuthenticateAccount is successful
+AccountAuthenticationFailed					//set to error string when AuthenticateAccount fails
+MostRecentVersion							//set to the string containing the most recent version of Achron (set after authenticated to multiplayer)
+		
+LoadSavedGame								//load selected saved game
+SaveGame									//save game as current selected (engine must be paused to save)
+SaveGameAsNew								//save game as name specified by variable (engine must be paused to save)
+DeleteSavedGame								//delete selected saved game
+ReloadSavedGames							//reloads list of saved games
+SaveGameSelected							//indicates that the player has selected a saved game name
+
+EnginePlatform								//contains a string indicating the platform Resequence is running on (OS and particular distribution)
+EngineVersion								//string containing the current engine version
+LocalGameServerName							//name to be used when spawning a server
+LocalGameServerPassword						//password to be used when spawning a server
+RequestPassword								//when set, indicates that server is requesting a password
+SubmitPassword								//set to send password to server
+ClearConsole								//set to clear the console input
+ClearConsoleOutput							//set to clear the console output
+
+StartScenarioFromFile						//loads a single player scenario, based on file name stored into variable
+SpawnScenarioFromFile						//starts the single player scenario previously loaded into StartScenarioFromFile
+StartScenarioMulti							//starts multiplayer scenario server -starts chat & player selection
+StopScenarioMulti							//stops multiplayer scenario server, chat & player selection
+SpawnScenario								//starts single player scenario, based on selected scenario
+ScenarioSelected							//indicates that the player has selected a scenario
+ScenarioName								//the string of the current scenario name selected
+ScenarioObjectives							//the string of the current objectives for the current scenario
+SelectPlayer								//selects current player from SELECT_PLAYERS
+SelectPlayerNumber							//when not -1, selects the player number that the value is set to
+ToggleMultiplayerReady						//toggles whether player is ready in multiplayer
+PlayersConnected							//bitmask indicating which players are connected; bit 0 is player 0
+SpawnScenarioMulti							//spawns multiplayer game server
+RefreshServers								//refreshes server list
+RefreshServersFailed						//if RefreshServers fails, is set to the text describing the failure
+JoinMultiplayer								//joins selected multiplayer game
+ConnectedMultiplayer						//set when connected to a mulitplayer game
+ConnectedMultiplayerFailed					//set when attempted to connect to a multiplayer game but failed.  variable contains error info
+ServerSelected								//indicates that the player has selected a server
+PlayerSelected								//indicates that the player has selected a player in a scenario to be
+CampaignSelected							//player has selected a campaign (skin is allowed to clear this variable)
+CampaignLevelSelected						//indicates that the player has selected a campaign level
+SpawnCampaign								//starts current level selected from campaign
+HostingServer								//set if hosting a server
+InMultiplayerGame							//set if in multiplayer game
+InReplay									//set if replaying a game
+BroadcastGameStats							//if enabled, will reply back to udp broadcasts querying game status
+ConfigureInternetGateway					//when set, will attempt to configure internet gateway for portmapping when multiplayer game lobby is started (will freeze screen for ~5 seconds)
+InternetGatewayError						//set to an error string if an error occurred from ConfigureInternetGateway
+Error										//if a critical error occured, set to the text describing it
+Warning										//if a warning occured, set to the text describing it
+
+ListScrollSpeed								//how fast lists scroll up or down
+
+ListPageUp									//when set, will scroll the list one page up
+ListPageDown								//when set, will scroll the list one page down
+ListScrollUp								//when set, will scroll the list one entry up
+ListScrollDown								//when set, will scroll the list one entry down
+ListMoreUp									//set to the number of elements down when the list has more entries below the bottom -only used for selected units
+ListMoreDown								//set to the number of elements up when the list has more entries below the bottom -only used for selected units
+
+ListFocusProfile							//sets the list focus (LISTXXX controls) to profile list
+ListFocusCampaign							//sets the list focus (LISTXXX controls) to campaign level list
+ListFocusSavedGames							//sets the list focus (LISTXXX controls) to saved games list
+ListFocusScenario							//sets the list focus (LISTXXX controls) to scenario list
+ListFocusServers							//sets the list focus (LISTXXX controls) to servers list
+ListFocusPlayers							//sets the list focus (LISTXXX controls) to players list
+ListFocusUnitList0							//sets the list focus (LISTXXX controls) to unit list 0
+ListFocusUnitList1							//sets the list focus (LISTXXX controls) to unit list 1
+ListFocusUnitList2							//sets the list focus (LISTXXX controls) to unit list 2
+ListFocusUnitList3							//sets the list focus (LISTXXX controls) to unit list 3
+ListFocusUnitList4							//sets the list focus (LISTXXX controls) to unit list 4
+
+UnitList0HideUnitIcon						//if set, then the unit's icon is hidden
+UnitList0ShowQuickIcons						//if set, then unit's quick icons are shown on the unit info
+UnitList0ShowBackgroundTriangle				//if set, then a background triangle indicating the list length is shown
+UnitList0NumColumns							//the number of columns to render in the list. defaults to 1
+
+UnitList1HideUnitIcon						//if set, then the unit's icon is hidden
+UnitList1ShowQuickIcons						//if set, then unit's quick icons are shown on the unit info
+UnitList1ShowBackgroundTriangle				//if set, then a background triangle indicating the list length is shown
+UnitList1NumColumns							//the number of columns to render in the list. defaults to 1
+
+UnitList2HideUnitIcon						//if set, then the unit's icon is hidden
+UnitList2ShowQuickIcons						//if set, then unit's quick icons are shown on the unit info
+UnitList2ShowBackgroundTriangle				//if set, then a background triangle indicating the list length is shown
+UnitList2NumColumns							//the number of columns to render in the list. defaults to 1
+
+UnitList3HideUnitIcon						//if set, then the unit's icon is hidden
+UnitList3ShowQuickIcons						//if set, then unit's quick icons are shown on the unit info
+UnitList3ShowBackgroundTriangle				//if set, then a background triangle indicating the list length is shown
+UnitList3NumColumns							//the number of columns to render in the list. defaults to 1
+
+UnitList4HideUnitIcon						//if set, then the unit's icon is hidden
+UnitList4ShowQuickIcons						//if set, then unit's quick icons are shown on the unit info
+UnitList4ShowBackgroundTriangle				//if set, then a background triangle indicating the list length is shown
+UnitList4NumColumns							//the number of columns to render in the list. defaults to 1
+
+AnimatedHierarchyLineSpeed					//speed of heirarchy line animation
+AnimatedChronoporteeLineSpeed				//speed of chronoportee line animation
+AnimatedControlActiveLineSpeed				//speed of control active line animation
+
+ShowHeirarchy								//when set, shows heirarchy
+ShowSelectedHeirarchy						//when set, shows heirarchy for selected units only
+ShowCommanders								//when set, indicates top-level commanders
+ShowPreChronoportees						//when set, shows units that are at the same time as a previous self, and need to chronoport to become that self
+ShowPreChronoporteeLines					//when set, shows lines between units that are the same unit, from different times, but at the same time
+ShowControlActiveLines						//when set, shows lines that indicate unit objectives
+ShowSelectedControlActiveLines				//when set, shows lines that indicate unit objectives for selected units only
+ShowSelectedStatusOverlays					//when set, shows unit status overlays for selected units, such as hp, energy, status alignments, etc.
+ShowAllStatusOverlays						//when set, shows all unit status overlays
+ShowSelectedVisibilityRange					//when set, shows selected units' visibility ranges
+ShowMapTerrain								//when set, renders terrain on map
+ShowFogOfWar								//when set to 1, renders fog of war on screen and map. When set to 2, renders accurate fog of war which can be slow to compute
+PlaySoundsBehindFogOfWar					//when set, plays sounds behind fog of war (that should be played).  when cleared, no sounds are played that are covered by fog of war
+BoundaryFogIntensity						//floating point value of the intensity of the fog of war rendered off-map
+UpdatePrerenderedMap						//when set, updates the prerendered map (note: may take a significant fraction of a second)
+RenderCircleMap								//when set, renders the map in a circle
+ShowPresentTimewave							//when set, shows present timewave
+ShowUpdaters								//when set, shows updaters in time slider
+ShowUpdaterColors							//when set, shows individual updater colors.  when not set, shows all the same color
+ShowCommandsInPast							//when set, shows commands issued by players in the past
+ShowUnitStatusNumbers						//when set, shows numbers for units' statuses instead of the status names
+StatusIconSize								//size of unit status overlay icons
+
+PlayerFogOfWarDisabled						//when set, current player's fog of war is disabled
+PlayerUnitControlsDisabled					//when set, current player's input is disabled
+PlayerGlobalFlags							//set to player's Global Flags field
+PlayerAdvancements							//set to player's Advancements field
+PlayerCustomControls						//set to player's CustomControls field (usually in-progress Advancements)
+
+DisableMouseUnitControl						//when set, mouse input is ignored for selecting units and issuing commands
+HideUI										//when set, UI/HUD is not rendered
+
+SelectUnit									//set to a unit number to select only the unit specified. A number of -1 or other invalid unit will clear selection
+SingleUnitSelected							//when set, indicates that a single unit is selected, and is set to that unit's unit number
+SingleUnitCarrier							//when set, indicates that the unit corresponding to SINGLEUNITSELECTED has a carying capacity
+SingleUnitClass								//when SingleUnitSelected is set, this contains the object class of the selected unit
+MultipleUnitsSelected						//when set, indicates that multiple units are currently selected
+NumUnitsSelected							//set to the number of units currently selected
+UnitControlHighlighted						//*when set, indicates that player has highlighted (mouse is over) a unit's control
+UnitQuickControlHighlighted					//*when set, indicates that player has highlighted (mouse is over) a unit's quick control
+
+SelectionGroup0NumUnits						//number of units in selection group 0
+SelectionGroup1NumUnits						//number of units in selection group 1
+SelectionGroup2NumUnits						//number of units in selection group 2
+SelectionGroup3NumUnits						//number of units in selection group 3
+SelectionGroup4NumUnits						//number of units in selection group 4
+SelectionGroup5NumUnits						//number of units in selection group 5
+SelectionGroup6NumUnits						//number of units in selection group 6
+SelectionGroup7NumUnits						//number of units in selection group 7
+SelectionGroup8NumUnits						//number of units in selection group 8
+SelectionGroup9NumUnits						//number of units in selection group 9
+
+MarkUnit									//when set, indicates to the engine that the player desired to mark the current selected unit for watching (used for debugging, etc.)
+
+FastTime									//when set, indicates that current updater speed to go fast
+SlowTime									//when set, indicates that current updater speed to go slow
+StopTime									//when set, indicates that current updater speed to stop
+NormalTime									//when set, indicates that current updater speed to go the regular speed of time
+SetFastTime									//sets current updater speed to go fast
+SetSlowTime									//sets current updater speed to go slow
+SetStopTime									//sets current updater speed to stop
+SetNormalTime								//sets current updater speed to go the regular speed of time
+
+PlayerChronoEnergy							//amount of chronoenergy the player currently has
+ChronoenergyCommandCostAtCurrentTime		//amount of chronoenergy used per command at the player's current time
+InsufficientChronoEnergy					//when set, the player has insufficient chronoenergy to issue a command
+InsufficientMaxChronoEnergy					//when set, the player can never have enough chronoenergy to issue a command
+ShowTimelineWhereInsufficientChronoEnergy	//when set, shows on the timeline where the player has insufficient chronoenergy
+TimelineStatDisplayBitmask					//a bitmask of which stats to display on the timeline, indexed by bits
+
+PlayerTimeTravelAllowed						//when set, player is allowed to time travel (disabled for a brief moment after the player travels to prevent a player from overconsuming the CPU)
+PlayerInFuture								//when set, indicates that the player is in the future
+PlayerInPast								//when set, indicates that the player is in the past
+TimeRipple									//when set, either an overtake is occuring (updater is overtaking the player's current time), or the player has changed times
+PlayerJumpedForwardInTime					//when set, the player just jumped forward in time
+PlayerJumpedBackwardInTime					//when set, the player just jumped backward in time
+
+ScenarioAmbientRed							//red component of global ambient light
+ScenarioAmbientGreen						//green component of global ambient light
+ScenarioAmbientBlue							//blue component of global ambient light
+ScenarioAmbientIntensity					//intensity of global ambient light
+		
+ScenarioDiffuseAngleTheta					//theta angle of global diffuse light
+ScenarioDiffuseAnglePhi						//phi angle of global diffuse light
+ScenarioDiffuseRed							//red component of global diffuse light
+ScenarioDiffuseGreen						//green component of global diffuse light
+ScenarioDiffuseBlue							//blue component of global diffuse light
+ScenarioDiffuseIntensity					//intensity of global diffuse light
+
+ScenarioFogIntensity						//amount of fog
+ScenarioFogHeight							//maximum height of fog
+ScenarioFogRed								//red component of fog color
+ScenarioFogGreen							//green component of fog color
+ScenarioFogBlue								//blue component of fog color
+
+ScenarioNumPrecipitationParticles			//scale of the number of precipitation particles: 0-255
+ScenarioPrecipitationLength					//length of the precipitation streaks
+ScenarioPrecipitationMaxVelocity			//maximum velocity of the precipitation
+ScenarioPrecipitationXVelocity				//current x velocity of the precipitation
+ScenarioPrecipitationYVelocity				//current y velocity of the precipitation
+ScenarioPrecipitationZVelocity				//current z velocity of the precipitation
+ScenarioPrecipitationStartRed				//red component of the beginning of a precipitation streak
+ScenarioPrecipitationStartGreen				//green component of the beginning of a precipitation streak
+ScenarioPrecipitationStartBlue				//blue component of the beginning of a precipitation streak
+ScenarioPrecipitationStartAlpha				//alpha component of the beginning of a precipitation streak
+ScenarioPrecipitationEndRed					//red component of the end of a precipitation streak
+ScenarioPrecipitationEndGreen				//green component of the end of a precipitation streak
+ScenarioPrecipitationEndBlue				//blue component of the end of a precipitation streak
+ScenarioPrecipitationEndAlpha				//alpha component of the end of a precipitation streak
+ScenarioPrecipitationEmission				//emission amount of the precipitation streak
+ScenarioPrecipitationWetness				//wetness of everything from precipitation. 0.0 means none, (0.0,1.0] means liquid precip like water, [-1.0,0.0) means solid precip like snow
+
+ScenarioAmbientOcclusionThreshold			//value from 0 to 1 which indicates when ambient occlusion will be rendered
+ScenarioAmbientOcclusionBlurRadius			//radius of blurring of ambient occlusion samples in world-space distance. Should typically be larger than AmbientOcclusionSampleRadius
+ScenarioAmbientOcclusionSampleInnerRadius	//inner radius of AO samples in world-space distance
+ScenarioAmbientOcclusionSampleOuterRadius	//outer radius of AO samples in world-space distance
+
+ScenarioTimeJumpDelayInTicks				//time after time change before player can change time again
+ScenarioGameSpeedTicksPerSecond				//game speed
+ScenarioMaxPathPlanningMemoryPool			//maximum memory to be used for path planning search
+ScenarioMaxRescriptCycles					//max number of interpreter cycles
+ScenarioNumTimeWaves						//number of time waves
+ScenarioTimeWaveRate						//rate at which time waves move forward relative to the rate of time (should be > 1.0)
+ScenarioTimeWindowSizeInSeconds				//length of time of time window (seconds)
+ScenarioPresentTimeInSeconds				//present time in relation to timeWindowDuration (seconds)
+ScenarioUnplayablePastInSeconds				//amount of the past that is unusable (seconds)
+ScenarioMaxChronoportDistanceInSeconds		//maximum distance a chronoporter can send things (seconds)
+ScenarioRechronoportDelayInSeconds			//minimum time before a unit can chronoport again after arriving (seconds)
+ScenarioTimewaveAtFurthestPast				//if nonzero, then will maintain a timewave at the furthest past on the timeline
+ScenarioTimewaveAtUnusablePast				//if nonzero, then will maintain a timewave at the edge between the unusable past and the usable past
+ScenarioTimewaveMergeInterval				//the number of time ticks within which timewave time changes will be merged if possible
+ScenarioNumTimeWindowStatisticsBuckets		//number of statistics buckets across the timeline
+ScenarioXPortAnimationTicks					//time for chronoport/teleport animation (time ticks)
+ScenarioBackgroundMusicFileName				//filename to music
+ScenarioScenarioMonitorRescriptFileName		//filename to scenario monitor script
+ScenarioPresentCERateGain					//amount of chronoenergy gained per tick while at present
+ScenarioFutureCERateDrain					//amount of chronoenergy drained per tick while in future
+ScenarioPastCERateDrain						//amount of chronoenergy drained per tick while in past
+ScenarioPastCEEventDrain					//amount of chronoenergy drained per event while in past
+ScenarioStoppedCERateDrain					//amount of chronoenergy drained per tick while time is paused
+ScenarioCERedistributed						//when a player spends chronoenergy, the amount spent is multiplied by this value and then distributed among other players
+ScenarioCERedistributionWeightAlly			//when chronoenergy is distributed to other players, this is the weight to use for allies (1 minus this for adversaries)
+ScenarioMaxPastCommands						//max number of commands a player can issue while in the past (immediately before present time)
+
+ScenarioCurrentPlayer						//current player number for ScenarioPlayerXXXX variables
+ScenarioLoadCurrentPlayerParams				//loads the ScenarioPlayerXXXX variables for the player specified by ScenarioCurrentPlayer
+ScenarioPlayerEnabled						//set if the player is enabled
+ScenarioPlayerDisableTeamColor				//set if the player's team color will not be rendered
+ScenarioPlayerPropagateForwardTimeJumps		//set if the player's forward time jumps should propagate changes (may be expensive with respect to CPU time)
+ScenarioPlayerUnitsAppearAsNoOwner			//set if the player's units will all appear as if they had no owner
+ScenarioPlayerDescription					//description of player in level
+ScenarioPlayerRed							//red component of player team color
+ScenarioPlayerGreen							//green component of player team color
+ScenarioPlayerBlue							//blue component of player team color
+ScenarioPlayerObjective						//player's objective
+ScenarioPlayerResource1						//amount of initial resource 1 (In Achron, used as Vecgir Power)
+ScenarioPlayerResource2						//amount of initial resource 2 (In Achron, used as L-Crystals)
+ScenarioPlayerResource3						//amount of initial resource 3 (In Achron, used as Reserve Soldiers)
+ScenarioPlayerResource4						//amount of initial resource 4 (In Achron, used as Q-Plasma)
+ScenarioPlayerAdvancements					//bitmask of player advancements
+ScenarioPlayerConstraints					//bitmask of player constraints
+ScenarioPlayerSkin							//path and filename of skin to use
+ScenarioPlayerCEInitial						//initial chronoenergy
+ScenarioPlayerCEMax							//maximum chronoenergy
+ScenarioPlayerCERate						//chronoenergy rate multiplier
+ScenarioPlayerFlags							//player flags bitmask
+ScenarioPlayerAlliances						//bitmask of which players this player is allied to
+ScenarioPlayerStartPositionX				//x position that player starts the level observing
+ScenarioPlayerStartPositionY				//y position that player starts the level observing
+ScenarioPlayerStartPositionZ				//z position that player starts the level observing
+
+ScenarioSelectorCurrentDirectory			//current directory that the SCENARIO_SELECT window uses
+ScenarioSelectorUpdate						//when set, will refresh the scenario list from ScenarioSelectorCurrentDirectory
+
+DirectoryChooserCurrentDirectory			//current directory to retrieve other directories from
+DirectoryChooserUpdateCurrentDirectory		//when set, will refresh the directory list from DirectoryChooserCurrentDirectory
+DirectoryChooserSelectedDirectory			//contains the string of the currently selected directory
+DirectoryChooserPageUp						//when set, will scroll the list one page up
+DirectoryChooserPageDown					//when set, will scroll the list one page down
+DirectoryChooserScrollUp					//when set, will scroll the list one entry up
+DirectoryChooserScrollDown					//when set, will scroll the list one entry down
+DirectoryChooserMoreUp						//set to the number of elements up when the list has more entries above top
+DirectoryChooserMoreDown					//set to the number of elements down when the list has more entries below bottom
+
+FileChooserCurrentDirectory					//current directory to retrieve other files from
+FileChooserCurrentExtension					//extension of files to filter; defaults to '*' meaning all
+FileChooserUpdateCurrentDirectory			//when set, will refresh the file list from FileChooserCurrentDirectory
+FileChooserSelectedFile						//contains the string of the currently selected file
+FileChooserPageUp							//when set, will scroll the list one page up
+FileChooserPageDown							//when set, will scroll the list one page down
+FileChooserScrollUp							//when set, will scroll the list one entry up
+FileChooserScrollDown						//when set, will scroll the list one entry down
+FileChooserMoreUp							//set to the number of elements up when the list has more entries above top
+FileChooserMoreDown							//set to the number of elements down when the list has more entries below bottom
+
+ResequenceBaseDirectory						//installation directory of this instance of the Resequence Engine
+ResequenceUserDirectory						//directory that stores local user data for Resequence
+
+LevelEditorEnableTerrainPaint				//when set, brush paints terrain type (can be used in conjunction with other paints)
+LevelEditorEnableTerrainOverlayPaint		//when set, brush paints terrain type onto overlay
+LevelEditorEnableElevationPaint				//when set, brush paints elevation (can be used in conjunction with other paints)
+LevelEditorEnableTerrainObjectPaint			//when set, brush paints terrain objects (can be used in conjunction with other paints)
+LevelEditorEnableUnitPaint					//when set, brush paints units (can be used in conjunction with other paints)
+
+LevelEditorContinuousPaint					//when set, brush paints continuously
+LevelEditorSquareBrush						//when set, brush paints using a square brush
+LevelEditorBrushSize						//size of brush in tiles
+LevelEditorBrushCenterStrength				//strength of brush at center in [0.0,1.0]
+LevelEditorBrushEdgeStrength				//strength of brush at edge in [0.0,1.0]
+LevelEditorBrushProbabilityFill				//probability brush will paint in [0.0,1.0]
+LevelEditorBrushTerrainElevation			//terrain height of brush
+LevelEditorBrushUnitHealth					//unit health of brush (for painting new units); -1 will set to max
+LevelEditorBrushUnitEnergy					//unit energy of brush (for painting new units); -1 will set to max
+LevelEditorBrushUnitArmor					//unit armor of brush (for painting new units); -1 will set to max
+LevelEditorBrushUnitAmmo					//unit ammo of brush (for painting new units); -1 will set to max
+LevelEditorBrushUnitStatus					//unit status of brush (for painting new units)
+
+LevelEditorDeleteAllOfBrushType				//when set, deletes all of whatever Brush is selected and whatever editor mode(s) is(are) enabled
+
+LevelEditorCloneBrushEnable					//when set, brush gets each point from LevelEditorCloneBrushSourceX, LevelEditorCloneBrushSourceY relative to LevelEditorCloneBrushDestinationX, LevelEditorCloneBrushDestinationY
+LevelEditorCloneBrushSourceX				//x location of source of clone brush
+LevelEditorCloneBrushSourceY				//y location of source of clone brush
+LevelEditorCloneBrushDestinationX			//x location of destinatoin of clone brush
+LevelEditorCloneBrushDestinationY			//y location of destination of clone brush
+LevelEditorCloneBrushMirrorX				//if set, mirrors clone brush on x axis
+LevelEditorCloneBrushMirrorY				//if set, mirrors clone brush on y axis
+
+LevelEditorBrushTerrainType					//terrain type of brush
+LevelEditorBrushTerrainTypeIconSize			//size of an icon
+LevelEditorBrushTerrainTypeIconSpacing		//space between two icons
+LevelEditorBrushTerrainTypeDescription		//when a terrain type is selected, will be set to the description
+LevelEditorBrushTerrainTypePageUp			//when set, will scroll the list one page up
+LevelEditorBrushTerrainTypePageDown			//when set, will scroll the list one page down
+LevelEditorBrushTerrainTypeScrollUp			//when set, will scroll the list one entry up
+LevelEditorBrushTerrainTypeScrollDown		//when set, will scroll the list one entry down
+LevelEditorBrushTerrainTypeMoreUp			//set to the number of elements up When the list has more entries above top
+LevelEditorBrushTerrainTypeMoreDown			//set to the number of elements down when the list has more entries below bottom
+
+LevelEditorBrushTerrainObject				//terrain object of brush
+LevelEditorUpdateBrushTerrainObjectSelection//when set, will select the unit type specified by LevelEditorBrushTerrainObject
+LevelEditorBrushTerrainObjectIconSize		//size of an icon
+LevelEditorBrushTerrainObjectIconSpacing	//space between two icons
+LevelEditorBrushTerrainObjectDescription	//when a terrain object is selected, will be set to the description
+LevelEditorBrushTerrainObjectPageUp			//when set, will scroll the list one page up
+LevelEditorBrushTerrainObjectPageDown		//when set, will scroll the list one page down
+LevelEditorBrushTerrainObjectScrollUp		//when set, will scroll the list one entry up
+LevelEditorBrushTerrainObjectScrollDown		//when set, will scroll the list one entry down
+LevelEditorBrushTerrainObjectMoreUp			//set to the number of elements up when the list has more entries above top
+LevelEditorBrushTerrainObjectMoreDown		//set to the number of elements down when the list has more entries below bottom
+
+LevelEditorBrushUnitType					//unit type of brush
+LevelEditorUpdateBrushUnitTypeSelection		//when set, will select the unit type specified by LevelEditorBrushUnitType
+LevelEditorBrushUnitTypeIconSize			//size of an icon
+LevelEditorBrushUnitTypeIconSpacing			//space between two icons
+LevelEditorBrushUnitTypeDescription			//when a unit type is selected, will be set to the description
+LevelEditorBrushUnitTypePageUp				//when set, will scroll the list one page up
+LevelEditorBrushUnitTypePageDown			//when set, will scroll the list one page down
+LevelEditorBrushUnitTypeScrollUp			//when set, will scroll the list one entry up
+LevelEditorBrushUnitTypeScrollDown			//when set, will scroll the list one entry down
+LevelEditorBrushUnitTypeMoreUp				//set to the number of elements up when the list has more entries above top
+LevelEditorBrushUnitTypeMoreDown			//set to the number of elements down when the list has more entries below bottom
+
+LevelEditorBrushUnitMaxHealth				//max health of unit selected by LevelEditorBrushUnitType
+LevelEditorBrushUnitMaxEnergy				//max energy of unit selected by LevelEditorBrushUnitType
+LevelEditorBrushUnitMaxArmor				//max armor of unit selected by LevelEditorBrushUnitType
+LevelEditorBrushUnitMaxAmmo					//max ammo of unit selected by LevelEditorBrushUnitType
+
+LevelEditorBrushRotation					//rotation of brush
+LevelEditorBrushMaxHeight					//maximum height the brush will paint
+LevelEditorBrushMinHeight					//minimum height the brush will paint
+LevelEditorBrushMaxAngle					//maximum angle the brush will paint
+LevelEditorBrushMinAngle					//minimum angle the brush will paint
+
+LevelEditorShowUnitAllowablePositions		//when set, will show where the current selected unit can be placed and move
+
+LevelEditorExportMapToTGA					//when set to a string containing a valid path/filename, the map height will be written out to a TGA file
+LevelEditorExportMapToTGAError				//when LevelEditorExportMapToTGA is set, if an error occurs, this will contain the string of the error
+LevelEditorImportMapFromTGA					//when set to a string containing a valid path/filename, the map height read from a TGA file
+LevelEditorImportMapFromTGAError			//when LevelEditorImportMapFromTGA is set, if an error occurs, this will contain the string of the error
+
+MapFileName									//filename of the .map file
+MapHeightSpacing							//space between height levels (z values) for the map
+MapMaxGroundHeight							//maximum height of the ground
+MapWidth									//width of map in tiles (West-East)
+MapLength									//length of map in tiles (North-South)
+MapHeight									//height of map in tiles (up-down)
+MapBorderSize								//number of boundary tiles beyond map
+LevelEditorResizeMap						//when set, resizes the map to MapHeightSpacing, MapMaxGroundHeight, etc.
+LevelEditorExportMap						//when set to a string containing a valid path/filename, the map will be written out to the specified .map file, and LevelEditorMapFileName will be updated with the new name
+LevelEditorExportMapError					//when LevelEditorExportMap is set, if an error occurs, this will contain the string of the error
+
+ObjectlayoutFileName						//filename of the .olo file
+LevelEditorExportObjectlayout				//when set to a string containing a valid path/filename, the object layout will be written out to the specified .olo file, and LevelEditorObjectlayoutFileName will be updated with the new name
+LevelEditorExportObjectlayoutError			//when LevelEditorExportObjectlayout is set, if an error occurs, this will contain the string of the error
+
+ScenarioFileName							//filename of the .scn file
+LevelEditorExportScenario					//when set to a string containing a valid path/filename, the scenario parameters will be written out to the specified .scn file, and LevelEditorScenarioFileName will be updated with the new name
+LevelEditorExportScenarioError				//when LevelEditorExportScenario is set, if an error occurs, this will contain the string of the error
+
+LevelFileName								//filename of the .tsc file
+LevelEditorExportLevel						//when set to a string containing a valid path/filename, the level will be written out to the specified .tsc file, and LevelEditorLevelFileNamewill be updated with the new name
+LevelEditorExportLevelError					//when LevelEditorExportLevel is set, if an error occurs, this will contain the string of the error
+
+ReplayFileName								//filename of the .rrp file
+
+ReloadAllScripts							//when set, tells engine to reload all scripts. Can only be activated when run in script debugging mode
+
+TerrainTileSetFileName						//filename of the .til file
+ObjectClassSetFileName						//filename of the .ocs file
+UnitControlsFileName						//filename of the .uia file
+
+SpawnLevelEditor							//when set, spawns the level editor.  if LevelFileName is set, it loads that file, otherwise, it loads the files specified by MapFileName (or MapHeightSpacing, MapMaxGroundHeight, MapWidth, MapLength, MapHeight, MapBorderSize),
+												//ObjectlayoutFileName, ScenarioFileName, TerrainTileSetFileName, ObjectClassSetFileName, and UnitControlsFileName
+SpawnLevelEditorError						//when SpawnLevelEditor is set, if an error occurs, this will contain the string of the error
+
+-------------------------	
+built-in windows:
+
+CLICK_THROUGH								//click-through window - not rendered, but mouse can select things below
+MAP											//mini-map
+UNIT_INFO									//info about single unit: icon, name, status, etc.
+UNIT_GAUGES									//unit health, energy, etc.
+UNIT_DETAILED_INFO							//detailed info about single unit, statistics, etc.
+UNIT_DESCRIPTION							//textual description about unit
+UNIT_LIST_0									//list of units matching criteria of unit list 0
+UNIT_LIST_1
+UNIT_LIST_2
+UNIT_LIST_3
+UNIT_LIST_4
+UNIT_QUICK_CONTROLS							//commonly used quick unit controls
+UNIT_CONTROLS								//unit controls (buttons)
+UNIT_CONTROL_DETAILS						//details for the highlighted control
+UNIT_CONTROL_COST							//costs for the highlighted control
+TIME_SLIDER									//time slider
+INFO										//general player info (e.g. time travel capabilities)
+											//if at least twice as wide as tall, then will render icons horizontally (otherwise vertically)
+RESOURCES									//player resources
+ALLIES										//player's allies & enemies
+CHRONOENERGY								//player's energy to time travel
+CONSOLE_IN									//console input (single line)
+CONSOLE_OUT									//console output (multiline history)
+UNIT_MESSAGES								//unit output (multiline history)
+COMMUNITY_CHAT_OUT							//output from community chat
+
+//used for menus
+PLAYER_PROFILE								//player profile selection list
+PLAYER_NAME									//current player's name
+CAMPAIGN_SELECT								//player chooses which campaign to select
+CAMPAIGN_LEVEL								//campaign level to select (based from player profile file)
+SAVED_GAMES									//save/load game list
+SELECT_SERVER								//select server to join
+SELECT_PLAYERS								//for players to select which player # to play as before spawning scenario
+SELECT_SCENARIO								//selects scenario file to load (for multiplayer or single player)
+
+DIRECTORY_CHOOSER							//used to select a directory
+FILE_CHOOSER								//used to select an existing file
+
+//used for level editing
+LEVEL_EDITOR_TERRAIN_SELECT					//selects terrain type
+LEVEL_EDITOR_TERRAIN_OBJECT_SELECT			//selects a terrain object type
+LEVEL_EDITOR_UNIT_SELECT					//selects a unit type
+			
+
+-------------------------
+keynames:
+either the long name or the short name may be used to represent a key.
+letter keys must be upper case (e.g. "bind down M somevar")
+each key is:  longname:shortname
+
+esc:es
+tab:tb
+backspace:bs
+capslock:ca
+numlock:nl
+ctrl:ct
+alt:al
+shift:sh
+up:up
+down:dn
+left:lt
+right:rt
+pgup:pu
+pgdown:pd
+home:hm
+end:en
+insert:in
+delete:de
+f10
+f11
+f12
+div
+mult
+sub
+add
+scroll
+pause
+enter:en
+space:sp

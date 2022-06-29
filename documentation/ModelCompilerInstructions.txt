@@ -1,0 +1,251 @@
+Resequence Model Compiler
+
+All software and media Copyright © 2001-2013 Hazardous Software Inc.
+
+The Resequence Model Compiler is used to preview and import 3D models into the Resequence Engine.
+
+---------------
+Overview:
+---------------
+
+The Model Compiler loads in an animation script file (file extension .as), which specifies the model name and all of its animations.  The Model Compiler can be used to preview the model and animations and can export the entire model to a model file (extension .mdl), which is read by the Resequence Engine.
+
+The .mdl can then be loaded using other editors (to be provided in the future) for creating mods.  The animations must be paired up with their respective actions.
+
+---------------  
+Operation:
+---------------
+
+The Model Compiler may be loaded simply by running it, opening a .as file from the file menu, and exporting from the file menu.  This is the interactive mode, and the basic controls are as follows:
+
+Left-mouse-click and drag: pan camera
+Right-mouse-click and drag: rotate camera
+Mousewheel: zoom
+Number keys 4, 6, 8, 2, 7, 9: nudge model left, right, up, down, forward, backward.  The anchor point is displayed on the Animation controls, which can then be referenced for modifying the animation script
+r: when the 'r' key is pressed when the main window is selected, the model is reloaded.
+
+Animation Controls:
+ Play/Pause: play animation
+ Replay: start animation from beginning
+ Loop: loops animation
+ Projectile Size: If projectile size is not explicitly specified in animation script, this controls the splash size that will normally be controlled by the unit specifications in the engine.
+ Animation Time: total time of animation (calibrated via game speed in menu View->Options)
+ Animation Progress: how far model is in animation
+ Animation: which animations are defined for the model
+ Rotation: orientation of the unit
+
+Batch mode:
+ The Model Compiler may be run in batch mode to compile models without interaction.  This may be done by running:
+  ModelCompiler.exe -filename.as
+where filename.as is the input file.  Running in this mode will not open any window and will simply export the file to filename.mdl.  This mode is useful for automation (e.g., Perl scripts, etc.).
+
+Note that when running Model Compiler in either mode, it will create a file called temp.caf in the directory of the model it is compiling.  This file may optionally be deleted at any time except during compilation.
+
+Exporting from Blender:
+ The Model Compiler reads in meshes from .robj files, which may be exported from the 3D editor Blender (http://blender.org) via our custom script, BlenderScripts/export_resequence_object.py .  This script should be copied into the .blender/scripts directory, which, depending on the type of installation of Blender, may be in the main Blender directory where it was installed, or in C:\Documents and Settings\your user name\Application Data\Blender Foundation\Blender for Windows XP, or in C:\Users\Brendon\AppData\Roaming\Blender Foundation\Blender for Windows Vista and 7.
+ 
+Once this script is copied in its proper location, the model may be opened in Blender or imported into Blender from a different modeler (if Wavefront .obj files are imported, make sure to select Import Smooth Groups on import), then it may be exported by first selecting the object (right-click), then go to File->Export->Resequence Object (.robj), selecting the file name, and hitting export.  It may take several seconds to output, as all raw data across all animations is written out (not all of this is imported, but it is all made available in case the animation script requires it).  Make sure the object only consists of single-sided triangles.
+
+---------------
+Input Files:
+---------------
+
+======Effect Resource Script (e.g., modelname.ers)======
+
+The Effect Resource Script, or "ERS", defines an effect model and associated key frames.
+
+The file looks like the following template:
+
+ model effect_model
+  scale 15
+  displacementmap_scale 0.05 0.01
+  tris_to_billboards
+  f1
+  f2
+
+
+model ModelName: The name that will be used for associated textures, .robj, etc. explained in the Animation Script section.
+
+scale X:  scale of the model
+
+displacementmap_scale:	(optional) The first parameter is the scale of the heightmap in world units, the second is the scale of an average texel of the heightmap in world units
+
+tris_to_billboards: (optional) If specified, then each triangle will be translated into a billboarded sprite as a particle system.
+
+f1...fx:  Key frames to include
+
+Compiling an .ers file yields a .emdl file, which can be included in the .ocs file with a name by which it can be referenced by models.
+
+======Animation Script (e.g., modelname.as)======
+
+The Animation Script, or "AS",  defines the model and associated animations.
+
+In general, additional whitespace is ignored.  Anything following a hash, #, is a comment and is ignored.
+
+Each AS begins with the following information:
+
+model ModelName
+ scale 1.0
+ displacementmap_scale 0.05 0.01
+ anchor 0.0 0.0 0.0
+
+model ModelName: The actual name that will be used for the associated files.  It could be frigate, for example.
+
+scale: How much to scale the model from the original file.
+
+displacementmap_scale:	the first parameter is the scale of the heightmap in world units, the second is the scale of an average texel of the heightmap in world units
+
+anchor: The base x, y, z offset of the model.
+
+After that initial information is the set of animations.  Each animation is structured as the following example:
+
+animation NameOfAnimation
+  0.0 f1
+       #optional parameters
+  0.4 f2
+       #other optional parameters
+  1.0 f1
+       #more optional parameters
+
+The animation is a list of key frames.  The first number is the timing, which represents fraction of the animation where this keyframe occurs.  A number of 0.0 means this is the keyframe the model begins with, 0.4 means 40% of the way into the animation, and 1.0 is the concluding keyframe.  For any loopable animations or animations that return a unit back to a common position, the details specified at 1.0 should match that of 0.0.
+
+After the timing is the key frame of the model to use.  "f1" indicates the first key frame, and "f125" represents the 125th keyframe.  These are based on the keyframes in Blender.
+
+Following each key frame is a list of optional parameters as follows.  Animations are interpolated between key frames, so if the value at one frame was 0.0 and the value at the next frame was 1.0, it would be linearly interpolated.
+ variance <variance amount> : This adds randomness to the animation so that units do not walk in lockstep.  <variance amount> is a number between 0.0 and 1.0 that represents the random offset for this keyframe.
+ light_color <red amount> <green amount> <blue amount>: This turns the object into a light source and will emit the color specified.  Each color value is in the range of 0.0 to 1.0.
+ light_intensity <linear decay> <quadratic decay>: This specifies how far the light's brightness will reach.  <linear decay> is a constant indicating the distance by which the light amount is attenuated by based (larger value means brighter), and <quadratic decay> is similar but for distance squared.  A constant decay is not needed as the light_color can simply be made dimmer.  Linear decay is very realistic as a light model, but it is very convincing as it compensates for radiosity and reflectivity and thus is frequently used in real-time rendering.  Quadratic decay models the ideal point light source; visually this decay works best for small light sources.  In practice, combinations of linear and quadratic work best.
+ line_count <number per tile>: This specifies how many projectile instances to render per unit tile
+ no_shadow: This indicates that the object will not cast a shadow from the main light.  This is primarily useful for plasma attacks, very strong light sources, and other visual effects.
+ no_depth_write: This indicates that the object should not write to the depth buffer.  This can be useful for objects that are completely semitransparent to make sure that all parts are seen.
+ alpha <alpha scale> : <alpha scale> is between 0.0 and 1.0, and changes the transparency of the object.
+ translation <x offset> <y offset> <z offset>: Translates the object by the specified amount.
+ rotation <x> <y> <z> <angle>: rotates the model by the specified angle, in degrees, about the vector x, y, z.
+ model_scale <scale>: <scale> scales the model in size.
+ alpha_to_coverage: This indicates that the model's alpha channel will be primarily opaque and fully transparent to add solid object details on the model without increasing polygons (e.g., leaves) as opposed to regular semitransparency (e.g., smoke)
+ soft_depth_blend <depth scale>: Makes the projectile blend into the background based on the height map with corresponding depth scale.  Works well with no_depth_write
+ glow <glow factor>: Scales the projectile's emission brightness by the factor specified.  Defaults to 1
+ translate_texture <x offset> <y offset> : translates the texture by the x and y offsets
+ distort_texture <x> <y> <intensity> : distorts the texture coordinate based on the coordinates of a noise texture at (x,y), multiplied by intensity
+ double_sided : Makes the model's polygons should rendered as double-sided (this can cause incorrect displacement and lighting rendering when back sides of polygons are rendered with non-flat height maps)
+ move_with_source : Makes the projectile's origin move with the source object for the respective frame of the animation
+ orient_to_model : orients the projectile to the model rather than the direction being moved toward
+ particle_scale <scale>: Scales particle projectiles by <scale>.  This is in addition to model_scale, so to keep particles the same size while scaling, should use inverse of the model_scale factor.
+
+Each animation is optionally followed by any number of projectile animations, each of which which can be a missile, an explosion, or other effect as follows:
+
+projectile ProjectileModelName
+  size 1  #optional size
+  0.0 f1
+       #optional parameters
+  0.4 f2
+       #other optional parameters
+  1.0 f1
+       #more optional parameters
+
+If specified, the optional clause
+ size <size>
+overrides what is specified by the weapon used.  If omitted, the engine will use the weapon's splash side in its place.
+
+The ProjectileModelName is looked up by the engine from the .ocs file for an .emdl file associated with the given name.
+
+The optional parameters may be anything listed for the base animation, with a couple additions:
+
+start_moving <x offset> <y offset> <z offset>: This option specifies that the projectile should start at the respective offset from the model and begin moving toward the target location at the designated key frame.
+end_moving: This indicates that the projectile should have reached its destination by this keyframe.
+
+Note that attack-type animations, where a unit launches a missile that then explodes should be broken into two animations.  The first animation will be the launch, and the second will be the explosion and actually perform damage.  The end_moving option may be specified on the first key frame.
+
+======Collision Map (e.g., modelname.csm)======
+
+The collision map (e.g., modelname.csm) simply indicates where an object exists and can't collide.  It is of the following format:
+
+length = <size on a side>
+<collision map>
+
+It is best explained by a simple example.  This represents a unit in the shape of a plus sign (+) of size 3, solid in the center, but with small protrusions on the 4 sides:
+
+length = 3
+0 V 0
+V F V
+0 V 0
+
+
+Letter	|Description												|Occludes Space|Occludes Visibility|Selectable|Sensing|Affectable|Visible|
+--------+-----------------------------------------------------------+--------------+-------------------+----------+-------+----------+-------+
+0		|															|			   |				   |		  |		  |			 |		 |
+F		| Fully occluding											|	X		   |	X			   |	X	  |	X	  |	X		 |	X	 |
+f		|															|	X		   |	X			   |	X	  |		  |	X		 |	X	 |
+V		| Viewable occluding - can see through but occupies space	|	X		   |				   |	X	  |	X	  |	X		 |	X	 |
+v		|															|	X		   |				   |	X	  |		  |	X		 |	X	 |
+S		| Screening - can't see through, but doesn't occupy space	|			   |	X			   |	X	  |	X	  |	X		 |	X	 |
+s		|															|			   |	X			   |	X	  |		  |	X		 |	X	 |
+B		| Blind - occludes view, not affectable						|			   |	X			   |	X	  |	X	  |			 |	X	 |
+b		|															|			   |	X			   |	X	  |		  |			 |	X	 |
+N		| Nonblocking - not occluding but affectable (small units)	|			   |				   |	X	  |	X	  |	X		 |	X	 |
+n		|															|			   |				   |	X	  |		  |	X		 |	X	 |
+I		| Indicator - generally not interactable					|			   |				   |	X	  |	X	  |			 |		 |
+i		|															|			   |				   |	X	  |		  |			 |		 |
+
+If the letter on the collision map spot is lower case, then the object cannot sense from that location.  Thus, capital letters serve as the points of visibility or eyes.
+
+The collision map must be square.  Rectangular units can be represented by simply using rows/columns of zeros.
+
+The unit should also be facing toward the camera, or down with respect to the .csm.
+
+======Images (e.g., modelname-xxxx.png)======
+
+All of the following images are required for an object.  If a channel is not used, a simple 4x4 texture (white, black, or grey) may be used instead.
+
+Note that some 3D modeling applications will require the image to be flipped vertically with respect to UV coordinates.  If you load your model and all the textures are off, flip the texture vertically.
+
+The extensions .png and .jpg are both allowed.  For purposes of example, this section will represent file names with the .png extension.
+
+The object's icon appears when selecting it in the level editor and when the object is selected in-game.  It is represented by the following files:
+
+  modelname-icon-rgb.png:  Icon base picture (RGB color, 8-bits / channel)
+
+  modelname-icon-a.png: Icon alpha channel (single 8-bit channel); 255 is full opacity, 0 is full transparency
+
+  modelname-icon-t.png: Icon team color channel (single 8-bit channel); 255 means full team color, 0 means no team color
+
+The model's images are as follows:
+  modelname-rgb.png: Model diffuse (RGB color, 8-bits / channel)
+  
+  modelname-a.png:  Model alpha channel (single 8-bit channel); use transparency and semitransparency sparingly for rendering efficiency.
+  
+  modelname-t.png:  Model team color channel (single 8-bit channel); team color is rendered on top of all other channels.
+  
+  modelname-h.png:  Model's heightmap/displacement map channel (single 8-bit channel); 0 means fully sunk in, 255 means fully stuck out, 128 means neutral. The overall average color should be 128, otherwise your polygons will sink in (a few of our current models have this problem and their textures need to be replaced). The normal map will be computed automatically from this file.  Also, make sure that this map is very soft/blurred and does not have extremely high-contrast edges.  If it is too harsh, it will have stark visual artifacts.
+  
+  modelname-s.png:  Model's specular map (single 8-bit channel); represents the amount of the model's shininess.  Even very flat things and military technology tend to have a little tiny bit of shine, but also, few things in nature other than water have high shine value.
+  
+  modelname-g.png:  Model's gloss map (single 8-bit channel); represents model's gloss. A low value means it blurs reflections, a high value means crisp reflections.  Note that only light is currently reflected, we don't do cubemap reflections yet.  Gloss is independent of shine.  Something can be very shiny but not glossy (e.g., certain kinds of plastic) or can be glossy but not very shiny (e.g., chrome caked in layers of grime).
+  
+  modelname-c.png:  Model's active camouflage (single 8-bit channel); represents the amount of active camouflage to render on top of the model.  Active camouflage is picked up from the terrain below.  In the model preview, common camouflage colors are default.  This map is not used for projectiles.
+  
+  modelname-e.png: Model's emission map (single 8-bit channel); represents how much glow the model has.  Emission is useful for rocket fire, explosions, plasma, etc.  It is currently only used by projectile models.
+
+Also note that all of these textures may be of different resolutions, but they need to be powers of two on each side, and must be at least 4x4 (because some video cards have issues with 2x2).
+
+The model heightmap (-h) also should be png and not jpg, as jpg will introduce odd bumps. For this map, make sure that the gradient between any two points isn't too steep, otherwise the displacement it won't look good. We've found that blurring it a bit can fix those issues and make it look good.
+
+Different rendering options also support more or less channels. For example, the lowest in-game rendering settings only use the -rgb, -a, -t, and -c maps.
+
+
+---------------
+Troubleshooting:
+---------------
+
+Issue: Texturemaps look all jumbled
+Resolution: Try flipping them vertically.  Some modeling programs use different "handedness", which causes this issue.
+
+Issue: A given feature in a height map looks like a bump when the camera is panned on one axis (e.g., left-to-right), and like a hole when the camera is panned on the other axis (e.g., up-to-down).
+Resolution: You may be setting the UV coordinates backward on one axis (are the triangles backward or are you using the texture backward?).
+
+Issue: The model looks like its bumps and contours are covered in plastic wrap.
+Resolution: Your height map channel has features that are too high of contrast given their proximity.  Either blur your texture or decrease the contrast.
+
+Issue: Model was exported properly from Blender, but nothing appears in the Model Compiler preview.
+Resolution: The model may not be centered, it may be too big or too small, or the alpha channel (e.g., modelname-a.png) is all black or less than 4x4 pixels.
+
