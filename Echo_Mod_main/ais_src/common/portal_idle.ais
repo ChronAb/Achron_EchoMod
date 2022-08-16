@@ -1,0 +1,92 @@
+
+#include common/include/unit_common_header.aih
+
+/* Portals spit out carried units that are finished constructing
+    *If t<4:00 -> spit out units as quickly as they finish 
+        (need to get units out on the field fast)
+    * If t>=4:00 and the oldest carried unit is older than 6:00
+        -> trigger deploy all script, targeting near the spawner (center-ward)
+    * If t>=4:00 and under attack but health is high -> spit out highest
+        HP passenger once every 8 s
+    * If t>=4:00 and under attack with low health -> spit out highest
+        HP passenger once every 2 s
+*/
+
+if (unit->TotalCarriedSize == 0) PERFORM NOTHING;
+
+PERFORM GET_CUR_TIME;
+int curtime = perf_ret;
+PERFORM RAND;
+int temp1 = perf_ret;
+
+int unit_pos = unit->Position;
+PERFORM GET_MAP_WIDTH;
+int map_x = perf_ret;
+PERFORM GET_MAP_LENGTH;
+int map_y = perf_ret;
+int midmap = 0;
+midmap[$Xpos] = 0.1*map_x + 0.8*unit_pos[$Xpos];
+midmap[$Ypos] = 0.1*map_y + 0.8*unit_pos[$Ypos];
+
+object cargo = 0;
+object release = 0;
+
+// t<4:00 -> spit out units as quickly as they finish constructing
+if (curtime<4320) {
+    if (temp1[0,5]>0) PERFORM NOTHING; //act once every 16 ticks on average
+    
+    cargo = unit->NextCarriedUnit;
+    release = cargo;
+    while (cargo>0) {
+        if (cargo->HP > release->HP && cargo->Action==58) {
+            release = cargo;
+        }
+        cargo = unit->NextCarriedUnit;
+    }
+    target = release;
+    if (release->Action==58) PERFORM $ACTION_RELEASE_UNIT;
+    PERFORM NOTHING;
+}
+
+
+// t>=4:00 -> various behaviors
+//***********************************************
+
+// release all if the oldest passenger is older than 6:00
+if (unit->LastAttackedVDirection == 0 && temp1[0,6]<1) {
+    cargo = unit->NextCarriedUnit;
+    release = cargo;
+    while (cargo>0) {
+        if (cargo->Age > release->Age) {
+            release = cargo;
+        }
+        cargo = unit->NextCarriedUnit;
+    }
+    if (release->Age > 6480) {
+        PERFORM SET_OBJECTIVE 2;
+        PERFORM SET_PARAM midmap;
+        PERFORM NOTHING;
+    }
+}
+
+// release units a varying rates if under attack
+query_vis_distance = 24;
+int tallyE = 0; // count nearby enemies
+if(temp1[0,6]==0) tallyE = QUERY VALUE [unit] SUM [1]
+        WHERE [!(query->IsAlly) && query->Owner < 12 && 
+        query->Class < 3000 && query != 0];
+if (unit->LastAttackedVDirection == 0 && tallyE == 0) PERFORM NOTHING;
+if (unit->HP < 3000 && temp1[0,6]>0) PERFORM NOTHING;
+if (unit->HP >= 3000 && temp1[0,8]>0) PERFORM NOTHING;
+    
+cargo = unit->NextCarriedUnit;
+release = cargo;
+while (cargo>0) {
+    if (cargo->HP > release->HP && cargo->Action==58) {
+        release = cargo;
+    }
+    cargo = unit->NextCarriedUnit;
+}
+target = release;
+if (release->Action==58) PERFORM $ACTION_RELEASE_UNIT;
+query_vis_distance = -1; //reset the query radius range

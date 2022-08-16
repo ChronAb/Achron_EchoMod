@@ -1,0 +1,43 @@
+
+#include common/include/unit_common_header.aih
+
+// Portals spit out carried units in order from most to least HP
+// Released units inherit A-move orders
+
+// if empty -> return to idle
+if (unit->TotalCarriedSize == 0) {
+    PERFORM SET_OBJECTIVE 0;
+    PERFORM NOTHING;
+}
+
+PERFORM RAND;
+int temp1 = perf_ret;
+
+object cargo = 0;
+object release = 0;
+
+if (temp1[0,5]>0) PERFORM NOTHING; //act once every 16 ticks on average
+
+// find carried with unit with the most hp
+cargo = unit->NextCarriedUnit;
+release = cargo;
+while (cargo>0) {
+    if (cargo->Action==58 && (cargo->HP > release->HP || release->Action==58)) {
+        release = cargo;
+    }
+    cargo = unit->NextCarriedUnit;
+}
+target = release;
+
+// return to idle if the release candidate is not idle
+if (release->Action!=58) {
+    PERFORM SET_OBJECTIVE 0;
+    PERFORM NOTHING;
+}
+
+// tell it to A-move
+PERFORM SET_OTHER_OBJECTIVE $OBJECTIVE_ATTACKPOS_DISPATCH;
+PERFORM SET_OTHER_OBJECTIVE_PARAMS (unit->ObjectiveParameters);
+
+// drop it off
+if (release->Action==58) PERFORM $ACTION_RELEASE_UNIT;
