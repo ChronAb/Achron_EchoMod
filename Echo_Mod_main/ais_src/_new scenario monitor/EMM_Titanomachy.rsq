@@ -1,40 +1,38 @@
 //Echo Ops Mod - original script
 //Contributed by Dallas "ChronAberant" Joder
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 #include EchoModMonitor.rsq
 #include include/dropshipNarration.rsi
 if (present < 108 || current < 108) PERFORM NOTHING;
 
-//----------------------------------------------
+//------------------------------------------------------------------
 // Echo Ops Mod:
 // Titanomachy - AI Gameplay
-//----------------------------------------------
+//------------------------------------------------------------------
 
 /***********************************************
 To Do:
-* More AI behaviors
-* Achronal reactivity
-* Randomization
-* BASE1 should kill its Macrofab rocks
+* Figure out why some maneuvers occasionally fail to trigger.
+* Figure out the deal with AI timewaves skipping ticks.
+* Have AI timewaves change their movements based on battle plans.
+* Have SM reactively direct AI player tech-up.
+* Add More randomization of battle plans.
+* Reaphs and MFBs should deploy to revive frozen allies.
+? AI players should kill the Macrofab rocks.
 ************************************************
 ***********************************************/
 
-// Definitions
-//*******************************
-//*******************************
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+// - Data Management -
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-// Time Coordinates:
-//*******************************
-// Big attack start metatime: -90 seconds;
-#define BigAtkMT -1620
-//#define BigAtkMT (2*present) <| (720 $seconds)
+// - Time Coordinates
+//*********************************************
 
-// Small attack start metatime: -150 seconds
-#define SmlAtkMT -2700
-//#define SmlAtkMT (2*present) <| (720 $seconds);
-
-// Map Locations:
-//*******************************
+// - Map Locations
+//*********************************************
 #define midx 110
 #define midy 120
 #define XYa1 _dest[$Xpos] = 30; _dest[$Ypos] = 110;
@@ -49,10 +47,10 @@ To Do:
 #define XYb5 _dest[$Xpos] = 195; _dest[$Ypos] = 90;
 #define XYa6 _dest[$Xpos] = 130; _dest[$Ypos] = 30;
 #define XYb6 _dest[$Xpos] = 90; _dest[$Ypos] = 210;
-#define XYc1 _dest[$Xpos] = 110; _dest[$Ypos] = 120;
+#define XYc1 _dest[$Xpos] = 109; _dest[$Ypos] = 116;
 
-// Capturable Unit IDs and owners:
-//*******************************
+// - Capturable Unit IDs and owners
+//*********************************************
 object AMPa1 = 110; // 9:00
 object AMPb1 = 112; // 3:00
 
@@ -94,9 +92,8 @@ int tAMPa6 = 0; tAMPa6 = AMPa6->Owner; int tAMPb6 = 0; tAMPb6 = AMPb6->Owner;
 int tAMPc1 = 0; tAMPc1 = AMPc1->Owner;
 int tOBHsw = 0; tOBHsw = OBHsw->Owner; int tOBHne = 0; tOBHne = OBHne->Owner;
 
-
-// Ally Cooperation Voodoo
-//*******************************
+// - Ally Cooperation Voodoo
+//*********************************************
 player = tAMPc1; uOwnerAllies = player->Allies;
 if (uOwnerAllies>>tAMPa3 & 1 > 0) tAMPa3 = tAMPc1;
 if (uOwnerAllies>>tAMPb3 & 1 > 0) tAMPb3 = tAMPc1;
@@ -121,8 +118,8 @@ player = tAMPb3; uOwnerAllies = player->Allies;
 if (uOwnerAllies>>tAMPb1 & 1 > 0) tAMPb1 = tAMPb3;
 if (uOwnerAllies>>tAMPb2 & 1 > 0) tAMPb2 = tAMPb3;
 
-// Game-State Detection
-//*******************************
+// - Game-State Detection (Achronal)
+//*********************************************
 PERFORM GET_ACHRONAL_FIELD 70; 
 int quadrants = perf_ret[0,4]; // AI portals in the NW/NE/SW/SE quadrants?
 
@@ -161,9 +158,8 @@ if (current==2700 && current==present) {
     target = 70; PERFORM SET_ACHRONAL_FIELD quadrants;    
 }
 
-
-// Randomization
-/********************************
+// - Randomization (Achronal)
+/**********************************************
 Should AI players rush (0-1), turtle (2-4), or boom (5-7) ?
 
 When should AI players push the center?
@@ -203,9 +199,12 @@ int r1a50 = 1; // random binary var 1A with 50% probability
 int r1b50 = 1; // random binary var 1B with 50% probability
 int r2a50 = 1; // random binary var 2A with 50% probability
 int r2b50 = 1; // random binary var 2B with 50% probability
+int r1a25 = 1; // random binary var 1A with 25% probability
+int r1b25 = 1; // random binary var 1B with 25% probability
+int r2a25 = 1; // random binary var 2A with 25% probability
+int r2b25 = 1; // random binary var 2B with 25% probability
 
-// initialize  randomization seeds:
-// *******************************
+// initialize
 if (1) {
     // initialize achronal seeds:
     // *******************************
@@ -254,20 +253,24 @@ if (1) {
         PERFORM RAND;
         int temp1 = perf_ret[0,4];
         if (1&(af66>>temp1)) r1a50 = 0;
+        if (3&(af67>>temp1)>0) r1a25 = 0;
         
         temp1 = perf_ret[4,4];
         if (1&(af66>>temp1)) r1b50 = 0;
+        if (3&(af67>>temp1)>0) r1b25 = 0;
         
         temp1 = perf_ret[8,4];
         if (1&(af66>>temp1)) r2a50 = 0;
+        if (3&(af67>>temp1)>0) r2a25 = 0;
         
         temp1 = perf_ret[12,4];
         if (1&(af66>>temp1)) r2b50 = 0;
+        if (3&(af67>>temp1)>0) r2b25 = 0;
     }
 }
 
-// Achronal Feedback
-/********************************
+// - Achronal Feedback /IDEAS/ (Achronal)
+/**********************************************
     AMPa4 -> AMPb6
         What was the timestamp of the 1st raid on AMPb6 from AMPa4?
         What was the game-time stamp?
@@ -293,8 +296,8 @@ if (1) {
         Was it successful at +80s?
 */
 
-// Debugging checks
-//*******************************
+// - Debugging checks
+//*********************************************
 if (0 && current%108==0) {
     int x = 0;
     for(x=0;x<15;x=x+1){
@@ -324,128 +327,1411 @@ if (0 && current%1080==0) {
     }
 }
 
-// AI Players Move Around the Timeline
-//*******************************
+
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+// - Timeline Choreography -
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+/*  AI player timewave movements
+(early game)
+* 0:05 > 0x = pause so players can set up the map    
+* grabbing AMPs and Turrets
+    m 10 - 140 (0:10 - 2:20) >> 2x, t 0:10 - 4:30 
+* building and reactive skirmish maneuvers
+    m 140 - 280 (2:20 - 4:40) ->t 30 (0:30), >> 2x, t 0:30 - 5:10 
+            (delayed so RNG seeds have a chance to propagate)
+* Coup-de-grace edge rush (might be a feint)
+    m 280 - 370 (4:40 - 6:10) ->t 160 (2:40), >> 1x, t 2:40 - 4:10
+        
+(mid/late game)
+* building, Thrust 1, Wave 1, Wave2
+    m 370 - 520 (6:10 - 8:40) ->t 310 (5:10), >> 2x/1x, t 5:10 - 8:40 
+* Thrust 1 retcon
+    m 520 - 560 (8:40 - 9:20) ->t 400 (6:40), >> 1x, t 6:40 - 7:20 
+* Thrust 2
+    m 560 - 710 (9:20 - 11:50) ->t 500 (8:20), >> 1x, t 8:20 - 10:50 
+* Thrust 2 retcon
+    m 710 - 720 (11:50 - 12:00) ->t 500 (8:20), >> 1x, t 8:20 - 8:30 
+* building again
+    m 720 - 790 (12:00 - 13:10) ->t 600 (10:00), >> 2x, t 10:00 - 12:20 
+        
+* Thrust 3
+    m 790 - 800 (13:10 - 13:20) ->t 550 (9:10), >> 1x, t 9:10 - 9:20 
+* Thrust 4, building again, Wave 3, Wave 4, Wave 5
+    m 800 - 930 (13:20 - 15:30) ->t 800 (13:20), >> 1x, t 13:20 - 15:30 
+* Thrust 5
+    m 930 - 940 (15:30 - 15:40) ->t 750 (12:30), >> 1x, t 12:30 - 12:40 
+* building again, Wave 1
+    m 940 - 1020 (15:40 - 16:55) ->t 940 (15:40), >> 1x, t 15:40 - 16:55 
+* Thrust 4 retcon
+    m 1015 - 1020 (16:55 - 17:00) ->t 800 (13:20), >> 1x, t 13:20 - 13:25 
+* Raid 1, Raid 2
+    m 1020 - 1080 (17:00 - 18:00) ->t 720 (12:00), >> 1x, t 12:00 - 13:00 
+* building again, Wave 2
+    m 1080 - 1200 (18:00 - 20:00) ->t 1080 (18:00), >> 1x, t 18:00 - 20:00 
+        
+* Thrust 6
+    m 1200 - 1210 (20:00 - 20:10) ->t 870 (14:30), >> 1x, t 14:30 - 14:40 
+* building again
+    m 1210 - 1260 (20:10 - 21:00) ->t 1210 (20:10), >> 1x, t 20:10 - 21:00 
+* Raid 3, Raid 4
+    m 1260 - 1410 (21:00 - 23:30) ->t 960 (16:00), >> 1x, t 16:00 - 18:30 
+* building again, Wave 3, Wave 4, Wave 5
+    m 1410 - 1500 (23:30 - 25:00) ->t 1410 (23:30), >> 1x, t 23:30 - 25:00 
+* Thrust 7
+    m 1500 - 1505 (25:00 - 25:05) ->t 1200 (20:00), >> 1x, t 20:00 - 20:05 
+* watch the endgame play out 
+    m 1505 - 1600 (25:05 - 26:40) ->t 1265 (21:05), >> 1x, t 21:05 - 22:40 
+* Wave 1, Wave 2
+    m 1600 - NA (26:40 - NA) ->t 1600 (26:40), >> 1x, t 26:40 - NA  
+*/
 if (1 && current == present) {
     //loop through the 14 players
     int x = 0;
 	for (x = 0; x<14; x=x+1) {
         player = x;
 		if((enabled>>x)&1 && (contenders>>x)&1 && player->IsComputerPlayer){
-            if (present == 10 $seconds) { // 0:10 - First Pass
-                PERFORM SET_PLAYER_TIME_RATE 3;
-            }
-            if (present == 278 $seconds) { // 4:40 - edge rush (might be a feint)
-                PERFORM SET_PLAYER_TIME (158 $seconds); // 2:40
-                PERFORM SET_PLAYER_TIME_RATE 2;
-            }
-            if (present == 498 $seconds) { // 8:20 - EG edge attacks on Amp3, Amp6
-                PERFORM SET_PLAYER_TIME (198 $seconds); // 3:20
-            }
-            if (present == 508 $seconds) { // 8:30 - late game push
-                PERFORM SET_PLAYER_TIME (388 $seconds); // 6:30
-            }
+            // 0:10 - grabbing AMPs and Turrets
+            if (present == 10 $seconds) PERFORM SET_PLAYER_TIME_RATE 3;
+            // 2:20 - building @ 0:30
+            _mTime = 140; _tTime = 30; _tRate = 3; $GOTO_TIME
+            // (no time for the present...)
+            if (present == 252 $seconds) PERFORM SET_PLAYER_TIME_RATE 3;
+            // 4:40 - Coup-de-grace edge rush
+            _mTime = 278; _tTime = 158; _tRate = 2; $GOTO_TIME
             
-            /*
+            // 6:10 - building, T1, W1, W2 @ 5:40
+            _mTime = 368; _tTime = 338; _tRate = 3; $GOTO_TIME
+            // 8:40 - T1 retcon @ 6:40
+            _mTime = 518; _tTime = 398; _tRate = 2; $GOTO_TIME
+            // 9:20 - T2 @ 8:20
+            _mTime = 558; _tTime = 498; _tRate = 2; $GOTO_TIME
+            // 11:50 - T2 retcon @ 8:20
+            _mTime = 708; _tTime = 498; _tRate = 2; $GOTO_TIME
+            // 12:00 - building @ 10:00
+            _mTime = 720; _tTime = 600; _tRate = 3; $GOTO_TIME
             
-            if (present == 340 $seconds) { // 7:25 - pantomime replaying early-mid
-                PERFORM SET_PLAYER_TIME (205 $seconds); // 3:25
-            }
+            // 13:10 - T3 @ 9:10
+            _mTime = 788; _tTime = 548; _tRate = 2; $GOTO_TIME
+            // 13:20 - T4, building, W3, W4 @ 13:20
+            _mTime = 798; _tTime = 797; _tRate = 3; $GOTO_TIME
+            // 15:30 - T5 @ 12:30
+            _mTime = 928; _tTime = 748; _tRate = 2; $GOTO_TIME
+            // 15:40 - building, W1 @ 15:40
+            _mTime = 940; _tTime = 939; _tRate = 3; $GOTO_TIME
+            // 16:55 - T4 retcon @ 13:20
+            _mTime = 1013; _tTime = 798; _tRate = 2; $GOTO_TIME
+            // 17:00 - R1, R2 @ 12:00
+            _mTime = 1020; _tTime = 720; _tRate = 2; $GOTO_TIME
+            // 18:00 - building, W2 @ 18:00
+            _mTime = 1080; _tTime = 1079; _tRate = 3; $GOTO_TIME
             
-            if (present == 490 $seconds) { // 8:10 - EG edge attacks on Amp3, Amp6
-                PERFORM SET_PLAYER_TIME (198 $seconds); // 3:10
-                PERFORM SET_PLAYER_TIME_RATE 2;
-            }
-            
-            if (present == 440 $seconds) { // 7:20 - EG edge attack on Amp3
-                PERFORM SET_PLAYER_TIME (98 $seconds); // 1:40
-            }
-            if (present == 550 $seconds) { // 9:10 - MG edge attacks + UPPercut
-                PERFORM SET_PLAYER_TIME (308 $seconds); // 5:10
-            }
-            
-            if (present == 700 $seconds) { // 11:40 - LG edge attacks on Amp2
-                PERFORM SET_PLAYER_TIME (518 $seconds); // 8:40
-            }
-            if (present == 800 $seconds) { // 13:20 - LG UPPercut on Amp2
-                PERFORM SET_PLAYER_TIME (518 $seconds); // 8:40
-            }
-            if (present == 820 $seconds) { // 13:40 - LG edge attacks
-                PERFORM SET_PLAYER_TIME (638 $seconds); // 10:40
-            }
-
-            if (present == 880 $seconds) { // 14:40 - overtime push
-                PERFORM SET_PLAYER_TIME (878 $seconds); // 14:40
-                PERFORM SET_PLAYER_TIME_RATE 3;
-            }
-            if (present == 700 $seconds) { // 17:40 - OT edge attacks on Amp2
-                PERFORM SET_PLAYER_TIME (878 $seconds); // 14:40
-                PERFORM SET_PLAYER_TIME_RATE 2;
-            }
-            if (present == 800 $seconds) { // 19:20 - OT UPPercut on Amp2
-                PERFORM SET_PLAYER_TIME (878 $seconds); // 14:40
-            }
-            if (present == 820 $seconds) { // 19:40 - OT edge attacks
-                PERFORM SET_PLAYER_TIME (998 $seconds); // 16:40
-            }*/
+            // 20:00 - T6 @ 14:30
+            _mTime = 1198; _tTime = 868; _tRate = 2; $GOTO_TIME
+            // 20:10 - building @ 20:10
+            _mTime = 1210; _tTime = 1209; _tRate = 3; $GOTO_TIME
+            // 21:00 - R3, R4 @ 16:00
+            _mTime = 1260; _tTime = 960; _tRate = 2; $GOTO_TIME
+            // 23:30 - building, W3, W4 @ 23:30
+            _mTime = 1410; _tTime = 1409; _tRate = 3; $GOTO_TIME
+            // 25:00 - T7 @ 20:00
+            _mTime = 1498; _tTime = 1198; _tRate = 2; $GOTO_TIME
+            // 25:05 - play it out @ 21:05
+            _mTime = 1505; _tTime = 1265; _tRate = 3; $GOTO_TIME
+            // 26:40 - W1, W2 @ 26:40
+            _mTime = 1600; _tTime = 1599; _tRate = 3; $GOTO_TIME
 		}
 	}
 }
 
 
-// Fortification & Base Building
-/********************************
-    AMPs periodically spawn building for free when conditions are met 
-    and the target location is not obstructed
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+// - Early Game -
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+// (30 s - 270 s [4:30])
+if (current < 270 $seconds) {
+    // - Base Building
+    /**********************************************
+        t 1:00 - 4:00, m 2:20 +
+        AMPs spawn building for free when conditions are met 
+        and the target location is not obstructed.
+    */
+    // Fortifications & Bases
+    if (1 && current <= 2*(present-2214)) {
+        _maxM = 10800; 
+        _minT = 90 $seconds; _maxT = 4320;
+        _everyT = 61 $seconds;
+        
+        // super-fortify the central basin if you control it
+        _underling = AMPc1; _uOwner = _underling->Owner; 
+        if (tAMPc1==tAMPa1) {
+            _dest[$Xpos] = 80; _dest[$Ypos] = 114;
+            _minT = 70 $seconds; // hill front
+            $MAKA_DOME $MAKA_TOWER
+            
+            /*_dest[$Xpos] = 105; _dest[$Ypos] = 110;
+            _minT = 170 $seconds; // AMPc crates
+            $MAKA_DOME $MAKA_SENSOR*/
+        }
+        if (tAMPc1==tAMPb1) {
+            _dest[$Xpos] = 137; _dest[$Ypos] = 123;
+            _minT = 70 $seconds; // hill front
+            $MAKA_DOME $MAKA_TOWER
+            
+            /*_dest[$Xpos] = 112; _dest[$Ypos] = 127;
+            _minT = 170 $seconds; // AMPc crates
+            $MAKA_DOME $MAKA_SENSOR*/
+        }
+        
+        // fortify AMP1 and its environs if there is a base there
+        if (tAMPa1<14 && quadrants[0] && r1a50){
+            _underling = AMPa1; _uOwner = _underling->Owner; 
+            /*if (1) {
+                _dest[$Xpos] = 20; _dest[$Ypos] = 90;
+                _minT = 65 $seconds; // AMP1 crate line back
+                $MAKA_DOME $MAKA_TOWER
+            }*/
+            
+            if (tAMPa4==tAMPa1) {
+                _dest[$Xpos] = 33; _dest[$Ypos] = 115;
+                _minT = 105 $seconds; // AMP1 front
+                $MAKA_DOME $MAKA_SENSOR
+            }
+        }
+        if (tAMPb1<14 && quadrants[3] && r1b50){
+            _underling = AMPb1; _uOwner = _underling->Owner;
+            /*if (1) {
+                _dest[$Xpos] = 196; _dest[$Ypos] = 147; 
+                _minT = 65 $seconds; // AMP1 crate line back
+                $MAKA_DOME $MAKA_TOWER
+            }*/
+            
+            if (tAMPb4==tAMPb1) {
+                _dest[$Xpos] = 183; _dest[$Ypos] = 122;
+                _minT = 105 $seconds; // AMP1 front
+                $MAKA_DOME $MAKA_SENSOR
+            }
+        }
+        
+        // fortify AMP2 and its hill if there is a base there
+        if (AMPa2->HP >= 60 && quadrants[0] && r1a50){
+            _underling = AMPa2; _uOwner = _underling->Owner; 
+            if (TURn->Owner==tAMPa2 || !TURn->IsAlive) {
+                _dest[$Xpos] = 84; _dest[$Ypos] = 35; // front door
+                _minT = 90 $seconds;
+                $MAKA_REAPH $MAKA_TOWER
+                
+                _dest[$Xpos] = 100; _dest[$Ypos] = 33;  // front corner
+                _minT = 160 $seconds;
+                $MAKA_DOME $MAKA_SENSOR
+            }
+        }
+        if (AMPb2->HP >= 60 && quadrants[3] && r1b50){
+            _underling = AMPb2; _uOwner = _underling->Owner; 
+            if (TURs->Owner==tAMPb2 || !TURs->IsAlive) {
+                _dest[$Xpos] = 134; _dest[$Ypos] = 203; // front door
+                _minT = 90 $seconds;
+                $MAKA_REAPH $MAKA_TOWER
+                
+                _dest[$Xpos] = 118; _dest[$Ypos] = 204;  // front corner
+                _minT = 160 $seconds;
+                $MAKA_DOME $MAKA_SENSOR
+            }
+        }
+        
+        // Fortify the BASE0 hill if there is a base in the quadrant
+        // and AMP1 and AMP2 are not friends (to protect tech)
+        if (tAMPa1!=tAMPa2 && quadrants[0] && 1){
+            _underling = AMPa1; _uOwner = _underling->Owner;
+            _dest[$Xpos] = 21; _dest[$Ypos] = 50; // Pocket
+            _minT = 130 $seconds;
+            $MAKA_DOME $MAKA_TOWER
+            
+            _underling = AMPa2; _uOwner = _underling->Owner;
+            _dest[$Xpos] = 45; _dest[$Ypos] = 47; // Flank
+            _minT = 110 $seconds;
+            $MAKA_DOME $MAKA_TOWER
+        }
+        if (tAMPb1!=tAMPb2 && quadrants[3] && 1){
+            _underling = AMPb1; _uOwner = _underling->Owner;
+            _dest[$Xpos] = 197; _dest[$Ypos] = 188;
+            _minT = 130 $seconds;
+            $MAKA_DOME $MAKA_TOWER
+            
+            _underling = AMPb2; _uOwner = _underling->Owner;
+            _dest[$Xpos] = 172; _dest[$Ypos] = 190;
+            _minT = 110 $seconds;
+            $MAKA_DOME $MAKA_TOWER
+        }
+        
 
-    AMP1 + AMP2 -> fortify the forked pass, 
-    build base at main + pocket + fortify natural:
-        RP @ 30,60 main
-        RP @ 80,20 pocket
-        RP @ 20,90 natural
-        RP @ 30,30 main
-        ***
-        reaph @ 78,80 natural
-    AMP1 + AMP3 -> fortify the hill + RP forward QP:
-        reaph @ 78,101
-        RP @ 80,75
-        ***
-    AMP4 + AMP3 -> fortify the hill + build base at natural:
-        reaph @ 64,117
-        turret @ 82,114
-        ***
-    AMP4 + AMP5 -> fortify AMP4 + RP the spoils:
-        reaph @ 50,150
-        turret @ 70,150
-        RP @ 30,150
-        reaph @ 24,146 (late)
-        ***
-    AMP4 + AMPt6 -> fortify and build base at AMPt6:
-        turret @ 80,180
-        reaph @ 65,180
-        RP x2 @ 60,190
-        turret @ 51,187
-        fac @ 75,205
-        reaph @ 85,195
+        // fortify the AMP4/5 basin if there is a base there
+        if (tAMPa5==tAMPa4 && quadrants[2] && r1a50){
+            _underling = AMPa4; _uOwner = _underling->Owner;
+            _dest[$Xpos] = 32; _dest[$Ypos] = 140; //BASE4 flank
+            _minT = 115 $seconds;
+            $MAKA_REAPH $MAKA_TOWER
+            
+            _dest[$Xpos] = 67; _dest[$Ypos] = 140; //BASE4 front
+            _minT = 95 $seconds;
+            $MAKA_DOME $MAKA_TOWER
+        }
+        if (tAMPb5==tAMPb4 && quadrants[1] && r1b50){
+            _underling = AMPb4; _uOwner = _underling->Owner;
+            _dest[$Xpos] = 186; _dest[$Ypos] = 98;
+            _minT = 115 $seconds;
+            $MAKA_REAPH $MAKA_TOWER
+            
+            _dest[$Xpos] = 151; _dest[$Ypos] = 98;
+            _minT = 95 $seconds;
+            $MAKA_DOME $MAKA_TOWER
+        }
+
+        // fortify the AMP6 basin
+        if (AMPa6->HP >= 50 && r1a50){
+            _underling = AMPa6; _uOwner = _underling->Owner;
+            _dest[$Xpos] = 150; _dest[$Ypos] = 55; // pocket
+            _minT = 135 $seconds; 
+            $MAKA_REAPH $MAKA_SENSOR
+            
+            _dest[$Xpos] = 139; _dest[$Ypos] = 58; // front doors
+            _minT = 150 $seconds;
+            $MAKA_DOME $MAKA_TOWER
+        }
+        if (AMPb6->HP >= 50 && r1b50){
+            _underling = AMPb6; _uOwner = _underling->Owner;
+            _dest[$Xpos] = 68; _dest[$Ypos] = 183;
+            _minT = 135 $seconds; 
+            $MAKA_REAPH $MAKA_TOWER
+            
+            _dest[$Xpos] = 78; _dest[$Ypos] = 179;  
+            _minT = 150 $seconds;
+            $MAKA_DOME $MAKA_SENSOR
+        }
+    }
+    // Tech
+    if (1 && current <= 2*(present-2214)) {
+         _maxM = 10800; 
+         _minT = 90 $seconds; _maxT = 4320;
+        _everyT = 91 $seconds;
+        
+        // NW/SE quadrant players build research buildings in BASE0
+        if (tAMPa1<14 && quadrants[0] && r2a50){ // AMP1
+            _underling = AMPa1; _uOwner = _underling->Owner;
+            _dest[$Xpos] = 31; _dest[$Ypos] = 66; // BASE0 highground front
+            _minT = 140 $seconds; 
+            $MAKA_MOUND $MAKA_FAC
+            
+            _dest[$Xpos] = 15; _dest[$Ypos] = 54; // BASE0 highground pocket
+            _minT = 170 $seconds; 
+            $MAKA_MOUND $MAKA_IMPORTER
+        }
+        if (tAMPb1<14 && quadrants[3] && r2b50){
+            _underling = AMPb1; _uOwner = _underling->Owner;
+            _dest[$Xpos] = 185; _dest[$Ypos] = 171;
+            _minT = 140 $seconds; 
+            $MAKA_MOUND $MAKA_FAC
+            
+            _dest[$Xpos] = 201; _dest[$Ypos] = 183;
+            _minT = 170 $seconds; 
+            $MAKA_MOUND $MAKA_IMPORTER
+        }
+        
+        if (tAMPa2<14 && quadrants[0] && r2a50){ // AMP2
+            _underling = AMPa2; _uOwner = _underling->Owner;
+            _dest[$Xpos] = 42; _dest[$Ypos] = 28; // BASE0 highground back
+            _minT = 175 $seconds; 
+            $MAKA_MOUND $MAKA_IMPORTER
+            
+            _dest[$Xpos] = 50; _dest[$Ypos] = 40; // BASE0 highground flank
+            _minT = 160 $seconds; 
+            $MAKA_MOUND $MAKA_FAC
+        }
+        if (tAMPb2<14 && quadrants[3] && r2b50){
+            _underling = AMPb2; _uOwner = _underling->Owner;
+            _dest[$Xpos] = 176; _dest[$Ypos] = 208;
+            _minT = 175 $seconds; 
+            $MAKA_MOUND $MAKA_IMPORTER
+            
+            _dest[$Xpos] = 168; _dest[$Ypos] = 198;
+            _minT = 160 $seconds; 
+            $MAKA_MOUND $MAKA_FAC
+        }
+
+        // NE/SW quadrant players split their research buildings 
+        // between BASE4 and BASE6
+        if (tAMPa4<14 && quadrants[2] && r2a50){ // AMP4
+            _underling = AMPa4; _uOwner = _underling->Owner;
+            _dest[$Xpos] = 58; _dest[$Ypos] = 152; //BASE4 side
+            _minT = 95 $seconds;
+            $MAKA_MOUND $MAKA_FAC
+        }
+        if (tAMPb4<14 && quadrants[1] && r2b50){
+            _underling = AMPb4; _uOwner = _underling->Owner;
+            _dest[$Xpos] = 159; _dest[$Ypos] = 85;
+            _minT = 95 $seconds;
+            $MAKA_MOUND $MAKA_FAC
+        }
+        
+        if (tAMPa6<14 && quadrants[1] && r2a50){ // AMP6
+            _underling = AMPa6; _uOwner = _underling->Owner;
+            _dest[$Xpos] = 165; _dest[$Ypos] = 26; //BASE6 pocket
+            _minT = 105 $seconds;
+            $MAKA_MOUND $MAKA_IMPORTER
+
+            _dest[$Xpos] = 160; _dest[$Ypos] = 35; //BASE6 rear
+            _minT = 115 $seconds;
+            $MAKA_MOUND $MAKA_FAC
+        }
+        if (tAMPb6<14 && quadrants[2] && r2b50){
+            _underling = AMPb6; _uOwner = _underling->Owner;
+            _dest[$Xpos] = 52; _dest[$Ypos] = 211; 
+            _minT = 105 $seconds; 
+            $MAKA_MOUND $MAKA_IMPORTER
+
+            _dest[$Xpos] = 60; _dest[$Ypos] = 202;
+            _minT = 115 $seconds;
+            $MAKA_MOUND $MAKA_FAC
+        }
+    }
+
+    // - Strategic Maneuvers
+    //*********************************************
+    /* Early game AMP grab
+    -----------------------------
+    0:30 - 2:40
+    1. secure derelict turrets at AMP2, AMP5, & AMP6
+    2. grab Hubs at AMP2 & SW/NE corners
+    3. contest AMPc1
+    4. grab AMP1, AMP4, & AMP6
+    */
+    if (1 && current < 160 $seconds) {
+        _uOwner = -1;
+        _maxM = 10800; 
+        _minT = 35 $seconds ; _maxT = 160 $seconds ;
+        _everyT = 5 $seconds; _recruit = 1;
+        
+        //1. secure derelict turrets at AMP2, AMP5, & AMP6
+        // AMPa2, AMPb2
+        if (TURn->Class > 4000) {
+            _minX = 0; _maxX = 220;
+            _minY = 0; _maxY = 120;
+            _dest[$Xpos] = 100; _dest[$Ypos] = 60;
+            $DEPLOY_MINIONS 
+        }
+        if (TURs->Class > 4000) {
+            _minX = 0; _maxX = 220;
+            _minY = 120; _maxY = 240;
+            _dest[$Xpos] = 120; _dest[$Ypos] = 180;
+            $DEPLOY_MINIONS 
+        }
+        
+        // AMPa5, AMPb5
+        if (TURw->Class > 4000) {
+            _minX = 0; _maxX = 130;
+            _minY = 0; _maxY = 240;
+            $XYa5 $DEPLOY_MINIONS 
+        }
+        if (TURe->Class > 4000) {
+            _minX = 90; _maxX = 220;
+            _minY = 0; _maxY = 240;
+            $XYb5 $DEPLOY_MINIONS
+        }
+        
+        // AMPa6, AMPb6
+        if (TURne->Class > 4000) {
+            _minX = 90; _maxX = 220;
+            _minY = 0; _maxY = 120;
+            _dest[$Xpos] = 170; _dest[$Ypos] = 35;
+            $DEPLOY_MINIONS
+        }
+        if (TURsw->Class > 4000) {
+            _minX = 0; _maxX = 130;
+            _minY = 120; _maxY = 240;
+            _dest[$Xpos] = 50; _dest[$Ypos] = 205;
+            $DEPLOY_MINIONS 
+        }
+        
+        //2. grab Hubs at AMP2 & SW/NE corners
+        _minT = 40 $seconds ; _maxT = 120 $seconds;
+        _everyT = 30 $seconds; _recruit = 2;
+        
+        // AMPa2, AMPb2
+        _minX = 0; _maxX = 220;
+        _minY = 0; _maxY = 120;
+        $XYa2 $DEPLOY_MINIONS 
+
+        _minX = 0; _maxX = 220;
+        _minY = 120; _maxY = 240;
+        $XYb2 $DEPLOY_MINIONS 
+        
+        // Corners
+        _minX = 0; _maxX = 110;
+        _minY = 120; _maxY = 240;
+        _dest[$Xpos] = 20; _dest[$Ypos] = 190;
+        $DEPLOY_MINIONS 
+
+        _minX = 110; _maxX = 220;
+        _minY = 0; _maxY = 120;
+        _dest[$Xpos] = 200; _dest[$Ypos] = 50;
+        $DEPLOY_MINIONS 
+        
+        
+        //3. contest AMPc1 
+        _minT = 70 $seconds ; _maxT = 120 $seconds;
+        _everyT = 40 $seconds; _recruit = 4;
+        _minX = 0; _maxX = 500;
+        _minY = 0; _maxY = 500;
+        $XYc1 $DEPLOY_MINIONS
+        
+        
+        //4. grab AMP1, AMP4, & AMP6
+        _minT = 80 $seconds ; _recruit = 2;
+        
+        // AMPa1, AMPb1
+        _minX = 0; _maxX = 60;
+        _minY = 0; _maxY = 160;
+        $XYa1 $DEPLOY_MINIONS
+
+        _minX = 160; _maxX = 220;
+        _minY = 80; _maxY = 240;
+        $XYb1 $DEPLOY_MINIONS
+
+        // AMPa4, AMPb4
+        _minX = 0; _maxX = 125;
+        _minY = 80; _maxY = 190;
+        $XYa4 $DEPLOY_MINIONS
+
+        _minX = 95; _maxX = 220;
+        _minY = 50; _maxY = 160;
+        $XYb4 $DEPLOY_MINIONS 
+
+        // AMPa6, AMPb6
+        _minX = 100; _maxX = 180;
+        _minY = 0; _maxY = 110;
+        $XYa6 $DEPLOY_MINIONS
+
+        _minX = 40; _maxX = 120;
+        _minY = 130; _maxY = 240;
+        $XYb6 $DEPLOY_MINIONS 
+    }
+
+    /* Take vulnerable assets
+    -----------------------------
+    1:50 - 4:30
+    Claim any unclaimed AMPs
+    AMP5 / AMP6 -> OBH
+    AMP2 + AMP4 -> AMP1
+    AMP2 + AMPt4 -> AMP6
+    */
+    if (1 && current > 110 $seconds && current <= 2*(present-2214)) {
+        // Claim any unclaimed AMPs
+        _maxM = 10800; 
+        _minT = 110 $seconds ; _maxT = 270 $seconds ;
+        _everyT = 25 $seconds; _recruit = 2;
+        _uOwner = -1;
+        _minX = 0; _maxX = 220;
+        _minY = 0; _maxY = 240;
+        if (tAMPa1>11) {$XYa1 $DEPLOY_MINIONS}
+        if (tAMPb1>11) {$XYb1 $DEPLOY_MINIONS}
+        if (tAMPa2>11) {$XYa2 $DEPLOY_MINIONS}
+        if (tAMPb2>11) {$XYb2 $DEPLOY_MINIONS}
+        if (tAMPa3>11) {$XYa3 $DEPLOY_MINIONS}
+        if (tAMPb3>11) {$XYb3 $DEPLOY_MINIONS}
+        if (tAMPa4>11) {$XYa4 $DEPLOY_MINIONS}
+        if (tAMPb4>11) {$XYb4 $DEPLOY_MINIONS}
+        if (tAMPa5>11) {$XYa5 $DEPLOY_MINIONS}
+        if (tAMPb5>11) {$XYb5 $DEPLOY_MINIONS}
+        if (tAMPa6>11) {$XYa6 $DEPLOY_MINIONS}
+        if (tAMPb6>11) {$XYb6 $DEPLOY_MINIONS}
+        if (tAMPc1>11) {$XYc1 $DEPLOY_MINIONS}
+        
+        // AMP5 / AMP6 -> OBH :
+        // if you have AMP5 or AMP6 but not the corner OBH -> grab the OBH
+        if (tAMPa5!=tOBHsw) {
+            _uOwner = tAMPa5;
+            _minX = 0; _maxX = 110;
+            _minY = 120; _maxY = 240;
+            _dest[$Xpos] = 20; _dest[$Ypos] = 190;
+            $DEPLOY_MINIONS
+        }
+        if (tAMPb5!=tOBHne) {
+            _uOwner = tAMPb5;
+            _minX = 110; _maxX = 220;
+            _minY = 0; _maxY = 120;
+            _dest[$Xpos] = 200; _dest[$Ypos] = 50;
+            $DEPLOY_MINIONS
+        }
+        if (tAMPa6!=tOBHne && tAMPa6!=tAMPb5) {
+            _uOwner = tAMPa6;
+            _minX = 110; _maxX = 220;
+            _minY = 0; _maxY = 120;
+            _dest[$Xpos] = 200; _dest[$Ypos] = 50;
+            $DEPLOY_MINIONS
+        }
+        if (tAMPb6!=tOBHsw && tAMPb6!=tAMPa5) {
+            _uOwner = tAMPb6;
+            _minX = 0; _maxX = 110;
+            _minY = 120; _maxY = 240;
+            _dest[$Xpos] = 20; _dest[$Ypos] = 190;
+            $DEPLOY_MINIONS
+        }
+        
+        // AMP2 + AMP4 -> AMP1 :
+        // if you own AMP2 & AMP4 but not AMP1 -> grab AMP1
+        if (tAMPa2==tAMPa4 && tAMPa1!=tAMPa4) {
+            _uOwner = tAMPa4;
+            $XYa1 $DEPLOY_MINIONS
+        }
+        if (tAMPb2==tAMPb4 && tAMPb1!=tAMPb4) {
+            _uOwner = tAMPb4;
+            $XYb1 $DEPLOY_MINIONS
+        }
+        
+        // AMP2 + AMPt4 -> AMP6 :
+        // if you own AMP2 & AMPt4 but not AMP6 -> grab AMP6
+        if (tAMPa2==tAMPb4 && tAMPa6!=tAMPb4) {
+            _uOwner = tAMPb4;
+            $XYa6 $DEPLOY_MINIONS
+        }
+        if (tAMPb2==tAMPa4 && tAMPb6!=tAMPa4) {
+            _uOwner = tAMPa4;
+            $XYb6 $DEPLOY_MINIONS
+        }
+    }
+
+    /* Coup-de-grace edge rush (semi-achronal)
+    -----------------------------
+    2:40 - 3:10, +90 to 120s of fighting...
+    1. Pick a random achron or portal to become the global whipping boy
+    2. Send everyone, starting with the furthest away, A-moving to its position
+    */
+    if (1 && af66[0,3]<7) {
+        // 1. Pick global whipping boy
+        if (present==240 $seconds && current == present){
+            whippingBoy = QUERY UNIT [unit] 
+                    MIN [8*((query->Owner)->IsComputerPlayer) + 
+                    (query + af66)&15] 
+                    WHERE [ 
+                    (query->Owner)<14 &&
+                    (query.Rank == $ACHRON_RANK ||
+                    query.Rank == $RACE_CHOOSER_RANK ||
+                    query.Rank == $GREKIM_PROGENERATION_RANK)
+                ];
+            target = 68; PERFORM SET_ACHRONAL_FIELD whippingBoy;
+            //if (whippingBoy!=0) say "your time is up";
+        }
+            
+        // 2. A-move to its position
+        if (present >280 $seconds && current%36 == 3 &&
+                current >= 160 $seconds && current < 190 $seconds
+                ) {
+            object underling1 = 0;
+            underling1 = QUERY UNIT [unit] MAX [query<_>whippingBoy] WHERE [ 
+                    query.Rank >= $MARINE_RANK && 
+                    (query->Owner)->IsComputerPlayer
+                ];
+            
+            if (underling1!=0) {
+                _dest = whippingBoy->Position;
+                _dest[$Zpos] = 0;
+                target = underling1;
+                _obj = $OBJECTIVE_ATTACKPOS_DISPATCH;
+                $DISPATCH_OBJECTIVE
+            }
+        }
+    }
+}
+
+
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+// - Mid & Late Game -
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+// (270 s [4:30] - 1800 s [30:00])
+if (current < 270 $seconds) PERFORM NOTHING;
+
+// - Achronal Planning
+/**********************************************
+    SM assesses conditions at specific temporal coordinates and sets AFs
+    to trigger (or retcon) coordinated attack/port dispatches for:
+    a. Spawner portals
+    b. Queried units (vulnerable to butterfly effects)
+    c. Specific "hero" units
+    
+    Hostilities Program (per side):
+    * 7 Thrusts - Picked portals dispatch their cargo on A-move
+        at a picked target; may retcon near the UPP unless target 
+        is neutralized.
+        Near/Middle Past
+    * 12(5) Waves - units A-move at a set target.
+        Present
+    * 4 Raids - Picked raiders M-move to a picked target;
+        retcons unless target is neutralized.
+        Near/Middle/Deep Past
+    * (4) UPPercuts - Raid variant. Picked raiders M-move to a picked 
+        target and Cport after a designated time.
+        Deep Past
 */
-// Fortifications:
-if (1 && current < (2*(present-10) <| 9720)) { // end at 9:00
-    _minT = 145 $seconds; _maxT = 9720;
+if (1) { // Thrusts
+    // initialize @ 5:00
+    if (present==5400 && current==present) {
+        target = 2303; PERFORM SET_ACHRONAL_FIELD 2160;
+        target = 2304; PERFORM SET_ACHRONAL_FIELD 2160;
+        target = 2305; PERFORM SET_ACHRONAL_FIELD 2160;
+        target = 2309; PERFORM SET_ACHRONAL_FIELD 2160;
+        target = 2313; PERFORM SET_ACHRONAL_FIELD 2160;
+    }
+        
+    // Thrust 1 (m 0, t 6:40)
+    // both sides attack/reinforce AMPc1
+    if (1 && present==400 $seconds && current==present) {
+        _uOwner = tAMPc1;
+        _minX = 0; _maxX = 220;
+        _minY = 0; _maxY = 240;
+        $XYc1
+        player = _uOwner; uOwnerAllies = player->Allies;
+        _underling = 0;
+        if (player->IsComputerPlayer) {
+            _underling = QUERY UNIT [unit] 
+                    MIN [query<_>_dest - query->TotalCarriedSize]
+                    WHERE [ $PICK_PORTAL ];
+        }
+        if (_underling>0) {
+            target = 2101; PERFORM SET_ACHRONAL_FIELD _underling;
+            target = 2201; PERFORM SET_ACHRONAL_FIELD _dest;
+        }
+        
+        _uOwner = -1;
+        _underling = 0;
+        _underling = QUERY UNIT [unit] 
+                MIN [query<_>_dest - query->TotalCarriedSize]
+                WHERE [ $PICK_PORTAL && query->IsAlly==0 ];
+        if (_underling>0) {
+            target = 2102; PERFORM SET_ACHRONAL_FIELD _underling;
+            target = 2202; PERFORM SET_ACHRONAL_FIELD _dest;
+        }
+    }
+    
+    /* Thrust 1 retcon (m 0, t 8:40->6:40)
+        if the AMPc attack failed -> dig in on AMP1 hill
+    */
+    if (1 && present==516 $seconds && current==present) {
+        PERFORM GET_ACHRONAL_FIELD 2101;
+        _underling = perf_ret;
+        if (tAMPc1!=_underling->Owner) {
+            _dest[$Xpos] = 75; _dest[$Ypos] = 105;
+            if (_underling->XPosition>$midx) {
+                _dest[$Xpos] = 143; _dest[$Ypos] = 133;
+            }
+            target = 2201; PERFORM SET_ACHRONAL_FIELD _dest;
+        }
+
+        PERFORM GET_ACHRONAL_FIELD 2102;
+        _underling = perf_ret;
+        if (tAMPc1!=_underling->Owner) {
+            _dest[$Xpos] = 75; _dest[$Ypos] = 105;
+            if (_underling->XPosition>$midx) {
+                _dest[$Xpos] = 143; _dest[$Ypos] = 133;
+            }
+            target = 2202; PERFORM SET_ACHRONAL_FIELD _dest;
+        }
+    }
+
+    /* Thrust 2 - press/counter attack (m 9:20, t 8:20)
+        a. if you own AMPc -> attack/reinforce AMPt4
+        b. if you don't own AMPc -> attack/reinforce AMP3
+    */
+    PERFORM GET_ACHRONAL_FIELD 2303;
+    if (1 && present==560 $seconds && abs (current-(500 $seconds)) < perf_ret) {
+        // Note: for some reason the SM isn't reading the AI?? player timewaves???
+        // To fix it we add flexibility to the thing, so it will trigger off 
+        // passing natural timewaves
+        target = 2303; PERFORM SET_ACHRONAL_FIELD abs (current-(500 $seconds));
+        
+        _uOwner = tAMPc1;
+        _minX = 0; _maxX = 220;
+        _minY = 0; _maxY = 240;
+        $XYc1
+        player = _uOwner; uOwnerAllies = player->Allies;
+        _underling = 0;
+        if (player->IsComputerPlayer) {
+            _underling = QUERY UNIT [unit] 
+                    MIN [query<_>_dest - query->TotalCarriedSize]
+                    WHERE [ $PICK_PORTAL ];
+        }
+        if (_underling>0) {
+            target = 2103; PERFORM SET_ACHRONAL_FIELD _underling;
+            $XYb4
+            if (_underling->XPosition>$midx) { $XYa4 }
+            target = 2203; PERFORM SET_ACHRONAL_FIELD _dest;
+        }
+        
+        _uOwner = -1;
+        _underling = 0;
+        _underling = QUERY UNIT [unit] 
+                MIN [query<_>_dest - query->TotalCarriedSize]
+                WHERE [ $PICK_PORTAL && query->IsAlly==0 ];
+        if (_underling>0) {
+            target = 2104; PERFORM SET_ACHRONAL_FIELD _underling;
+            $XYa3
+            if (_underling->YPosition>$midy) { $XYb3 }
+            target = 2204; PERFORM SET_ACHRONAL_FIELD _dest;
+        }
+        
+        if (0 || DMDebug>0) {
+            int x = 0;
+            for(x=0;x<15;x=x+1){
+                player = x;
+                say "Thrust 2 trigger. ", current-(500 $seconds);
+            }
+        }
+    }
+
+    // Thrust 2 retcon (m 11:50, t 10:50->8:20)
+    // -> cancel if attack from AMPc did not win AMPt4
+    PERFORM GET_ACHRONAL_FIELD 2304;
+    if (1 && present==706 $seconds && abs (current-(646 $seconds)) < perf_ret) {
+        target = 2304; PERFORM SET_ACHRONAL_FIELD abs (current-(646 $seconds));
+                
+        if (tAMPa4!=tAMPc1 || tAMPb4!=tAMPc1) {
+            $XYc1
+            target = 2203; PERFORM SET_ACHRONAL_FIELD _dest;
+        }
+        
+        if (0 || DMDebug>0) {
+            int x = 0;
+            for(x=0;x<15;x=x+1){
+                player = x;
+                say "Thrust 2r trigger. ", current-(646 $seconds); 
+            }
+        }
+    }
+
+    /* Thrust 3 - edge attack (m 13:10, t 9:10)
+        a. if you own AMPc -> attack an enemy corner AMP that's
+        less than 2X as far as AMPc. Otherwise reinforce AMPc.
+        b. if you don't own AMPc -> attack the closest enemy AMP,
+        achron, or portal.
+    */
+    PERFORM GET_ACHRONAL_FIELD 2305;
+    if (1 && present==790 $seconds && abs (current-(550 $seconds)) < perf_ret) {
+        target = 2305; PERFORM SET_ACHRONAL_FIELD abs (current-(550 $seconds));
+        
+        _uOwner = tAMPc1;
+        _minX = 0; _maxX = 220;
+        _minY = 0; _maxY = 240;
+        $XYc1
+        player = _uOwner; uOwnerAllies = player->Allies;
+        _underling = 0;
+        if (player->IsComputerPlayer) {
+            _underling = QUERY UNIT [unit] 
+                    MIN [query<_>_dest - query->TotalCarriedSize]
+                    WHERE [ $PICK_PORTAL ];
+        }
+        if (_underling>0) {
+            target = 2105; PERFORM SET_ACHRONAL_FIELD _underling;
+            $XYc1
+            int d_dist = 4*_underling<_>_dest;
+            if (tAMPa1!=tAMPc1 && _underling<_>AMPa1 < d_dist) {
+                $XYa1
+                d_dist = _underling<_>_dest;}
+            if (tAMPb1!=tAMPc1 && _underling<_>AMPb1 < d_dist) {
+                $XYb1
+                d_dist = _underling<_>_dest;}
+            if (tAMPa6!=tAMPc1 && _underling<_>AMPa6 < d_dist) {
+                $XYa6
+                d_dist = _underling<_>_dest;}
+            if (tAMPb6!=tAMPc1 && _underling<_>AMPb6 < d_dist) {
+                $XYb6}
+            target = 2205; PERFORM SET_ACHRONAL_FIELD _dest;
+        }
+        
+        _uOwner = -1;
+        _underling = 0;
+        _underling = QUERY UNIT [unit] 
+                MIN [query<_>_dest - query->TotalCarriedSize]
+                WHERE [ $PICK_PORTAL && query->IsAlly==0 ];
+        if (_underling>0) {
+            target = 2106; PERFORM SET_ACHRONAL_FIELD _underling;
+            player = _underling->Owner;
+            int tr = 0;
+            object enemyVIP = 0;
+            enemyVIP = QUERY UNIT [unit] 
+                        MIN [query->HP - query<_>_underling]
+                        WHERE [ query->IsAlly==0 && query->Owner < 12 &&
+                        ( (tr=query.Rank)==$RACE_CHOOSER_RANK || tr==$AMPLIFIER_RANK ||
+                        tr==$ACHRON_RANK)];
+            $XYc1
+            if (enemyVIP>0) _dest = enemyVIP->Position;
+                target = 2206; PERFORM SET_ACHRONAL_FIELD _dest;
+        }
+        
+        if (0 || DMDebug>0) {
+            int x = 0;
+            for(x=0;x<15;x=x+1){
+                player = x;
+                say "Thrust 3 trigger. ", current-(470 $seconds); 
+            }
+        }
+    }
+    
+    /* Thrust 4 - (m 0, t 13:20)
+        a. if you own AMPc+AMP4 -> attack/reinforce AMP1
+        (sets up an army for Wave 4 to use)
+        b. if you own AMPc + both or neither AMP4 -> reinforce AMPc
+        c. if you don't own AMPc -> attack AMPc
+    */
+    if (1 && present==800 $seconds && current==present) {
+        _uOwner = tAMPc1;
+        _minX = 0; _maxX = 220;
+        _minY = 0; _maxY = 240;
+        $XYc1
+        player = _uOwner; uOwnerAllies = player->Allies;
+        _underling = 0;
+        if (player->IsComputerPlayer) {
+            _underling = QUERY UNIT [unit] 
+                    MIN [query<_>_dest - query->TotalCarriedSize]
+                    WHERE [ $PICK_PORTAL ];
+        }
+        if (_underling>0) {
+            target = 2107; PERFORM SET_ACHRONAL_FIELD _underling;
+            $XYc1
+            if (tAMPa4==tAMPc1 && tAMPb4!=tAMPc1) {$XYa1}
+            if (tAMPb4==tAMPc1 && tAMPa4!=tAMPc1) {$XYb1}
+            target = 2207; PERFORM SET_ACHRONAL_FIELD _dest;
+        }
+        
+        _uOwner = -1;
+        $XYc1
+        _underling = 0; 
+        _underling = QUERY UNIT [unit] 
+                MIN [query<_>_dest - query->TotalCarriedSize]
+                WHERE [ $PICK_PORTAL && query->IsAlly==0 ];
+        if (_underling>0) {
+            target = 2108; PERFORM SET_ACHRONAL_FIELD _underling;
+            target = 2208; PERFORM SET_ACHRONAL_FIELD _dest;
+                
+        }
+    }
+    
+    // Thrust 4 retcon (m 0, t 16:55->13:20)
+    // -> cancel if you failed to take or hold AMPc
+    if (1 && present==1015 $seconds && current==present) {
+        PERFORM GET_ACHRONAL_FIELD 2107;
+        _underling = perf_ret;
+        if (tAMPc1!=_underling->Owner) {
+            $XYc1
+            target = 2207; PERFORM SET_ACHRONAL_FIELD _dest;
+        }
+
+        PERFORM GET_ACHRONAL_FIELD 2108;
+        _underling = perf_ret;
+        if (tAMPc1!=_underling->Owner) {
+            _dest[$Xpos] = 75; _dest[$Ypos] = 105;
+            if (_underling->XPosition>$midx) {
+                _dest[$Xpos] = 143; _dest[$Ypos] = 133;
+            }
+            target = 2208; PERFORM SET_ACHRONAL_FIELD _dest;
+        }
+    }
+    
+    /* Thrust 5 - edge-ish attack (m 15:30, t 12:30)
+        a. if you own AMP6 + !AMPt4 -> attack AMPt4
+        b. if you own AMPc + !AMP2 -> attack AMP2
+        c. if you don't own AMPc -> attack/reinforce closest AMP2
+    */
+    PERFORM GET_ACHRONAL_FIELD 2309;
+    if (1 && present==930 $seconds && abs (current-(750 $seconds)) < perf_ret) {
+        target = 2309; PERFORM SET_ACHRONAL_FIELD abs (current-(750 $seconds));
+        
+        _uOwner = tAMPa6;
+        _minX = 70; _maxX = 220;
+        _minY = 0; _maxY = 160;
+        $XYa6
+        player = _uOwner; uOwnerAllies = player->Allies;
+        _underling = 0;
+        if (player->IsComputerPlayer) {
+            _underling = QUERY UNIT [unit] 
+                    MIN [query<_>_dest - query->TotalCarriedSize]
+                    WHERE [ $PICK_PORTAL ];
+        }
+        if (_underling>0) {
+            target = 2109; PERFORM SET_ACHRONAL_FIELD _underling;
+            if (tAMPb4!=tAMPa6) {
+                $XYb4
+                target = 2209; PERFORM SET_ACHRONAL_FIELD _dest;
+            } else if (tAMPa2!=tAMPa6 || tAMPc1!=tAMPa6) {
+                $XYa2
+                if (_underling<_>AMPb2 < _underling<_>AMPa2 &&
+                        tAMPc1!=tAMPa6) {$XYb2}
+                target = 2209; PERFORM SET_ACHRONAL_FIELD _dest;
+            }
+        }
+        
+        _uOwner = tAMPb6;
+        _minX = 0; _maxX = 150;
+        _minY = 80; _maxY = 240;
+        $XYb6
+        player = _uOwner; uOwnerAllies = player->Allies;
+        _underling = 0;
+        if (player->IsComputerPlayer) {
+            _underling = QUERY UNIT [unit] 
+                    MIN [query<_>_dest - query->TotalCarriedSize]
+                    WHERE [ $PICK_PORTAL ];
+        }
+        if (_underling>0) {
+            target = 2110; PERFORM SET_ACHRONAL_FIELD _underling;
+            if (tAMPa4!=tAMPb6) {
+                $XYa4
+                target = 2210; PERFORM SET_ACHRONAL_FIELD _dest;
+            } else if (tAMPb2!=tAMPb6 || tAMPc1!=tAMPb6) {
+                $XYb2
+                if (_underling<_>AMPa2 < _underling<_>AMPb2 &&
+                        tAMPc1!=tAMPb6) {$XYa2}
+                target = 2210; PERFORM SET_ACHRONAL_FIELD _dest;
+            }
+        }
+        
+        if (0 || DMDebug>0) {
+            int x = 0;
+            for(x=0;x<15;x=x+1){
+                player = x;
+                say "Thrust 5 trigger. ", current-(750 $seconds); 
+            }
+        }
+    }
+
+    /* Thrust 6 - edge attack (m 20:00, t 14:30)
+        All portals -> poke a semi-nearby AMP 
+        (mostly to clear out portal space for the Thrust 7 squad)
+        vvv (HANDLED CHRONALLY) vvv
+    */
+    
+    /* Thrust 7 - For wrath and ruin! (m 25:00, t 20:00)
+        a. if there's full map control (or just feel like it)
+        attack an enemy portal/achron/AMP
+        b. if you own AMP4 + AMPc + !AMPt4 -> attack AMPt4
+        c. if you own AMP4 + !AMPc -> attack AMP3 or AMPt3 
+            (= thrust 2 but edgier)
+    */
+    PERFORM GET_ACHRONAL_FIELD 2313;
+    if (1 && present==1500 $seconds && abs (current-(1200 $seconds)) < perf_ret) {
+        target = 2313; PERFORM SET_ACHRONAL_FIELD abs (current-(1200 $seconds));
+        
+        if (endgame >= 4 || r1a50) {
+            _uOwner = tAMPc1;
+            _minX = 0; _maxX = 220;
+            _minY = 0; _maxY = 240;
+            $XYc1
+            player = _uOwner; uOwnerAllies = player->Allies;
+            _underling = 0;
+            object enemyVIP = 0;
+            int tr = 0;
+            if (player->IsComputerPlayer) {
+                _underling = QUERY UNIT [unit] 
+                        MIN [query<_>_dest - query->TotalCarriedSize]
+                        WHERE [ $PICK_PORTAL ];
+            }
+            if (_underling>0) {
+                target = 2113; PERFORM SET_ACHRONAL_FIELD _underling;
+            
+                enemyVIP = QUERY UNIT [unit] 
+                        MAX [query->HP*query->HP - query<_>_underling]
+                        WHERE [ query->IsAlly==0 && query->Owner < 12 &&
+                        ( (tr=query.Rank)==$RACE_CHOOSER_RANK || tr==$AMPLIFIER_RANK ||
+                        tr==$ACHRON_RANK)];
+                        
+                if (enemyVIP>0) _dest = enemyVIP->Position;
+                target = 2213; PERFORM SET_ACHRONAL_FIELD _dest;
+            }
+            
+            _underling = 0;
+            _underling = QUERY UNIT [unit] 
+                    MIN [query<_>_dest - query->TotalCarriedSize]
+                    WHERE [ (query->Class == 4048 || query->Class == 4050) &&
+                    query->IsAlly==0 && (queryOwnr = query->Owner) <= _maxOwner && 
+                    queryOwnr->IsComputerPlayer ];
+            if (_underling>0) {
+                target = 2114; PERFORM SET_ACHRONAL_FIELD _underling;
+            
+                enemyVIP = 0;
+                enemyVIP = QUERY UNIT [unit] 
+                        MAX [query->HP*query->HP - query<_>_underling]
+                        WHERE [ query->IsAlly==1 && query->Owner < 12 &&
+                        ( (tr=query.Rank)==$RACE_CHOOSER_RANK || tr==$AMPLIFIER_RANK ||
+                        tr==$ACHRON_RANK)];
+                        
+                if (enemyVIP>0) _dest = enemyVIP->Position;
+                target = 2214; PERFORM SET_ACHRONAL_FIELD _dest;
+            }
+        }
+        else {
+            _uOwner = tAMPa4;
+            _minX = 0; _maxX = 220;
+            _minY = 0; _maxY = 240;
+            $XYa1
+            player = _uOwner; uOwnerAllies = player->Allies;
+            _underling = 0;
+            if (player->IsComputerPlayer) {
+                _underling = QUERY UNIT [unit] 
+                        MIN [query<_>_dest - query->TotalCarriedSize]
+                        WHERE [ $PICK_PORTAL ];
+            }
+            if (_underling>0) {
+                target = 2113; PERFORM SET_ACHRONAL_FIELD _underling;
+                if (tAMPc1==tAMPa4) {
+                    $XYb4
+                    target = 2213; PERFORM SET_ACHRONAL_FIELD _dest;
+                } else {
+                    $XYa3 if (r1a50) {$XYb3}
+                    target = 2213; PERFORM SET_ACHRONAL_FIELD _dest;
+                }
+            }
+            
+            _uOwner = tAMPb4;
+            _minX = 0; _maxX = 220;
+            _minY = 0; _maxY = 240;
+            $XYb1
+            player = _uOwner; uOwnerAllies = player->Allies;
+            _underling = 0;
+            if (player->IsComputerPlayer) {
+                _underling = QUERY UNIT [unit] 
+                        MIN [query<_>_dest - query->TotalCarriedSize]
+                        WHERE [ $PICK_PORTAL ];
+            }
+            if (_underling>0) {
+                target = 2114; PERFORM SET_ACHRONAL_FIELD _underling;
+                if (tAMPc1==tAMPb4) {
+                    $XYa4
+                    target = 2214; PERFORM SET_ACHRONAL_FIELD _dest;
+                } else {
+                    $XYa3 if (r1b50) {$XYb3}
+                    target = 2214; PERFORM SET_ACHRONAL_FIELD _dest;
+                }
+            }
+        }
+        
+        if (0 || DMDebug>0) {
+            int x = 0;
+            for(x=0;x<15;x=x+1){
+                player = x;
+                say "Thrust 7 trigger. ", current-(1200 $seconds);
+            }
+        }
+    }
+}
+if (1 && current<32400) { // Waves
+// Repeats cycle every 10:00
+    int j_current = current%10800;
+    int j_present = present%10800;
+
+    /* Wave 1 (m 0, t 7:00)
+        if you own AMP4 but not AMPc (or just want to)
+        -> Q1/Q3 attack/reinforce AMPt3 or AMPt2
+    */
+    if (j_current==420 $seconds && j_present==j_current) {
+        if (tAMPc1!=tAMPa4 || r1a50) {
+            $XYb3 if (r2a50) {$XYb2}
+            target = 2161; PERFORM SET_ACHRONAL_FIELD tAMPa4;
+            target = 2261; PERFORM SET_ACHRONAL_FIELD _dest;
+        }
+        if (tAMPc1!=tAMPb4 || r1b50) {
+            $XYa3 if (r2b50) {$XYa2}
+            target = 2162; PERFORM SET_ACHRONAL_FIELD tAMPb4;
+            target = 2262; PERFORM SET_ACHRONAL_FIELD _dest;
+        }
+    }
+    
+    /* Wave 2 (m 0, t 8:10)
+        a. if you own AMP4 + AMPc + !AMPt1 -> Q1/Q3 attack AMPt1
+        b. if you have full map control  
+        -> attack a well protected enemy portal/achron/AMP
+        c. if you don't own AMPc -> Q1/Q3 attack AMPc
+    */
+    if (j_current==490 $seconds && j_present==current) {
+        target = 2163; PERFORM SET_ACHRONAL_FIELD tAMPa4;
+        if (tAMPa4==tAMPc1 && tAMPb1!=tAMPc1) {
+            $XYb1
+            target = 2263; PERFORM SET_ACHRONAL_FIELD _dest;
+        } else {
+            if (tAMPa4==tAMPc1 && endgame >= 4) {
+                object enemyVIP = 0;
+                int tr = 0;
+                $XYc1
+                player = tAMPc1;
+                enemyVIP = QUERY UNIT [unit] MAX [query->HP*query->HP + query<_>_dest]
+                        WHERE [ query->IsAlly==0 && query->Owner < 12 &&
+                        ( (tr=query.Rank)==$RACE_CHOOSER_RANK || tr==$AMPLIFIER_RANK ||
+                        tr==$ACHRON_RANK)];
+                if (enemyVIP>0) _dest = enemyVIP->Position;
+                target = 2263; PERFORM SET_ACHRONAL_FIELD _dest;
+            }
+            else {
+                $XYc1
+                target = 2263; PERFORM SET_ACHRONAL_FIELD _dest;
+            }
+        }
+        
+        target = 2164; PERFORM SET_ACHRONAL_FIELD tAMPb4;
+        if (tAMPb4==tAMPc1 && tAMPa1!=tAMPc1) {
+            $XYa1
+            target = 2264; PERFORM SET_ACHRONAL_FIELD _dest;
+        } else {
+            if (tAMPb4==tAMPc1 && endgame >= 4) {
+                object enemyVIP = 0;
+                int tr = 0;
+                $XYc1
+                player = tAMPc1;
+                enemyVIP = QUERY UNIT [unit] MAX [query->HP*query->HP + query<_>_dest]
+                        WHERE [ query->IsAlly==0 && query->Owner < 12 &&
+                        ( (tr=query.Rank)==$RACE_CHOOSER_RANK || tr==$AMPLIFIER_RANK ||
+                        tr==$ACHRON_RANK)];
+                if (enemyVIP>0) _dest = enemyVIP->Position;
+                target = 2264; PERFORM SET_ACHRONAL_FIELD _dest;
+            }
+            else {
+                $XYc1
+                target = 2264; PERFORM SET_ACHRONAL_FIELD _dest;
+            }
+        }
+    }
+    
+    /* Wave 3 (m 0, t 13:40)
+        a. if you own AMPc -> attack a nearby enemy AMP
+        -> opponent attacks AMP4 from Q1/Q3 and AMPt4 from Q2/Q4
+    */
+    if (j_current==220 $seconds && j_present==j_current && present>10800) {
+        object enemyVIP = 0;
+        $XYc1
+        player = tAMPc1;
+        enemyVIP = QUERY UNIT [unit] MIN [query<_>_dest]
+                WHERE [ query->IsAlly==0 && query.Rank==$AMPLIFIER_RANK ];
+        if (enemyVIP>0) {
+            _dest = enemyVIP->Position;
+            target = 2166; PERFORM SET_ACHRONAL_FIELD enemyVIP->Owner;
+        }
+        target = 2165; PERFORM SET_ACHRONAL_FIELD tAMPc1;
+        target = 2265; PERFORM SET_ACHRONAL_FIELD _dest;
+    }
+
+    /* Wave 4 (m 0, t 14:10)
+        if you own AMP2 but not AMPt2 -> Q3/Q4 attack AMPt2
+    */
+    if (j_current==250 $seconds && j_present==j_current && present>10800) {
+        if (tAMPa2!=tAMPb2) {
+            $XYa2
+            target = 2167; PERFORM SET_ACHRONAL_FIELD tAMPb2;
+            target = 2267; PERFORM SET_ACHRONAL_FIELD _dest;
+            $XYb2
+            target = 2168; PERFORM SET_ACHRONAL_FIELD tAMPa2;
+            target = 2268; PERFORM SET_ACHRONAL_FIELD _dest;
+        }
+    }
+    
+    /* Wave 5 (m 0, t 14:30)
+        a. if you have full map control  
+        -> attack/defend a well protected enemy portal/achron/AMP
+        -> opponent attempts to break out
+        b. counter-attack/reinforce AMP2
+    */
+    if (j_current==270 $seconds && j_present==j_current && present>10800) {
+        object enemyVIP = 0;
+        if ( endgame >= 4 ) {
+            int tr = 0;
+            $XYc1
+            player = tAMPc1;
+            enemyVIP = QUERY UNIT [unit] MAX [query->HP*query->HP + query<_>_dest]
+                    WHERE [ query->IsAlly==0 && query->Owner < 12 &&
+                    ( (tr=query.Rank)==$RACE_CHOOSER_RANK || tr==$AMPLIFIER_RANK ||
+                    tr==$ACHRON_RANK)];
+            if (enemyVIP>0) {
+                _dest = enemyVIP->Position;
+                target = 2169; PERFORM SET_ACHRONAL_FIELD tAMPc1;
+                target = 2269; PERFORM SET_ACHRONAL_FIELD _dest;
+                $XYc1
+                target = 2170; PERFORM SET_ACHRONAL_FIELD enemyVIP->Owner;
+                target = 2270; PERFORM SET_ACHRONAL_FIELD _dest;
+            }
+            
+        }
+        if (enemyVIP==0 && tAMPa2!=tAMPb2) {
+            $XYa2
+            target = 2169; PERFORM SET_ACHRONAL_FIELD tAMPa2;
+            target = 2269; PERFORM SET_ACHRONAL_FIELD _dest;
+            $XYb2
+            target = 2170; PERFORM SET_ACHRONAL_FIELD tAMPb2;
+            target = 2270; PERFORM SET_ACHRONAL_FIELD _dest;
+        }
+    }
+}
+if (1) { // Raids & UPPercuts
+    /*  Procedure:
+        Pick 4 raiders. Attack move at an enemy RP.
+        At t/m+0:30 1. retcon if all raiders are dead
+            2. UPPercut if capable
+    */
+    
+    // initialize @ 5:00
+    if (present==5400 && current==present) {
+        target = 2350; PERFORM SET_ACHRONAL_FIELD 2160;
+        target = 2351; PERFORM SET_ACHRONAL_FIELD 2160;
+        target = 2352; PERFORM SET_ACHRONAL_FIELD 2160;
+        target = 2353; PERFORM SET_ACHRONAL_FIELD 2160;
+    }
+
+    // Raid 1 (m 17:00, t 12:00)
+    int raid_1_4 = 0;
+    int raidRet_1_4 = 0;
+    PERFORM GET_ACHRONAL_FIELD 2350;
+    if (1 && present==1020 $seconds && abs (current-(720 $seconds)) < perf_ret) {
+        target = 2350; PERFORM SET_ACHRONAL_FIELD abs (current-(720 $seconds));
+        
+        raid_1_4 = 1;
+    }
+    if (current==750 $seconds) raidRet_1_4 = 1;
+    
+    // Raid 2 (m 17:30, t 12:30)
+    PERFORM GET_ACHRONAL_FIELD 2351;
+    if (1 && present==1050 $seconds && abs (current-(750 $seconds)) < perf_ret) {
+        target = 2351; PERFORM SET_ACHRONAL_FIELD abs (current-(750 $seconds));
+        
+        raid_1_4 = 11;
+    }
+    if (current==780 $seconds) raidRet_1_4 = 11;
+    
+    // Raid 3 (m 21:00, t 16:00)
+    PERFORM GET_ACHRONAL_FIELD 2352;
+    if (1 && present==1260 $seconds && abs (current-(960 $seconds)) < perf_ret) {
+        target = 2352; PERFORM SET_ACHRONAL_FIELD abs (current-(960 $seconds));
+        
+        raid_1_4 = 21;
+    }
+    if (current==990 $seconds) raidRet_1_4 = 21;
+    
+    // Raid 4 (m 23:00, t 18:00)
+    PERFORM GET_ACHRONAL_FIELD 2353;
+    if (1 && present==1380 $seconds && abs (current-(1080 $seconds)) < perf_ret) {
+        target = 2353; PERFORM SET_ACHRONAL_FIELD abs (current-(1080 $seconds));
+        
+        raid_1_4 = 31;
+    }
+    if (current==1110 $seconds) raidRet_1_4 = 31;
+    
+    /* Raid 1-4 initiation
+        1. pick raid leader (AI unit near mid map)
+        2. pick raid target (enemy RP near-ish to leader)
+        3. pick more raiders near target
+    */
+    if (raid_1_4 > 0) {
+        
+        // 1. pick raid leader (AI detector near mid map)
+        object r_leader = 0;
+        $XYc1
+        _underling = 0;
+        _underling = QUERY UNIT [unit] 
+                MIN [query<_>_dest - query->HP] 
+                WHERE [((_qrank=query.Rank)==$SEPIPOD_RANK || 
+                _qrank==$PHARO_RANK || _qrank==$TORNADE_RANK || 
+                _qrank==$MECH_RANK) && query->Carrier<= 0 &&
+                query->Owner <= _maxOwner && 
+                (query->Owner)->IsComputerPlayer];
+        if (_underling>0) {
+            r_leader = _underling;
+            target = 2400 + raid_1_4;
+            PERFORM SET_ACHRONAL_FIELD r_leader;
+        }
+        
+        // 2. pick raid target (enemy RP near-ish to leader)
+        object enemyVIP = 0;
+        if (r_leader>0) {
+            player = r_leader->Owner;
+            enemyVIP = QUERY UNIT [unit] MIN [query->HP + query<_>_underling]
+                    WHERE [ query->IsAlly==0 && query->Owner < 12 &&
+                    query.Rank==$RP_RANK && query<_>_underling>6400];
+            if (enemyVIP>0) _dest = enemyVIP->Position;
+            target = 2500 + raid_1_4;
+            PERFORM SET_ACHRONAL_FIELD _dest;
+        }
+        
+        // 3. pick more raiders near target
+        if (enemyVIP>0) {
+            int r_next = 0;
+            _uOwner = player = r_leader->Owner;
+            while (r_next<3) {
+                _underling = 0;
+                _underling = QUERY UNIT [unit] 
+                        MIN [query<_>_dest - query->HP*query->HP] 
+                        WHERE [$PICK_RAIDER && query->Owner==_uOwner &&
+                        query!=r_leader && query%3==r_next];
+                if (_underling>0) {
+                    target = 2401 + raid_1_4 + r_next;
+                    PERFORM SET_ACHRONAL_FIELD _underling;
+                }
+                r_next = r_next + 1;
+            }
+        }
+    }
+
+    /* Raid 1-4 retcon
+        At t + 0:30
+        a. if all raiders are dead (in playable past) -> cancel raid
+        b. order raiders to chronoport
+    */
+    if (raidRet_1_4 > 0) {
+        int r_next = 0;
+        int r_alive = 0;
+        while (r_next<4) {
+            PERFORM GET_ACHRONAL_FIELD 2400 + raidRet_1_4 + r_next;
+            _underling = perf_ret;
+            if (_underling->IsAlive) {
+                r_alive = 1;
+                target = _underling;
+                _dest = current - 1800;
+                _obj = $OBJECTIVE_CHRONOPORT; // Chronoport dispatch
+                $DISPATCH_OBJECTIVE
+            }
+            r_next = r_next + 1;
+        }
+        if (r_alive<1 && present-current < 6480) {
+            target = 2500 + raidRet_1_4;
+            PERFORM SET_ACHRONAL_FIELD 0; // cancel raid order
+        }
+    }
+}
+
+// - Base Building
+/**********************************************
+    AMPs periodically spawn building for free when conditions are met 
+    and the target location is not obstructed.
+    
+    Initiation roughly follows the AI's timewave.
+*/
+int temp_t = 0;
+if ( (current <= 2*(present-2214) && present <= 278 $seconds) ||
+        (current <= present) && present >= 310 $seconds
+    ) temp_t = 1;
+
+// Fortifications
+if (1 && current < 21600 && temp_t) {  // end at 20:00
+    _maxM = 0; 
+    _minT = 145 $seconds; _maxT = 32400;
     _everyT = 121 $seconds;
     
     // fortify AMP1 and its environs
-    if (tAMPa1<14 && r1a50){
+    if (tAMPa1<14 && r1a25){
         _underling = AMPa1; _uOwner = _underling->Owner; 
         if (tAMPa2==tAMPa1) {
             _dest[$Xpos] = 20; _dest[$Ypos] = 90;
-            _minT = 115 $seconds; $MAKA_TURRET // AMP1 crate line back
+            _minT = 115 $seconds; // AMP1 crate line back
+            $MAKA_DOME $MAKA_TOWER
             
             _dest[$Xpos] = 63; _dest[$Ypos] = 102;
-            _minT = 375 $seconds; $MAKA_TURRET // hill back
+            _minT = 375 $seconds; // hill back
+            $MAKA_DOME $MAKA_TOWER
             
             if (!TURn->IsAlive) {
                 _dest[$Xpos] = 77; _dest[$Ypos] = 67;  
-                _minT = 330 $seconds; $MAKA_TURRET // forked pass pocket
+                _minT = 330 $seconds; // forked pass pocket
+                $MAKA_DOME $MAKA_SENSOR
             }
         }
         
@@ -454,37 +1740,44 @@ if (1 && current < (2*(present-10) <| 9720)) { // end at 9:00
             _minT = 145 $seconds; $MAKA_REAPH // hill flank pocket*/
             
             _dest[$Xpos] = 40; _dest[$Ypos] = 100;
-            _minT = 415 $seconds; $MAKA_REAPH // behind hill
+            _minT = 415 $seconds; // behind hill
+            $MAKA_REAPH $MAKA_FAC
         }
         
         if (tAMPa4==tAMPa1) {
             _dest[$Xpos] = 33; _dest[$Ypos] = 115;
-            _minT = 155 $seconds; $MAKA_TURRET // AMP1 front
+            _minT = 155 $seconds; // AMP1 front
+            $MAKA_DOME $MAKA_SENSOR
             
             if (tAMPc1==tAMPa1) {
                 _dest[$Xpos] = 80; _dest[$Ypos] = 114;
-                _minT = 170 $seconds; $MAKA_TURRET // hill front
+                _minT = 170 $seconds; // hill front
+                $MAKA_DOME $MAKA_TOWER
                 
                 /*_dest[$Xpos] = 78; _dest[$Ypos] = 101;
-                _minT = 235 $seconds; $MAKA_TURRET // hill left flank*/
+                _minT = 235 $seconds; $MAKA_DOME // hill left flank*/
                 
                 _dest[$Xpos] = 65; _dest[$Ypos] = 116;
-                _minT = 418 $seconds; $MAKA_REAPH // hill right flank
+                _minT = 418 $seconds; // hill right flank
+                $MAKA_REAPH $MAKA_FAC
             }
         }
     }
-    if (tAMPb1<14 && r1b50){
+    if (tAMPb1<14 && r1b25){
         _underling = AMPb1; _uOwner = _underling->Owner;
         if (tAMPb2==tAMPb1) {
             _dest[$Xpos] = 196; _dest[$Ypos] = 147; 
-            _minT = 115 $seconds; $MAKA_TURRET // AMP1 crate line back
+            _minT = 115 $seconds; // AMP1 crate line back
+            $MAKA_DOME $MAKA_TOWER
             
             _dest[$Xpos] = 154; _dest[$Ypos] = 137;
-            _minT = 375 $seconds; $MAKA_TURRET // hill back
+            _minT = 375 $seconds; // hill back
+            $MAKA_DOME $MAKA_TOWER
             
             if (!TURs->IsAlive) {
                 _dest[$Xpos] = 140; _dest[$Ypos] = 170;  
-                _minT = 330 $seconds; $MAKA_TURRET // forked pass pocket
+                _minT = 330 $seconds; // forked pass pocket
+                $MAKA_DOME $MAKA_SENSOR
             }
         }
         
@@ -493,532 +1786,357 @@ if (1 && current < (2*(present-10) <| 9720)) { // end at 9:00
             _minT = 145 $seconds; $MAKA_REAPH // hill flank pocket*/
             
             _dest[$Xpos] = 175; _dest[$Ypos] = 142;
-            _minT = 415 $seconds; $MAKA_REAPH // behind hill
+            _minT = 415 $seconds; // behind hill
+            $MAKA_REAPH $MAKA_FAC
         }
         
         if (tAMPb4==tAMPb1) {
             _dest[$Xpos] = 183; _dest[$Ypos] = 122;
-            _minT = 155 $seconds; $MAKA_TURRET // AMP1 front
+            _minT = 155 $seconds; // AMP1 front
+            $MAKA_DOME $MAKA_SENSOR
             
             if (tAMPc1==tAMPb1) {
                 _dest[$Xpos] = 137; _dest[$Ypos] = 123;
-                _minT = 170 $seconds; $MAKA_TURRET // hill front
+                _minT = 170 $seconds; // hill front
+                $MAKA_DOME $MAKA_TOWER
                 
                 /*_dest[$Xpos] = 140; _dest[$Ypos] = 137;
-                _minT = 235 $seconds; $MAKA_TURRET // hill left flank*/
+                _minT = 235 $seconds; $MAKA_DOME // hill left flank*/
                 
                 _dest[$Xpos] = 152; _dest[$Ypos] = 121;
-                _minT = 418 $seconds; $MAKA_REAPH // hill right flank
+                _minT = 418 $seconds; // hill right flank
+                $MAKA_REAPH $MAKA_FAC
             }
         }
     }
     
     // fortify AMP2 and its hill
-    if (tAMPa2<14 && r1a50){
+    if (tAMPa2<14 && r1a25){
         _underling = AMPa2; _uOwner = _underling->Owner; 
         if (TURn->Owner==tAMPa2 || !TURn->IsAlive) {
-            _dest[$Xpos] = 84; _dest[$Ypos] = 36; // front door
-            _minT = 130 $seconds; $MAKA_REAPH
+            _dest[$Xpos] = 84; _dest[$Ypos] = 35; // front door
+            _minT = 130 $seconds;
+            $MAKA_REAPH $MAKA_FAC
             
             _dest[$Xpos] = 100; _dest[$Ypos] = 33;  // front corner
-            _minT = 160 $seconds; $MAKA_TURRET
+            _minT = 160 $seconds;
+            $MAKA_DOME $MAKA_SENSOR
         }
         
         _dest[$Xpos] = 82; _dest[$Ypos] = 18;  // AMP2
-        _minT = 280 $seconds; $MAKA_TURRET
+        _minT = 280 $seconds;
+        $MAKA_DOME $MAKA_TOWER
     }
-    if (tAMPb2<14 && r1b50){
+    if (tAMPb2<14 && r1b25){
         _underling = AMPb2; _uOwner = _underling->Owner; 
         if (TURs->Owner==tAMPb2 || !TURs->IsAlive) {
-            _dest[$Xpos] = 134; _dest[$Ypos] = 202; // front door
-            _minT = 130 $seconds; $MAKA_REAPH
+            _dest[$Xpos] = 134; _dest[$Ypos] = 203; // front door
+            _minT = 130 $seconds;
+            $MAKA_REAPH $MAKA_FAC
             
             _dest[$Xpos] = 118; _dest[$Ypos] = 204;  // front corner
-            _minT = 160 $seconds; $MAKA_TURRET
+            _minT = 160 $seconds;
+            $MAKA_DOME $MAKA_SENSOR
         }
         
         _dest[$Xpos] = 135; _dest[$Ypos] = 219;  // AMP2
-        _minT = 280 $seconds; $MAKA_TURRET
+        _minT = 280 $seconds;
+        $MAKA_DOME $MAKA_TOWER
     }
 
     // fortify the AMP4/5 basin:
-    if (tAMPa5==tAMPa4 && r1a50){
+    if (tAMPa5==tAMPa4 && r1a25){
         _underling = AMPa4; _uOwner = _underling->Owner;
         _dest[$Xpos] = 32; _dest[$Ypos] = 140;
-        _minT = 145 $seconds; $MAKA_REAPH
+        _minT = 145 $seconds;
+        $MAKA_REAPH $MAKA_TOWER
         
         _dest[$Xpos] = 67; _dest[$Ypos] = 140;
-        _minT = 245 $seconds; $MAKA_TURRET
+        _minT = 245 $seconds;
+        $MAKA_DOME $MAKA_SENSOR
         
         _dest[$Xpos] = 50; _dest[$Ypos] = 150;
-        _minT = 280 $seconds; $MAKA_REAPH
+        _minT = 280 $seconds;
+        $MAKA_REAPH $MAKA_TOWER
         
         if (tAMPa1==tAMPa4 || quadrants[2]) {
             _dest[$Xpos] = 52; _dest[$Ypos] = 130;
-            _minT = 250 $seconds; $MAKA_REAPH
+            _minT = 250 $seconds; 
+            $MAKA_REAPH $MAKA_IMPORTER
         }
     }
-    if (tAMPb5==tAMPb4 && r1b50){
+    if (tAMPb5==tAMPb4 && r1b25){
         _underling = AMPb4; _uOwner = _underling->Owner;
         _dest[$Xpos] = 186; _dest[$Ypos] = 98;
-        _minT = 145 $seconds; $MAKA_REAPH
+        _minT = 145 $seconds;
+        $MAKA_REAPH $MAKA_TOWER
         
         _dest[$Xpos] = 151; _dest[$Ypos] = 98;
-        _minT = 245 $seconds; $MAKA_TURRET
+        _minT = 245 $seconds;
+        $MAKA_DOME $MAKA_SENSOR
         
         _dest[$Xpos] = 168; _dest[$Ypos] = 88;
-        _minT = 280 $seconds; $MAKA_REAPH
+        _minT = 280 $seconds;
+        $MAKA_REAPH  $MAKA_TOWER
         
         if (tAMPb1==tAMPb4 || quadrants[1]) {
             _dest[$Xpos] = 165; _dest[$Ypos] = 107;
-            _minT = 250 $seconds; $MAKA_REAPH
+            _minT = 250 $seconds;
+            $MAKA_REAPH $MAKA_IMPORTER
         }
     }
 
     // fortify the AMP6 basin:
-    if ((tAMPa6==tAMPb4 || quadrants[1]) && r1a50){
+    if ((tAMPa6==tAMPb4 || quadrants[1]) && r1a25){
         _underling = AMPa6; _uOwner = _underling->Owner;
         _dest[$Xpos] = 150; _dest[$Ypos] = 55; // pocket
-        _minT = 175 $seconds; $MAKA_REAPH
+        _minT = 175 $seconds; 
+        $MAKA_REAPH $MAKA_TOWER
         
         _dest[$Xpos] = 139; _dest[$Ypos] = 58; // front doors
-        _minT = 190 $seconds; $MAKA_TURRET
+        _minT = 190 $seconds;
+        $MAKA_DOME $MAKA_SENSOR
     }
-    if ((tAMPb6==tAMPa4 || quadrants[2]) && r1b50){
+    if ((tAMPb6==tAMPa4 || quadrants[2]) && r1b25){
         _underling = AMPb6; _uOwner = _underling->Owner;
         _dest[$Xpos] = 68; _dest[$Ypos] = 183;
-        _minT = 175 $seconds; $MAKA_REAPH
+        _minT = 175 $seconds; 
+        $MAKA_REAPH $MAKA_TOWER
         
         _dest[$Xpos] = 78; _dest[$Ypos] = 179;  
-        _minT = 190 $seconds; $MAKA_TURRET
+        _minT = 190 $seconds;
+        $MAKA_DOME $MAKA_SENSOR
     }
 }
-// Base Building:
-if (1 && current < (2*(present-10) <| 9720)) {
-    _minT = 145 $seconds; _maxT = 9720;
-    _everyT = 121 $seconds;
+// Bases
+if (1 && current < 32400 && temp_t) { // end at 30:00
+    _maxM = 0; 
+    _minT = 145 $seconds; _maxT = 32400;
+    _everyT = 149 $seconds;
     
-    // BASE0: 2 reaphs, 3 domes on high ground
+    // BASE0: 2 reaphs, 3 domes, 2 turrets on high ground
     if (quadrants[0] && r2a50){
         _underling = AMPa2; _uOwner = _underling->Owner;
+         _dest[$Xpos] = 33; _dest[$Ypos] = 59; // B0 crates
+        _minT = 210 $seconds; 
+        $MAKA_DOME $MAKA_SENSOR
+        
         _dest[$Xpos] = 42; _dest[$Ypos] = 28; // Back door
-        _minT = 320 $seconds; $MAKA_TURRET
+        _minT = 320 $seconds; 
+        $MAKA_DOME $MAKA_TOWER
         
         _dest[$Xpos] = 29; _dest[$Ypos] = 35;
-        _minT = 325 $seconds; $MAKA_REAPH
+        _minT = 325 $seconds; 
+        $MAKA_REAPH $MAKA_IMPORTER
         
         _dest[$Xpos] = 45; _dest[$Ypos] = 47; // Front door
-        _minT = 350 $seconds; $MAKA_TURRET
+        _minT = 350 $seconds; 
+        $MAKA_DOME
         
         _dest[$Xpos] = 21; _dest[$Ypos] = 50;
-        _minT = 400 $seconds; $MAKA_REAPH
+        _minT = 400 $seconds; 
+        $MAKA_REAPH $MAKA_FAC
     }
     if (quadrants[3] && r2b50){
         _underling = AMPb2; _uOwner = _underling->Owner;
+        _dest[$Xpos] = 184; _dest[$Ypos] = 178;
+        _minT = 210 $seconds; 
+        $MAKA_DOME $MAKA_SENSOR
+        
         _dest[$Xpos] = 176; _dest[$Ypos] = 208;
-        _minT = 320 $seconds; $MAKA_TURRET
+        _minT = 320 $seconds; 
+        $MAKA_DOME $MAKA_TOWER
         
         _dest[$Xpos] = 189; _dest[$Ypos] = 203;
-        _minT = 325 $seconds; $MAKA_REAPH
+        _minT = 325 $seconds; 
+        $MAKA_REAPH $MAKA_IMPORTER
         
         _dest[$Xpos] = 172; _dest[$Ypos] = 190;
-        _minT = 350 $seconds; $MAKA_TURRET
+        _minT = 350 $seconds; 
+        $MAKA_DOME
         
         _dest[$Xpos] = 197; _dest[$Ypos] = 188;
-        _minT = 400 $seconds; $MAKA_REAPH
+        _minT = 400 $seconds; 
+        $MAKA_REAPH $MAKA_FAC
     }
     
-    // AMP1 + AMP2: 1 Arcticii, 1 Spyre, 4 Mounds on BASE0 HG and BASE1 + Fork LG
-    if (AMPa2->HP >= 80 && r2a50){
-        _underling = AMPa2; _uOwner = _underling->Owner;
-        _dest[$Xpos] = 70; _dest[$Ypos] = 23; // BASE2 AMP
-        _minT = 140 $seconds; $MAKA_MOUND
-        
-        _dest[$Xpos] = 31; _dest[$Ypos] = 66; // BASE0 highground front
-        _minT = 160 $seconds; $MAKA_MOUND
-        
-        _dest[$Xpos] = 15; _dest[$Ypos] = 54; // BASE0 highground pocket
-        _minT = 170 $seconds; $MAKA_MOUND
-        
-        _dest[$Xpos] = 33; _dest[$Ypos] = 59; // B0 crates
-        _minT = 210 $seconds; $MAKA_TURRET
-    }
-    if (tAMPa2==tAMPa1 && r2a50){
-        _underling = AMPa2; _uOwner = _underling->Owner;
-        _dest[$Xpos] = 26; _dest[$Ypos] = 85; // BASE1 back pocket
-        _minT = 130 $seconds; $MAKA_MOUND
-        
-        /*_dest[$Xpos] = 47; _dest[$Ypos] = 63; // BASE0 highground
-        _minT = 190 $seconds; $MAKA_ARCT*/
-        
-        _dest[$Xpos] = 61; _dest[$Ypos] = 72; // fork pocket
-        _minT = 250 $seconds; $MAKA_ARCT
-        
-        _dest[$Xpos] = 57; _dest[$Ypos] = 79; // fork low ground
-        _minT = 355 $seconds; $MAKA_SPYRE
-    }
-    
-    if (AMPb2->HP >= 80 && r2b50){
-        _underling = AMPb2; _uOwner = _underling->Owner;
-        _dest[$Xpos] = 147; _dest[$Ypos] = 214;
-        _minT = 140 $seconds; $MAKA_MOUND
-        
-        _dest[$Xpos] = 185; _dest[$Ypos] = 171;
-        _minT = 160 $seconds; $MAKA_MOUND
-        
-        _dest[$Xpos] = 201; _dest[$Ypos] = 183;
-        _minT = 170 $seconds; $MAKA_MOUND
-        
-        _dest[$Xpos] = 184; _dest[$Ypos] = 178;
-        _minT = 210 $seconds; $MAKA_TURRET
-    }
-    if (tAMPb2==tAMPb1 && r2b50){
-        _underling = AMPb2; _uOwner = _underling->Owner;
-        _dest[$Xpos] = 191; _dest[$Ypos] = 152;
-        _minT = 130 $seconds; $MAKA_MOUND
-        
-        /*_dest[$Xpos] = 171; _dest[$Ypos] = 176;
-        _minT = 190 $seconds; $MAKA_ARCT*/
-        
-        _dest[$Xpos] = 157; _dest[$Ypos] = 167;
-        _minT = 250 $seconds; $MAKA_ARCT
-        
-        _dest[$Xpos] = 160; _dest[$Ypos] = 158;
-        _minT = 355 $seconds; $MAKA_SPYRE
-    }
-    
-    // Tech rush
-    if (current < 180 $seconds) {
-        if (tAMPa1<14 && r2a50){
-            _underling = AMPa1; _uOwner = _underling->Owner;
-            _dest[$Xpos] = 26; _dest[$Ypos] = 85; // BASE1 back pocket
-            _minT = 90 $seconds; $MAKA_MOUND
-        }
-        if (tAMPa2<14 && r2a50){
-            _underling = AMPa2; _uOwner = _underling->Owner;
-            _dest[$Xpos] = 70; _dest[$Ypos] = 23; // BASE2 AMP
-            _minT = 100 $seconds; $MAKA_MOUND
-        }
-        
-        if (tAMPb1<14 && r2b50){
-            _underling = AMPb1; _uOwner = _underling->Owner;
-            _dest[$Xpos] = 191; _dest[$Ypos] = 152;
-            _minT = 90 $seconds; $MAKA_MOUND
-        }
-        if (tAMPb2<14 && r2b50){
-            _underling = AMPb1; _uOwner = _underling->Owner;
-            _dest[$Xpos] = 147; _dest[$Ypos] = 214;
-            _minT = 100 $seconds; $MAKA_MOUND
-        }
-    }
-    
-    // AMP4 + AMP6:
-    if (tAMPa6==tAMPb4 && AMPb4->HP>=80 && r2a50){
-        _underling = AMPa6; _uOwner = _underling->Owner;
-        _dest[$Xpos] = 159; _dest[$Ypos] = 85; //BASE4 side
-        _minT = 135 $seconds; $MAKA_MOUND
-        
-        _dest[$Xpos] = 153; _dest[$Ypos] = 61; //BASE6 front
-        _minT = 185 $seconds; $MAKA_MOUND
-        
-        _dest[$Xpos] = 134; _dest[$Ypos] = 35; //AMP6 front
-        _minT = 235 $seconds; $MAKA_ARCT
-        
-        /*_dest[$Xpos] = 138; _dest[$Ypos] = 48; // BASE6 front
-        _minT = 280 $seconds; $MAKA_ARCT*/
-        
-        _dest[$Xpos] = 150; _dest[$Ypos] = 32;
-        _minT = 370 $seconds; $MAKA_SPYRE
-    }
-    if (AMPa6->HP >= 80 && r2a50){
-        _dest[$Xpos] = 165; _dest[$Ypos] = 26; //BASE6 back
-        _minT = 145 $seconds; $MAKA_MOUND
-    }
-    
-    if (tAMPb6==tAMPa4 && AMPa4->HP>=80 && r2b50){
-        _underling = AMPb6; _uOwner = _underling->Owner;
-        _dest[$Xpos] = 58; _dest[$Ypos] = 152;
-        _minT = 135 $seconds; $MAKA_MOUND
-
-        _dest[$Xpos] = 64; _dest[$Ypos] = 176; 
-        _minT = 185 $seconds; $MAKA_MOUND
-        
-        _dest[$Xpos] = 83; _dest[$Ypos] = 202; 
-        _minT = 235 $seconds; $MAKA_ARCT
-        
-        _dest[$Xpos] = 79; _dest[$Ypos] = 189; 
-        /*_minT = 280 $seconds; $MAKA_ARCT*/
-        
-        _dest[$Xpos] = 67; _dest[$Ypos] = 205;
-        _minT = 370 $seconds; $MAKA_SPYRE
-    }
-    if (AMPb6->HP >= 80 && r2b50){
-        _dest[$Xpos] = 52; _dest[$Ypos] = 211; 
-        _minT = 145 $seconds; $MAKA_MOUND
-    }
-    // Tech rush
-    if (current < 180 $seconds) {
-        if (tAMPa4<14 && r2a50){
-            _underling = AMPa4; _uOwner = _underling->Owner;
-            _dest[$Xpos] = 58; _dest[$Ypos] = 152;
-            _minT = 95 $seconds; $MAKA_MOUND
-        }
-        if (tAMPa6<14 && r2a50){
-            _underling = AMPa6; _uOwner = _underling->Owner;
-            _dest[$Xpos] = 165; _dest[$Ypos] = 26; //BASE6 back
-            _minT = 105 $seconds; $MAKA_MOUND
-        }
-        
-        if (tAMPb4<14 && r2b50){
-            _underling = AMPb4; _uOwner = _underling->Owner;
-            _dest[$Xpos] = 159; _dest[$Ypos] = 85; //BASE4 side
-            _minT = 95 $seconds; $MAKA_MOUND
-        }
-        if (tAMPb6<14 && r2b50){
-            _underling = AMPb6; _uOwner = _underling->Owner;
-            _dest[$Xpos] = 52; _dest[$Ypos] = 211; 
-            _minT = 105 $seconds; $MAKA_MOUND
-        }
-    }
-    
-    // BASE6:
+    // BASE6: 1 reaph, 2 domes, 3 turrets
     if (quadrants[1] && r2a50) {
         _underling = AMPa6; _uOwner = _underling->Owner;
         _dest[$Xpos] = 160; _dest[$Ypos] = 35;
-        _minT = 290 $seconds; $MAKA_REAPH
+        _minT = 290 $seconds;
+        $MAKA_REAPH $MAKA_IMPORTER
         
         _dest[$Xpos] = 132; _dest[$Ypos] = 45;  
-        _minT = 300 $seconds; $MAKA_TURRET
+        _minT = 300 $seconds;
+        $MAKA_DOME $MAKA_SENSOR
         
         _dest[$Xpos] = 165; _dest[$Ypos] = 50;  
-        _minT = 330 $seconds; $MAKA_TURRET
+        _minT = 330 $seconds;
+        $MAKA_DOME $MAKA_SENSOR
         
         _dest[$Xpos] = 145; _dest[$Ypos] = 27;  
-        _minT = 400 $seconds; $MAKA_TURRET
+        _minT = 400 $seconds;
+        $MAKA_DOME $MAKA_TOWER
     }
     if (quadrants[2] && r2b50) {
         _underling = AMPb6; _uOwner = _underling->Owner;
         _dest[$Xpos] = 60; _dest[$Ypos] = 202;
-        _minT = 290 $seconds; $MAKA_REAPH
+        _minT = 290 $seconds;
+        $MAKA_REAPH $MAKA_IMPORTER
         
         _dest[$Xpos] = 85; _dest[$Ypos] = 192;  
-        _minT = 300 $seconds; $MAKA_TURRET
+        _minT = 300 $seconds;
+        $MAKA_DOME $MAKA_SENSOR
         
         _dest[$Xpos] = 51; _dest[$Ypos] = 187;  
-        _minT = 330 $seconds; $MAKA_TURRET
+        _minT = 330 $seconds;
+        $MAKA_DOME $MAKA_SENSOR
         
         _dest[$Xpos] = 73; _dest[$Ypos] = 209;  
-        _minT = 400 $seconds; $MAKA_TURRET
+        _minT = 400 $seconds;
+        $MAKA_DOME $MAKA_TOWER
     }
 }
-
-
-// Early game AMP grab
-/*******************************
-1. secure derelict turrets at AMP2, AMP5, & AMP6
-2. grab Hubs at AMP2 & SW/NE corners
-3. contest AMPc1
-4. grab AMP1, AMP4, & AMP6
-*/
-if (1 && current < 160 $seconds) { // 0:00 - 2:40
-    _uOwner = -1;
-    _maxM = present-20; 
-    _minT = 35 $seconds ; _maxT = 160 $seconds ;
-    _everyT = 5 $seconds; _recruit = 1;
+// Tech
+if (1 && current < 27000 && temp_t) {  // end at 25:00
+     _maxM = 0; 
+     _minT = 90 $seconds; _maxT = 32400;
+    _everyT = 113 $seconds;
     
-    //1. secure derelict turrets at AMP2, AMP5, & AMP6
-    // AMPa2, AMPb2
-    if (TURn->Class > 4000) {
-        _minX = 0; _maxX = 220;
-        _minY = 0; _maxY = 120;
-        _dest[$Xpos] = 100; _dest[$Ypos] = 60;
-        $DEPLOY_MINIONS 
-    }
-    if (TURs->Class > 4000) {
-        _minX = 0; _maxX = 220;
-        _minY = 120; _maxY = 240;
-        _dest[$Xpos] = 120; _dest[$Ypos] = 180;
-        $DEPLOY_MINIONS 
-    }
-    
-    // AMPa5, AMPb5
-    if (TURw->Class > 4000) {
-        _minX = 0; _maxX = 130;
-        _minY = 0; _maxY = 240;
-        $XYa5 $DEPLOY_MINIONS 
-    }
-    if (TURe->Class > 4000) {
-        _minX = 90; _maxX = 220;
-        _minY = 0; _maxY = 240;
-        $XYb5 $DEPLOY_MINIONS
-    }
-    
-    // AMPa6, AMPb6
-    if (TURne->Class > 4000) {
-        _minX = 90; _maxX = 220;
-        _minY = 0; _maxY = 120;
-        _dest[$Xpos] = 170; _dest[$Ypos] = 35;
-        $DEPLOY_MINIONS
-    }
-    if (TURsw->Class > 4000) {
-        _minX = 0; _maxX = 130;
-        _minY = 120; _maxY = 240;
-        _dest[$Xpos] = 50; _dest[$Ypos] = 205;
-        $DEPLOY_MINIONS 
-    }
-    
-    //2. grab Hubs at AMP2 & SW/NE corners
-    _minT = 40 $seconds ; _maxT = 120 $seconds;
-    _everyT = 30 $seconds; _recruit = 2;
-    
-    // AMPa2, AMPb2
-    _minX = 0; _maxX = 220;
-    _minY = 0; _maxY = 120;
-    $XYa2 $DEPLOY_MINIONS 
-
-    _minX = 0; _maxX = 220;
-    _minY = 120; _maxY = 240;
-    $XYb2 $DEPLOY_MINIONS 
-    
-    // Corners
-    _minX = 0; _maxX = 110;
-    _minY = 120; _maxY = 240;
-    _dest[$Xpos] = 20; _dest[$Ypos] = 190;
-    $DEPLOY_MINIONS 
-
-    _minX = 110; _maxX = 220;
-    _minY = 0; _maxY = 120;
-    _dest[$Xpos] = 200; _dest[$Ypos] = 50;
-    $DEPLOY_MINIONS 
-    
-    
-    //3. contest AMPc1 
-    _minT = 70 $seconds ; _maxT = 120 $seconds;
-    _everyT = 40 $seconds; _recruit = 4;
-    _minX = 0; _maxX = 500;
-    _minY = 0; _maxY = 500;
-    $XYc1 $DEPLOY_MINIONS
-    
-    
-    //4. grab AMP1, AMP4, & AMP6
-    _minT = 80 $seconds ; _recruit = 2;
-    
-    // AMPa1, AMPb1
-    _minX = 0; _maxX = 60;
-    _minY = 0; _maxY = 160;
-    $XYa1 $DEPLOY_MINIONS
-
-    _minX = 160; _maxX = 220;
-    _minY = 80; _maxY = 240;
-    $XYb1 $DEPLOY_MINIONS
-
-    // AMPa4, AMPb4
-    _minX = 0; _maxX = 125;
-    _minY = 80; _maxY = 190;
-    $XYa4 $DEPLOY_MINIONS
-
-    _minX = 95; _maxX = 220;
-    _minY = 50; _maxY = 160;
-    $XYb4 $DEPLOY_MINIONS 
-
-    // AMPa6, AMPb6
-    _minX = 100; _maxX = 180;
-    _minY = 0; _maxY = 110;
-    $XYa6 $DEPLOY_MINIONS
-
-    _minX = 40; _maxX = 120;
-    _minY = 130; _maxY = 240;
-    $XYb6 $DEPLOY_MINIONS 
-}
-
-
-// Coup-de-grace edge rush
-/*******************************
-1. Pick a random achron, portal, or progenitor to become the global whipping boy
-2. Send everyone, starting with the furthest away, A-moving to its position
-*/
-if (1 && af66[0,3]<5) {
-    // 1. Pick global whipping boy
-    if (present==105 $seconds && current == present){
-        whippingBoy = QUERY UNIT [unit] 
-                MIN [8*((query->Owner)->IsComputerPlayer) + 
-                (query + af66)&15] 
-                WHERE [ 
-                (query->Owner)<14 &&
-                (query.Rank == $ACHRON_RANK ||
-                query.Rank == $RACE_CHOOSER_RANK ||
-                query.Rank == $GREKIM_PROGENERATION_RANK)
-            ];
-        target = 68; PERFORM SET_ACHRONAL_FIELD whippingBoy;
-    }
+    // NW/SE quadrants build research buildings in BASE0 + BASE1
+    if (AMPa1->HP >= 80 && r2a50){ // AMP1
+        _underling = AMPa1; _uOwner = _underling->Owner;
+        _dest[$Xpos] = 15; _dest[$Ypos] = 54; // BASE0 highground pocket
+        _minT = 170 $seconds; 
+        $MAKA_MOUND $MAKA_FAC
         
-    // 2. A-move to its position
-    if (present >280 $seconds && current%36 == 3 &&
-            current >= 160 $seconds && current < 190 $seconds
-            ) {
-        object underling1 = 0;
-        underling1 = QUERY UNIT [unit] MAX [query<_>whippingBoy] WHERE [ 
-                query.Rank >= $MARINE_RANK && 
-                (query->Owner)->IsComputerPlayer
-            ];
+        _dest[$Xpos] = 66; _dest[$Ypos] = 72; // fork pocket
+        _minT = 250 $seconds;
+        $MAKA_ARCT $MAKA_MFAB
         
-        if (underling1!=0) {
-            _dest = whippingBoy->Position;
-            _dest[$Zpos] = 0;
-            target = underling1;
-            _obj = $OBJECTIVE_ATTACKPOS_DISPATCH;
-            $DISPATCH_OBJECTIVE
+        _dest[$Xpos] = 57; _dest[$Ypos] = 79; // fork low ground
+        _minT = 355 $seconds;
+        $MAKA_SPYRE $MAKA_TOWER
+        
+        _dest[$Xpos] = 30; _dest[$Ypos] = 102; // BASE1 middle
+        _minT = 410 $seconds;
+        $MAKA_ARCT_LT $MAKA_MFAB
+    }
+    if (AMPb1->HP >= 80 && r2b50){
+        _underling = AMPb1; _uOwner = _underling->Owner;
+        _dest[$Xpos] = 201; _dest[$Ypos] = 183;
+        _minT = 170 $seconds; 
+        $MAKA_MOUND $MAKA_FAC
+        
+        _dest[$Xpos] = 152; _dest[$Ypos] = 167;
+        _minT = 250 $seconds;
+        $MAKA_ARCT $MAKA_MFAB
+        
+        _dest[$Xpos] = 160; _dest[$Ypos] = 158;
+        _minT = 355 $seconds;
+        $MAKA_SPYRE $MAKA_TOWER
+        
+        _dest[$Xpos] = 187; _dest[$Ypos] = 140;
+        _minT = 410 $seconds;
+        $MAKA_ARCT_LT $MAKA_MFAB
+    }
+    
+    if (AMPa2->HP >= 80 && r2a50){ // AMP2
+        _underling = AMPa2; _uOwner = _underling->Owner;
+        _dest[$Xpos] = 42; _dest[$Ypos] = 28; // BASE0 highground back
+        _minT = 175 $seconds; 
+        $MAKA_MOUND $MAKA_FAC
+        
+        _dest[$Xpos] = 34; _dest[$Ypos] = 48; // BASE0 middle
+        _minT = 300 $seconds;
+        $MAKA_ARCT_LT $MAKA_MFAB
+    }
+    if (AMPb2->HP >= 80 && r2b50){
+        _underling = AMPb2; _uOwner = _underling->Owner;
+        _dest[$Xpos] = 176; _dest[$Ypos] = 208;
+        _minT = 175 $seconds; 
+        $MAKA_MOUND $MAKA_FAC
+        
+        _dest[$Xpos] = 184; _dest[$Ypos] = 190;
+        _minT = 300 $seconds;
+        $MAKA_ARCT_LT $MAKA_MFAB
+    }
+
+    // NE/SW quadrants split their research buildings 
+    // between BASE4 and BASE6
+    if (AMPa4->HP >= 80 && r2a50){ // AMP4
+        _underling = AMPa4; _uOwner = _underling->Owner;
+        _dest[$Xpos] = 58; _dest[$Ypos] = 152; //BASE4 side
+        _minT = 95 $seconds;
+        $MAKA_MOUND $MAKA_FAC
+    }
+    if (AMPb4->HP >= 80 && r2b50){
+        _underling = AMPb4; _uOwner = _underling->Owner;
+        _dest[$Xpos] = 159; _dest[$Ypos] = 85;
+        _minT = 95 $seconds;
+        $MAKA_MOUND $MAKA_FAC
+    }
+    
+    if (AMPa6->HP >= 80 && r2a50){ // AMP6
+        _underling = AMPa6; _uOwner = _underling->Owner;
+        if (TURne->Owner==tAMPa6 || !TURne->IsAlive) {
+            _dest[$Xpos] = 165; _dest[$Ypos] = 26; //BASE6 pocket
+            _minT = 105 $seconds;
+            $MAKA_MOUND $MAKA_IMPORTER
+
+            _dest[$Xpos] = 160; _dest[$Ypos] = 35; //BASE6 rear
+            _minT = 115 $seconds;
+            $MAKA_MOUND $MAKA_FAC
         }
+        
+        _dest[$Xpos] = 134; _dest[$Ypos] = 35; //AMP6 front
+        _minT = 235 $seconds;
+        $MAKA_ARCT $MAKA_MFAB
+        
+        _dest[$Xpos] = 150; _dest[$Ypos] = 32;
+        _minT = 370 $seconds; $MAKA_SPYRE
+    }
+    if (AMPb6->HP >= 80 && r2b50){
+        _underling = AMPb6; _uOwner = _underling->Owner;
+        if (TURsw->Owner==tAMPb6 || !TURsw->IsAlive) {
+            _dest[$Xpos] = 52; _dest[$Ypos] = 211; 
+            _minT = 105 $seconds; 
+            $MAKA_MOUND $MAKA_IMPORTER
+
+            _dest[$Xpos] = 60; _dest[$Ypos] = 202;
+            _minT = 115 $seconds;
+            $MAKA_MOUND $MAKA_FAC
+        }
+        
+        _dest[$Xpos] = 83; _dest[$Ypos] = 202; 
+        _minT = 235 $seconds;
+        $MAKA_ARCT $MAKA_MFAB
+        
+        _dest[$Xpos] = 67; _dest[$Ypos] = 205;
+        _minT = 370 $seconds; $MAKA_SPYRE
     }
 }
 
 
-if (current < 160 $seconds) PERFORM NOTHING;
+// - Unit Building (WIP)
+/**********************************************
+    SM can tell Spawners to produce specific units when conditions are met.
+    (might not be be practical to implement due to game limitations)
+*/
 
-
-// Rally Points
-/********************************
-Early Game: AMP4 + AMP6
-Mid Game: AMP4 + AMP1 fork pocket + AMP2
-Late Game: AMP4 + AMP6 + AMP2
+// - Rally Points
+/**********************************************
+    Move units to defend strategic points:
+    Always: AMP4, AMP2 + BASE0
+    For the horns strategy: AMP6
+    Before attack AMP1->AMP2/AMP4: AMP1 hill (55,105)
+    Before attack AMP2->AMP1: AMP2 ramp (70,70)
 */
 if (1) {
-    _maxM = 12960;
+    _maxM = 0;
+    _minT = 4320 ; _maxT = 43200 ;
     _everyT = 45 $seconds; _recruit = 2;
-    
-    // Early Game: 3:00 - 4:00
-    _minT = 180 $seconds ; _maxT = 4320 ;
-    
-    // if you own AMP4 -> Q2/Q3 rally at AMP4 (60,140)
-    if (AMPa4->HP >= 70) {
-        _uOwner = tAMPa4;
-        _minX = 0; _maxX = 90;
-        _minY = 120; _maxY = 240;
-        $XYa4 $DEPLOY_MINIONS
-    }
-    if (AMPb4->HP >= 70) {
-        _uOwner = tAMPb4;
-        _minX = 130; _maxX = 220;
-        _minY = 0; _maxY = 120;
-        $XYb4 $DEPLOY_MINIONS
-    }
-    
-    // if you own AMP6 -> Q2/Q3 rally at AMP6 (130,30)
-    if (AMPa6->HP >= 70) {
-        _uOwner = tAMPa6;
-        _minX = 130; _maxX = 220;
-        _minY = 0; _maxY = 120;
-        $XYa6 $DEPLOY_MINIONS
-    }
-    if (AMPb6->HP >= 70) {
-        _uOwner = tAMPb6;
-        _minX = 0; _maxX = 90;
-        _minY = 120; _maxY = 240;
-        $XYb6 $DEPLOY_MINIONS
-    }
-    
-    // Mid-Late Game: 4:00 -
-    _minT = 4320 ; _maxT = 1800 $seconds ;
     
     // if you own AMP4 -> Q1+Q3/Q2+Q4 rally at AMP4 (60,140)
     _recruit = 3;
@@ -1036,18 +2154,25 @@ if (1) {
     }
     
     // if you have AMP2 -> Q1+Q2/Q3+Q4 rally at AMP2 (75,25)
+    // and at BASE0 (34,48)
     _recruit = 1;
     if (AMPa2->HP >= 70) {
         _uOwner = tAMPa2;
         _minX = 0; _maxX = 220;
         _minY = 0; _maxY = 120;
         $XYa2 $DEPLOY_MINIONS
+        
+        _dest[$Xpos] = 34; _dest[$Ypos] = 48;
+        $DEPLOY_MINIONS
     }
     if (AMPb2->HP >= 70) {
         _uOwner = tAMPb2;
         _minX = 0; _maxX = 220;
         _minY = 120; _maxY = 240;
         $XYb2 $DEPLOY_MINIONS
+        
+        _dest[$Xpos] = 184; _dest[$Ypos] = 190;
+        $DEPLOY_MINIONS
     }
     
     // if using the horns strategy or based in Q2/Q3
@@ -1073,7 +2198,7 @@ if (1) {
         _minX = 0; _maxX = 110;
         _minY = 0; _maxY = 160;
         _dest[$Xpos] = 55; _dest[$Ypos] = 105;
-        $DEPLOY_MINIONS
+        $DEPLOY_MINIONS    
     }
     if (AMPb1->HP >= 70 && tAMPb4!=tAMPb2) {
         _uOwner = tAMPb1;
@@ -1088,75 +2213,70 @@ if (1) {
     _recruit = 3;
     if (AMPa2->HP >= 70 && tAMPa1!=tAMPa2) {
         _uOwner = tAMPa2;
-        _minX = 0; _maxX = 110;
+        _minX = 0; _maxX = 220;
         _minY = 0; _maxY = 120;
         _dest[$Xpos] = 70; _dest[$Ypos] = 70;
         $DEPLOY_MINIONS
     }
     if (AMPb2->HP >= 70 && tAMPb1!=tAMPb2) {
         _uOwner = tAMPb2;
-        _minX = 110; _maxX = 220;
+        _minX = 0; _maxX = 220;
         _minY = 120; _maxY = 240;
         _dest[$Xpos] = 150; _dest[$Ypos] = 170;
         $DEPLOY_MINIONS
     }
 }
 
-
-// Grab vulnerable assets
-/********************************
-Always:
+// - Strategic Maneuvers
+/**********************************************
+    Grab vulnerable assets
+    Execute Achronal Strategy
+*/
+/* Grab vulnerable assets
+-----------------------------
     AMP5 / AMP6 -> OBH
     Claim Unclaimed AMPs
-Early Game:
-    AMP2 -> AMP3
-    AMP2 -> AMP6 -5:00
-    AMP4 -> AMPt6 
-    AMP4 -> AMPt3 -5:00
-Mid Game:
-    AMP2 -> AMP3 -4:00
-    AMP2 -> AMP6 -4:00
-    AMP4 -> AMPt3 -4:00
-    AMP4 -> AMPt6 -4:00
-Late Game:
-    AMP2 -> AMP1
-    AMP1 + AMP4 -> AMP2 -3:00
-    AMPC + AMP3 -> AMP4 -3:00
-   */
-_maxM = 12960;
-_minT = 180 $seconds ; _maxT = 1800 $seconds ;
-_everyT = 110 $seconds ; _recruit = 2;
-_uOwner = -1;
-_minX = 0; _maxX = 220;
-_minY = 0; _maxY = 240;
-
-/* Always:
-*************************/
+    AMP1 + AMP4 -> AMP2
+    AMP1 -> AMP4
+    AMP4 -> AMP1
+    AMP4 -> AMP5
+    AMP4 -> AMPt6
+    AMP6 -> AMP3
+    AMPc -> AMP3
+*/
 if (1) {
+    _maxM = 0;
+    _minT = 0 $seconds ; _maxT = 43200 ;
+    _everyT = 200 $seconds ; _recruit = 2;
+    _uOwner = -1;
+    _minX = 0; _maxX = 220;
+    _minY = 0; _maxY = 240;
+    
     // AMP5 / AMP6 -> OBH :
-    // if you have AMP5 or AMP6 but not the corner OBH -> grab the OBH
-    if (tAMPa5!=tOBHsw) {
+    // if you have AMP5 or AMP6 -> grab the OBH
+    if (1) {
         _uOwner = tAMPa5;
         _minX = 0; _maxX = 110;
         _minY = 120; _maxY = 240;
         _dest[$Xpos] = 20; _dest[$Ypos] = 190;
         $DEPLOY_MINIONS
     }
-    if (tAMPb5!=tOBHne) {
+    if (1) {
         _uOwner = tAMPb5;
         _minX = 110; _maxX = 220;
         _minY = 0; _maxY = 120;
         _dest[$Xpos] = 200; _dest[$Ypos] = 50;
         $DEPLOY_MINIONS
     }
-    if (tAMPa6!=tOBHne && tAMPa6!=tAMPb5) {
+    _minT = 80 $seconds ;
+    if (1) {
         _uOwner = tAMPa6;
         _minX = 110; _maxX = 220;
         _minY = 0; _maxY = 120;
         _dest[$Xpos] = 200; _dest[$Ypos] = 50;
         $DEPLOY_MINIONS
     }
-    if (tAMPb6!=tOBHsw && tAMPb6!=tAMPa5) {
+    if (1) {
         _uOwner = tAMPb6;
         _minX = 0; _maxX = 110;
         _minY = 120; _maxY = 240;
@@ -1168,880 +2288,539 @@ if (1) {
     _uOwner = -1;
     _minX = 0; _maxX = 220;
     _minY = 0; _maxY = 240;
-    if (tAMPa1>11) {$XYa1 $DEPLOY_MINIONS}
-    if (tAMPb1>11) {$XYb1 $DEPLOY_MINIONS}
-    if (tAMPa2>11) {$XYa2 $DEPLOY_MINIONS}
-    if (tAMPb2>11) {$XYb2 $DEPLOY_MINIONS}
-    if (tAMPa3>11) {$XYa3 $DEPLOY_MINIONS}
-    if (tAMPb3>11) {$XYb3 $DEPLOY_MINIONS}
-    if (tAMPa4>11) {$XYa4 $DEPLOY_MINIONS}
-    if (tAMPb4>11) {$XYb4 $DEPLOY_MINIONS}
-    if (tAMPa5>11) {$XYa5 $DEPLOY_MINIONS}
-    if (tAMPb5>11) {$XYb5 $DEPLOY_MINIONS}
-    if (tAMPa6>11) {$XYa6 $DEPLOY_MINIONS}
-    if (tAMPb6>11) {$XYb6 $DEPLOY_MINIONS}
-    if (tAMPc1>11) {$XYc1 $DEPLOY_MINIONS}
+    _minT = 50 $seconds ;
+    if (1) {
+        if (tAMPa1>11) {$XYa1 $DEPLOY_MINIONS}
+        if (tAMPb1>11) {$XYb1 $DEPLOY_MINIONS}
+        if (tAMPa2>11) {$XYa2 $DEPLOY_MINIONS}
+        if (tAMPb2>11) {$XYb2 $DEPLOY_MINIONS}
+        _minT = 100 $seconds ;
+        if (tAMPa3>11) {$XYa3 $DEPLOY_MINIONS}
+        if (tAMPb3>11) {$XYb3 $DEPLOY_MINIONS}
+        if (tAMPa4>11) {$XYa4 $DEPLOY_MINIONS}
+        if (tAMPb4>11) {$XYb4 $DEPLOY_MINIONS}
+        _minT = 150 $seconds ;
+        if (tAMPa5>11) {$XYa5 $DEPLOY_MINIONS}
+        if (tAMPb5>11) {$XYb5 $DEPLOY_MINIONS}
+        if (tAMPa6>11) {$XYa6 $DEPLOY_MINIONS}
+        if (tAMPb6>11) {$XYb6 $DEPLOY_MINIONS}
+        if (tAMPc1>11) {$XYc1 $DEPLOY_MINIONS}
+    }
     
-    // AMP2 + AMP4 -> AMP1 :
-    // if you own AMP2 & AMP4 but not AMP1 -> grab AMP1
-    if (tAMPa2==tAMPa4 && tAMPa1!=tAMPa4) {
+    _minT = 40 $seconds ;
+    // AMP1 + AMP4 -> AMP2 :
+    // if you own AMP1 & AMP4 -> grab AMP2
+    if (1 && tAMPa4==tAMPa1) {
+        _uOwner = tAMPa1;
+        $XYa2 $DEPLOY_MINIONS
+    }
+    if (1 && tAMPb4==tAMPb1) {
+        _uOwner = tAMPb1;
+        $XYb2 $DEPLOY_MINIONS
+    }
+ 
+    // AMP1 -> AMP4 :
+    // if you own AMP1 -> grab AMP4
+    if (1) {
+        _uOwner = tAMPa1;
+        $XYa4 $DEPLOY_MINIONS
+    }
+    if (1) {
+        _uOwner = tAMPb1;
+        $XYb4 $DEPLOY_MINIONS
+    }
+    
+    _minT = 120 $seconds ;
+    // AMP4 -> AMP1 :
+    // if you own AMP4 -> grab AMP1
+    if (1) {
         _uOwner = tAMPa4;
         $XYa1 $DEPLOY_MINIONS
     }
-    if (tAMPb2==tAMPb4 && tAMPb1!=tAMPb4) {
+    if (1) {
         _uOwner = tAMPb4;
         $XYb1 $DEPLOY_MINIONS
     }
     
-    // AMP2 + AMPt4 -> AMP6 :
-    // if you own AMP2 & AMPt4 but not AMP6 -> grab AMP6
-    if (tAMPa2==tAMPb4 && tAMPa6!=tAMPb4) {
-        _uOwner = tAMPb4;
-        $XYa6 $DEPLOY_MINIONS
-    }
-    if (tAMPb2==tAMPa4 && tAMPb6!=tAMPa4) {
-        _uOwner = tAMPa4;
-        $XYb6 $DEPLOY_MINIONS
-    }
-}
-
-/* Early Game:
-*************************/
-_everyT = 85 $seconds;
-if (1) {
-    // AMP2 -> AMP3 (m +1:30, t 3:10) :
-    // if you own AMP2 but don't own AMP3 -> grab AMP3
-    _maxM = 90 $seconds ; 
-    _minT = 190 $seconds ; _maxT = 250 $seconds ;
-    if (tAMPa3!=tAMPa2) {
-        _uOwner = tAMPa2;
-        _minX = 0; _maxX = 220;
-        _minY = 0; _maxY = 115;
-        $XYa3 $DEPLOY_MINIONS
-    }
-    if (tAMPb3!=tAMPb2) {
-        _uOwner = tAMPb2;
-        _minX = 0; _maxX = 220;
-        _minY = 125; _maxY = 240;
-        $XYb3 $DEPLOY_MINIONS
-    }
-    
-    // AMP4 -> AMPt6 (m +1:45, t 3:40) :
-    // if you own AMP4 but don't own AMPt6 -> grab AMPt6
-    _maxM = 105 $seconds ; 
-    _minT = 220 $seconds ;
-    if (tAMPa6!=tAMPb4) {
-        _uOwner = tAMPb4;
-        _minX = 130; _maxX = 220;
-        _minY = 0; _maxY = 120;
-        $XYa6 $DEPLOY_MINIONS
-    }
-    if (tAMPb6!=tAMPa4) {
-        _uOwner = tAMPa4;
-        _minX = 0; _maxX = 90;
-        _minY = 120; _maxY = 240;
-        $XYb6 $DEPLOY_MINIONS
-    }
-    
-    // AMP2 -> AMP6 (m -5:00, t 3:20) :
-    // if you own AMP2 but don't own AMP6 -> grab AMP6
-    _maxM = -300 $seconds ; 
-    _minT = 200 $seconds ; _maxT = 240 $seconds ;
-    if (tAMPa6!=tAMPa2) {
-        _uOwner = tAMPa2;
-        _minX = 0; _maxX = 220;
-        _minY = 0; _maxY = 90;
-        $XYa6 $DEPLOY_MINIONS
-    }
-    if (tAMPb6!=tAMPb2) {
-        _uOwner = tAMPb2;
-        _minX = 0; _maxX = 220;
-        _minY = 150; _maxY = 240;
-        $XYb6 $DEPLOY_MINIONS
-    }
-    
-    // AMP4 -> AMPt3 (m -5:00, t 3:23) :
-    // if you own AMP4 but don't own AMPt3 -> grab AMPt3
-    _minT = 203 $seconds ;
-    if (tAMPa3!=tAMPb4) {
-        _uOwner = tAMPb4;
-        _minX = 90; _maxX = 220;
-        _minY = 80; _maxY = 240;
-        $XYa3 $DEPLOY_MINIONS
-    }
-    if (tAMPb3!=tAMPa4) {
-        _uOwner = tAMPa4;
-        _minX = 0; _maxX = 130;
-        _minY = 0; _maxY = 160;
-        $XYb3 $DEPLOY_MINIONS
-    }
-}
-if (0) {
-    /* Mid Game:
-    *************************/
-    // AMP2 -> AMP3 (m -4:00, t 5:10-7:00) :
-    _maxM = -240 $seconds ; 
-    _minT = 310 $seconds ; _maxT = 420 $seconds ;
-    if (tAMPa3!=tAMPa2) {
-        _uOwner = tAMPa2;
-        _minX = 0; _maxX = 220;
-        _minY = 0; _maxY = 115;
-        $XYa3 $DEPLOY_MINIONS
-    }
-    if (tAMPb3!=tAMPb2) {
-        _uOwner = tAMPb2;
-        _minX = 0; _maxX = 220;
-        _minY = 125; _maxY = 240;
-        $XYb3 $DEPLOY_MINIONS
-    }
-    
-    // AMP2 -> AMP6 (m -4:00, t 5:10-7:00) :
-    if (tAMPa6!=tAMPa2) {
-        _uOwner = tAMPa2;
-        _minX = 0; _maxX = 220;
-        _minY = 0; _maxY = 90;
-        $XYa6 $DEPLOY_MINIONS
-    }
-    if (tAMPb6!=tAMPb2) {
-        _uOwner = tAMPb2;
-        _minX = 0; _maxX = 220;
-        _minY = 150; _maxY = 240;
-        $XYb6 $DEPLOY_MINIONS
-    }
-    
-    // AMP4 -> AMPt3 (m -4:00, t 5:10-7:00) :
-    if (tAMPa3!=tAMPb4) {
-        _uOwner = tAMPb4;
-        _minX = 90; _maxX = 220;
-        _minY = 80; _maxY = 240;
-        $XYa3 $DEPLOY_MINIONS
-    }
-    if (tAMPb3!=tAMPa4) {
-        _uOwner = tAMPa4;
-        _minX = 0; _maxX = 130;
-        _minY = 0; _maxY = 160;
-        $XYb3 $DEPLOY_MINIONS
-    }
-    
-    // AMP4 -> AMPt6 (m -4:00, t 5:10-7:00) :
-    if (tAMPa6!=tAMPb4) {
-        _uOwner = tAMPb4;
-        _minX = 130; _maxX = 220;
-        _minY = 0; _maxY = 120;
-        $XYa6 $DEPLOY_MINIONS
-    }
-    if (tAMPb6!=tAMPa4) {
-        _uOwner = tAMPa4;
-        _minX = 0; _maxX = 90;
-        _minY = 120; _maxY = 240;
-        $XYb6 $DEPLOY_MINIONS
-    }
-    
-    /* Late Game:
-    *************************/
-    // AMP2 -> AMP1 (m _, t 8:40 14:40) :
-    // AI units from AMP2 visit AMP1
-    _maxM = 0 |> (present <| (10800-present)); 
-    _minT = 480 $seconds ; _maxT = 1000 $seconds ;
-    _everyT = 360 $seconds ; _recruit = 6;
-    _uOwner = -1;
-    
-    _minX = 0; _maxX = 110;
-    _minY = 0; _maxY = 70;
-    $XYa1 $DEPLOY_MINIONS
-    
-    _minX = 110; _maxX = 220;
-    _minY = 170; _maxY = 240;
-    $XYb1 $DEPLOY_MINIONS
-    
-    // Amp1 + Amp4 -> AMP2 (m -3:00, t 9:20 15:20) :
-    // AI units from Amp1 + Amp4 visit AMP2
-    _maxM = -180 $seconds ; 
-    _minT = 560 $seconds ;
-    
-    _minX = 0; _maxX = 80;
-    _minY = 0; _maxY = 160;
-    $XYa2 $DEPLOY_MINIONS
-    
-    _minX = 140; _maxX = 220;
-    _minY = 80; _maxY = 240;
-    $XYb2 $DEPLOY_MINIONS
-    
-    // AMPc1 + AMP3 -> AMP4 (m -3:00, t 10:40 16:40) :
-    // AMPc1's units from AMPc1 + AMP3 visit AMP4
-    _uOwner = tAMPc1;
-    _minT = 640 $seconds ;
-    
-    _minX = 90; _maxX = 120;
-    _minY = 70; _maxY = 140;
-    $XYa4 $DEPLOY_MINIONS
-    
-    _minX = 100; _maxX = 130;
-    _minY = 100; _maxY = 170;
-    $XYb4 $DEPLOY_MINIONS
-
-    
-/*    
-    if (metatime < $SmlAtkMT) _recruit = 6;
-    _uOwner = -1;
-    _minX = 0; _maxX = 220;
-    _minY = 0; _maxY = 240;
-    
-    // AMP4 <-> AMPt6 : 
-    // if you own AMP4 but not AMPt6 -> attack AMPt6
-    // or if you own AMP6 but not AMPt4 -> attack AMPt4
-    int contestSW = (AMPa4->HP >= 90 && AMPb6->HP >= 90) || tAMPa4==14 || tAMPb6==14;
-    int contestNE = (AMPb4->HP >= 90 && AMPa6->HP >= 90) || tAMPb4==14 || tAMPa6==14;
-    if (tAMPa4!=tAMPb6 && contestSW) {
-        _uOwner = tAMPa4;
-        _dest[$Xpos] = 90; _dest[$Ypos] = 210;
-        $DEPLOY_MINIONS
-        
-        _uOwner = tAMPb6;
-        _dest[$Xpos] = 60; _dest[$Ypos] = 140;
-        $DEPLOY_MINIONS
-    }
-    if (tAMPb4!=tAMPa6 && contestNE) {
-        _uOwner = tAMPb4;
-        _dest[$Xpos] = 130; _dest[$Ypos] = 30;
-        $DEPLOY_MINIONS
-        
+    // AMP6 -> AMP3 :
+    // if you own AMP6 -> grab AMP3
+    if (1) {
         _uOwner = tAMPa6;
-        _dest[$Xpos] = 160; _dest[$Ypos] = 100;
-        $DEPLOY_MINIONS
-    }
-
-    _minT = 175 $seconds;
-    // AMP1 <-> AMP4 : 
-    // if you have a squad at (60,110) but don't own AMP4 -> attack AMP4
-    // or if you own AMP4 but not AMP1 -> attack AMP1
-    if (tAMPa4!=tAMPa1) {
-        _uOwner = tAMPa1;
-        _minX = 0; _maxX = 80;
-        _minY = 0; _maxY = 240;
-        _dest[$Xpos] = 60; _dest[$Ypos] = 140;
-        $DEPLOY_MINIONS
-        
-        if (AMPa4->HP >= 90){
-            _uOwner = tAMPa4;
-            _dest[$Xpos] = 30; _dest[$Ypos] = 110;
-            $DEPLOY_MINIONS
-        }
-    }
-    if (tAMPb4!=tAMPb1) {
-        _uOwner = tAMPb1;
-        _minX = 140; _maxX = 220;
-        _minY = 0; _maxY = 240;
-        _dest[$Xpos] = 160; _dest[$Ypos] = 100;
-        $DEPLOY_MINIONS
-        
-        if (AMPb4->HP >= 90){
-            _uOwner = tAMPb4;
-            _dest[$Xpos] = 190; _dest[$Ypos] = 130;
-            $DEPLOY_MINIONS
-        }
-    }
-
-    _minT = 180 $seconds;
-    // AMP1 -> AMP2 + AMP3 : 
-    // if you have a squad at (60,110) but don't own AMP2 -> attack AMP2 & AMP3
-    if (tAMPa2!=tAMPa1) {
-        _uOwner = tAMPa1;
-        _minX = 0; _maxX = 80;
-        _minY = 0; _maxY = 240;
-        _dest[$Xpos] = 75; _dest[$Ypos] = 25;
-        $DEPLOY_MINIONS
-        _dest[$Xpos] = 110; _dest[$Ypos] = 80;
-        $DEPLOY_MINIONS
-    }
-    if (tAMPb2!=tAMPb1) {
-        _uOwner = tAMPb1;
-        _minX = 140; _maxX = 220;
-        _minY = 0; _maxY = 240;
-        _dest[$Xpos] = 145; _dest[$Ypos] = 215;
-        $DEPLOY_MINIONS
-        _dest[$Xpos] = 110; _dest[$Ypos] = 160;
-        $DEPLOY_MINIONS
-    }
-
-    // AMP2 + AMP3 -> AMP1 :
-    // if you own AMP2 + AMP3 but don't own AMP1 -> attack AMP1
-    if (tAMPa3==tAMPa2 && tAMPa1!=tAMPa2) {
-        _uOwner = tAMPa2;
-        _minX = 0; _maxX = 220;
-        _minY = 0; _maxY = 115;
-        _dest[$Xpos] = 30; _dest[$Ypos] = 110;
-        $DEPLOY_MINIONS
-    }
-    if (tAMPb3==tAMPb2 && tAMPb1!=tAMPb2) {
-        _uOwner = tAMPb2;
-        _minX = 0; _maxX = 220;
-        _minY = 125; _maxY = 240;
-        _dest[$Xpos] = 190; _dest[$Ypos] = 130;
-        $DEPLOY_MINIONS
-    }
-*/
-
-    _maxM = 0 |> (present <| (10800-present));
-}
-
-
-// Major attack vectors
-/********************************
-Early Game:
-    AMPC + AMP4 -50%> AMPt4
-    Amp6 -50%> AmpC
-Early + Mid Game:
-    Amp4 -50%> AmpC
-        (m -3:30) 50% AmpC’s enemy Amp4 changes to invade AmpT6
-Mid-Late Game:
-    Amp4 -> Amp1
-    Amp1 -> Amp2
-        (m -4:00) cancel Amp2 invasion if Amp1 != Amp2 at 7:00
-    Amp1 -> Amp4
-    Amp2 -> Amp6
-        AMPC + AMP4 -50%> AMPt1
-        AmpC + Q1+Q3/Q2+Q4 invade AmpT4
-        (m -4:00) cancel AmpT4 invasion if AmpT4 != AmpC at 8:30
-        (m -4:00) AmpC’s enemy Amp2 + Amp6 invades AmpC
-        
-Mid-Late Game Main Strategy:
-    AMP2 -> AMP4
-        else AMP2 -> AMPc1
-    AMP4 -> AMPt3
-        + AMP6 -> AMP3
-
-    AMP4 -> AMPc1
-    AMPc1 + AMP2 (+Q1/Q4) -> AMPt4
-    (AMPc1) AMP4 + AMPt3 (Q2/Q3) -> AMPt1
-
-    
-Late Game:
-    Amp4 invades AmpT3
-    (m -3:00) Amp6 invades Amp2
-    (m -3:00) Amp4 enemies at Amp2 invade Amp4
-    (m -3:00) AmpC + Amp4 invade AmpT3
-    (m -3:00) Amp6 invades Amp3
-
-
-    Invading no man's land:
-    * AMP3 + AMP4 -> AMPc1
-    Invading hostile territory
-    * AMPc1 + AMP3 -> AMPt4
-    * AMPc1 + AMPt6 -> AMPt3
-    Invading fortified territory
-    * AMP2 <-> AMP3
-    * AMP4 -> AMP5
-*/
-/* Late Game:
-*************************/
-if (1) {
-    _maxT = 1800 $seconds ;
-    _everyT = 180 $seconds; _recruit = 10;
-    
-    // AMP2 -> AMP4 (m _, -2:00, t 6:40+) :
-    // if you own AMP2 +!AMP4 -> Q1/Q4 attack AMP4
-    _maxM = -120 $seconds ; _minT = 400 $seconds ;
-    if (current< 500 $seconds) _maxM = 195 $seconds ;
-    if (tAMPa4!=tAMPa2) {
-        _uOwner = tAMPa2;
-        _minX = 0; _maxX = 110;
-        _minY = 0; _maxY = 120;
-        $XYa4 $DEPLOY_MINIONS
-    }
-    if (tAMPb4!=tAMPb2) {
-        _uOwner = tAMPb2;
-        _minX = 110; _maxX = 220;
-        _minY = 120; _maxY = 240;
-        $XYb4 $DEPLOY_MINIONS
-    }
-    
-    // AMP2 -> AMPc1 (m _, t 6:40+) :
-    // if you own AMP2 + AMP4 -> Q1/Q4 attack AMPc1
-    $XYc1
-    if (tAMPa4==tAMPa2) {
-        _uOwner = tAMPa2;
-        _minX = 0; _maxX = 110;
-        _minY = 0; _maxY = 120;
-        $DEPLOY_MINIONS
-    }
-    if (tAMPb4==tAMPb2) {
-        _uOwner = tAMPb2;
-        _minX = 110; _maxX = 220;
-        _minY = 120; _maxY = 240;
-        $DEPLOY_MINIONS
-    }
-    
-    // AMP4 -> AMPt3 (m _, t 6:46+) :
-    // if Q2/Q3 is contested -> all Q2/Q3 attack AMPt3
-    _maxM = -120 $seconds ;
-    _minT = 406 $seconds ; _uOwner = -1;
-    if (tAMPb3!=tAMPa4 || tAMPb3!=tAMPb6) {
-        _minX = 0; _maxX = 110;
-        _minY = 120; _maxY = 240;
-        $XYb3 $DEPLOY_MINIONS
-    }
-    if (tAMPa3!=tAMPb4 || tAMPa3!=tAMPa6) {
-        _minX = 110; _maxX = 220;
-        _minY = 0; _maxY = 120;
         $XYa3 $DEPLOY_MINIONS
     }
-    
-    // AMP4 -> AMPc1 (m _, t 7:50+) :
-    // (counter attack on AMPc1)
-    // if you own AMP4 +!AMPc1 -> Q2/Q3 attack AMPc1
-    _minT = 470 $seconds ;
-    if (tAMPc1!=tAMPa4) {
-        _uOwner = tAMPa4;
-        _minX = 0; _maxX = 110;
-        _minY = 120; _maxY = 240;
-        $XYc1 $DEPLOY_MINIONS
-    }
-    if (tAMPc1!=tAMPb4) {
-        _uOwner = tAMPb4;
-        _minX = 110; _maxX = 220;
-        _minY = 0; _maxY = 120;
-        $XYc1 $DEPLOY_MINIONS
-    }
-    
-    
-    // AMPc1 + AMP2 (+Q1/Q4) -> AMPt4 (m _, t 8:10+) :
-    // (press the advantage)
-    // if you own AMPc1 +!AMP4 -> Q1/Q4 attack AMP4
-    _minT = 490 $seconds ; _uOwner = tAMPc1;
-    if (tAMPb4!=tAMPc1) {
-        _minX = 0; _maxX = 110;
-        _minY = 0; _maxY = 120;
-        $XYb4 $DEPLOY_MINIONS
-    }
-    if (tAMPa4!=tAMPc1) {
-        _minX = 110; _maxX = 220;
-        _minY = 120; _maxY = 240;
-        $XYa4 $DEPLOY_MINIONS
-    }
-    // (AMPc1) AMP4 + AMPt3 (Q2/Q3) -> AMPt1 (m _, t 8:16+) :
-    // if you own AMPc1 +!AMPt1 -> Q2/Q3 attack AMPt1
-     _minT = 496 $seconds ;
-    if (tAMPa1!=tAMPc1) {
-        _minX = 110; _maxX = 220;
-        _minY = 0; _maxY = 120;
-        $XYa1 $DEPLOY_MINIONS
-    }
-    if (tAMPb1!=tAMPc1) {
-        _minX = 0; _maxX = 110;
-        _minY = 120; _maxY = 240;
-        $XYb1 $DEPLOY_MINIONS
-    }
-
-}
-if (0) {
-    _maxM = 0; 
-    _maxT = 1800 $seconds ;
-    _everyT = 173 $seconds; _recruit = 10;
-    _uOwner = -1;
-    _minX = 0; _maxX = 220;
-    _minY = 0; _maxY = 240;
-    
-    /* Early Game:
-    *************************/
-    // AMPc1 + AMP4 -50%> AMPt4 (m _, t 2:45) :
-    // if you own AMPc1 +AMP4 ->50% AMPc1 + AMP4 attack AMPt4
-    _minT = 165 $seconds ; _maxT = 300 $seconds ;
-    _uOwner = tAMPc1;
-    if (tAMPa4==tAMPc1 && tAMPb4!=tAMPc1) {
-        _minX = 0; _maxX = 220;
-        _minY = 125; _maxY = 170;
-        _dest[$Xpos] = 160; _dest[$Ypos] = 100;
-        $DEPLOY_MINIONS
-    }
-    if (tAMPb4==tAMPc1 && tAMPa4!=tAMPc1) {
-        _minX = 0; _maxX = 220;
-        _minY = 70; _maxY = 115;
-        _dest[$Xpos] = 60; _dest[$Ypos] = 140;
-        $DEPLOY_MINIONS
-    }
-    
-    // AMP6 -50%> AMPc1 (m _, t 3:20) :
-    // if you own AMP6 +!AMPc1 ->50% AMP6 attack AMPc1
-    _minT = 200 $seconds ;
-    _dest[$Xpos] = 110; _dest[$Ypos] = 120;
-    
-    if (tAMPa6!=tAMPc1) {
-        _uOwner = tAMPa6;
-        _minX = 130; _maxX = 220;
-        _minY = 0; _maxY = 70;
-        $DEPLOY_MINIONS
-    }
-    if (tAMPb6!=tAMPc1) {
+    if (1) {
         _uOwner = tAMPb6;
-        _minX = 0; _maxX = 90;
-        _minY = 170; _maxY = 240;
-        $DEPLOY_MINIONS
+        $XYb3 $DEPLOY_MINIONS
     }
 
-    /* Early + Mid Game:
-    *************************/
-    // AMP4 -50%> AMPc1 (m _, t 3:30 5:40) :
-    // if you own AMP4 +!AMPc1 ->50% AMP4 attack AMPc1
-    _minT = 210 $seconds ; _maxT = 400 $seconds ;
-    _everyT = 130 $seconds;
-    if (tAMPa4!=tAMPc1) {
+    _minT = 160 $seconds ;
+    // AMP4 -> AMPt6 :
+    // if you own AMP4 -> grab AMPt6
+    if (1) {
         _uOwner = tAMPa4;
-        _minX = 0; _maxX = 110;
-        _minY = 125; _maxY = 170;
-        $DEPLOY_MINIONS
+        $XYb6 $DEPLOY_MINIONS
     }
-    if (tAMPb4!=tAMPc1) {
+    if (1) {
         _uOwner = tAMPb4;
-        _minX = 110; _maxX = 220;
-        _minY = 70; _maxY = 115;
-        $DEPLOY_MINIONS
-    }
-    
-    /* Mid Game:
-    *************************/
-    // AMP4 -> AMP1 (m _, t 5:30) :
-    // if you own AMP4 +!AMP1 -> AMP4 attack AMP1
-    _minT = 330 $seconds ; _everyT = 173 $seconds;
-    if (tAMPa1!=tAMPa4) {
-        _uOwner = tAMPa4;
-        _minX = 0; _maxX = 110;
-        _minY = 125; _maxY = 170;
-        _dest[$Xpos] = 30; _dest[$Ypos] = 110;
-        $DEPLOY_MINIONS
-    }
-    if (tAMPb1!=tAMPb4) {
-        _uOwner = tAMPb4;
-        _minX = 110; _maxX = 220;
-        _minY = 70; _maxY = 115;
-        _dest[$Xpos] = 190; _dest[$Ypos] = 130;
-        $DEPLOY_MINIONS
-    }
-    
-    // AMP1 -> AMP2 (m _, t 6:00) :
-    // if you own AMP1 +AMP4 +!AMP2 -> Q1/Q4 + AMP4 attack AMP2
-    _minT = 360 $seconds ;
-    if (tAMPa4==tAMPa1 && tAMPa2!=tAMPa1) {
-        _uOwner = tAMPa1;
-        _minX = 0; _maxX = 110;
-        _minY = 0; _maxY = 170;
-        _dest[$Xpos] = 75; _dest[$Ypos] = 25;
-        $DEPLOY_MINIONS
-    }
-    if (tAMPb4==tAMPb1 && tAMPb2!=tAMPb1) {
-        _uOwner = tAMPb1;
-        _minX = 110; _maxX = 220;
-        _minY = 70; _maxY = 240;
-        _dest[$Xpos] = 145; _dest[$Ypos] = 215;
-        $DEPLOY_MINIONS
-    }
-    
-    // AMP1 -> AMP4 (m _, t 6:20) :
-    // if you own AMP1 +!AMP4 -> Q1/Q4 attack AMP4
-    _minT = 380 $seconds ;
-    if (tAMPa4!=tAMPa1) {
-        _uOwner = tAMPa4;
-        _minX = 0; _maxX = 110;
-        _minY = 0; _maxY = 120;
-        _dest[$Xpos] = 60; _dest[$Ypos] = 140;
-        $DEPLOY_MINIONS
-    }
-    if (tAMPb1!=tAMPb4) {
-        _uOwner = tAMPb4;
-        _minX = 110; _maxX = 220;
-        _minY = 120; _maxY = 240;
-        _dest[$Xpos] = 160; _dest[$Ypos] = 100;
-        $DEPLOY_MINIONS
+        $XYa6 $DEPLOY_MINIONS
     }
 
-    // AMP2 -> AMP6 (m _, t 6:40) :
-    // if you own AMP2 +!AMP6 -> Q1/Q4 attack AMP6
-    _minT = 360 $seconds ;
-    if (tAMPa6!=tAMPa2) {
-        _uOwner = tAMPa2;
-        _minX = 0; _maxX = 110;
-        _minY = 0; _maxY = 120;
-        _dest[$Xpos] = 130; _dest[$Ypos] = 30;
-        $DEPLOY_MINIONS
+    // AMPc -> AMP3 :
+    // if you own AMPc -> grab AMP3
+    if (1) {
+        _uOwner = tAMPc1;
+        $XYa3 $DEPLOY_MINIONS
     }
-    if (tAMPb6!=tAMPb2) {
-        _uOwner = tAMPb2;
-        _minX = 110; _maxX = 220;
-        _minY = 120; _maxY = 240;
-        _dest[$Xpos] = 90; _dest[$Ypos] = 210;
-        $DEPLOY_MINIONS
+    if (1) {
+        _uOwner = tAMPc1;
+        $XYb3 $DEPLOY_MINIONS
     }
-    
-}
-if (0) {
-    _maxM = (2*present) <| (720 $seconds); 
-    _minT = 312 $seconds ; _maxT = 1800 $seconds ;
-    _everyT = 173 $seconds; _recruit = 6;
-    if (metatime < $BigAtkMT) _recruit = 10;
-    _uOwner = -1;
-    _minX = 0; _maxX = 220;
-    _minY = 0; _maxY = 240;
 
-    // Invading no man's land:
-    //---------------------------------
-    // AMP3 + AMP4 -> AMPc1 :
-    // if you own AMP3 + AMP4 -> attack AMPc1 from AMP3 (and AMP4 sometimes)
-    if (tAMPa4==tAMPa3 && tAMPc1!=tAMPa3) {
-        _uOwner = tAMPa3;
-        if (af66[0]) {
-            _minT = 382 $seconds ; // randomized timing
-            //player = 0; say " A side delaying push";
-        }
-        _minX = 0; _maxX = 220;
-        _minY = 0; _maxY = 125;
-        _dest[$Xpos] = 110; _dest[$Ypos] = 120;
-        $DEPLOY_MINIONS
-        
-        _minT = _minT + 4 $seconds ;
-        _minX = 0; _maxX = 115;
-        _minY = 115; _maxY = 240;
-        if (af66[4,2]==3) {
-            _dest[$Xpos] = 90; _dest[$Ypos] = 210; // randomized AMP4 target
-            //player = 0; say " AMPa4 targeting AMPb6";
-        }
-        $DEPLOY_MINIONS
-    }   
-    if (tAMPb3==tAMPb4 && tAMPc1!=tAMPb3) {
-        _minT = 320 $seconds ;
-        if (af67[0]) {
-            _minT = 390 $seconds ; // randomized timing
-            //player = 0; say " B side delaying push";
-        }
-        _uOwner = tAMPb3;
-        _minX = 0; _maxX = 220;
-        _minY = 115; _maxY = 240;
-        _dest[$Xpos] = 110; _dest[$Ypos] = 120;
-        $DEPLOY_MINIONS
-        
-        _minT = _minT + 4 $seconds ;
-        _minX = 105; _maxX = 220;
-        _minY = 0; _maxY = 125;
-        if (af67[4,2]==3) {
-            _dest[$Xpos] = 130; _dest[$Ypos] = 30; // randomized AMP4 target
-            //player = 0; say " AMPb4 targeting AMPa6";
-        }
-        $DEPLOY_MINIONS
-    }    
-
-    // Invading hostile territory:
-    //---------------------------------
-    _minT = 326 $seconds ;
-    if (af66[1]) {
-        _minT = 256 $seconds ; // randomized timing
-        //player = 0; say " Center rushing push";
-    }
-    _uOwner = tAMPc1;
-    
-    // AMPc1 + AMP3 -> AMPt4 :
-    // if you own AMPc1 + AMP3 -> attack AMPt4
-    if (tAMPa3==tAMPc1 && tAMPb4!=tAMPc1) {
-        _minX = 0; _maxX = 220;
-        _minY = 0; _maxY = 115;
-        _dest[$Xpos] = 160; _dest[$Ypos] = 100;
-        $DEPLOY_MINIONS
-    }
-    if (tAMPb3==tAMPc1 && tAMPa4!=tAMPc1) {
-        _minX = 0; _maxX = 220;
-        _minY = 125; _maxY = 240;
-        _dest[$Xpos] = 60; _dest[$Ypos] = 140;
-        $DEPLOY_MINIONS
-    }
-    
-    // AMPc1 + AMP4 -> AMP3 :
-    // if you own AMPc1 + AMP4 -> attack AMP3
-    if (tAMPa4==tAMPc1 && tAMPa3!=tAMPc1) {
-        _minX = 0; _maxX = 220;
-        _minY = 90; _maxY = 240;
-        _dest[$Xpos] = 110; _dest[$Ypos] = 80;
-        $DEPLOY_MINIONS
-    }
-    if (tAMPb4==tAMPc1 && tAMPb3!=tAMPc1) {
-        _minX = 0; _maxX = 220;
-        _minY = 0; _maxY = 150;
-        _dest[$Xpos] = 110; _dest[$Ypos] = 160;
-        $DEPLOY_MINIONS
-    }
-    
-    _maxM = $BigAtkMT ;
-    _minT = 352 $seconds ;
-    // AMPc1 + AMPt6 -> AMPt3 :
-    // if you own AMPc1 + AMPt6 -> attack AMPt3
-    if (tAMPb6==tAMPc1 && tAMPb3!=tAMPc1) {
-        _minX = 0; _maxX = 115;
-        _minY = 90; _maxY = 240;
-        _dest[$Xpos] = 110; _dest[$Ypos] = 160;
-        $DEPLOY_MINIONS
-    }
-    if (tAMPb6==tAMPc1 && tAMPa3!=tAMPc1) {
-        _minX = 105; _maxX = 220;
-        _minY = 0; _maxY = 150;
-        _dest[$Xpos] = 110; _dest[$Ypos] = 80;
-        $DEPLOY_MINIONS
-    }
-    
-    // Invading enemy fortified territory:
-    //---------------------------------
-    // AMP2 <-> AMP3 : 
-    // if you own AMP2 but not AMP3 -> attack AMP3
-    // or if you own AMP3 but not AMP2 -> attack AMP2
-    _minT = 170 $seconds ;
-    if (tAMPa3!=tAMPa2) {
-        _uOwner = tAMPa2;
-        _dest[$Xpos] = 110; _dest[$Ypos] = 80;
-        $DEPLOY_MINIONS
-        
-        if (AMPa3->HP >= 90){
-            _uOwner = tAMPa3;
-            _dest[$Xpos] = 75; _dest[$Ypos] = 25;
-            $DEPLOY_MINIONS
-        }
-    }
-    if (tAMPb3!=tAMPb2) {
-        _uOwner = tAMPb2;
-        _dest[$Xpos] = 110; _dest[$Ypos] = 160;
-        $DEPLOY_MINIONS
-        
-        if (AMPb3->HP >= 90){
-            _uOwner = tAMPb3;
-            _dest[$Xpos] = 145; _dest[$Ypos] = 215;
-            $DEPLOY_MINIONS
-        }
-    }
-    
-    // AMP4 -> AMP5
-    // if you have AMP4 but not AMP5 -> attack AMP5
-    _minT = 185 $seconds ;
+    _minT = 180 $seconds ;
+    _recruit = 5;
+    // AMP4 -> AMP5 :
+    // if you own AMP4 but not AMP5 -> grab AMP5
     if (tAMPa5!=tAMPa4) {
         _uOwner = tAMPa4;
-        _dest[$Xpos] = 25; _dest[$Ypos] = 150;
-        $DEPLOY_MINIONS
+        $XYa5 $DEPLOY_MINIONS
     }
     if (tAMPb5!=tAMPb4) {
         _uOwner = tAMPb4;
-        _dest[$Xpos] = 195; _dest[$Ypos] = 90;
+        $XYb5 $DEPLOY_MINIONS
+    }
+}
+
+// Execute Achronal Strategy
+if (1 && current<=present) { // Thrusts
+    // Thrust 1 - (m 0, t 6:40)
+    PERFORM GET_ACHRONAL_FIELD 2201;
+    if (current==400 $seconds && perf_ret>0) {
+        _dest = perf_ret;
+        PERFORM GET_ACHRONAL_FIELD 2101;
+        target = perf_ret;
+        _obj = 2; // portal attack dispatch
+        $DISPATCH_OBJECTIVE
+    }
+    PERFORM GET_ACHRONAL_FIELD 2202;
+    if (current==400 $seconds && perf_ret>0) {
+        _dest = perf_ret;
+        PERFORM GET_ACHRONAL_FIELD 2102;
+        target = perf_ret;
+        _obj = 2; // portal attack dispatch
+        $DISPATCH_OBJECTIVE
+    }
+    
+    // Thrust 2 - (m 9:20, t 8:20)
+    PERFORM GET_ACHRONAL_FIELD 2203;
+    if (current==500 $seconds && perf_ret>0) {
+        _dest = perf_ret;
+        PERFORM GET_ACHRONAL_FIELD 2103;
+        target = perf_ret;
+        _obj = 2; // portal attack dispatch
+        $DISPATCH_OBJECTIVE
+    }
+    PERFORM GET_ACHRONAL_FIELD 2204;
+    if (current==500 $seconds && perf_ret>0) {
+        _dest = perf_ret;
+        PERFORM GET_ACHRONAL_FIELD 2104;
+        target = perf_ret;
+        _obj = 2; // portal attack dispatch
+        $DISPATCH_OBJECTIVE
+    }
+    
+    // Thrust 3 - (m 13:10, t 9:10)
+    PERFORM GET_ACHRONAL_FIELD 2205;
+    if (current==550 $seconds && perf_ret>0) {
+        _dest = perf_ret;
+        PERFORM GET_ACHRONAL_FIELD 2105;
+        target = perf_ret;
+        _obj = 2; // portal attack dispatch
+        $DISPATCH_OBJECTIVE
+    }
+    PERFORM GET_ACHRONAL_FIELD 2206;
+    if (current==550 $seconds && perf_ret>0) {
+        _dest = perf_ret;
+        PERFORM GET_ACHRONAL_FIELD 2106;
+        target = perf_ret;
+        _obj = 2; // portal attack dispatch
+        $DISPATCH_OBJECTIVE
+    }
+    
+    // Thrust 4 - (m 0, t 13:20)
+    PERFORM GET_ACHRONAL_FIELD 2207;
+    if (current==800 $seconds && perf_ret>0) {
+        _dest = perf_ret;
+        PERFORM GET_ACHRONAL_FIELD 2107;
+        target = perf_ret;
+        _obj = 2; // portal attack dispatch
+        $DISPATCH_OBJECTIVE
+    }
+    PERFORM GET_ACHRONAL_FIELD 2208;
+    if (current==800 $seconds && perf_ret>0) {
+        _dest = perf_ret;
+        PERFORM GET_ACHRONAL_FIELD 2108;
+        target = perf_ret;
+        _obj = 2; // portal attack dispatch
+        $DISPATCH_OBJECTIVE
+    }
+    
+    // Thrust 5 - (m 15:30, t 12:30)
+    PERFORM GET_ACHRONAL_FIELD 2209;
+    if (current==750 $seconds && perf_ret>0) {
+        _dest = perf_ret;
+        PERFORM GET_ACHRONAL_FIELD 2109;
+        target = perf_ret;
+        _obj = 2; // portal attack dispatch
+        $DISPATCH_OBJECTIVE
+    }
+    PERFORM GET_ACHRONAL_FIELD 2210;
+    if (current==750 $seconds && perf_ret>0) {
+        _dest = perf_ret;
+        PERFORM GET_ACHRONAL_FIELD 2110;
+        target = perf_ret;
+        _obj = 2; // portal attack dispatch
+        $DISPATCH_OBJECTIVE
+    }
+    
+    // Thrust 6 - (m 20:00, t 14:30)
+    // All portals -> poke a semi-nearby AMP 
+    if (current==870 $seconds && present>=1200) {
+        _underling = 1;
+        object _prior = 0;
+        while (_underling>0) {
+            _underling = QUERY UNIT [unit] 
+                    MIN [query]
+                    WHERE [query>_prior && (query->Owner)->IsComputerPlayer &&
+                    (query->Class == 4048 || query->Class == 4050)];
+            if (_underling>0) {
+                player = _underling->Owner;
+                object enemyVIP = 0;
+                enemyVIP = QUERY UNIT [unit] 
+                        MIN [query<_>_underling]
+                        WHERE [query<_>_underling>6400 && query.Rank==$AMPLIFIER_RANK];
+                        
+                if (enemyVIP>0) _dest = enemyVIP->Position;
+                target = _underling;
+                _obj = 2; // portal attack dispatch
+                $DISPATCH_OBJECTIVE
+            }
+            _prior = _underling;
+        }
+    }
+    
+    // Thrust 7 - (m 25:00, t 20:00)
+    PERFORM GET_ACHRONAL_FIELD 2213;
+    if (current==1200 $seconds && perf_ret>0) {
+        _dest = perf_ret;
+        PERFORM GET_ACHRONAL_FIELD 2113;
+        target = perf_ret;
+        _obj = 2; // portal attack dispatch
+        $DISPATCH_OBJECTIVE
+    }
+    PERFORM GET_ACHRONAL_FIELD 2214;
+    if (current==1200 $seconds && perf_ret>0) {
+        _dest = perf_ret;
+        PERFORM GET_ACHRONAL_FIELD 2114;
+        target = perf_ret;
+        _obj = 2; // portal attack dispatch
+        $DISPATCH_OBJECTIVE
+    }
+}
+if (1) { // Waves
+    _maxM = 0 ;
+    _maxT = 32400 ; // stop at 30:00
+    _everyT = 600 $seconds; _recruit = 14;
+    
+    /* Wave 1 (m 0, t 7:00)
+        if you own AMP4 but not AMPc (or just want to)
+        -> Q1/Q3 attack/reinforce AMPt3 or AMPt2
+    */
+    _minT = 420 $seconds ;
+    PERFORM GET_ACHRONAL_FIELD 2261;
+    if (perf_ret>0) {
+        _dest = perf_ret;
+        PERFORM GET_ACHRONAL_FIELD 2161;
+        _uOwner = perf_ret;
+        _minX = 0; _maxX = 110;
+        _minY = 0; _maxY = 240;
+        $DEPLOY_MINIONS
+    }
+    PERFORM GET_ACHRONAL_FIELD 2262;
+    if (perf_ret>0) {
+        _dest = perf_ret;
+        PERFORM GET_ACHRONAL_FIELD 2162;
+        _uOwner = perf_ret;
+        _minX = 110; _maxX = 220;
+        _minY = 0; _maxY = 240;
         $DEPLOY_MINIONS
     }
     
-    if(0) {
-        // AMPt3 + AMP4 -> AMP1 from AMP4 :
-        // if you own AMPt3 + AMP4 -> attack AMP1 from AMP4
-        _dest[$Xpos] = 110; _dest[$Ypos] = 120;
-        if ((tAMPa4==tAMPa3 || tAMPb4==tAMPa3) && tAMPc1!=tAMPa3) {
-            _uOwner = tAMPa3;
-            _minX = 0; _maxX = 220;
-            _minY = 0; _maxY = 125;
-            $DEPLOY_MINIONS
-            
-            /*_minX = 0; _maxX = 115;
-            _minY = 115; _maxY = 240;
-            $DEPLOY_MINIONS*/
-        }   
-        if ((tAMPb3==tAMPb4 || tAMPb3==tAMPa4) && tAMPc1!=tAMPb3) {
-            _uOwner = tAMPb3;
-            _minX = 0; _maxX = 220;
-            _minY = 115; _maxY = 240;
-            $DEPLOY_MINIONS
-            
-            /*_minX = 105; _maxX = 220;
-            _minY = 0; _maxY = 125;
-            $DEPLOY_MINIONS*/
-        }
-        
-        // battle plan 1 (40%): Attack AMPc1 from AMP3 and AMP4 simultaneously
-        // battle plan 2 (10%): Attack AMPc1 from AMP3 while AMP4 attacks AMPt2 and raids AMPt6
-        
-        // if you have a squad at AMP3 and own AMP4 (a or b) but don't own AMPc1 
-        //      -> attack AMPc1
-        //      (and sometimes support with troops from AMP4 too)
-        _dest[$Xpos] = 110; _dest[$Ypos] = 120;
-        if ((tAMPa3==tAMPa4 || tAMPa3==tAMPb4) && tAMPc1!=tAMPa3) {
-            _uOwner = tAMPa3;
-            _minX = 0; _maxX = 220;
-            _minY = 0; _maxY = 125;
-            $DEPLOY_MINIONS
-            
-            /*_minX = 0; _maxX = 115;
-            _minY = 115; _maxY = 240;
-            $DEPLOY_MINIONS*/
-        }   
-        if ((tAMPb3==tAMPb4 || tAMPb3==tAMPa4) && tAMPc1!=tAMPb3) {
-            _uOwner = tAMPb3;
-            _minX = 0; _maxX = 220;
-            _minY = 115; _maxY = 240;
-            $DEPLOY_MINIONS
-            
-            /*_minX = 105; _maxX = 220;
-            _minY = 0; _maxY = 125;
-            $DEPLOY_MINIONS*/
-        }
-        
-        
-        // invading hostile territory
-        //---------------------------------
-        _uOwner = tAMPc1;
-        // if you have a squad at AMP3 and own AMPc1 -> attack AMPt4
-        if (tAMPa3==tAMPc1 && tAMPb4!=tAMPc1) {
-            _minX = 0; _maxX = 220;
-            _minY = 0; _maxY = 115;
-            _dest[$Xpos] = 160; _dest[$Ypos] = 100;
-            $DEPLOY_MINIONS
-        }
-        if (tAMPb3==tAMPc1 && tAMPa4!=tAMPc1) {
-            _minX = 0; _maxX = 220;
-            _minY = 125; _maxY = 240;
-            _dest[$Xpos] = 60; _dest[$Ypos] = 140;
-            $DEPLOY_MINIONS
-        }
+    /* Wave 2 (m 0, t 8:10)
+        a. if you own AMP4 + AMPc + !AMPt1 -> Q1/Q3 attack AMPt1
+        b. if you have full map control  
+        -> attack a well protected enemy portal/achron/AMP
+        c. if you don't own AMPc -> Q1/Q3 attack AMPc
+    */
+    _minT = 490 $seconds ;
+    PERFORM GET_ACHRONAL_FIELD 2263;
+    if (perf_ret>0) {
+        _dest = perf_ret;
+        PERFORM GET_ACHRONAL_FIELD 2163;
+        _uOwner = perf_ret;
+        _minX = 0; _maxX = 220;
+        _minY = 0; _maxY = 240;
+        $DEPLOY_MINIONS
+    }
+    PERFORM GET_ACHRONAL_FIELD 2264;
+    if (perf_ret>0) {
+        _dest = perf_ret;
+        PERFORM GET_ACHRONAL_FIELD 2164;
+        _uOwner = perf_ret;
+        _minX = 0; _maxX = 220;
+        _minY = 0; _maxY = 240;
+        $DEPLOY_MINIONS
+    }
 
-        // if you have a squad at AMP4 and own AMPc1 -> attack AMPt3
-        if (tAMPa4==tAMPc1 && tAMPb3!=tAMPc1) {
-            _minX = 0; _maxX = 115;
-            _minY = 115; _maxY = 240;
-            _dest[$Xpos] = 110; _dest[$Ypos] = 160;
-            $DEPLOY_MINIONS
-        }
-        if (tAMPb4==tAMPc1 && tAMPa3!=tAMPc1) {
-            _minX = 105; _maxX = 220;
-            _minY = 0; _maxY = 125;
-            _dest[$Xpos] = 110; _dest[$Ypos] = 80;
-            $DEPLOY_MINIONS
-        }
+    /* Wave 3 (m 0, t 13:40)
+        a. if you own AMPc -> attack a nearby enemy AMP
+        -> opponent attacks AMP4 from Q1/Q3 and AMPt4 from Q2/Q4
+    */
+    _minT = 820 $seconds ;
+    PERFORM GET_ACHRONAL_FIELD 2265;
+    if (perf_ret>0) {
+        _dest = perf_ret;
+        PERFORM GET_ACHRONAL_FIELD 2165;
+        _uOwner = perf_ret;
+        _minX = 0; _maxX = 220;
+        _minY = 0; _maxY = 240;
+        $DEPLOY_MINIONS
+    }
+    PERFORM GET_ACHRONAL_FIELD 2166;
+    if (perf_ret>0) {
+        _uOwner = perf_ret;
+        _minX = 0; _maxX = 110;
+        _minY = 0; _maxY = 240;
+        $XYa4
+        $DEPLOY_MINIONS
         
-        // if you have a squad at AMP4 and own AMPc1 but not AMP3 -> attack AMP3
-        if (tAMPa4==tAMPc1 && tAMPa3!=tAMPc1) {
-            _minX = 105; _maxX = 220;
-            _minY = 0; _maxY = 125;
-            _dest[$Xpos] = 110; _dest[$Ypos] = 80;
-            $DEPLOY_MINIONS
+        _minX = 110; _maxX = 220;
+        _minY = 0; _maxY = 240;
+        $XYb4
+        $DEPLOY_MINIONS
+    }
+
+    /* Wave 4 (m 0, t 14:10)
+        if you own AMP2 but not AMPt2 -> Q3/Q4 attack AMPt2
+    */
+    _minT = 850 $seconds ;
+    PERFORM GET_ACHRONAL_FIELD 2267;
+    if (perf_ret>0) {
+        _dest = perf_ret;
+        PERFORM GET_ACHRONAL_FIELD 2167;
+        _uOwner = perf_ret;
+        _minX = 0; _maxX = 220;
+        _minY = 0; _maxY = 160;
+        $DEPLOY_MINIONS
+    }
+    PERFORM GET_ACHRONAL_FIELD 2268;
+    if (perf_ret>0) {
+        _dest = perf_ret;
+        PERFORM GET_ACHRONAL_FIELD 2168;
+        _uOwner = perf_ret;
+        _minX = 0; _maxX = 220;
+        _minY = 80; _maxY = 240;
+        $DEPLOY_MINIONS
+    }
+    
+    /* Wave 5 (m 0, t 14:30)
+        a. if you have full map control  
+        -> attack a well protected enemy portal/achron/AMP
+        -> opponent attempts to break out
+        b. counter-attack/reinforce AMP2
+    */
+    _minT = 870 $seconds ;
+    PERFORM GET_ACHRONAL_FIELD 2269;
+    if (perf_ret>0) {
+        _dest = perf_ret;
+        PERFORM GET_ACHRONAL_FIELD 2169;
+        _uOwner = perf_ret;
+        _minX = 0; _maxX = 220;
+        _minY = 0; _maxY = 240;
+        $DEPLOY_MINIONS
+    }
+    PERFORM GET_ACHRONAL_FIELD 2270;
+    if (perf_ret>0) {
+        _dest = perf_ret;
+        PERFORM GET_ACHRONAL_FIELD 2170;
+        _uOwner = perf_ret;
+        _minX = 0; _maxX = 220;
+        _minY = 0; _maxY = 240;
+        $DEPLOY_MINIONS
+    }
+}
+if (1) { // Raids & UPPercuts
+    // Raid 1
+    PERFORM GET_ACHRONAL_FIELD 2501;
+    if (current==720 $seconds && perf_ret>0) {
+        _dest = perf_ret;
+        int r_next = 0;
+        while (r_next<4) {
+            PERFORM GET_ACHRONAL_FIELD 2401+r_next;
+            target = perf_ret;
+            _obj = $OBJECTIVE_MOVE_DISPATCH; // move dispatch
+            $DISPATCH_OBJECTIVE
+            r_next = r_next + 1;
+            
+            if (0 || DMDebug>0) {
+                int x = 0;
+                for(x=0;x<15;x=x+1){
+                    player = x;
+                    say "Raid 1: ", target, " t ", target->Owner, " c ", target->Carrier;
+                    say_to_var "";
+                }
+            }
         }
-        if (tAMPb4==tAMPc1 && tAMPb3!=tAMPc1) {
-            _minX = 0; _maxX = 115;
-            _minY = 115; _maxY = 240;
-            _dest[$Xpos] = 110; _dest[$Ypos] = 160;
-            $DEPLOY_MINIONS
+    }
+
+    // Raid 2
+    PERFORM GET_ACHRONAL_FIELD 2511;
+    if (current==750 $seconds && perf_ret>0) {
+        _dest = perf_ret;
+        int r_next = 0;
+        while (r_next<4) {
+            PERFORM GET_ACHRONAL_FIELD 2411+r_next;
+            target = perf_ret;
+            _obj = $OBJECTIVE_MOVE_DISPATCH; // move dispatch
+            $DISPATCH_OBJECTIVE
+            r_next = r_next + 1;
+                        
+            if (0 || DMDebug>0) {
+                int x = 0;
+                for(x=0;x<15;x=x+1){
+                    player = x;
+                    say "Raid 2: ", target, " t ", target->Owner, " c ", target->Carrier;
+                    say_to_var "";
+                }
+            }
+        }
+    }
+    
+    // Raid 3
+    PERFORM GET_ACHRONAL_FIELD 2521;
+    if (current==960 $seconds && perf_ret>0) {
+        _dest = perf_ret;
+        int r_next = 0;
+        while (r_next<4) {
+            PERFORM GET_ACHRONAL_FIELD 2421+r_next;
+            target = perf_ret;
+            _obj = $OBJECTIVE_MOVE_DISPATCH; // move dispatch
+            $DISPATCH_OBJECTIVE
+            r_next = r_next + 1;
+                        
+            if (0 || DMDebug>0) {
+                int x = 0;
+                for(x=0;x<15;x=x+1){
+                    player = x;
+                    say "Raid 3: ", target, " t ", target->Owner, " c ", target->Carrier;
+                    say_to_var "";
+                }
+            }
+        }
+    }
+
+    // Raid 4
+    PERFORM GET_ACHRONAL_FIELD 2531;
+    if (current==1080 $seconds && perf_ret>0) {
+        _dest = perf_ret;
+        int r_next = 0;
+        while (r_next<4) {
+            PERFORM GET_ACHRONAL_FIELD 2431+r_next;
+            target = perf_ret;
+            _obj = $OBJECTIVE_MOVE_DISPATCH; // move dispatch
+            $DISPATCH_OBJECTIVE
+            r_next = r_next + 1;
+                        
+            if (0 || DMDebug>0) {
+                int x = 0;
+                for(x=0;x<15;x=x+1){
+                    player = x;
+                    say "Raid 4: ", target, " t ", target->Owner, " c ", target->Carrier;
+                    say_to_var "";
+                }
+            }
         }
     }
 }
 
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+// - End Game -
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+// (1800 s [30:00] +)
+if (current < 32400) PERFORM NOTHING;
+/*********************************************
+* Strategy Fatigue:
+    After 30:00 AI switches to just lazily shuffling military between AMPs. 
+* Surrender:
+    Currently there are no surrender heuristics. Capture APMs to win.
+*/
+// End Game AMP Shuffle
+if (1) {
+    _maxM = 0;
+    _minT = 32400 ; _maxT = 43200 ; // stop at 40:00
+    _everyT = 127 $seconds; _recruit = 4;
+     _uOwner = -1;
+    _minX = 0; _maxX = 220;
+    _minY = 0; _maxY = 240;
+    
+    // AMPc
+    $XYc1 $DEPLOY_MINIONS
+    
+    // AMP1
+    _minT = 32720 ;
+    $XYa1 $DEPLOY_MINIONS
+    $XYb1 $DEPLOY_MINIONS
+    
+    // AMP2
+    _minT = 33040 ;
+    $XYa2 $DEPLOY_MINIONS
+    $XYb2 $DEPLOY_MINIONS
+    
+    // AMP3
+    _minT = 33360 ;
+    $XYa3 $DEPLOY_MINIONS
+    $XYb3 $DEPLOY_MINIONS
+    
+    // AMP4
+    _minT = 33680 ;
+    $XYa4 $DEPLOY_MINIONS
+    $XYb4 $DEPLOY_MINIONS
+    
+    // AMP5
+    _minT = 34000 ;
+    $XYa5 $DEPLOY_MINIONS
+    $XYb5 $DEPLOY_MINIONS
+    
+    // AMP6
+    _minT = 34320 ;
+    $XYa6 $DEPLOY_MINIONS
+    $XYb6 $DEPLOY_MINIONS
+}
 
-// End Game maneuvers
+
+
+// Last stand maneuvers (not in use)
 /********************************
     Finishing the game when a player controls 5 or more central AMPs:
     1. The defending player should mass on their remaining choke points
     2. the attacking player should gently but persistently poke the remaining AMPs
         until they win or the opponent breaks out
 */
-if (1) {
-    _maxM = 540; 
-    if ( endgame < 4  || current-present>540) PERFORM NOTHING;
+if (0) {
+    _maxM = 0; 
+    if ( endgame < 4 ) PERFORM NOTHING;
 
     _uOwner = -1;
-    _minT = 162 $seconds ; _maxT = 2400 $seconds ;
+    _minT = 162 $seconds ; _maxT = 43200 ;
     _everyT = 67 $seconds; _recruit = 4;
 
     if (tAMPa1!=tAMPc1) {
@@ -2171,4 +2950,3 @@ if (1) {
     }
     
 }
-

@@ -317,32 +317,55 @@ if(current == 3){
 
 // Map AI Definitions
 //*******************************
+#define GOTO_TIME if (present == _mTime $seconds) { \
+        PERFORM SET_PLAYER_TIME (_tTime $seconds); \
+        PERFORM SET_PLAYER_TIME_RATE _tRate; }
+
 #define OWN_OR_ALLY ( (queryOwnr = query->Owner) == _uOwner || \
     (uOwnerAllies & 1<<queryOwnr) > 0 || \
     _uOwner==-1 )
-
-#define PICK_LAZY_GRUNT_FROM_POSITION QUERY \
-    UNIT [unit] MIN [query->Age + query<_>_dest] \
-    WHERE [ \
-        query.Rank >= $MARINE_RANK && \
+    
+#define PICK_GRUNT query.Rank >= $MARINE_RANK && \
         query->Objective == 0 && \
         $OWN_OR_ALLY && \
         queryOwnr <= _maxOwner && \
         queryOwnr->IsComputerPlayer && \
         query<_>_dest > 400 && \
+        query->Carrier<= 0 && \
         (queryPos = query->Position)[$Xpos] >= _minX && \
         queryPos[$Xpos] <= _maxX && \
         queryPos[$Ypos] >= _minY && \
         queryPos[$Ypos] <= _maxY && \
         queryPos[$Zpos] >= _minZ && \
-        queryPos[$Zpos] <= _maxZ \
-    ];
+        queryPos[$Zpos] <= _maxZ
+
+#define PICK_LAZY_GRUNT_FROM_POSITION QUERY \
+    UNIT [unit] MIN [query->Age * query->Age + query<_>_dest] \
+    WHERE [ $PICK_GRUNT ];
+    
+#define PICK_RAIDER ( (_qrank = query.Rank)==$CUTTLE_RANK || \
+    _qrank==$OCTO_RANK || _qrank==$SEPIPOD_RANK || \
+    _qrank==$PHAROPOD_RANK || _qrank==$SEPILIGO_RANK || _qrank==$SEPIPOD_RANK || \
+    _qrank==$ATHC_RANK || _qrank==$LANCER_RANK || _qrank==$TANK_RANK || \
+    _qrank==$TANK2_RANK || _qrank==$TORNADE_RANK) && \
+    query->Carrier<= 0
+    
+#define PICK_PORTAL (query->Class == 4048 || query->Class == 4050) && \
+        $OWN_OR_ALLY && \
+        queryOwnr <= _maxOwner && \
+        queryOwnr->IsComputerPlayer && \
+        (queryPos = query->Position)[$Xpos] >= _minX && \
+        queryPos[$Xpos] <= _maxX && \
+        queryPos[$Ypos] >= _minY && \
+        queryPos[$Ypos] <= _maxY && \
+        queryPos[$Zpos] >= _minZ && \
+        queryPos[$Zpos] <= _maxZ
                             
 #define DEPLOY_MINIONS player = _uOwner; \
     uOwnerAllies = player->Allies; \
     if ( current >= _minT && current < _maxT + _recruit && \
         (current - _minT)%_everyT < _recruit && \
-        metatime >= _minM && metatime < _maxM && \
+        metatime >= _minM && metatime <= _maxM && \
         (player->IsComputerPlayer || _uOwner==-1) \
     ) { \
         _underling = 0; \
@@ -364,13 +387,14 @@ if(current == 3){
         player < 14 && (player->IsComputerPlayer || _uOwner==-1) )
                             
 #define MAKA_REAPH player = _uOwner; \
-    if ($MAKING_TIMER && player->$QPlasma > 0) { \
+    if ($MAKING_TIMER && $PLAYER_GREKIM && player->$QPlasma > 0) { \
         if (_underling->Class != $SEPI_CLASS && _underling.Rank != $AMPLIFIER_RANK) { \
             _underling = 0; \
             _underling = QUERY UNIT [unit] MIN [query<_>_dest - query->HP] \
                 WHERE [ query->Class == $SEPI_CLASS && \
                     (queryOwnr = query->Owner) == _uOwner && \
-                    queryOwnr->IsComputerPlayer \
+                    queryOwnr->IsComputerPlayer && \
+                    query->Carrier<= 0 \
                 ]; \
         } \
         if (_underling>0) { \
@@ -385,13 +409,14 @@ if(current == 3){
     }
     
 #define MAKA_MOUND player = _uOwner; \
-    if ($MAKING_TIMER  && player->$QPlasma > 1100) { \
+    if ($MAKING_TIMER  && $PLAYER_GREKIM && player->$QPlasma > 0) { \
         if (_underling->Class != $SEPI_CLASS && _underling.Rank != $AMPLIFIER_RANK) { \
             _underling = 0; \
             _underling = QUERY UNIT [unit] MIN [query<_>_dest - query->HP] \
                 WHERE [ query->Class == $SEPI_CLASS && \
                     (queryOwnr = query->Owner) == _uOwner && \
-                    queryOwnr->IsComputerPlayer \
+                    queryOwnr->IsComputerPlayer && \
+                    query->Carrier<= 0 \
                 ]; \
         } \
         if (_underling>0) { \
@@ -406,14 +431,15 @@ if(current == 3){
     }
     
 #define MAKA_SPYRE player = _uOwner; \
-    if ($MAKING_TIMER && player->$QPlasma > 0 && \
+    if ($MAKING_TIMER && $PLAYER_GREKIM && player->$QPlasma > 0 && \
             (player->Advancements)[$GREKIM_ADV_AUTODEFENCE]) { \
         if (_underling->Class != $PHARO_CLASS && _underling.Rank != $AMPLIFIER_RANK) { \
             _underling = 0; \
             _underling = QUERY UNIT [unit] MIN [query<_>_dest - query->HP] \
                 WHERE [ query->Class == $PHARO_CLASS && \
                     (queryOwnr = query->Owner) == _uOwner && \
-                    queryOwnr->IsComputerPlayer \
+                    queryOwnr->IsComputerPlayer && \
+                    query->Carrier<= 0 \
                 ]; \
         } \
         if (_underling>0) { \
@@ -428,13 +454,14 @@ if(current == 3){
     }
     
 #define MAKA_ARCT player = _uOwner; \
-    if ($MAKING_TIMER && player->$QPlasma > 0) { \
+    if ($MAKING_TIMER && $PLAYER_GREKIM && player->$QPlasma > 0) { \
         if (_underling->Class != $PHARO_CLASS && _underling.Rank != $AMPLIFIER_RANK) { \
             _underling = 0; \
             _underling = QUERY UNIT [unit] MIN [query<_>_dest - query->HP] \
                 WHERE [ query->Class == $PHARO_CLASS && \
                     (queryOwnr = query->Owner) == _uOwner && \
-                    queryOwnr->IsComputerPlayer \
+                    queryOwnr->IsComputerPlayer && \
+                    query->Carrier<= 0 \
                 ]; \
         } \
         if (_underling>0) { \
@@ -448,14 +475,38 @@ if(current == 3){
         } \
     }
     
-#define MAKA_TURRET player = _uOwner; \
-    if ($MAKING_TIMER && player->$QPlasma > 1200) { \
+#define MAKA_ARCT_LT player = _uOwner; \
+    if ($MAKING_TIMER && $PLAYER_GREKIM && player->Advancements[$GREKIM_ADV_LOLIGO] && \
+            player->$QPlasma > 0) { \
+        if (_underling->Class != $PHARO_CLASS && _underling.Rank != $AMPLIFIER_RANK) { \
+            _underling = 0; \
+            _underling = QUERY UNIT [unit] MIN [query<_>_dest - query->HP] \
+                WHERE [ query->Class == $PHARO_CLASS && \
+                    (queryOwnr = query->Owner) == _uOwner && \
+                    queryOwnr->IsComputerPlayer && \
+                    query->Carrier<= 0 \
+                ]; \
+        } \
+        if (_underling>0) { \
+            target = _underling; \
+            _obj = $OBJECTIVE_MORPH_ARCTICUS; \
+            $DISPATCH_OBJECTIVE \
+            if (DMDebug>0) { \
+                player = 0; \
+                print " Arct dispatch order ", DMDebug; \
+            } \
+        } \
+    }
+    
+#define MAKA_DOME player = _uOwner; \
+    if ($MAKING_TIMER && $PLAYER_GREKIM && player->$QPlasma > 0) { \
         if (_underling->Class != $OCTO_CLASS && _underling.Rank != $AMPLIFIER_RANK) { \
             _underling = 0; \
             _underling = QUERY UNIT [unit] MIN [query<_>_dest - query->HP] \
                 WHERE [ query->Class == $OCTO_CLASS && \
                     (queryOwnr = query->Owner) == _uOwner && \
-                    queryOwnr->IsComputerPlayer \
+                    queryOwnr->IsComputerPlayer && \
+                    query->Carrier<= 0 \
                 ]; \
         } \
         if (_underling>0) { \
@@ -469,10 +520,146 @@ if(current == 3){
         } \
     }
 
+#define MAKA_IMPORTER player = _uOwner; \
+    if ($MAKING_TIMER && $PLAYER_HUMAN && player->$QPlasma > 0) { \
+        if (_underling->Class != $ATHC_CLASS && _underling.Rank != $AMPLIFIER_RANK) { \
+            _underling = 0; \
+            _underling = QUERY UNIT [unit] MIN [query<_>_dest - query->HP] \
+                WHERE [ query->Class == $ATHC_CLASS && \
+                    (queryOwnr = query->Owner) == _uOwner && \
+                    queryOwnr->IsComputerPlayer && \
+                    query->Carrier<= 0 \
+                ]; \
+        } \
+        if (_underling>0) { \
+            target = _underling; \
+            _obj = $OBJECTIVE_BUILD_IMPORTER; \
+            $DISPATCH_OBJECTIVE \
+            if (DMDebug>0) { \
+                player = 0; \
+                print " Turret dispatch order ", DMDebug; \
+            } \
+        } \
+    }
+    
+#define MAKA_FAC player = _uOwner; \
+    if ($MAKING_TIMER && $PLAYER_HUMAN && player->$LCrystals > 400) { \
+        if (_underling->Class != $ATHC_CLASS && _underling.Rank != $AMPLIFIER_RANK) { \
+            _underling = 0; \
+            _underling = QUERY UNIT [unit] MIN [query<_>_dest - query->HP] \
+                WHERE [ query->Class == $ATHC_CLASS && \
+                    (queryOwnr = query->Owner) == _uOwner && \
+                    queryOwnr->IsComputerPlayer && \
+                    query->Carrier<= 0 \
+                ]; \
+        } \
+        if (_underling>0) { \
+            target = _underling; \
+            _obj = $OBJECTIVE_BUILD_FACTORY; \
+            $DISPATCH_OBJECTIVE \
+            if (DMDebug>0) { \
+                player = 0; \
+                print " Turret dispatch order ", DMDebug; \
+            } \
+        } \
+    }
+    
+#define MAKA_MFAB player = _uOwner; \
+    if ($MAKING_TIMER && $PLAYER_HUMAN && player->$QPlasma > 0) { \
+        if (_underling->Class != $ATHC_CLASS && _underling.Rank != $AMPLIFIER_RANK) { \
+            _underling = 0; \
+            _underling = QUERY UNIT [unit] MIN [query<_>_dest - query->HP] \
+                WHERE [ query->Class == $ATHC_CLASS && \
+                    (queryOwnr = query->Owner) == _uOwner && \
+                    queryOwnr->IsComputerPlayer && \
+                    query->Carrier<= 0 \
+                ]; \
+        } \
+        if (_underling>0) { \
+            target = _underling; \
+            _obj = $OBJECTIVE_BUILD_MACROFAB; \
+            $DISPATCH_OBJECTIVE \
+            if (DMDebug>0) { \
+                player = 0; \
+                print " Turret dispatch order ", DMDebug; \
+            } \
+        } \
+    }
+
+#define MAKA_TOWER player = _uOwner; \
+    if ($MAKING_TIMER && $PLAYER_HUMAN && player->$QPlasma > 0) { \
+        if (_underling->Class != $ATHC_CLASS && _underling.Rank != $AMPLIFIER_RANK) { \
+            _underling = 0; \
+            _underling = QUERY UNIT [unit] MIN [query<_>_dest - query->HP] \
+                WHERE [ query->Class == $ATHC_CLASS && \
+                    (queryOwnr = query->Owner) == _uOwner && \
+                    queryOwnr->IsComputerPlayer && \
+                    query->Carrier<= 0 \
+                ]; \
+        } \
+        if (_underling>0) { \
+            target = _underling; \
+            _obj = $OBJECTIVE_BUILD_TURRET; \
+            $DISPATCH_OBJECTIVE \
+            if (DMDebug>0) { \
+                player = 0; \
+                print " Turret dispatch order ", DMDebug; \
+            } \
+        } \
+    }
+    
+#define MAKA_SENSOR player = _uOwner; \
+    if ($MAKING_TIMER && $PLAYER_HUMAN && player->$QPlasma > 0 && \
+            (player->Advancements)[$HUMAN_ADV_BASIC]) { \
+        if (_underling->Class != $ATHC_CLASS && _underling.Rank != $AMPLIFIER_RANK) { \
+            _underling = 0; \
+            _underling = QUERY UNIT [unit] MIN [query<_>_dest - query->HP] \
+                WHERE [ query->Class == $ATHC_CLASS && \
+                    (queryOwnr = query->Owner) == _uOwner && \
+                    queryOwnr->IsComputerPlayer && \
+                    query->Carrier<= 0 \
+                ]; \
+        } \
+        if (_underling>0) { \
+            target = _underling; \
+            _obj = $OBJECTIVE_BUILD_SENSOR_TURRET; \
+            $DISPATCH_OBJECTIVE \
+            if (DMDebug>0) { \
+                player = 0; \
+                print " Turret dispatch order ", DMDebug; \
+            } \
+        } \
+    }
+    
+#define MAKA_TPORTER player = _uOwner; \
+    if ($MAKING_TIMER && $PLAYER_HUMAN && player->$QPlasma > 0) { \
+        if (_underling->Class != $ATHC_CLASS && _underling.Rank != $AMPLIFIER_RANK) { \
+            _underling = 0; \
+            _underling = QUERY UNIT [unit] MIN [query<_>_dest - query->HP] \
+                WHERE [ query->Class == $ATHC_CLASS && \
+                    (queryOwnr = query->Owner) == _uOwner && \
+                    queryOwnr->IsComputerPlayer && \
+                    query->Carrier<= 0 \
+                ]; \
+        } \
+        if (_underling>0) { \
+            target = _underling; \
+            _obj = $OBJECTIVE_BUILD_TELEPORTER; \
+            $DISPATCH_OBJECTIVE \
+            if (DMDebug>0) { \
+                player = 0; \
+                print " Turret dispatch order ", DMDebug; \
+            } \
+        } \
+    }
+
 // AI-Processes variable initialization
 object _underling = 0;
+object _firstpick = 0;
+int _qrank = 0;
 int _uOwner = -1; int _maxOwner = 11;
-int _minM = -10800; int _maxM = 12960;
+int _mTime = 0; int _tTime = 0; int _tRate = 0;
+int _minM = -10800; int _maxM = 0;
     // IP: -600, UPP: -390, present: 0, UP future: 120
 int _minX = 0; int _maxX = 0;
 int _minY = 0; int _maxY = 0;

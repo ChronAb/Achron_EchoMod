@@ -265,25 +265,370 @@ if (1) {
         Was it successful at +80s?
 */
 
+
+// AI Players Move Around the Timeline
+//*******************************
+if (0 && current == present) {
+    //loop through the 14 players
+    int x = 0;
+	for (x = 0; x<14; x=x+1) {
+        player = x;
+		if((enabled>>x)&1 && (contenders>>x)&1 && player->IsComputerPlayer){
+            if (present == 10 $seconds) { // 0:10 - First Pass
+                PERFORM SET_PLAYER_TIME_RATE 3;
+            }
+            if (present == 278 $seconds) { // 4:40 - edge rush (might be a feint)
+                PERFORM SET_PLAYER_TIME (158 $seconds); // 2:40
+                PERFORM SET_PLAYER_TIME_RATE 2;
+            }
+            if (present == 498 $seconds) { // 8:20 - EG edge attacks on Amp3, Amp6
+                PERFORM SET_PLAYER_TIME (198 $seconds); // 3:20
+            }
+            if (present == 508 $seconds) { // 8:30 - late game push
+                PERFORM SET_PLAYER_TIME (388 $seconds); // 6:30
+            }
+            
+            /*
+            
+            if (present == 340 $seconds) { // 7:25 - pantomime replaying early-mid
+                PERFORM SET_PLAYER_TIME (205 $seconds); // 3:25
+            }
+            
+            if (present == 490 $seconds) { // 8:10 - EG edge attacks on Amp3, Amp6
+                PERFORM SET_PLAYER_TIME (198 $seconds); // 3:10
+                PERFORM SET_PLAYER_TIME_RATE 2;
+            }
+            
+            if (present == 440 $seconds) { // 7:20 - EG edge attack on Amp3
+                PERFORM SET_PLAYER_TIME (98 $seconds); // 1:40
+            }
+            if (present == 550 $seconds) { // 9:10 - MG edge attacks + UPPercut
+                PERFORM SET_PLAYER_TIME (308 $seconds); // 5:10
+            }
+            
+            if (present == 700 $seconds) { // 11:40 - LG edge attacks on Amp2
+                PERFORM SET_PLAYER_TIME (518 $seconds); // 8:40
+            }
+            if (present == 800 $seconds) { // 13:20 - LG UPPercut on Amp2
+                PERFORM SET_PLAYER_TIME (518 $seconds); // 8:40
+            }
+            if (present == 820 $seconds) { // 13:40 - LG edge attacks
+                PERFORM SET_PLAYER_TIME (638 $seconds); // 10:40
+            }
+
+            if (present == 880 $seconds) { // 14:40 - overtime push
+                PERFORM SET_PLAYER_TIME (878 $seconds); // 14:40
+                PERFORM SET_PLAYER_TIME_RATE 3;
+            }
+            if (present == 700 $seconds) { // 17:40 - OT edge attacks on Amp2
+                PERFORM SET_PLAYER_TIME (878 $seconds); // 14:40
+                PERFORM SET_PLAYER_TIME_RATE 2;
+            }
+            if (present == 800 $seconds) { // 19:20 - OT UPPercut on Amp2
+                PERFORM SET_PLAYER_TIME (878 $seconds); // 14:40
+            }
+            if (present == 820 $seconds) { // 19:40 - OT edge attacks
+                PERFORM SET_PLAYER_TIME (998 $seconds); // 16:40
+            }*/
+		}
+	}
+}
+
+
+// Fortification & Base Building
+/********************************
+    AMPs periodically spawn building for free when conditions are met 
+    and the target location is not obstructed
+    
+    AMP1 - tech
+    AMP2 - gtech or fac
+    AMP3 - tech + fac + mfab
+    AMP4 - tech + fac + mfab
+    AMP5 - nothing
+    AMP6 - tech + fac + mfab
+*/
+// AMPs:
+if (1 && current < (2*(present-10) <| 16200)) { // end at 15:00
+    _minT = 145 $seconds; _maxT = 9720;
+    _everyT = 121 $seconds;
+    
+    // AMP1 - tech
+    if (tAMPa1<14 && r1a50){
+        _underling = AMPa1; _uOwner = _underling->Owner; 
+        
+        _dest[$Xpos] = 60; _dest[$Ypos] = 44;
+        _minT = 115 $seconds; // choke
+        $MAKA_DOME $MAKA_TOWER
+        
+        _dest[$Xpos] = 25; _dest[$Ypos] = 25;
+        _minT = 125 $seconds;
+        $MAKA_MOUND $MAKA_SENSOR
+        
+        _dest[$Xpos] = 30; _dest[$Ypos] = 30;
+        _minT = 220 $seconds; // crates
+        $MAKA_DOME $MAKA_FAC
+    }
+    if (tAMPb1<14 && r1b50){
+        _underling = AMPb1; _uOwner = _underling->Owner;
+        
+        _dest[$Xpos] = 298; _dest[$Ypos] = 315;
+        _minT = 115 $seconds; // choke
+        $MAKA_DOME $MAKA_TOWER
+        
+        _dest[$Xpos] = 335; _dest[$Ypos] = 335;
+        _minT = 125 $seconds;
+        $MAKA_MOUND $MAKA_SENSOR
+        
+        _dest[$Xpos] = 330; _dest[$Ypos] = 330;
+        _minT = 220 $seconds; // crates
+        $MAKA_DOME $MAKA_FAC
+    }
+    
+    // AMP2 - gtech or fac
+    if (tAMPa2<14 && r1a50){
+        _underling = AMPa2; _uOwner = _underling->Owner; 
+        
+        _dest[$Xpos] = 207; _dest[$Ypos] = 47;
+        _minT = 160 $seconds;
+        $MAKA_DOME $MAKA_TOWER
+        
+        _dest[$Xpos] = 220; _dest[$Ypos] = 25;
+        _minT = 190 $seconds; // crates
+        $MAKA_DOME $MAKA_SENSOR
+        
+        _dest[$Xpos] = 210; _dest[$Ypos] = 30;
+        _minT = 230 $seconds;
+        $MAKA_FAC $MAKA_MOUND
+        
+        _dest[$Xpos] = 217; _dest[$Ypos] = 37;
+        _minT = 235 $seconds;
+        $MAKA_REAPH $MAKA_IMPORTER
+    }
+    if (tAMPb2<14 && r1b50){
+        _underling = AMPb2; _uOwner = _underling->Owner; 
+        
+        _dest[$Xpos] = 152; _dest[$Ypos] = 312;
+        _minT = 160 $seconds;
+        $MAKA_DOME $MAKA_TOWER
+        
+        _dest[$Xpos] = 140; _dest[$Ypos] = 335;
+        _minT = 190 $seconds; // crates
+        $MAKA_DOME $MAKA_SENSOR
+        
+        _dest[$Xpos] = 150; _dest[$Ypos] = 330;
+        _minT = 230 $seconds;
+        $MAKA_FAC $MAKA_MOUND
+        
+        _dest[$Xpos] = 140; _dest[$Ypos] = 320;
+        _minT = 235 $seconds;
+        $MAKA_REAPH $MAKA_IMPORTER
+    }
+        
+    // AMP3 - tech + fac + mfab
+    if (tAMPa3<14 && r1a50){
+        _underling = AMPa3; _uOwner = _underling->Owner; 
+        
+        _dest[$Xpos] = 160; _dest[$Ypos] = 100;
+        _minT = 145 $seconds; $MAKA_REAPH
+        _dest[$Xpos] = 150; _dest[$Ypos] = 110; $MAKA_FAC
+        
+        _dest[$Xpos] = 160; _dest[$Ypos] = 90;
+        _minT = 160 $seconds;
+        $MAKA_DOME $MAKA_TOWER
+        
+        _dest[$Xpos] = 160; _dest[$Ypos] = 110;
+        _minT = 180 $seconds;
+        $MAKA_DOME $MAKA_TOWER
+        
+        _dest[$Xpos] = 170; _dest[$Ypos] = 95;
+        _minT = 205 $seconds;
+        $MAKA_REAPH $MAKA_IMPORTER
+        
+        _dest[$Xpos] = 180; _dest[$Ypos] = 95;
+        _minT = 220 $seconds; // crates
+        $MAKA_DOME $MAKA_SENSOR
+        
+        _dest[$Xpos] = 170; _dest[$Ypos] = 105;
+        _minT = 230 $seconds;
+        $MAKA_FAC $MAKA_MOUND
+        
+        _dest[$Xpos] = 170; _dest[$Ypos] = 105;
+        _minT = 250 $seconds;
+        $MAKA_MFAB $MAKA_ARCT
+        
+        _dest[$Xpos] = 150; _dest[$Ypos] = 100;
+        _minT = 330 $seconds;
+        $MAKA_FAC $MAKA_SPYRE
+    }
+    if (tAMPb3<14 && r1b50){
+        _underling = AMPb3; _uOwner = _underling->Owner; 
+        
+        _dest[$Xpos] = 200; _dest[$Ypos] = 259;
+        _minT = 145 $seconds;
+        $MAKA_REAPH
+        _dest[$Xpos] = 210; _dest[$Ypos] = 249; $MAKA_FAC
+        
+        _dest[$Xpos] = 200; _dest[$Ypos] = 270;
+        _minT = 160 $seconds;
+        $MAKA_DOME $MAKA_TOWER
+        
+        _dest[$Xpos] = 200; _dest[$Ypos] = 250;
+        _minT = 180 $seconds;
+        $MAKA_DOME $MAKA_TOWER
+        
+        _dest[$Xpos] = 190; _dest[$Ypos] = 265;
+        _minT = 205 $seconds;
+        $MAKA_REAPH $MAKA_IMPORTER
+        
+        _dest[$Xpos] = 180; _dest[$Ypos] = 265;
+        _minT = 220 $seconds; // crates
+        $MAKA_DOME $MAKA_SENSOR
+        
+        _dest[$Xpos] = 190; _dest[$Ypos] = 255;
+        _minT = 230 $seconds;
+        $MAKA_FAC $MAKA_MOUND
+        
+        _dest[$Xpos] = 210; _dest[$Ypos] = 245;
+        _minT = 250 $seconds;
+        $MAKA_MFAB $MAKA_ARCT
+        
+        _dest[$Xpos] = 210; _dest[$Ypos] = 260;
+        _minT = 330 $seconds;
+        $MAKA_FAC $MAKA_SPYRE
+    }
+    
+    // AMP4 - tech + fac + mfab
+    if (tAMPa4<14 && AMPa4.Rank == $AMPLIFIER_RANK && r1a50){
+        _underling = AMPa4; _uOwner = _underling->Owner; 
+        
+        _dest[$Xpos] = 70; _dest[$Ypos] = 185;
+        _minT = 155 $seconds;
+        $MAKA_TOWER $MAKA_DOME
+        
+        _dest[$Xpos] = 80; _dest[$Ypos] = 165;
+        _minT = 175 $seconds;
+        $MAKA_TOWER $MAKA_DOME
+        
+        _dest[$Xpos] = 70; _dest[$Ypos] = 165;
+        _minT = 185 $seconds;
+        $MAKA_REAPH $MAKA_FAC
+        
+        _dest[$Xpos] = 50; _dest[$Ypos] = 175;
+        _minT = 190 $seconds;
+        $MAKA_REAPH
+        
+        _dest[$Xpos] = 60; _dest[$Ypos] = 165;
+        _minT = 210 $seconds;
+        $MAKA_FAC $MAKA_MOUND
+        
+        _dest[$Xpos] = 70; _dest[$Ypos] = 175;
+        _minT = 240 $seconds;
+        $MAKA_MOUND
+        _minT = 300 $seconds;
+        $MAKA_SPYRE $MAKA_IMPORTER
+        
+        _dest[$Xpos] = 60; _dest[$Ypos] = 180;
+        _minT = 265 $seconds;
+        $MAKA_MFAB $MAKA_ARCT
+    }
+    if (tAMPb4<14 && AMPb4.Rank == $AMPLIFIER_RANK && r1b50){
+        _underling = AMPb4; _uOwner = _underling->Owner; 
+        
+        _dest[$Xpos] = 290; _dest[$Ypos] = 175;
+        _minT = 155 $seconds;
+        $MAKA_TOWER $MAKA_DOME
+        
+        _dest[$Xpos] = 280; _dest[$Ypos] = 190;
+        _minT = 175 $seconds;
+        $MAKA_TOWER $MAKA_DOME
+        
+        _dest[$Xpos] = 290; _dest[$Ypos] = 195;
+        _minT = 185 $seconds;
+        $MAKA_REAPH $MAKA_FAC
+        
+        _dest[$Xpos] = 310; _dest[$Ypos] = 185;
+        _minT = 190 $seconds;
+        $MAKA_REAPH
+        
+        _dest[$Xpos] = 300; _dest[$Ypos] = 195;
+        _minT = 210 $seconds;
+        $MAKA_FAC $MAKA_MOUND
+        
+        _dest[$Xpos] = 290; _dest[$Ypos] = 185;
+        _minT = 240 $seconds;
+        $MAKA_MOUND
+        _minT = 300 $seconds;
+        $MAKA_SPYRE $MAKA_IMPORTER
+        
+        _dest[$Xpos] = 300; _dest[$Ypos] = 180;
+        _minT = 265 $seconds;
+        $MAKA_MFAB $MAKA_ARCT
+    }
+    
+    // AMP5 - nothing
+    
+    // AMP6 - tech + fac + mfab
+    if (tAMPa6<14 && r1a50){
+        _underling = AMPa6; _uOwner = _underling->Owner; 
+        
+        _dest[$Xpos] = 20; _dest[$Ypos] = 345;
+        _minT = 95 $seconds;
+        $MAKA_MOUND $MAKA_FAC
+        
+        _dest[$Xpos] = 10; _dest[$Ypos] = 335;
+        _minT = 115 $seconds;
+        $MAKA_MOUND $MAKA_IMPORTER
+        
+        _dest[$Xpos] = 60; _dest[$Ypos] = 318;
+        _minT = 155 $seconds;
+        $MAKA_TOWER $MAKA_DOME
+        
+        _dest[$Xpos] = 40; _dest[$Ypos] = 330;
+        _minT = 185 $seconds;
+        $MAKA_MFAB $MAKA_ARCT
+        
+        _dest[$Xpos] = 20; _dest[$Ypos] = 320;
+        _minT = 220 $seconds;
+        $MAKA_SPYRE $MAKA_FAC
+        
+        _dest[$Xpos] = 40; _dest[$Ypos] = 290;
+        _minT = 275 $seconds;
+        $MAKA_TOWER $MAKA_DOME
+    }
+    if (tAMPb6<14 && r1b50){
+        _underling = AMPb6; _uOwner = _underling->Owner; 
+        
+        _dest[$Xpos] = 340; _dest[$Ypos] = 15;
+        _minT = 95 $seconds;
+        $MAKA_MOUND $MAKA_FAC
+        
+        _dest[$Xpos] = 348; _dest[$Ypos] = 23;
+        _minT = 115 $seconds;
+        $MAKA_MOUND $MAKA_IMPORTER
+        
+        _dest[$Xpos] = 298; _dest[$Ypos] = 40;
+        _minT = 155 $seconds;
+        $MAKA_TOWER $MAKA_DOME
+        
+        _dest[$Xpos] = 320; _dest[$Ypos] = 30;
+        _minT = 185 $seconds;
+        $MAKA_MFAB $MAKA_ARCT
+        
+        _dest[$Xpos] = 340; _dest[$Ypos] = 40;
+        _minT = 220 $seconds;
+        $MAKA_SPYRE $MAKA_FAC
+        
+        _dest[$Xpos] = 320; _dest[$Ypos] = 70;
+        _minT = 275 $seconds;
+        $MAKA_TOWER $MAKA_DOME
+    }
+}
+
+
 // Grab vulnerable assets
 /********************************
 Always:
-    AMP5 / AMP6 -> OBH
     Claim Unclaimed AMPs
-Early Game:
-    AMP2 -> AMP3
-    AMP2 -> AMP6 -5:00
-    AMP4 -> AMPt6 
-    AMP4 -> AMPt3 -5:00
-Mid Game:
-    AMP2 -> AMP3 -4:00
-    AMP2 -> AMP6 -4:00
-    AMP4 -> AMPt3 -4:00
-    AMP4 -> AMPt6 -4:00
-Late Game:
-    AMP2 -> AMP1
-    AMP1 + AMP4 -> AMP2 -3:00
-    AMPC + AMP3 -> AMP4 -3:00
    */
 _minT = 60 $seconds ; _maxT = 1800 $seconds ;
 _everyT = 110 $seconds ; _recruit = 2;
@@ -311,7 +656,7 @@ if (1) {
     if (tAMPa6>11) {$XYa6 $DEPLOY_MINIONS}
     if (tAMPb6>11) {$XYb6 $DEPLOY_MINIONS}
     
-    _everyT = 160 $seconds ; _recruit = 8;
+    _everyT = 231 $seconds ; _recruit = 8;
     
     // AMP1 <-> AMP3 :
     _minT = 120 $seconds ;
@@ -432,75 +777,6 @@ if (1) {
         $XYb2 $DEPLOY_MINIONS
     }
     
-}
-
-
-// AI Players Move Around the Timeline
-//*******************************
-if (1 && current == present) {
-    //loop through the 14 players
-    int x = 0;
-	for (x = 0; x<14; x=x+1) {
-        player = x;
-		if((enabled>>x)&1 && (contenders>>x)&1 && player->IsComputerPlayer){
-            if (present == 10 $seconds) { // 0:10 - First Pass
-                PERFORM SET_PLAYER_TIME_RATE 3;
-            }
-            if (present == 278 $seconds) { // 4:40 - edge rush (might be a feint)
-                PERFORM SET_PLAYER_TIME (158 $seconds); // 2:40
-                PERFORM SET_PLAYER_TIME_RATE 2;
-            }
-            if (present == 498 $seconds) { // 8:20 - EG edge attacks on Amp3, Amp6
-                PERFORM SET_PLAYER_TIME (198 $seconds); // 3:20
-            }
-            if (present == 508 $seconds) { // 8:30 - late game push
-                PERFORM SET_PLAYER_TIME (388 $seconds); // 6:30
-            }
-            
-            /*
-            
-            if (present == 340 $seconds) { // 7:25 - pantomime replaying early-mid
-                PERFORM SET_PLAYER_TIME (205 $seconds); // 3:25
-            }
-            
-            if (present == 490 $seconds) { // 8:10 - EG edge attacks on Amp3, Amp6
-                PERFORM SET_PLAYER_TIME (198 $seconds); // 3:10
-                PERFORM SET_PLAYER_TIME_RATE 2;
-            }
-            
-            if (present == 440 $seconds) { // 7:20 - EG edge attack on Amp3
-                PERFORM SET_PLAYER_TIME (98 $seconds); // 1:40
-            }
-            if (present == 550 $seconds) { // 9:10 - MG edge attacks + UPPercut
-                PERFORM SET_PLAYER_TIME (308 $seconds); // 5:10
-            }
-            
-            if (present == 700 $seconds) { // 11:40 - LG edge attacks on Amp2
-                PERFORM SET_PLAYER_TIME (518 $seconds); // 8:40
-            }
-            if (present == 800 $seconds) { // 13:20 - LG UPPercut on Amp2
-                PERFORM SET_PLAYER_TIME (518 $seconds); // 8:40
-            }
-            if (present == 820 $seconds) { // 13:40 - LG edge attacks
-                PERFORM SET_PLAYER_TIME (638 $seconds); // 10:40
-            }
-
-            if (present == 880 $seconds) { // 14:40 - overtime push
-                PERFORM SET_PLAYER_TIME (878 $seconds); // 14:40
-                PERFORM SET_PLAYER_TIME_RATE 3;
-            }
-            if (present == 700 $seconds) { // 17:40 - OT edge attacks on Amp2
-                PERFORM SET_PLAYER_TIME (878 $seconds); // 14:40
-                PERFORM SET_PLAYER_TIME_RATE 2;
-            }
-            if (present == 800 $seconds) { // 19:20 - OT UPPercut on Amp2
-                PERFORM SET_PLAYER_TIME (878 $seconds); // 14:40
-            }
-            if (present == 820 $seconds) { // 19:40 - OT edge attacks
-                PERFORM SET_PLAYER_TIME (998 $seconds); // 16:40
-            }*/
-		}
-	}
 }
 
 

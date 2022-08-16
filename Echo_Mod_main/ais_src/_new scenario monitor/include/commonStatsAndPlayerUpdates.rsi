@@ -88,7 +88,7 @@ if(1) {
                 accum = accum * (raremat+1);
 				accum = accum * (0.5*power+1);
                 if (grekimRace==1) {
-                    accum = accum * (1+0.5*(raremat>400)) * (1+0.5*(power>800));
+                    accum = accum * (1+0.5*(raremat>800)) * (1+0.5*(power>1600));
                 }
                 
 				if (cesoRace==1) {
