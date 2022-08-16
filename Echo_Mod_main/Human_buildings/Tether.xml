@@ -12,18 +12,18 @@
     </ActionStepModifiers>
     <ObjectClasses>
         <ObjectClass>
-            <ClassNumber>135</ClassNumber>
-            <Name>Teleporter</Name>
-            <Description>TELEPORTER:&#x0D;&#x0A;&#x0D;&#x0A;Teleports units to any location&#x0D;&#x0A;  within a medium distance&#x0D;&#x0A;</Description>
-            <Model>./humans/teleporter.mdl</Model>
-            <Rank>35</Rank>
+            <ClassNumber>138</ClassNumber>
+            <Name>Tether</Name>
+            <Description>TETHER:&#x0D;&#x0A;Teleportation anchor &#x0D;&#x0A; &#x0D;&#x0A;Long range assisted teleport receiver &#x0D;&#x0A;for Teleporters, Slipgates, and Spyres &#x0D;&#x0A; &#x0D;&#x0A;Can move itself</Description>
+            <Model>./humans/slingshot.mdl</Model>
+            <Rank>138</Rank>
             <Type>1</Type>
             <PrioritySelectionRank>0</PrioritySelectionRank>
-            <MaxHealth>700</MaxHealth>
+            <MaxHealth>150</MaxHealth>
             <MaxEnergy>0</MaxEnergy>
             <MaxArmor>0</MaxArmor>
             <MaxAmmo>0</MaxAmmo>
-            <SightRadius>23</SightRadius>
+            <SightRadius>18</SightRadius>
             <ForwardMinSightRadius>0</ForwardMinSightRadius>
             <ReverseMaxSightRadius>0</ReverseMaxSightRadius>
             <ReverseMinSightRadius>0</ReverseMinSightRadius>
@@ -32,21 +32,21 @@
             <DistanceIndicatorRadius>0</DistanceIndicatorRadius>
             <AgilityMultiplier>1</AgilityMultiplier>
             <CarryingCapacity>0</CarryingCapacity>
-            <MaxTerrainAngle>7</MaxTerrainAngle>
-            <TicksToTurn45Degrees>4</TicksToTurn45Degrees>
-            <HealthFieldName>Shielding</HealthFieldName>
+            <MaxTerrainAngle>30</MaxTerrainAngle>
+            <TicksToTurn45Degrees>5</TicksToTurn45Degrees>
+            <HealthFieldName></HealthFieldName>
             <EnergyFieldName></EnergyFieldName>
             <AmmoFieldName></AmmoFieldName>
             <Flags>
                 <VerticalMovementAllowed>0</VerticalMovementAllowed>
                 <UnaffectedByTerrain>0</UnaffectedByTerrain>
-                <GainKillExperience>1</GainKillExperience>
+                <GainKillExperience>0</GainKillExperience>
                 <RemainUpright>0</RemainUpright>
                 <NonGroupSelection>1</NonGroupSelection>
                 <ShowVisibilityRange>0</ShowVisibilityRange>
                 <ShowThroughFogOfWar>0</ShowThroughFogOfWar>
-                <AlwaysShowVisibility>1</AlwaysShowVisibility>
-                <SeeThroughObjects>1</SeeThroughObjects>
+                <AlwaysShowVisibility>0</AlwaysShowVisibility>
+                <SeeThroughObjects>0</SeeThroughObjects>
                 <ActiveLocatorBeacon>0</ActiveLocatorBeacon>
                 <AlwaysHighlightUnit>0</AlwaysHighlightUnit>
                 <AlwaysSelectable>0</AlwaysSelectable>
@@ -83,8 +83,8 @@
             </ChronoportArrivedActionSteps>
             <Animations>
                 <Animation>
-                    <Identifier>ACTION_ACTIVESPIN</Identifier>
-                    <AnimationNum>7</AnimationNum>
+                    <Identifier>ACTION_ROTATE</Identifier>
+                    <AnimationNum>0</AnimationNum>
                     <Sound>Sound0</Sound>
                     <AnimationTime>0</AnimationTime>
                     <ShowProgress>0</ShowProgress>
@@ -95,11 +95,45 @@
                         <Condition>
                             <Resource>U_ACTION</Resource>
                             <Comparison>EQUAL</Comparison>
-                            <Value>27</Value>
+                            <Value>35</Value>
                         </Condition>
                     </Conditions>
                 </Animation>
+                <!--Animation>
+                    <Identifier>ACTION_AUTOSPINDOWN</Identifier>
+                    <AnimationNum>6</AnimationNum>
+                    <Sound>Sound0</Sound>
+                    <AnimationTime>0</AnimationTime>
+                    <ShowProgress>0</ShowProgress>
+                    <MorphFromActionParameterClass>0</MorphFromActionParameterClass>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <RenderModelExplode>0</RenderModelExplode>
+                    <Conditions>
+                        <Condition>
+                            <Resource>U_ACTION</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>25</Value>
+                        </Condition>
+                    </Conditions>
+                </Animation-->
                 <Animation>
+                    <Identifier>ACTION_POST_SKIP</Identifier>
+                    <AnimationNum>5</AnimationNum>
+                    <Sound>Sound25</Sound>
+                    <AnimationTime>0</AnimationTime>
+                    <ShowProgress>1</ShowProgress>
+                    <MorphFromActionParameterClass>0</MorphFromActionParameterClass>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <RenderModelExplode>0</RenderModelExplode>
+                    <Conditions>
+                        <Condition>
+                            <Resource>U_ACTION</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>22</Value>
+                        </Condition>
+                    </Conditions>
+                </Animation>
+                <!--Animation>
                     <Identifier>ACTION_SPINDOWN</Identifier>
                     <AnimationNum>6</AnimationNum>
                     <Sound>Sound0</Sound>
@@ -166,10 +200,10 @@
                             <Value>12</Value>
                         </Condition>
                     </Conditions>
-                </Animation>
+                </Animation-->
                 <Animation>
-                    <Identifier>ACTION_SET_TARGET</Identifier>
-                    <AnimationNum>0</AnimationNum>
+                    <Identifier>ACTION_MOVE</Identifier>
+                    <AnimationNum>7</AnimationNum>
                     <Sound>Sound0</Sound>
                     <AnimationTime>0</AnimationTime>
                     <ShowProgress>0</ShowProgress>
@@ -180,14 +214,14 @@
                         <Condition>
                             <Resource>U_ACTION</Resource>
                             <Comparison>EQUAL</Comparison>
-                            <Value>8</Value>
+                            <Value>2</Value>
                         </Condition>
                     </Conditions>
                 </Animation>
                 <Animation>
                     <Identifier>ACTION_DESTROY</Identifier>
                     <AnimationNum>3</AnimationNum>
-                    <Sound>Sound112</Sound>
+                    <Sound>Sound111</Sound>
                     <AnimationTime>0</AnimationTime>
                     <ShowProgress>0</ShowProgress>
                     <MorphFromActionParameterClass>0</MorphFromActionParameterClass>
@@ -203,7 +237,7 @@
                 </Animation>
                 <Animation>
                     <Identifier>ACTION_CREATE</Identifier>
-                    <AnimationNum>4</AnimationNum>
+                    <AnimationNum>5</AnimationNum>
                     <Sound>Sound0</Sound>
                     <FragShaderEffect>TELEPORT_BUILD</FragShaderEffect>
                     <AnimationTime>0</AnimationTime>
@@ -221,9 +255,9 @@
                 </Animation>
                 <Animation>
                     <Identifier>idle</Identifier>
-                    <AnimationNum>0</AnimationNum>
+                    <AnimationNum>7</AnimationNum>
                     <Sound>Sound0</Sound>
-                    <AnimationTime>24</AnimationTime>
+                    <AnimationTime>18</AnimationTime>
                     <ShowProgress>0</ShowProgress>
                     <MorphFromActionParameterClass>0</MorphFromActionParameterClass>
                     <LobProjectilePath>0</LobProjectilePath>
@@ -235,7 +269,7 @@
                 <Action>
                     <ActionNumber>0</ActionNumber>
                     <Identifier>ACTION_CREATE</Identifier>
-                    <TimeTaken>720</TimeTaken>
+                    <TimeTaken>108</TimeTaken>
                     <ForceObjectAction>0</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
                     <MutexAction>0</MutexAction>
@@ -257,13 +291,6 @@
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
-                            <Type>U_HP</Type>
-                            <ValueEval>SET_TO_VALUE</ValueEval>
-                            <Value>35</Value>
-                        </Step>
-                        <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-                            <Target>SELF</Target>
                             <Type>U_OBJECTIVE</Type>
                             <ValueEval>SET_TO_VALUE</ValueEval>
                             <Value>50</Value>
@@ -273,7 +300,7 @@
                 <Action>
                     <ActionNumber>1</ActionNumber>
                     <Identifier>ACTION_DESTROY</Identifier>
-                    <TimeTaken>54</TimeTaken>
+                    <TimeTaken>45</TimeTaken>
                     <ForceObjectAction>1</ForceObjectAction>
                     <InterruptCurrentAction>1</InterruptCurrentAction>
                     <MutexAction>1</MutexAction>
@@ -310,6 +337,34 @@
                     </Steps>
                 </Action>
                 <Action>
+                    <ActionNumber>2</ActionNumber>
+                    <Identifier>ACTION_MOVE</Identifier>
+                    <TimeTaken>18</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions>
+                        <Condition>
+                            <Resource>PARAMETER</Resource>
+                            <Comparison>IS_VALID_DIRECTION</Comparison>
+                            <Value>0</Value>
+                        </Condition>
+                    </Conditions>
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>MOVE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Value>1</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
                     <ActionNumber>7</ActionNumber>
                     <Identifier>ACTION_CLEAR_COMMANDER</Identifier>
                     <TimeTaken>0</TimeTaken>
@@ -331,183 +386,30 @@
                     </Steps>
                 </Action>
                 <Action>
-                    <ActionNumber>8</ActionNumber>
-                    <Identifier>ACTION_SET_TARGET</Identifier>
-                    <TimeTaken>1</TimeTaken>
+                    <ActionNumber>21</ActionNumber>
+                    <Identifier>ACTION_SKIP</Identifier>
+                    <TimeTaken>0</TimeTaken>
                     <ForceObjectAction>0</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
                     <MutexAction>0</MutexAction>
                     <FailOnInvalidTarget>0</FailOnInvalidTarget>
-                    <PreserveParameter>1</PreserveParameter>
+                    <PreserveParameter>0</PreserveParameter>
                     <AIScriptCanRun>0</AIScriptCanRun>
                     <SetParamZeroTicks>0</SetParamZeroTicks>
                     <AllowActionWhenStopped>0</AllowActionWhenStopped>
                     <LobProjectilePath>0</LobProjectilePath>
                     <Conditions />
-                    <Steps />
-                </Action>
-                <Action>
-                    <ActionNumber>12</ActionNumber>
-                    <Identifier>ACTION_TELEPORT</Identifier>
-                    <TimeTaken>5</TimeTaken>
-                    <ForceObjectAction>0</ForceObjectAction>
-                    <InterruptCurrentAction>0</InterruptCurrentAction>
-                    <MutexAction>1</MutexAction>
-                    <FailOnInvalidTarget>1</FailOnInvalidTarget>
-                    <PreserveParameter>1</PreserveParameter>
-                    <AIScriptCanRun>0</AIScriptCanRun>
-                    <SetParamZeroTicks>0</SetParamZeroTicks>
-                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <LobProjectilePath>0</LobProjectilePath>
-                    <Conditions>
-                        <Condition>
-                            <Resource>T_CAN_TELEPORT_TO</Resource>
-                            <Comparison>NOT_EQUAL</Comparison>
-                            <Value>0</Value>
-                        </Condition>
-                        <Condition>
-                            <Resource>U_STATUS</Resource>
-                            <Comparison>BITMASK</Comparison>
-                            <Value>32</Value>
-                        </Condition>
-                        <Condition>
-                            <Resource>T_ALLY</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>1</Value>
-                        </Condition>
-                        <Condition>
-                            <Resource>PARAMETER</Resource>
-                            <Comparison>CLOSER_THAN</Comparison>
-                            <Value>260</Value>
-                        </Condition>
-                    </Conditions>
                     <Steps>
-                        <Step>
-                            <PrimitiveAction>SET_STATUS</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>STATUS_CAPABILITY_5</Type>
-                        </Step>
                         <Step>
                             <PrimitiveAction>TELEPORT</PrimitiveAction>
-                            <Target>TARGET_UNIT</Target>
-                            <ActionStepModifier>Teleport</ActionStepModifier>
-                        </Step>
-                    </Steps>
-                </Action>
-                <Action>
-                    <ActionNumber>14</ActionNumber>
-                    <Identifier>ACTION_POSTTELEPORT</Identifier>
-                    <TimeTaken>0</TimeTaken>
-                    <ForceObjectAction>0</ForceObjectAction>
-                    <InterruptCurrentAction>0</InterruptCurrentAction>
-                    <MutexAction>0</MutexAction>
-                    <FailOnInvalidTarget>1</FailOnInvalidTarget>
-                    <PreserveParameter>0</PreserveParameter>
-                    <AIScriptCanRun>0</AIScriptCanRun>
-                    <SetParamZeroTicks>0</SetParamZeroTicks>
-                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <LobProjectilePath>0</LobProjectilePath>
-                    <Conditions />
-                    <Steps>
-                        <Step>
-                            <PrimitiveAction>SET_STATUS</PrimitiveAction>
-                            <Target>TARGET_UNIT</Target>
-                            <Type>STATUS_CAPABILITY_1</Type>
-                        </Step>
-                    </Steps>
-                </Action>
-                <Action>
-                    <ActionNumber>15</ActionNumber>
-                    <Identifier>ACTION_FAKE_TELEPORT</Identifier>
-                    <TimeTaken>5</TimeTaken>
-                    <ForceObjectAction>0</ForceObjectAction>
-                    <InterruptCurrentAction>0</InterruptCurrentAction>
-                    <MutexAction>1</MutexAction>
-                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
-                    <PreserveParameter>1</PreserveParameter>
-                    <AIScriptCanRun>0</AIScriptCanRun>
-                    <SetParamZeroTicks>0</SetParamZeroTicks>
-                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <LobProjectilePath>0</LobProjectilePath>
-                    <Conditions />
-                    <Steps />
-                </Action>
-                <Action>
-                    <ActionNumber>19</ActionNumber>
-                    <Identifier>ACTION_CLEAR_TBIT</Identifier>
-                    <TimeTaken>0</TimeTaken>
-                    <ForceObjectAction>0</ForceObjectAction>
-                    <InterruptCurrentAction>0</InterruptCurrentAction>
-                    <MutexAction>0</MutexAction>
-                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
-                    <PreserveParameter>0</PreserveParameter>
-                    <AIScriptCanRun>0</AIScriptCanRun>
-                    <SetParamZeroTicks>0</SetParamZeroTicks>
-                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <LobProjectilePath>0</LobProjectilePath>
-                    <Conditions>
-                        <Condition>
-                            <Resource>U_STATUS</Resource>
-                            <Comparison>BITMASK</Comparison>
-                            <Value>256</Value>
-                        </Condition>
-                    </Conditions>
-                    <Steps>
-                        <Step>
-                            <PrimitiveAction>CLEAR_STATUS</PrimitiveAction>
                             <Target>SELF</Target>
-                            <Type>STATUS_CAPABILITY_5</Type>
-                        </Step>
-                    </Steps>
-                </Action>
-                <Action>
-                    <ActionNumber>20</ActionNumber>
-                    <Identifier>ACTION_SPINUP</Identifier>
-                    <TimeTaken>10</TimeTaken>
-                    <ForceObjectAction>0</ForceObjectAction>
-                    <InterruptCurrentAction>0</InterruptCurrentAction>
-                    <MutexAction>1</MutexAction>
-                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
-                    <PreserveParameter>0</PreserveParameter>
-                    <AIScriptCanRun>0</AIScriptCanRun>
-                    <SetParamZeroTicks>0</SetParamZeroTicks>
-                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <LobProjectilePath>0</LobProjectilePath>
-                    <Conditions />
-                    <Steps>
-                        <Step>
-                            <PrimitiveAction>SET_STATUS</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>STATUS_CAPABILITY_2</Type>
-                        </Step>
-                    </Steps>
-                </Action>
-                <Action>
-                    <ActionNumber>21</ActionNumber>
-                    <Identifier>ACTION_SPINDOWN</Identifier>
-                    <TimeTaken>10</TimeTaken>
-                    <ForceObjectAction>0</ForceObjectAction>
-                    <InterruptCurrentAction>0</InterruptCurrentAction>
-                    <MutexAction>1</MutexAction>
-                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
-                    <PreserveParameter>0</PreserveParameter>
-                    <AIScriptCanRun>0</AIScriptCanRun>
-                    <SetParamZeroTicks>0</SetParamZeroTicks>
-                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <LobProjectilePath>0</LobProjectilePath>
-                    <Conditions />
-                    <Steps>
-                        <Step>
-                            <PrimitiveAction>CLEAR_STATUS</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>STATUS_CAPABILITY_2</Type>
                         </Step>
                     </Steps>
                 </Action>
                 <Action>
                     <ActionNumber>22</ActionNumber>
-                    <Identifier>ACTION_SETACTIVE</Identifier>
-                    <TimeTaken>0</TimeTaken>
+                    <Identifier>ACTION_POST_SKIP</Identifier>
+                    <TimeTaken>36</TimeTaken>
                     <ForceObjectAction>0</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
                     <MutexAction>0</MutexAction>
@@ -520,16 +422,43 @@
                     <Conditions />
                     <Steps>
                         <Step>
-                            <PrimitiveAction>SET_STATUS</PrimitiveAction>
+                            <PrimitiveAction>TELEPORT</PrimitiveAction>
                             <Target>SELF</Target>
-                            <Type>STATUS_CAPABILITY_3</Type>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_Q_PLASMA</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>40</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CLEAR_STATUS</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>STATUS_CAPABILITY_1</Type>
                         </Step>
                     </Steps>
                 </Action>
                 <Action>
                     <ActionNumber>23</ActionNumber>
-                    <Identifier>ACTION_CLEARACTIVE</Identifier>
+                    <Identifier>ACTION_ACT_PARAMETERS</Identifier>
                     <TimeTaken>0</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>1</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>1</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions />
+                    <Steps />
+                </Action>
+                <Action>
+                    <ActionNumber>35</ActionNumber>
+                    <Identifier>ACTION_ROTATE</Identifier>
+                    <TimeTaken>1</TimeTaken>
                     <ForceObjectAction>0</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
                     <MutexAction>0</MutexAction>
@@ -542,33 +471,32 @@
                     <Conditions />
                     <Steps>
                         <Step>
-                            <PrimitiveAction>CLEAR_STATUS</PrimitiveAction>
+                            <PrimitiveAction>ROTATE</PrimitiveAction>
                             <Target>SELF</Target>
-                            <Type>STATUS_CAPABILITY_3</Type>
                         </Step>
                     </Steps>
                 </Action>
                 <Action>
-                    <ActionNumber>27</ActionNumber>
-                    <Identifier>ACTION_ACTIVESPIN</Identifier>
-                    <TimeTaken>24</TimeTaken>
+                    <ActionNumber>50</ActionNumber>
+                    <Identifier>ACTION_MOVE_SLOW</Identifier>
+                    <TimeTaken>18</TimeTaken>
                     <ForceObjectAction>0</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
-                    <MutexAction>1</MutexAction>
+                    <MutexAction>0</MutexAction>
                     <FailOnInvalidTarget>0</FailOnInvalidTarget>
-                    <PreserveParameter>1</PreserveParameter>
+                    <PreserveParameter>0</PreserveParameter>
                     <AIScriptCanRun>0</AIScriptCanRun>
                     <SetParamZeroTicks>0</SetParamZeroTicks>
                     <AllowActionWhenStopped>0</AllowActionWhenStopped>
                     <LobProjectilePath>0</LobProjectilePath>
-                    <Conditions>
-                        <Condition>
-                            <Resource>U_STATUS</Resource>
-                            <Comparison>BITMASK</Comparison>
-                            <Value>64</Value>
-                        </Condition>
-                    </Conditions>
-                    <Steps />
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>MOVE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Value>1</Value>
+                        </Step>
+                    </Steps>
                 </Action>
                 <Action>
                     <ActionNumber>43</ActionNumber>
@@ -603,8 +531,8 @@
                     </Steps>
                 </Action>
                 <Action>
-                    <ActionNumber>46</ActionNumber>
-                    <Identifier>ACTION_create_health</Identifier>
+                    <ActionNumber>55</ActionNumber>
+                    <Identifier>ACTION_HEAL_NANITE</Identifier>
                     <TimeTaken>0</TimeTaken>
                     <ForceObjectAction>1</ForceObjectAction>
                     <InterruptCurrentAction>1</InterruptCurrentAction>
@@ -614,31 +542,27 @@
                     <AIScriptCanRun>0</AIScriptCanRun>
                     <SetParamZeroTicks>0</SetParamZeroTicks>
                     <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <LobProjectilePath>0</LobProjectilePath>
                     <Conditions>
                         <Condition>
-                            <Resource>TIMESTEP</Resource>
-                            <Comparison>MODULO_IS_ZERO</Comparison>
-                            <Value>31</Value>
-                        </Condition>
-                        <Condition>
-                            <Resource>U_ACTION</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>0</Value>
-                        </Condition>
-                        <Condition>
                             <Resource>U_AGE</Resource>
-                            <Comparison>GREATER</Comparison>
-                            <Value>80</Value>
+                            <Comparison>MODULO_IS_ZERO</Comparison>
+                            <Value>18</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_HP</Resource>
+                            <Comparison>GEQUAL</Comparison>
+                            <Value>140</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_SECOND_OWNER</Resource>
+                            <Comparison>NOT_EQUAL</Comparison>
+                            <Value>15</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
                         <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <PrimitiveAction>NANITE_CLEAR</PrimitiveAction>
                             <Target>SELF</Target>
-                            <Type>U_HP</Type>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>-34</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -646,9 +570,39 @@
             <Objectives>
                 <Objective>
                     <ObjectiveNumber>0</ObjectiveNumber>
-                    <Script>Script70</Script>
+                    <Script></Script>
                     <Name>Idle</Name>
-                    <Details>   Teleporter Gate\Regular operation mode\ \Teleport units to destination</Details>
+                    <Details>...it only moves and skips</Details>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>1</ObjectiveNumber>
+                    <Script>cs010_move</Script>
+                    <Name>Move</Name>
+                    <Details> \Move to specified location \Move Speed: 2, MaxInc: 30\Vision Range: 18 \Invisible in Fog of War</Details>
+                    <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>2</ObjectiveNumber>
+                    <Script>cs020_moving</Script>
+                    <Name>Moving</Name>
+                    <Details></Details>
+                    <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>7</ObjectiveNumber>
+                    <Script>cs070_stop</Script>
+                    <Name>Stop</Name>
+                    <Details> \Interrupt current objective\ \Return to idling or hold fire</Details>
+                    <ObjectiveControlShortcutNumber>3</ObjectiveControlShortcutNumber>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>10</ObjectiveNumber>
+                    <Script>cs100_tport</Script>
+                    <Name>Teleport</Name>
+                    <Details>Teleport to a specified location\or self-teleport within LOS range\Teleporters extend range and negate cost\ \Blocked by Temporal Soliton Shield (TSS)</Details>
+                    <Resource1>0</Resource1>
+                    <Resource4>40</Resource4>
+                    <ObjectiveControlShortcutNumber>10</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>50</ObjectiveNumber>
@@ -656,14 +610,84 @@
                     <Name>Constructing...</Name>
                     <Details></Details>
                 </Objective>
-                <Objective>
-                    <ObjectiveNumber>51</ObjectiveNumber>
-                    <Script>Script387</Script>
-                    <Name></Name>
-                    <Details></Details>
-                </Objective>
             </Objectives>
-            <ControlShortcuts />
+            <ControlShortcuts>
+                <ControlShortcut>
+                    <ControlNumber>0</ControlNumber>
+                    <ControlObjectiveNumber>1</ControlObjectiveNumber>
+                    <MouseInputType>SHORTCUT_TILE</MouseInputType>
+                    <ParameterType>POSITION_AUTO_HEIGHT</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut>$AchronKBMove</KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>9</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions />
+                </ControlShortcut>
+                <ControlShortcut>
+                    <ControlNumber>3</ControlNumber>
+                    <ControlObjectiveNumber>7</ControlObjectiveNumber>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut>$AchronKBStop</KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>U_IS_CARRIED</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>0</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+                <ControlShortcut>
+                    <ControlNumber>10</ControlNumber>
+                    <ControlObjectiveNumber>10</ControlObjectiveNumber>
+                    <ParameterType>POSITION_OR_UNIT</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut>$AchronKBTeleport</KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>U_IS_CARRIED</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>0</Value>
+                        </ControlCondition>
+                        <ControlCondition>
+                            <Resource>U_STATUS</Resource>
+                            <Comparison>BITMASK_NOT</Comparison>
+                            <Value>32</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+            </ControlShortcuts>
         </ObjectClass>
     </ObjectClasses>
 </ResequenceObjectClassSet>
