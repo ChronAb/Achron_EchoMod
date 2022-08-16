@@ -21,13 +21,13 @@
         <ObjectClass>
             <ClassNumber>4020</ClassNumber>
             <Name>Subspace Amplifier Relay</Name>
-            <Description>SUBSPACE AMPLIFIER:&#x0D;&#x0A;&#x0D;&#x0A;Secure 12 Amplifier Supremacy Points at any point in the past to claim victory &#x0D;&#x0A;Makes resources at full control: &#x0D;&#x0A;  + 15 QP, P / 60s continuously&#x0D;&#x0A;  + 30 QP, LC at 120 s intervals while &#x0D;&#x0A;  cores remain</Description>
+            <Description>SUBSPACE AMPLIFIER:&#x0D;&#x0A;&#x0D;&#x0A;Secure 12 Amplifier Supremacy Points at any point in the past to claim victory &#x0D;&#x0A; &#x0D;&#x0A;Makes resources at full control &#x0D;&#x0A;[ +15 QP, P / 60s ] &#x0D;&#x0A;    x2 while QP Store remains&#x0D;&#x0A;Detects cloaked units</Description>
             <Model>./humans/commcenter.mdl</Model>
             <Rank>14</Rank>
             <Type>0</Type>
             <PrioritySelectionRank>0</PrioritySelectionRank>
             <MaxHealth>100</MaxHealth>
-            <MaxEnergy>4</MaxEnergy>
+            <MaxEnergy>30</MaxEnergy>
             <MaxArmor>0</MaxArmor>
             <MaxAmmo>1</MaxAmmo>
             <SightRadius>12</SightRadius>
@@ -42,7 +42,7 @@
             <MaxTerrainAngle>35</MaxTerrainAngle>
             <TicksToTurn45Degrees>0.5</TicksToTurn45Degrees>
             <HealthFieldName>Control</HealthFieldName>
-            <EnergyFieldName>Resource Cores</EnergyFieldName>
+            <EnergyFieldName>QP Store</EnergyFieldName>
             <AmmoFieldName>Supremacy Value</AmmoFieldName>
             <Flags>
                 <VerticalMovementAllowed>0</VerticalMovementAllowed>
@@ -64,7 +64,7 @@
                 <HideHealthField>0</HideHealthField>
                 <HideEnergyField>0</HideEnergyField>
                 <HideArmorField>0</HideArmorField>
-                <HideAmmoField>0</HideAmmoField>
+                <HideAmmoField>1</HideAmmoField>
                 <HideCapacityField>0</HideCapacityField>
             </Flags>
             <Cloaking>
@@ -355,7 +355,7 @@
                             <Target>SELF</Target>
                             <Type>U_ENERGY</Type>
                             <ValueEval>SET_TO_VALUE</ValueEval>
-                            <Value>4</Value>
+                            <Value>30</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -394,7 +394,7 @@
                         <Condition>
                             <Resource>P_Q_PLASMA</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>200</Value>
+                            <Value>300</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_HP</Resource>
@@ -415,7 +415,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>200</Value>
+                            <Value>300</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>ACCUM_STATISTIC</PrimitiveAction>
@@ -586,12 +586,12 @@
                         <Condition>
                             <Resource>P_POWER</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>1200</Value>
+                            <Value>2400</Value>
                         </Condition>
                         <Condition>
                             <Resource>P_Q_PLASMA</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>600</Value>
+                            <Value>1200</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_HP</Resource>
@@ -605,19 +605,271 @@
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>1200</Value>
+                            <Value>2400</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>600</Value>
+                            <Value>1200</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CREATE_UNIT</PrimitiveAction>
                             <Target>SELF</Target>
                             <Value>4020</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>16</ActionNumber>
+                    <Identifier>ACTION_MAKE_TELEPORTER</Identifier>
+                    <TimeTaken>3</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CREATE_UNIT_ANYWHERE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Value>135</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_Q_PLASMA</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>0</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_POWER</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>0</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>17</ActionNumber>
+                    <Identifier>ACTION_MAKE_LFACTORY</Identifier>
+                    <TimeTaken>3</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CREATE_UNIT_ANYWHERE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Value>150</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_Q_PLASMA</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>0</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_L_CRYSTALS</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>400</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>18</ActionNumber>
+                    <Identifier>ACTION_MAKE_MACROFAB</Identifier>
+                    <TimeTaken>3</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CREATE_UNIT_ANYWHERE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Value>90</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_Q_PLASMA</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>0</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_POWER</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>0</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>19</ActionNumber>
+                    <Identifier>ACTION_MAKE_IMPORTER</Identifier>
+                    <TimeTaken>3</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CREATE_UNIT_ANYWHERE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Value>120</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_Q_PLASMA</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>0</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_POWER</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>0</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>20</ActionNumber>
+                    <Identifier>ACTION_MAKE_TURRET</Identifier>
+                    <TimeTaken>3</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CREATE_UNIT_ANYWHERE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Value>115</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_Q_PLASMA</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>0</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_POWER</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>0</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>21</ActionNumber>
+                    <Identifier>ACTION_MAKE_ARMORY</Identifier>
+                    <TimeTaken>3</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CREATE_UNIT_ANYWHERE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Value>100</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_Q_PLASMA</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>0</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_L_CRYSTALS</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>100</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>22</ActionNumber>
+                    <Identifier>ACTION_MAKE_S_TURRET</Identifier>
+                    <TimeTaken>3</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CREATE_UNIT_ANYWHERE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Value>116</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_Q_PLASMA</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>0</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_POWER</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>-0</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -638,7 +890,7 @@
                         <Condition>
                             <Resource>U_AGE</Resource>
                             <Comparison>MODULO_IS_ZERO</Comparison>
-                            <Value>54</Value>
+                            <Value>162</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_ACTION</Resource>
@@ -700,11 +952,11 @@
                             <Comparison>NOT_EQUAL</Comparison>
                             <Value>0</Value>
                         </Condition>
-                        <!--Condition>
-                            <Resource>P_POWER</Resource>
-                            <Comparison>LESS</Comparison>
-                            <Value>1200</Value>
-                        </Condition-->
+                        <Condition>
+                            <Resource>U_ENERGY</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>0</Value>
+                        </Condition>
                         <Condition>
                             <Resource>U_HP</Resource>
                             <Comparison>EQUAL</Comparison>
@@ -735,9 +987,9 @@
                         </Step>
                     </Steps>
                 </Action>
-                <!--Action>
+                <Action>
                     <ActionNumber>26</ActionNumber>
-                    <Identifier>ACTION_GENERATE_RESOURCES_P_HIGH</Identifier>
+                    <Identifier>ACTION_BONUS_RESOURCES</Identifier>
                     <TimeTaken>0</TimeTaken>
                     <ForceObjectAction>1</ForceObjectAction>
                     <InterruptCurrentAction>1</InterruptCurrentAction>
@@ -752,7 +1004,7 @@
                         <Condition>
                             <Resource>U_AGE</Resource>
                             <Comparison>MODULO_IS_ZERO</Comparison>
-                            <Value>360</Value>
+                            <Value>180</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_OWNER</Resource>
@@ -765,9 +1017,9 @@
                             <Value>0</Value>
                         </Condition>
                         <Condition>
-                            <Resource>P_POWER</Resource>
-                            <Comparison>GEQUAL</Comparison>
-                            <Value>1200</Value>
+                            <Resource>U_ENERGY</Resource>
+                            <Comparison>GREATER</Comparison>
+                            <Value>0</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_HP</Resource>
@@ -790,69 +1042,12 @@
                             <ValueEval>ONE</ValueEval>
                             <Value>0</Value>
                         </Step>
-                    </Steps>
-                </Action-->
-                <Action>
-                    <ActionNumber>28</ActionNumber>
-                    <Identifier>ACTION_BONUS_RESOURCES</Identifier>
-                    <TimeTaken>0</TimeTaken>
-                    <ForceObjectAction>1</ForceObjectAction>
-                    <InterruptCurrentAction>1</InterruptCurrentAction>
-                    <MutexAction>0</MutexAction>
-                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
-                    <PreserveParameter>0</PreserveParameter>
-                    <AIScriptCanRun>0</AIScriptCanRun>
-                    <SetParamZeroTicks>0</SetParamZeroTicks>
-                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <LobProjectilePath>0</LobProjectilePath>
-                    <Conditions>
-                        <Condition>
-                            <Resource>U_AGE</Resource>
-                            <Comparison>MODULO_IS_ZERO</Comparison>
-                            <Value>2160</Value>
-                        </Condition>
-                        <Condition>
-                            <Resource>U_OWNER</Resource>
-                            <Comparison>LESS</Comparison>
-                            <Value>12</Value>
-                        </Condition>
-                        <Condition>
-                            <Resource>P_Q_PLASMA</Resource>
-                            <Comparison>NOT_EQUAL</Comparison>
-                            <Value>0</Value>
-                        </Condition>
-                        <Condition>
-                            <Resource>U_ENERGY</Resource>
-                            <Comparison>GEQUAL</Comparison>
-                            <Value>1</Value>
-                        </Condition>
-                        <Condition>
-                            <Resource>U_HP</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>100</Value>
-                        </Condition>
-                    </Conditions>
-                    <Steps>
-                        <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>P_Q_PLASMA</Type>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>-30</Value>
-                        </Step>
-                        <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>P_L_CRYSTALS</Type>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>-30</Value>
-                        </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>0</Value>
+                            <Value>-5</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -932,7 +1127,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>150</Value>
+                            <Value>0</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -961,7 +1156,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>150</Value>
+                            <Value>0</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -1148,7 +1343,7 @@
                     <Name>Chrono-Disruptor </Name>
                     <Details>Sacrifice this Amplifier Relay to \indefinitely Freeze or TSS-Break a single \target \ \(Can be used to disable enemy Amplifiers) </Details>
                     <Resource1>600</Resource1>
-                    <Resource4>200</Resource4>
+                    <Resource4>300</Resource4>
                     <Resource5>100</Resource5>
                     <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
                 </Objective>
@@ -1164,8 +1359,8 @@
                     <Script>cs20b_simple_upgrade</Script>
                     <Name>Clone</Name>
                     <Details> \Spawn an adjacent Amplifier Relay</Details>
-                    <Resource1>1200</Resource1>
-                    <Resource4>600</Resource4>
+                    <Resource1>2400</Resource1>
+                    <Resource4>1200</Resource4>
                     <Resource5>100</Resource5>
                 </Objective>
                 <Objective>
@@ -1197,6 +1392,49 @@
                     <Script>cs22a_amp_spyre</Script>
                     <Name>Spyre</Name>
                     <Details>spawn Spyre for AI player</Details>
+                </Objective>
+                
+                <Objective>
+                    <ObjectiveNumber>23</ObjectiveNumber>
+                    <Script>cs23a_amp_importer</Script>
+                    <Name>Importer</Name>
+                    <Details>spawn Importer for AI player</Details>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>24</ObjectiveNumber>
+                    <Script>cs24a_amp_armory</Script>
+                    <Name>Armory</Name>
+                    <Details>spawn Armory for AI player</Details>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>25</ObjectiveNumber>
+                    <Script>cs25a_amp_fac</Script>
+                    <Name>Factory</Name>
+                    <Details>spawn Factory for AI player</Details>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>26</ObjectiveNumber>
+                    <Script>cs26a_amp_mfab</Script>
+                    <Name>Macrofab</Name>
+                    <Details>spawn Macrofab for AI player</Details>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>28</ObjectiveNumber>
+                    <Script>cs28a_amp_turret</Script>
+                    <Name>Defense Turret</Name>
+                    <Details>spawn Turret for AI player</Details>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>29</ObjectiveNumber>
+                    <Script>cs29a_amp_sensor</Script>
+                    <Name>Sensor Turret</Name>
+                    <Details>spawn Sensor Turret for AI player</Details>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>30</ObjectiveNumber>
+                    <Script>cs30a_amp_tporter</Script>
+                    <Name>Teleporter</Name>
+                    <Details>spawn Teleporter for AI player</Details>
                 </Objective>
             </Objectives>
             <ControlShortcuts>
@@ -1264,14 +1502,14 @@
         <ObjectClass>
             <ClassNumber>4021</ClassNumber>
             <Name>Subspace Amplifier Relay</Name>
-            <Description>SUBSPACE AMPLIFIER:&#x0D;&#x0A;&#x0D;&#x0A;Secure 12 Amplifier Supremacy Points at any point in the past to claim victory &#x0D;&#x0A;Makes resources at full control: &#x0D;&#x0A;  + 15 QP, P / 60s continuously&#x0D;&#x0A;  + 30 QP, LC at 120 s intervals while &#x0D;&#x0A;  cores remain</Description>
+            <Description>SUBSPACE AMPLIFIER:&#x0D;&#x0A;&#x0D;&#x0A;Secure 12 Amplifier Supremacy Points at any point in the past to claim victory &#x0D;&#x0A; &#x0D;&#x0A;Makes resources at full control &#x0D;&#x0A;[ +15 QP, P / 60s ] &#x0D;&#x0A;    x2 while QP Store remains&#x0D;&#x0A;Detects cloaked units</Description>
             <!-- Start ping-ing when 8+ are controlled -->
             <Model>./humans/commcenter.mdl</Model>
             <Rank>14</Rank>
             <Type>0</Type>
             <PrioritySelectionRank>0</PrioritySelectionRank>
             <MaxHealth>100</MaxHealth>
-            <MaxEnergy>4</MaxEnergy>
+            <MaxEnergy>30</MaxEnergy>
             <MaxArmor>0</MaxArmor>
             <MaxAmmo>1</MaxAmmo>
             <SightRadius>12</SightRadius>
@@ -1286,7 +1524,7 @@
             <MaxTerrainAngle>35</MaxTerrainAngle>
             <TicksToTurn45Degrees>0.5</TicksToTurn45Degrees>
             <HealthFieldName>Control</HealthFieldName>
-            <EnergyFieldName>Resource Cores</EnergyFieldName>
+            <EnergyFieldName>QP Store</EnergyFieldName>
             <AmmoFieldName>Supremacy Value</AmmoFieldName>
             <Flags>
                 <VerticalMovementAllowed>0</VerticalMovementAllowed>
@@ -1308,7 +1546,7 @@
                 <HideHealthField>0</HideHealthField>
                 <HideEnergyField>0</HideEnergyField>
                 <HideArmorField>0</HideArmorField>
-                <HideAmmoField>0</HideAmmoField>
+                <HideAmmoField>1</HideAmmoField>
                 <HideCapacityField>0</HideCapacityField>
             </Flags>
             <Cloaking>
@@ -1531,7 +1769,7 @@
                             <Target>SELF</Target>
                             <Type>U_ENERGY</Type>
                             <ValueEval>SET_TO_VALUE</ValueEval>
-                            <Value>4</Value>
+                            <Value>30</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -1570,7 +1808,7 @@
                         <Condition>
                             <Resource>P_Q_PLASMA</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>200</Value>
+                            <Value>300</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_HP</Resource>
@@ -1591,7 +1829,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>200</Value>
+                            <Value>300</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>ACCUM_STATISTIC</PrimitiveAction>
@@ -1762,12 +2000,12 @@
                         <Condition>
                             <Resource>P_POWER</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>1200</Value>
+                            <Value>2400</Value>
                         </Condition>
                         <Condition>
                             <Resource>P_Q_PLASMA</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>600</Value>
+                            <Value>1200</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_HP</Resource>
@@ -1781,19 +2019,264 @@
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>1200</Value>
+                            <Value>2400</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>600</Value>
+                            <Value>1200</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CREATE_UNIT</PrimitiveAction>
                             <Target>SELF</Target>
                             <Value>4020</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>16</ActionNumber>
+                    <Identifier>ACTION_MAKE_TELEPORTER</Identifier>
+                    <TimeTaken>3</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CREATE_UNIT_ANYWHERE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Value>135</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_Q_PLASMA</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>0</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>17</ActionNumber>
+                    <Identifier>ACTION_MAKE_LFACTORY</Identifier>
+                    <TimeTaken>3</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CREATE_UNIT_ANYWHERE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Value>150</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_Q_PLASMA</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>0</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_L_CRYSTALS</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>400</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>18</ActionNumber>
+                    <Identifier>ACTION_MAKE_MACROFAB</Identifier>
+                    <TimeTaken>3</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CREATE_UNIT_ANYWHERE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Value>90</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_Q_PLASMA</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>0</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_POWER</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>0</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>19</ActionNumber>
+                    <Identifier>ACTION_MAKE_IMPORTER</Identifier>
+                    <TimeTaken>3</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CREATE_UNIT_ANYWHERE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Value>120</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_Q_PLASMA</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>0</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_L_CRYSTALS</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>0</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>20</ActionNumber>
+                    <Identifier>ACTION_MAKE_TURRET</Identifier>
+                    <TimeTaken>3</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CREATE_UNIT_ANYWHERE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Value>115</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_Q_PLASMA</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>0</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_L_CRYSTALS</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>0</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>21</ActionNumber>
+                    <Identifier>ACTION_MAKE_ARMORY</Identifier>
+                    <TimeTaken>3</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CREATE_UNIT_ANYWHERE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Value>100</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_Q_PLASMA</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>0</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_L_CRYSTALS</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>200</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>22</ActionNumber>
+                    <Identifier>ACTION_MAKE_S_TURRET</Identifier>
+                    <TimeTaken>3</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CREATE_UNIT_ANYWHERE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Value>116</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_Q_PLASMA</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>0</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_POWER</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>0</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -1814,7 +2297,7 @@
                         <Condition>
                             <Resource>U_AGE</Resource>
                             <Comparison>MODULO_IS_ZERO</Comparison>
-                            <Value>54</Value>
+                            <Value>162</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_ACTION</Resource>
@@ -1876,11 +2359,11 @@
                             <Comparison>NOT_EQUAL</Comparison>
                             <Value>0</Value>
                         </Condition>
-                        <!--Condition>
-                            <Resource>P_POWER</Resource>
-                            <Comparison>LESS</Comparison>
-                            <Value>1200</Value>
-                        </Condition-->
+                        <Condition>
+                            <Resource>U_ENERGY</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>0</Value>
+                        </Condition>
                         <Condition>
                             <Resource>U_HP</Resource>
                             <Comparison>EQUAL</Comparison>
@@ -1911,9 +2394,9 @@
                         </Step>
                     </Steps>
                 </Action>
-                <!--Action>
+                <Action>
                     <ActionNumber>26</ActionNumber>
-                    <Identifier>ACTION_GENERATE_RESOURCES_P_HIGH</Identifier>
+                    <Identifier>ACTION_BONUS_RESOURCES</Identifier>
                     <TimeTaken>0</TimeTaken>
                     <ForceObjectAction>1</ForceObjectAction>
                     <InterruptCurrentAction>1</InterruptCurrentAction>
@@ -1928,7 +2411,7 @@
                         <Condition>
                             <Resource>U_AGE</Resource>
                             <Comparison>MODULO_IS_ZERO</Comparison>
-                            <Value>360</Value>
+                            <Value>180</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_OWNER</Resource>
@@ -1941,9 +2424,9 @@
                             <Value>0</Value>
                         </Condition>
                         <Condition>
-                            <Resource>P_POWER</Resource>
-                            <Comparison>GEQUAL</Comparison>
-                            <Value>1200</Value>
+                            <Resource>U_ENERGY</Resource>
+                            <Comparison>GREATER</Comparison>
+                            <Value>0</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_HP</Resource>
@@ -1966,69 +2449,12 @@
                             <ValueEval>ONE</ValueEval>
                             <Value>0</Value>
                         </Step>
-                    </Steps>
-                </Action-->
-                <Action>
-                    <ActionNumber>28</ActionNumber>
-                    <Identifier>ACTION_BONUS_RESOURCES</Identifier>
-                    <TimeTaken>0</TimeTaken>
-                    <ForceObjectAction>1</ForceObjectAction>
-                    <InterruptCurrentAction>1</InterruptCurrentAction>
-                    <MutexAction>0</MutexAction>
-                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
-                    <PreserveParameter>0</PreserveParameter>
-                    <AIScriptCanRun>0</AIScriptCanRun>
-                    <SetParamZeroTicks>0</SetParamZeroTicks>
-                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <LobProjectilePath>0</LobProjectilePath>
-                    <Conditions>
-                        <Condition>
-                            <Resource>U_AGE</Resource>
-                            <Comparison>MODULO_IS_ZERO</Comparison>
-                            <Value>2160</Value>
-                        </Condition>
-                        <Condition>
-                            <Resource>U_OWNER</Resource>
-                            <Comparison>LESS</Comparison>
-                            <Value>12</Value>
-                        </Condition>
-                        <Condition>
-                            <Resource>P_Q_PLASMA</Resource>
-                            <Comparison>NOT_EQUAL</Comparison>
-                            <Value>0</Value>
-                        </Condition>
-                        <Condition>
-                            <Resource>U_ENERGY</Resource>
-                            <Comparison>GEQUAL</Comparison>
-                            <Value>1</Value>
-                        </Condition>
-                        <Condition>
-                            <Resource>U_HP</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>100</Value>
-                        </Condition>
-                    </Conditions>
-                    <Steps>
-                        <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>P_Q_PLASMA</Type>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>-30</Value>
-                        </Step>
-                        <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>P_L_CRYSTALS</Type>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>-30</Value>
-                        </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>0</Value>
+                            <Value>-5</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -2108,7 +2534,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>150</Value>
+                            <Value>0</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -2137,7 +2563,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>150</Value>
+                            <Value>0</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -2324,7 +2750,7 @@
                     <Name>Chrono-Disruptor </Name>
                     <Details>Sacrifice this Amplifier Relay to \indefinitely Freeze or TSS-Break a single \target \ \(Can be used to disable enemy Amplifiers) </Details>
                     <Resource1>600</Resource1>
-                    <Resource4>200</Resource4>
+                    <Resource4>300</Resource4>
                     <Resource5>100</Resource5>
                     <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
                 </Objective>
@@ -2333,8 +2759,8 @@
                     <Script>cs20b_simple_upgrade</Script>
                     <Name>Clone</Name>
                     <Details> \Spawn an adjacent Amplifier Relay</Details>
-                    <Resource1>1200</Resource1>
-                    <Resource4>600</Resource4>
+                    <Resource1>2400</Resource1>
+                    <Resource4>1200</Resource4>
                     <Resource5>100</Resource5>
                 </Objective>
                 <Objective>
@@ -2366,6 +2792,49 @@
                     <Script>cs22a_amp_spyre</Script>
                     <Name>Spyre</Name>
                     <Details>spawn Spyre for AI player</Details>
+                </Objective>
+                
+                <Objective>
+                    <ObjectiveNumber>23</ObjectiveNumber>
+                    <Script>cs23a_amp_importer</Script>
+                    <Name>Importer</Name>
+                    <Details>spawn Importer for AI player</Details>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>24</ObjectiveNumber>
+                    <Script>cs24a_amp_armory</Script>
+                    <Name>Armory</Name>
+                    <Details>spawn Armory for AI player</Details>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>25</ObjectiveNumber>
+                    <Script>cs25a_amp_fac</Script>
+                    <Name>Factory</Name>
+                    <Details>spawn Factory for AI player</Details>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>26</ObjectiveNumber>
+                    <Script>cs26a_amp_mfab</Script>
+                    <Name>Macrofab</Name>
+                    <Details>spawn Macrofab for AI player</Details>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>28</ObjectiveNumber>
+                    <Script>cs28a_amp_turret</Script>
+                    <Name>Defense Turret</Name>
+                    <Details>spawn Turret for AI player</Details>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>29</ObjectiveNumber>
+                    <Script>cs29a_amp_sensor</Script>
+                    <Name>Sensor Turret</Name>
+                    <Details>spawn Sensor Turret for AI player</Details>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>30</ObjectiveNumber>
+                    <Script>cs30a_amp_tporter</Script>
+                    <Name>Teleporter</Name>
+                    <Details>spawn Teleporter for AI player</Details>
                 </Objective>
             </Objectives>
             <ControlShortcuts>
@@ -2420,7 +2889,7 @@
             <Type>0</Type>
             <PrioritySelectionRank>0</PrioritySelectionRank>
             <MaxHealth>100</MaxHealth>
-            <MaxEnergy>4</MaxEnergy>
+            <MaxEnergy>0</MaxEnergy>
             <MaxArmor>2</MaxArmor>
             <MaxAmmo>100</MaxAmmo>
             <SightRadius>12</SightRadius>
@@ -2645,7 +3114,7 @@
                             <Target>SELF</Target>
                             <Type>U_ENERGY</Type>
                             <ValueEval>SET_TO_VALUE</ValueEval>
-                            <Value>4</Value>
+                            <Value>0</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -2762,7 +3231,7 @@
                         <Condition>
                             <Resource>P_POWER</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>400</Value>
+                            <Value>800</Value>
                         </Condition>
                         <Condition>
                             <Resource>P_Q_PLASMA</Resource>
@@ -2776,7 +3245,7 @@
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>400</Value>
+                            <Value>800</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -2822,6 +3291,13 @@
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
+                            <Type>U_ENERGY</Type>
+                            <ValueEval>SET_TO_VALUE</ValueEval>
+                            <Value>0</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
                             <Type>U_AMMO</Type>
                             <ValueEval>SET_TO_VALUE</ValueEval>
                             <Value>1</Value>
@@ -2845,7 +3321,7 @@
                         <Condition>
                             <Resource>U_AGE</Resource>
                             <Comparison>MODULO_IS_ZERO</Comparison>
-                            <Value>54</Value>
+                            <Value>162</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_ACTION</Resource>
@@ -3013,6 +3489,13 @@
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
+                            <Type>U_ENERGY</Type>
+                            <ValueEval>SET_TO_VALUE</ValueEval>
+                            <Value>0</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
                             <Type>U_AMMO</Type>
                             <ValueEval>SET_TO_VALUE</ValueEval>
                             <Value>1</Value>
@@ -3090,7 +3573,7 @@
                     <Script>cs20b_simple_upgrade</Script>
                     <Name>Repair Amplifier</Name>
                     <Details> \Reactivate this Amplifier Relay</Details>
-                    <Resource1>400</Resource1>
+                    <Resource1>800</Resource1>
                     <Resource4>400</Resource4>
                 </Objective>
             </Objectives>

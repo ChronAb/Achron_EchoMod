@@ -11,13 +11,13 @@
         <ObjectClass>
             <ClassNumber>4000</ClassNumber>
             <Name>Q-Plasma Transporter</Name>
-            <Description>QP TRANSPORT BOX:&#x0D;&#x0A;Collect with a RP to gain resources&#x0D;&#x0A; &#x0D;&#x0A;[60 QP / 60s / RP]</Description>
+            <Description>QP TRANSPORT BOX:&#x0D;&#x0A;Collect with a RP to gain resources&#x0D;&#x0A; &#x0D;&#x0A;[ 60 QP / 60s / RP ]</Description>
             <Model>./humans/qplasma.mdl</Model>
             <Rank>4</Rank>
             <Type>0</Type>
             <PrioritySelectionRank>0</PrioritySelectionRank>
             <MaxHealth>600</MaxHealth>
-            <MaxEnergy>8</MaxEnergy>
+            <MaxEnergy>4</MaxEnergy>
             <MaxArmor>3</MaxArmor>
             <MaxAmmo>0</MaxAmmo>
             <SightRadius>0</SightRadius>
@@ -637,8 +637,8 @@
 
         <ObjectClass>
             <ClassNumber>4004</ClassNumber>
-            <Name>Q-Plasma Cell</Name>
-            <Description>QP CONDENSER CELL:&#x0D;&#x0A;Collect with a RP to gain resources&#x0D;&#x0A;Consumes 150 QP to activate&#x0D;&#x0A; &#x0D;&#x0A;Diminishing returns for additional RPs&#x0D;&#x0A;Maximum: 1 + 2 harvesters&#x0D;&#x0A;[60+30+30 QP / 60s]</Description>
+            <Name>L-Crystal Cell</Name>
+            <Description>LC BREEDER CELL:&#x0D;&#x0A;Collect with a RP to gain LC &#x0D;&#x0A; &#x0D;&#x0A;Diminishing returns for additional RPs&#x0D;&#x0A;Maximum: 1 + 2 harvesters&#x0D;&#x0A;[ 36 +12 +12 QP / 60s ]</Description>
             <Model>./humans/lcrystal.mdl</Model>
             <Rank>8</Rank>
             <Type>0</Type>
@@ -837,7 +837,7 @@
                         </Step>
                     </Steps>
                 </Action>
-                <Action>
+                <!--Action>
                     <ActionNumber>5</ActionNumber>
                     <Identifier>ACTION_LOCK</Identifier>
                     <TimeTaken>1</TimeTaken>
@@ -868,7 +868,7 @@
                             <Type>STATUS_COMMJAM</Type>
                         </Step>
                     </Steps>
-                </Action>
+                </Action-->
                 <Action>
                     <ActionNumber>14</ActionNumber>
                     <Identifier>ACTION_MAT_1</Identifier>

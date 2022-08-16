@@ -7,7 +7,7 @@ target = unit->ObjectiveParameters;
 
 //special freezebeam for Subspace Amplifiers 
 if ($IS_VICTORY_CLASS) {
-    if (player->$QPlasma < 200 || player->$Power < 600){
+    if (player->$QPlasma < 300 || player->$Power < 600){
         $SAY_RESOURCES
         PERFORM SET_OBJECTIVE 0;
         PERFORM SET_ADDITIONAL_PARAMS2 0;
