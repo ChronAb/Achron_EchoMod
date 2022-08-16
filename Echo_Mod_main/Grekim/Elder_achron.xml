@@ -37,7 +37,7 @@
         <ObjectClass>
             <ClassNumber>1044</ClassNumber>
             <Name>Elder Keeper (Achron)</Name>
-            <Description>ELDER KEEPER:&#x0D;&#x0A;Achronal bio-cybernetic command shell&#x0D;&#x0A;Container for Achron AI (i.e. you)&#x0D;&#x0A; &#x0D;&#x0A;Engages Temporal Shield when endangered&#x0D;&#x0A;Can assimilate QP and Power &#x0D;&#x0A;Can revert LC to QP; Revive frozen units&#x0D;&#x0A; &#x0D;&#x0A;+2 HP/s regen while > 240 E, 400 P</Description>
+            <Description>ELDER KEEPER:&#x0D;&#x0A;Achronal bio-cybernetic command shell&#x0D;&#x0A;Container for Achron AI (i.e. you)&#x0D;&#x0A; &#x0D;&#x0A;Engages Temporal Shield when endangered&#x0D;&#x0A;Can assimilate QP and Power &#x0D;&#x0A;Can revert LC to QP; Revive frozen units&#x0D;&#x0A; &#x0D;&#x0A;+2 HP/s regen while full E</Description>
             <Model>./grekim/grekim_elder.mdl</Model>
             <Rank>111</Rank>
             <Type>1</Type>
@@ -267,7 +267,7 @@
                     </Conditions>
                 </Animation>
                 <Animation>
-                    <Identifier>ACTION_SELF_UPGRADE</Identifier>
+                    <Identifier>ACTION_VICTORY</Identifier>
                     <AnimationNum>0</AnimationNum>
                     <Sound>Sound35</Sound>
                     <AnimationTime>0</AnimationTime>
@@ -279,7 +279,7 @@
                         <Condition>
                             <Resource>U_ACTION</Resource>
                             <Comparison>EQUAL</Comparison>
-                            <Value>15</Value>
+                            <Value>16</Value>
                         </Condition>
                     </Conditions>
                 </Animation>
@@ -314,6 +314,25 @@
                             <Resource>U_ACTION</Resource>
                             <Comparison>EQUAL</Comparison>
                             <Value>10</Value>
+                        </Condition>
+                    </Conditions>
+                </Animation>
+                <Animation>
+                    <Identifier>ACTION_FACTION_GUARDIAN</Identifier>
+                    <AnimationNum>0</AnimationNum>
+                    <Sound>Sound0</Sound>
+                    <VertShaderEffect>XZ_PLANE_CLAMPED_VERT_SCALE</VertShaderEffect>
+                    <FragShaderEffect>TELEPORT_BUILD</FragShaderEffect>
+                    <AnimationTime>0</AnimationTime>
+                    <ShowProgress>0</ShowProgress>
+                    <MorphFromActionParameterClass>0</MorphFromActionParameterClass>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <RenderModelExplode>0</RenderModelExplode>
+                    <Conditions>
+                        <Condition>
+                            <Resource>U_ACTION</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>8</Value>
                         </Condition>
                     </Conditions>
                 </Animation>
@@ -401,7 +420,7 @@
                 <Action>
                     <ActionNumber>0</ActionNumber>
                     <Identifier>ACTION_CREATE</Identifier>
-                    <TimeTaken>1</TimeTaken>
+                    <TimeTaken>9</TimeTaken>
                     <ForceObjectAction>0</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
                     <MutexAction>0</MutexAction>
@@ -425,7 +444,7 @@
                             <Target>SELF</Target>
                             <Type>U_AMMO</Type>
                             <ValueEval>SET_TO_VALUE</ValueEval>
-                            <Value>60</Value>
+                            <Value>40</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -532,6 +551,46 @@
                     </Steps>
                 </Action>
                 <Action>
+                    <ActionNumber>5</ActionNumber>
+                    <Identifier>ACTION_FACTION_NOT_VANGUARD</Identifier>
+                    <TimeTaken>1</TimeTaken>
+                    <ForceObjectAction>1</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions>
+                        <Condition>
+                            <Resource>U_ACTION</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>0</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>P_ADVANCEMENTS</Resource>
+                            <Comparison>BITMASK</Comparison>
+                            <Value>256</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>P_ADVANCEMENTS</Resource>
+                            <Comparison>BITMASK_NOT</Comparison>
+                            <Value>1024</Value>
+                        </Condition>
+                    </Conditions>
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_Q_PLASMA</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>400</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
                     <ActionNumber>6</ActionNumber>
                     <Identifier>ACTION_CHANGE_COMMANDER</Identifier>
                     <TimeTaken>0</TimeTaken>
@@ -624,6 +683,12 @@
                             <ActionStepModifier>MFB Recover</ActionStepModifier>
                         </Step>
                         <Step>
+                            <PrimitiveAction>CLEAR_STATUS</PrimitiveAction>
+                            <Target>TARGET_UNIT</Target>
+                            <Type>STATUS_COMMJAM</Type>
+                            <ActionStepModifier>MFB Recover</ActionStepModifier>
+                        </Step>
+                        <Step>
                             <PrimitiveAction>NANITE_CLEAR</PrimitiveAction>
                             <Target>TARGET_UNIT</Target>
                             <ActionStepModifier>MFB Recover</ActionStepModifier>
@@ -631,8 +696,8 @@
                     </Steps>
                 </Action>
                 <Action>
-                    <ActionNumber>15</ActionNumber>
-                    <Identifier>ACTION_SELF_UPGRADE</Identifier>
+                    <ActionNumber>16</ActionNumber>
+                    <Identifier>ACTION_VICTORY</Identifier>
                     <TimeTaken>1</TimeTaken>
                     <ForceObjectAction>0</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
@@ -789,14 +854,14 @@
                             <Target>SELF</Target>
                             <Type>P_L_CRYSTALS</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>200</Value>
+                            <Value>400</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>240</Value>
+                            <Value>480</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -828,7 +893,7 @@
                         <Condition>
                             <Resource>U_AMMO</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>15</Value>
+                            <Value>10</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -837,7 +902,7 @@
                             <Target>SELF</Target>
                             <Type>U_AMMO</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>15</Value>
+                            <Value>10</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -996,7 +1061,7 @@
                         <Condition>
                             <Resource>P_Q_PLASMA</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>2050</Value>
+                            <Value>4050</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -1030,7 +1095,7 @@
                         <Condition>
                             <Resource>P_POWER</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>2050</Value>
+                            <Value>4050</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -1043,75 +1108,6 @@
                         </Step>
                     </Steps>
                 </Action>
-                <!--Action>
-                    <ActionNumber>38</ActionNumber>
-                    <Identifier>ACTION_UPGRADE</Identifier>
-                    <TimeTaken>54</TimeTaken>
-                    <ForceObjectAction>1</ForceObjectAction>
-                    <InterruptCurrentAction>0</InterruptCurrentAction>
-                    <MutexAction>0</MutexAction>
-                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
-                    <PreserveParameter>1</PreserveParameter>
-                    <AIScriptCanRun>0</AIScriptCanRun>
-                    <SetParamZeroTicks>0</SetParamZeroTicks>
-                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <Conditions>
-                        <Condition>
-                            <Resource>P_RESERVE_SOLDIERS</Resource>
-                            <Comparison>GEQUAL</Comparison>
-                            <Value>1000</Value>
-                        </Condition>
-                    </Conditions>
-                    <Steps>
-                        <Step>
-                            <PrimitiveAction>ACCUM_STATISTIC</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>AchronDestroyed0</Type>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>1</Value>
-                        </Step>
-                        <Step>
-                            <PrimitiveAction>ACCUM_STATISTIC</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>AchronDestroyed1</Type>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>1</Value>
-                        </Step>
-                        <Step>
-                            <PrimitiveAction>ACCUM_STATISTIC</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>AchronDestroyed2</Type>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>1</Value>
-                        </Step>
-                        <Step>
-                            <PrimitiveAction>ACCUM_STATISTIC</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>AchronDestroyed3</Type>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>1</Value>
-                        </Step>
-                        <Step>
-                            <PrimitiveAction>ACCUM_STATISTIC</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>AchronDestroyed4</Type>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>1</Value>
-                        </Step>
-                        <Step>
-                            <PrimitiveAction>CHANGE_CLASS</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Value>1046</Value>
-                        </Step>
-                        <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>U_HP</Type>
-                            <ValueEval>SET_TO_VALUE</ValueEval>
-                            <Value>1200</Value>
-                        </Step>
-                    </Steps>
-                </Action-->
                 <Action>
                     <ActionNumber>38</ActionNumber>
                     <Identifier>ACTION_GENERATE_HP_A</Identifier>
@@ -1134,11 +1130,6 @@
                             <Resource>U_ENERGY</Resource>
                             <Comparison>GEQUAL</Comparison>
                             <Value>240</Value>
-                        </Condition>
-                        <Condition>
-                            <Resource>P_POWER</Resource>
-                            <Comparison>GEQUAL</Comparison>
-                            <Value>400</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -1316,7 +1307,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-5</Value>
+                            <Value>-10</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -1368,6 +1359,38 @@
                     <Steps>
                         <Step>
                             <PrimitiveAction>SET_STATUS</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>STATUS_STASIS</Type>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>49</ActionNumber>
+                    <Identifier>ACTION_unAMPLIFY</Identifier>
+                    <TimeTaken>0</TimeTaken>
+                    <ForceObjectAction>1</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <Conditions>
+                        <Condition>
+                            <Resource>P_CUSTOM_FIELD_8</Resource>
+                            <Comparison>LESS</Comparison>
+                            <Value>12288</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_STATUS</Resource>
+                            <Comparison>BITMASK</Comparison>
+                            <Value>4</Value>
+                        </Condition>
+                    </Conditions>
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CLEAR_STATUS</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>STATUS_STASIS</Type>
                         </Step>
@@ -1539,7 +1562,7 @@
                     <ObjectiveNumber>16</ObjectiveNumber>
                     <Script>gs160_recover</Script>
                     <Name>Recover Status</Name>
-                    <Details> \Clear negative status effects:\    Freeze and Nanites</Details>
+                    <Details> \Clear negative status effects:\    Freeze, Comm Jam, Nanites</Details>
                     <ObjectiveControlShortcutNumber>8</ObjectiveControlShortcutNumber>
                     <ParameterType>UNIT</ParameterType>
                 </Objective>
@@ -1547,8 +1570,8 @@
                     <ObjectiveNumber>18</ObjectiveNumber>
                     <Script>gs180_elder_mine</Script>
                     <Name>Assimilate QPlasma</Name>
-                    <Details> \Rapidly extract QP and P from nearby \   QP Transport Boxes \ \   + 30 QP,P / Q-P Core / 15 Charge</Details>
-                    <Resource8>120</Resource8>
+                    <Details> \Rapidly extract QP and P from nearby \   QP Transport Boxes \ \   + 30 QP,P / Q-P Core / 10 Charge</Details>
+                    <Resource8>80</Resource8>
                     <ValidRadius>19</ValidRadius>
                     <ObjectiveControlShortcutNumber>9</ObjectiveControlShortcutNumber>
                 </Objective>
@@ -1562,8 +1585,8 @@
                     <ObjectiveNumber>20</ObjectiveNumber>
                     <Script>gs200_convert</Script>
                     <Name>Revert LCrystal -&gt; QPlasma</Name>
-                    <Details> \Convert 200 L-Crystal to Q-Plasma\converts 2.5 QP/s over 80 s \ \200 LC + 240 P + 80 E = 200 QP</Details>
-                    <Resource1>240</Resource1>
+                    <Details> \Convert 400 L-Crystal to Q-Plasma\converts 5 QP/s over 80 s \ \400 LC + 480 P + 80 E = 400 QP</Details>
+                    <Resource1>480</Resource1>
                     <Resource2>400</Resource2>
                     <Resource6>80</Resource6>
                 </Objective>
@@ -1847,7 +1870,7 @@
             <Rank>111</Rank>
             <Type>1</Type>
             <PrioritySelectionRank>0</PrioritySelectionRank>
-            <MaxHealth>400</MaxHealth>
+            <MaxHealth>600</MaxHealth>
             <MaxEnergy>150</MaxEnergy>
             <MaxArmor>0</MaxArmor>
             <MaxAmmo>5</MaxAmmo>
@@ -2029,7 +2052,7 @@
                         <Condition>
                             <Resource>P_Q_PLASMA</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>2050</Value>
+                            <Value>4050</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -2063,7 +2086,7 @@
                         <Condition>
                             <Resource>P_POWER</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>2040</Value>
+                            <Value>4050</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -2072,7 +2095,7 @@
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>40</Value>
+                            <Value>50</Value>
                         </Step>
                     </Steps>
                 </Action>

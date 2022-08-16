@@ -13,7 +13,7 @@
         <ObjectClass>
             <ClassNumber>1039</ClassNumber>
             <Name>Guardian Keeper</Name>
-            <Description>GUARDIAN KEEPER:&#x0D;&#x0A;Non-achronal support Keeper for resource conversion and defense&#x0D;&#x0A; &#x0D;&#x0A;Can spawn Spider Probe suicide scouts &#x0D;&#x0A;Can assimilate QP and Power &#x0D;&#x0A;Can revert LC to QP &#x0D;&#x0A; &#x0D;&#x0A;+2 HP/s regen while > 240 E, 400 P</Description>
+            <Description>GUARDIAN KEEPER:&#x0D;&#x0A;Non-achronal support Keeper for resource conversion and defense&#x0D;&#x0A; &#x0D;&#x0A;Can spawn Spider Probe suicide scouts &#x0D;&#x0A;Can assimilate QP and Power &#x0D;&#x0A;Can revert LC to QP &#x0D;&#x0A; &#x0D;&#x0A;+2 HP/s regen while full E</Description>
             <Model>./grekim/guardian.mdl</Model>
             <Rank>164</Rank>
             <Type>1</Type>
@@ -260,6 +260,25 @@
                     </Conditions>
                 </Animation>
                 <Animation>
+                    <Identifier>ACTION_FACTION_GUARDIAN</Identifier>
+                    <AnimationNum>0</AnimationNum>
+                    <Sound>Sound0</Sound>
+                    <VertShaderEffect>XZ_PLANE_CLAMPED_VERT_SCALE</VertShaderEffect>
+                    <FragShaderEffect>TELEPORT_BUILD</FragShaderEffect>
+                    <AnimationTime>0</AnimationTime>
+                    <ShowProgress>0</ShowProgress>
+                    <MorphFromActionParameterClass>0</MorphFromActionParameterClass>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <RenderModelExplode>0</RenderModelExplode>
+                    <Conditions>
+                        <Condition>
+                            <Resource>U_ACTION</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>8</Value>
+                        </Condition>
+                    </Conditions>
+                </Animation>
+                <Animation>
                     <Identifier>ACTION_ATTACK_W1</Identifier>
                     <AnimationNum>2</AnimationNum>
                     <Sound>Sound73</Sound>
@@ -360,7 +379,7 @@
                 <Action>
                     <ActionNumber>0</ActionNumber>
                     <Identifier>ACTION_CREATE</Identifier>
-                    <TimeTaken>1</TimeTaken>
+                    <TimeTaken>9</TimeTaken>
                     <ForceObjectAction>0</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
                     <MutexAction>0</MutexAction>
@@ -384,7 +403,7 @@
                             <Target>SELF</Target>
                             <Type>U_AMMO</Type>
                             <ValueEval>SET_TO_VALUE</ValueEval>
-                            <Value>60</Value>
+                            <Value>40</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -548,6 +567,51 @@
                             <PrimitiveAction>CLEAR_STATUS</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>STATUS_CAPABILITY_5</Type>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>8</ActionNumber>
+                    <Identifier>ACTION_FACTION_GUARDIAN</Identifier>
+                    <TimeTaken>9</TimeTaken>
+                    <ForceObjectAction>1</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions>
+                        <Condition>
+                            <Resource>U_ACTION</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>0</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>P_ADVANCEMENTS</Resource>
+                            <Comparison>BITMASK</Comparison>
+                            <Value>256</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>P_ADVANCEMENTS</Resource>
+                            <Comparison>BITMASK</Comparison>
+                            <Value>1024</Value>
+                        </Condition>
+                    </Conditions>
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_ADVANCEMENTS</Type>
+                            <ValueEval>SET_TO_VALUE</ValueEval>
+                            <Value>0</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CHANGE_CLASS</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Value>1044</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -720,14 +784,14 @@
                             <Target>SELF</Target>
                             <Type>P_L_CRYSTALS</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>200</Value>
+                            <Value>400</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>240</Value>
+                            <Value>480</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -759,7 +823,7 @@
                         <Condition>
                             <Resource>U_AMMO</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>15</Value>
+                            <Value>10</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -768,7 +832,7 @@
                             <Target>SELF</Target>
                             <Type>U_AMMO</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>15</Value>
+                            <Value>10</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -955,11 +1019,6 @@
                             <Comparison>GEQUAL</Comparison>
                             <Value>240</Value>
                         </Condition>
-                        <Condition>
-                            <Resource>P_POWER</Resource>
-                            <Comparison>GEQUAL</Comparison>
-                            <Value>400</Value>
-                        </Condition>
                     </Conditions>
                     <Steps>
                         <Step>
@@ -1079,7 +1138,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-5</Value>
+                            <Value>-10</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -1313,8 +1372,8 @@
                     <ObjectiveNumber>18</ObjectiveNumber>
                     <Script>gs180_elder_mine</Script>
                     <Name>Assimilate QPlasma</Name>
-                    <Details> \Rapidly extract QP and P from nearby \   QP Transport Boxes \ \   + 30 QP,P / Q-P Core / 15 Charge</Details>
-                    <Resource8>120</Resource8>
+                    <Details> \Rapidly extract QP and P from nearby \   QP Transport Boxes \ \   + 30 QP,P / Q-P Core / 10 Charge</Details>
+                    <Resource8>80</Resource8>
                     <ValidRadius>19</ValidRadius>
                     <ObjectiveControlShortcutNumber>9</ObjectiveControlShortcutNumber>
                 </Objective>
@@ -1328,8 +1387,8 @@
                     <ObjectiveNumber>20</ObjectiveNumber>
                     <Script>gs200_convert</Script>
                     <Name>Revert LCrystal -&gt; QPlasma</Name>
-                    <Details> \Convert 200 L-Crystal to Q-Plasma\converts 2.5 QP/s over 80 s \ \200 LC + 240 P + 80 E = 200 QP</Details>
-                    <Resource1>240</Resource1>
+                    <Details> \Convert 400 L-Crystal to Q-Plasma\converts 5 QP/s over 80 s \ \400 LC + 480 P + 80 E = 400 QP</Details>
+                    <Resource1>480</Resource1>
                     <Resource2>400</Resource2>
                     <Resource6>80</Resource6>
                 </Objective>
@@ -1557,7 +1616,7 @@
                     <ControlNumber>12</ControlNumber>
                     <ControlObjectiveNumber>40</ControlObjectiveNumber>
                     <MouseInputType>SHORTCUT_QUICK_4</MouseInputType>
-                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <ParameterType>POSITION_AUTO_HEIGHT</ParameterType>
                     <Parameter>0</Parameter>
                     <KeyboardShortcut>$AchronKBUpgradeSelf</KeyboardShortcut>
                     <Flags>

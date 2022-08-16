@@ -26,13 +26,13 @@ if (op <_> unit > 16) {
 } 
 
 // Done mining
-if (unit->Ammo < 15 && unit->Action == $ACTION_ASSIMILATE_QP) { 
+if (unit->Ammo < 10 && unit->Action == $ACTION_ASSIMILATE_QP) { 
     PERFORM SET_OBJECTIVE 0;    
     PERFORM NOTHING;
 }
 
 // Not enough charge to start mining
-if (unit->Ammo < 120 && unit->Action != $ACTION_ASSIMILATE_QP) { 
+if (unit->Ammo < 80 && unit->Action != $ACTION_ASSIMILATE_QP) { 
     $SAY_CHARGE
     PERFORM $ACTION_ERROR1;
     PERFORM SET_OBJECTIVE 0;    
@@ -41,7 +41,13 @@ if (unit->Ammo < 120 && unit->Action != $ACTION_ASSIMILATE_QP) {
 
 // Find crate and mine from it
 query_vis_distance = 19;
+target = 0;
 target = QUERY UNIT [unit] MAX [ query->Energy ] WHERE [ query.Rank==$RESOURCE_RANK ];
+if (target==0) {
+    say "No QP crate in range";
+    PERFORM SET_OBJECTIVE 0;    
+    PERFORM NOTHING;
+}
 if (target->IsAlive==1) {
     PERFORM $ACTION_ASSIMILATE_QP;
     PERFORM NOTHING;
