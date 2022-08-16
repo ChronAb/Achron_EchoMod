@@ -1,0 +1,334 @@
+Grekim civ variants selected at scout spawner:
+    Core: -1000 P, +B-Tech
+        strategy: Octo + Sepipod
+    Vanguard: -400 QP, +S-Tech
+        strategy: Pharo + Sepi
+    Guardian: -400 P, -1 Guardian +1 Elder
+        strategy: Pharo + Sepi + Octopod
+    Null: (Default)
+        strategy: Pharo + Sepi + Octopod
+Human civ variants:
+    CESO: +Machinery
+        strategy: MTank + Mech + Tornade
+    PnC: (Default) +Specials
+        strategy: SOP + ATHC
+    Local: +Ground
+        strategy: Turret + Mine
+    Pirate: Spawn with a Pirate Dropship 
+        Achron: Contains 4 RPs, 2 ATHCs, 2 Lancers, 2 QP crates
+        Can abduct and mind control enemies
+    
+Human techs
+    Machinery - Factory
+        *Enable Beam Tank, Tornade, & MFB
+        *Increase Automech endurance
+        *Enable Aerospace research
+    Ground - Factory
+        Enable Sensor Turret & Heavy Tank upgrades
+        *Improve Mine Ammo efficiency 
+        *Improve ATHC overcharge duration
+    Specials - Factory
+        *Enable ATHC overcharge
+        *Enable SOP emergency cloak
+        *Enable Frigate burst fire
+    Aerospace - Macrofab
+        *Enable Heavy Cruiser
+        *Enable Cruiser tactical nukes
+        *Improve Tornade overcharge regen speed
+    Gate - Teleporter
+        *Enable Chronoporting
+        *Enable Chronoporter & Tether
+
+
+Double shots can get stuck when unit hits 0 hp (Frigate, Mech?)
+Idle Tanks should eject marines if they are injured 
+marines jump-roping on damaged tanks 
+
+Change some grekim counter info in the manual to ???
+Cut refs to blackbird & twin mar from descriptions  
+
+
+Echo HM - Hoard Mode
+    - A deck drawing, wave survival, RPG game mode
+    - Played on a 6:00 timeline with slow timewaves 
+    - Players start at a fixed location with only a scout spawner of their 
+        chosen species
+    - On-map resource crates are extremely limited
+    - Enemy attack waves periodically spawn from random directions
+        - 1 wave every 4 minutes
+        - Attack waves aggressively A-move at 1. RPs 2. IPs 3. High HP units
+    - Players can capture Ingress Portals (IPs)
+        - IPs function as normal Tporters 
+        - Can be captured like Amplifiers
+        - Periodically can be ordered to spawn a randomly selected unit/
+            squad/tech from one of several draw pools, at a very low resource
+            cost
+        - To prevent retcon spamming, IP production has a long time delay 
+            (2 minutes)
+    - Players can attack fixed-location creep mobs/bases to secure more 
+        resource crates and IPs, or to do quests
+    - NPC units/factions give quests that reward units and resources
+
+
+Echo SM AI redesign 3
+    - Spawner Portals create CARRIED units. 
+    - Stable attack 1:
+        When the SM wants fresh units to attack it will order a Portal
+        (stored in an AF) to dispatch its cargo to an A-move destination
+        (also stored in an AF) in a specific time-point and metatime-range.
+        (For fairness this should mostly be for present-ward use.)
+    - Stable attack 2:
+        SM queries a specific unit for an A-move order at a specific time-metatime
+        and stores it in an AF for subsequent dispatch at the same time-point.
+        (Generally you want to use chunky boys for this.)
+    - Stable attack 3:
+        SM queries all AI units of a type within a region and gives them an A-move
+        order (destination computed from immutable parameters or stored in an AF). 
+        This should be reserved for young units, simulating queued orders.
+    - New scripts:
+        portal_idle - release units locally if under attack (a few at first, more if
+            heavily damaged), release all ASAP if time is less than 3:00
+        portal_dispatch - release carried units with A-move orders in descending HP order
+        portal_teleport - if there is a visible teleporter in range, release carried units
+            like portal_dispatch, except with teleport orders. Otherwise switch to the 
+            standard portal_dispatch script.
+
+    - AI Phases:
+        - Data Management
+        - Timeline Choreography
+        - Early Game 
+        - Mid/Late Game
+    - AI Sub-Phases:
+        - Achronal Planning
+        - Base Building
+            - Fortifications
+            - Bases
+            - Tech
+        - Unit Building
+        - Rally Points
+        - Strategic Maneuvers
+        - End Game
+        
+    - Achronal Data:
+        - AI_Portal_X, X = 1-16
+            Unit ID of AI controlled portal X
+        - AI_Team_X, X = 1-8
+            Bitmask of Portals in X control group
+        - AI_TX_AtkY, X = 1-8, Y = 1-8
+            Map coordinates for Team X to target during attack plan Y
+            If == 0, the attack plan is inactive
+        - AI_Hero_X, X = 1-64
+            Unit ID of a specific unit to track and/or order around
+        
+
+AI Scripts ToDos
+*******************************
+Guard on self or nearby location should hold position (like a turret)
+Guard on a separate location with no subsequent orders should order
+    a-move to op + enque Guard self
+Guard on a unit should a-move to opposite side of op + enque Guard op
+Guard on a separate location with subsequent orders (e.g. a patrol cycle)
+    should order a-move to op + enque Guard op
+
+
+AI Seeds
+*******************************
+ai_seed_A1
+determines the northern team's early game strategy:
+rush, boom, turtle, or hybrid
+
+ai_seed_A2
+determines the northern team's mid/late composition:
+Chunky or Swarmy, Ground or Air
+
+ai_seed_A3
+determines the northern team's mid game attack plan:
+East, West, Pincer, Bulls Horns
+
+ai_seed_A4
+determines the northern team's late game attack plan:
+East, West, Pincer, Bulls Horns
+
+
+Monk's Echo Notes:
+*******************************
+> New start is bad and too long (5-10s dead time would be better)
+> Arcticus energy mechanic is arbitrary
+    Boost Arcticus starting Energy to 150/225
+    Change Ligo cost to 150 E, remove sacrifice mechanic
+    Increase Ligo build time to 30-40 s
+> Boost CE to 8 orders and 0.25 regen
+> Boost Titanomachy pathing strength or replace the rocks with a turret
+
+> Wants to know non-micro Oligo counters
+> Me: 5 opod rush would have worked if Monk had skipped 2 Opods over the choke
+
+* Cloak domes are too strong (and scary) (but they are ok in a rush situation...)
+    - Reduce AA (& AG) Atk strength
+    > or give Spods more vis + atk range
+* Amp victory vs a turtle opponent is too hard
+    - Add Amp spawning
+    > or reduce number of VPs needed / add more amps
+    > For Titano a good victory threshold is "all amps but 2"
+* Spawner Portals are too hard to micro around and to kill
+    - Reduce their HP and give them a TSS
+X Wreckage causes lots of butterflies and fiddly micro
+    - Remove or reduces wreck damage and/or lifespan
+* Doesn't like random dieing at red HP
+    - Suggests changing to die if red HP AND under attack
+    - Suggests Opod should protect itself more
+* Reverting LC to QP is annoying
+    - (No action)
+* Opods very strong
+    - Reduce regen speed (same ppod?)
+    - or reduce speed
+        + reduce Pharo skip cost 
+* Guardian (and base class) needs a way to hurt other guardians 
+    - Tone down their HP regen
+    - or block regen when LAD is set
+* Dome can't hurt progenitors! WTF
+* Titanomachy derelict turret placement is weird and the MFabs cause pathing problems
+    - increase pathing str and make the script kill the MFabs
+* Vanguard tech progen tooltip info is confusing
+* Opod progen tool tip is weird (vecgir!)
+* Need notification for enemy-surrender victory
+* Landers should not be able to attack after cloaking
+* Current Lander meta is to have every lander run and spawn without ever stopping (for fear of getting sniped). That leads to AI contenders every game.
+
+
+Crazy plan (new):
+X0. Remove AMP freeze, INSTEAD capturing an AMP should knock it out for 2-3 minutes
+*1. Buff Pharo ->
+    *- add 5s TSS death rattle
+    *- maybe remove storming shield   
+    - Transformations should clear TSS
+*2. Change Opod -> replace fast regen with death buffer
+    *- Max Energy -> 40
+    *- explosion requires 0 Energy
+    *- every 9 ticks, if ammo is full && HP <= 120 && HP > 0, set HP to 120 and consume 1 E
+    - maybe, make Opod detect cloaked buildings 
+*3. Nerf Ppod -> 6 sq/s move speed
+    *- replace regen with 16s shield reset
+*4. Nerf Dome -> 330 HP, ++ atk rate, -- atk str
+    *- Reduce cost: 100 QP
+    X- Reduce cost: 100 QP, 200 P, 20 E. Same mechanic as Reaphs. (200 P to morph)
+*5. Replace Guardian HP regen
+_6. Buff Sepipods! 3X ATK vs all (2X vs all currently)
+7. Thematic Consistency: 
+    *- Pligo morph mechanic requires Gate tech
+    *- Freeze beam should not be able to target TSSed stuff
+    *- Sligo should not have HP regen, in keeping with other Sepi line units
+    X- Reduce Sligo cost to 400 
+    X- 2X Cuttle death rattle
+8. Buff up early eco
+    - Remove invisible Keeper resource gen
+    - add Assimilate ability to Keepers:
+        Consume up to A/15 cores from any red crates in range for an immediate 
+        +30 QP, +30 Power per core
+        Costs min 120/240 Ammo (consumes 15 A/core), starts at 60 A, +1 A/s
+    
+
+Crazy plan (old):
+x1. Opod -> Detector, 2 sq/s move speed
+*2. Dome -> 330 HP, ++ atk rate, -- atk str 
+x3. Pharo skip cost -> 40 P
+x4. Ppod -> 4.5 sq/s move speed
+5. Landers:
+    *- New ability: Interdict - self-destruct the Lander
+    - New ability: Pass Control - change unit owner to match a targeted ALLY unit 
+    - T +0.00 to T +0.20
+            - Landers can move and/or self-destruct only (cannot attack or claim a base)
+            - AI Landers are Nanite controlled by the closest human ENEMY
+    - T +0.20 to T +2.00
+            - unlock ability to (infect?), claim bases, pass control, cloak, and attack
+            - Change AI Landers Nanite control by the closest human ALLY
+            - Self destruct at end of time
+            
+
+Crazy Anti-rush plan (new):
+*1. Nerf AMP freeze
+    *Increase AMP freeze beam cost 100 QP -> 100 QP, 500 P
+    *Require full control
+    *Decrease anti-freeze cost to 150 QP
+*2. Buff Reaphs:
+    *Decrease Reaph spawning cost: 200 P -> 100 P
+    *+ Give them auto-recover
+    *reduce starting P to 800
+*3. reduce Octo RP cost from 200 P -> 0 P   
+*4. Reduce max CE to 6 orders
+5. Rename grekim techs to letters (B,C,D,L,S) 
+_6. Change AMP resource generation to an active ability
+*7. Resource Buffering:
+    400 QP: 
+        *Sepi 2x gnd atk 
+        *RP + Dome cloaking
+    
+    800 P: 
+        XReaph full efficiency
+        *Non triad G Energy regen
+    400 P: 
+        XG passive special abilities
+        XReaph healng
+        *G passive HP regen
+        CESO Cloaking
+      0 P: 
+        *Grekim t/cport limit
+        *RP QP cutoff
+        
+    *RP QP limit -> 1600 QP
+    *RP power limit: +800 P
+    *Triad autoproduction: +400 QP
+    
+    *Starting resources: +400 QP
+            
+            
+Monk talking points:
+*******************************
+* Stuff you wanted
+    Amps can spawn more amps
+    Spod attack increased by 3X
+    Rapid HP regen nerfed
+* Stuff to test
+    Does decreasing max CE from 12 -> 6 orders help the match pacing?
+    Does the new Landers lead to a better nash equilibrium?
+        Is there anything I should do in the UI to improve understanding of the landers?
+    Does the increased cost of AMP freeze and the more generous starting resources 
+        sufficiently defang the freeze rush?
+    Are Grekim's resource banking incentives beneficial?
+    Is quadopod op?
+            
+
+*******************************
+New Starting sequence:
+*******************************
+0 s     
+    * Players start at fixed neutral starting positions (e.g. drop pods)
+        with only a Species Selector, and a Landing Beacon (LB)
+    * LB has no attack, moderate HP and vision; moves 9 sq/s
+    * LB can immediately spawn a scouting-unit set from any of the 3 species
+        * A full set is worth 800 QP (80 E)
+        * Grekim scouts: Octo (10 E, max 8), Sepi (10 E, max 8), Opod (40 E, max 2), 
+            Spod (40 E, max 2)
+        * Human scouts: Marine (5 E, max 16), SOP (10 E, max 8), ATHC (20 E, max 4), 
+            Lancer (20 E, max 4)
+        * Vecgir scouts: T Pulser (20 E, max 4), Z Tercher (60 E, max 1)
+    * LB can grab and release friendly units from anywhere on the map to their 
+        current location; 4s cooldown each time
+    * Species Selector may be pre-set with species choice orders
+2 s
+    * AI controlled Species Selectors get Nanited to the nearest ENEMY human player
+    - "Insertion teleport-link secured." 
+    - "Select drop points while awaiting Teleporter Lock for Achron transit"
+12 s
+    * AI controlled Species Selectors and RTBs get Nanited to the nearest ALLY human player
+25 s
+    * Species Selector starts producing starter units of the selected species
+    - "Teleporter Lock: select operation assets"
+1:25 
+    * RTBs expire
+    - "Contact lost with insertion teleporter"
+    - G: "Commence opperation"
+    - H: "Good hunting, Achron-Commander"
+    
+    
+    

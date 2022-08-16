@@ -1,0 +1,639 @@
+Rescript Language Definition
+
+Rescript is the language by which to automate unit behavior, create AI, and create level scripts using the Resequence engine.
+
+Rescript files have the extension of .rsq by convention.
+
+The scripting language is similar to the C programming langauge, but with some notable and unusual exceptions:
+1) No functions (inlined macros are used instead)
+2) No user-defined arrays nor structures
+3) Enhanced bit manipulation support in language
+4) SQL-like constructs to automate frequent iterations
+
+These choices reflect many tradeoffs to meet the performance challenges of time travel.  We may add features such as functions and arrays in the future, but they have been unnecessary in developing Achron.
+Use the 32-bit field AdditionalParameters to store data for all units and scenario monitors.  With a few exceptions, this is the only place to hold free-form data between script runs.
+
+Tips:
+* To debug use the following code:
+   player = 0;
+   say "value of foo: ", foo; //direct output to console for player 1
+* Remember that the scenario monitor unit's data (AdditionalParameters, Objective, etc.) may be changed by subsequent timewaves
+* Be careful when using Achronal fields; basing in-game logic on achronal data may lead to an incosistent timeline
+* Remember that each timewave runs the scenario monitor script including each player and the timewave at present
+* Be mindful of performance.  Don't change values in every script and use bit operators.
+* If your script takes too long, it will be stopped to prevent the engine from halting.  The maximum script execution time is set in the level editor.
+* Use #define and #include to reuse code
+* Use batch files or other scripts (e.g., Perl, Python) when building multiple Rescript files
+* This document looks best with tabs set to be 4 spaces
+
+
+------------------------
+Comments
+------------------------
+
+//not code	comment to the end of the line
+/*not code*/  comment contained within
+
+------------------------
+Data types and variables
+------------------------
+
+int:	 32 bit signed integer
+float:   32 bit floating point
+object:  handle to any object, e.g. a unit or a player.  It is stored as an integer, and can be compared to zero.
+
+To declare a variable:
+  data_type variable_name = initial_value;
+For example,
+  int x = 4, y = z;
+
+Variables only exist within their scope of braces unless they are declared globally (outside of braces).
+Multiple variables can be declared at the same time, separated by commas.
+
+------------------------
+Predefined variables
+------------------------
+
+name						type	 description
+-----------------------------------------------
+unit						object	Current entity this script is acting upon. Either an in-game unit or the scenario monitor.
+player						object	Current player unit is owned by.  If scenario monitor, then it is initialized to the total number of players.
+									   It must be set for scenario monitor to direct commands to a particular player.
+query						object	Used within query, designates the object currently being queried (in the iteration)
+target						object	Target of action for actions which require targets; can be either a unit or a packed position
+target_is_position			object	Specifies whether target is a unit or packed position. 0 means unit, 1 means packed position
+query_vis_distance			int		Distance to use when computing visibility queries.  If -1 (default value), then uses the unit's default visible range.
+min_action_ticks			int		Minimum number of ticks that an action will take - defaults to 0 at the start of each script.
+ignore_moving_units_dist	int		Closest distance from which units will ignore other moving units when performing a BESTMOVE query, should be at least 1.
+goal_distance				int		Goal distance for BESTMOVE queries.  If the distance is lower than this, it as accepted as a goal position. Defaults to 0.
+max_move_search_nodes		int		Maximum number of search nodes in BESTMOVE query.  Defaults to value specified by scenario, and cannot be set higher.
+ignore_collision_with_unit	object	Defaults to 0.  If set to a valid unit number, it will ignore any collisions with that unit in BESTMOVE queries (useful for moving toward a unit and saving CPU)
+perf_ret					int		Return value of any commands PERFORMED.  For custom actions (and most actions), 1 is success, 0 is failure, and -1 is inaccessible
+perf_ret_float				float	Return value of any commands PERFORMED that return a float.
+
+
+------------------------
+Operations
+------------------------
+a = b						assign b to a
+a + b						add
+a - b						subtract, or unary negative
+a * b						multiply
+a / b						divide
+a % b						modulus
+a & b						bitwise and
+a && b						logical and (evaluates to true if a and b are true)
+a | b						bitwise or
+a || b						logical or (evaluates to false if both a and b are false)
+a ^ b						biwise xor
+~a							bitwise not
+a == b						equals
+a >= b						greater than or equal
+a <= b						less than or equal
+a < b						less than
+a > b						greater than
+a != b						not equal to
+(a)							sub-expression (parsed inside parentheses first)
+a << b						left shift a, b number of bits
+a >> b						right shift a, b number of bits
+a |> b						maximum value of a and b
+a <| b						minimum value of a and b
+x ** y						x raised to the power of y
+a;							end of expression
+a.b							achronal (constant) attribute of unit a.  b must be a defined string: e.g. unit.maxHP.  may not be assigned to
+								see allowed class attributes below.  faster than accessing chronal attributes.
+a::b						class attribute of class number a.  works just like a.b, except in this case, a must be class number, not a unit
+								(useful for looking up unit stats especially for building a new unit of that type)
+a->b						chronal attribute of a.  a real time variable, slower than accessing achronal attributes.
+								b must be a defined string: e.g. unit->HP.  may not be assigned to
+								see allowed event data attributes below
+a <=> b						distance^2 between unit a and b.  at least one of a and b must be an object, the other may be an object
+								or packed integer (xyz coords as packed by ObjectiveParameters)
+a <_> b						just like <=> except only the horizontal distance^2 component
+a <^> b						just like <=> except only the vertical distance^2 component
+radtorot					converts radians where 0 is east to rotation, as used by EventData's LastAttackedHDirection, Rotation, and LastRotation
+								takes in a float and returns an integer
+rottorad					opposite of radtorot -converts the other way
+|/ a						sqrt of a
+sin a						sine of a (parethensis are not required, but it binds tightly)
+cos a						cosine of a
+tan a						tangent of a
+log a						natural log of a
+abs a						absolute value of a
+asin a						arcsine of a
+acos a						arccos of a
+y atan2 x					arctangent of y/x
+trunc a						takes the integer part of the floating point value a
+to_float a					takes the integer a and turns it into a floating point
+to_object a					casts a to an object type
+a[x]						return only bit number x of a in the least significant bit.
+								x may only be an immediate integer.  the first bit is bit 0 (0-based)
+a[x,y]						return only the y bits starting at bit x of a adjusted to the least significant bit.
+								x and y may only be immediate integers. the first bit is bit 0 (0-based)
+a[x] =...					same as a[x], but will set only that particular bit of a
+a[x,y] =...					same as a[x,y], but will set only those particular bits of a
+{ a; a; ... }				a block -a unit of code treated as a group
+if(a) block					if condition a is met, code in block is executed
+if(a) block1
+   else block2				if condition a is met, block1 gets executed, otherwise block 2 does
+while(a) block				checks to see if a is true.  if so, block of code gets executed, and loops back
+break;						exits innermost loop immediately
+continue;					goes back to beginning of innermost loop immediately
+for(a;b;c)					block expression a is evaluated.  then expression b is evaluated.  if true, block is executed, otherwise finish.  c is executed.  repeat back to evaluating expression b.
+print a;					if a is an integer, it prints the integer to console.  if float, prints float.  if string (enclosed by "'s), then prints string.  newline characters are represented by \n.  Only one of these three may be specified, otherwise consecutive prints are required.  used for debugging only.  when the scenario monitor prints, it will print to all units regardless of the current time they are at.
+print a, b,...;				equivelant to a succession of print statements.  each item can be an expression or immediate string.  for example:  print "x = ", x + 1, "\n";   is valid.
+say a;						works exactly like print, except it prints a message from the unit to the player in the unit message box, and is limited to one line.  this is for regular game play.  it also works for the scenario monitor, which will send the message to all players at the current time.
+								if done by the scenario monitor, then say goes to the player corresponding to the value set in the variable "player"
+say_to_var "a"				sets the target of future "say" commands to set the specified skin variable.  say will go back to the unit messages when say_to_var is called with an empty string.
+say_from_config "a"			says the string value of the configuration property specified by the string (represented by "a")
+config_property_int "a"		sets perf_ret to the integer value of the configuration property specified by the string (represented by "a")
+config_property_float "a"	sets perf_ret_float to the floating point value of the configuration property specified by the string (represented by "a")	
+
+------------------------
+Preprocessor
+------------------------
+
+#define a b	   replaces all occurences of $a with b
+
+For example, the following code:
+  #define a 3
+  int m;
+  m = $a;
+
+becomes:
+  int m;
+  m = 3;
+  
+  
+
+#include		  somefilename
+	Everything after the whitespace after the word 'include' is considered the filename, including spaces (everything up until the newline).
+
+------------------------
+Queries
+------------------------
+
+Quries are evaluated as expressions.  Queries may exist inside of queries (with exception of BESTMOVE cannot be inside another query)
+The predefined variable 'query' should be used within the query expression and criteria to get information about the current unit.
+
+3 types of QUERIES:
+
+QUERY VALUE
+	Returns a value as accumulated by query over units within visible range that are alive.
+	Will return float or int depending on type of expression.
+	perf_ret contains the number of units that met criteria
+	QUERY VALUE [unit] ***OPERATION*** [expression] WHERE [criteria]
+	Parameters:
+	 unit: expression to evaluate the unit to base the QUERY on
+	***OPERATION*** is one of MAX, MIN, AVE, SUM.  The operation to perform on the expression for each iteration
+		MAX: finds the maximum value of the expression across all criteria matches
+		MIN: finds the minimum value of the expression across all criteria matches
+		AVE: finds the average value of the expression across all criteria matches
+		SUM: finds the sum of all the values of the expression across all criteria matches
+	criteria: OPERATION is performed and accumulated on the expression only if criteria evaluates to true
+
+QUERY UNIT
+	Returns unit corresponding to operation and expression, or returns 0 if nothing matches.
+	Identical to QUERY VALUE, except only MAX and MIN are allowed operations
+
+QUERY BESTMOVE
+	Returns an enumerated direction (stored as an integer) indicating the best match as per the utility function.
+	Returns 0 if no move is possible.
+	perf_ret contains the closest goal position that it was able to search
+	If the AI movement memory pool is exhausted and the QUERY has not been able to minimize the
+		utility to 0 (usually meaning reach the destination), then it will set the most significant bit
+		the lowest byte is the direction, and the 3rd lowest byte (bits 16-24) contains the number of consecutive moves in that direction to reach the goal
+		the consecutive moves can be remembered to move several places before recomputing BESTMOVE
+	Has side effect of costing unit AI time to move to compute this query, even if a move is not performed afterwards in the script.
+	Format is identical to QUERY VALUE, except only MIN is allowed
+	Utility function (expression) suggestions:
+		should compute distance squared from a given point, usually perscribed in the objective parameters.
+		if unit can only move in 2-D, don't bother checking for ZPosition in distance checking
+		may add on any disadvantages to the distance computed.  This can often be done effectively by using a QUERY VALUE, to acess the resultant move.
+
+	example: (moves to desired location avoiding enemis with high HP)
+	position contains coordinates desired.  direction is an integer of where to store the best move direction
+	direction =
+	QUERY BESTMOVE [unit, move_action_number]
+		MIN [query <=> position + QUERY VALUE [query] SUM [query->HP] WHERE [query->Owner != player]
+		]
+		WHERE [1];
+
+------------------------
+Performing Actions
+------------------------
+
+Performing actions is how the unit scripting tells the unit to perform an action.
+Actions that change parameters may be performed in a row in the same script, however, some actions, once performed, will terminate the script.
+Some actions will exit the script if the succeed.
+When a multiple actions are performed, the time required before the next time the script will be executed will be the one that requires the greatest amount of time to execute.
+
+format:   PERFORM ACTION parameter;
+After doing the PERFORM, perf_ret contains the result of performing the action (defined per action).
+The built-in variable "target" can be read by the action (see scenario editor), which is defaulted to 0 (no unit).
+If parameter is ommitted, zero is used in its place.
+Custom actions that take 0 time may be continually done, but once an action that takes > 0 time has been performed,
+no other custom action may be performed until the script is called again.
+
+Actions								Result
+-------------------------------------------------
+SET_ADDITIONAL_PARAMS					User variable of unit is set to parameter
+SET_ADDITIONAL_PARAMS2					Like SET_ADDITIONAL_PARAMS but for AdditionalParameters2
+SET_ADDITIONAL_PARAMS3					Like SET_ADDITIONAL_PARAMS but for AdditionalParameters3
+SET_ADDITIONAL_PARAMS4					Like SET_ADDITIONAL_PARAMS but for AdditionalParameters4
+SET_OBJECTIVE							Unit Objective set to Parameter
+SET_PARAM								Unit Objective Parameter set to parameter (whole field)
+SET_PARAM_X								Unit Objective Parameter X Position set to parameter (used in x,y,z)
+SET_PARAM_Y								Unit Objective Parameter y Position set to parameter (used in x,y,z)
+SET_PARAM_Z								Unit Objective Parameter z Position set to parameter (used in x,y,z)
+SET_OTHER_ADDITIONAL_PARAMS				User variable of target unit is set to parameter as long as target is an ally (or if unit is scenario monitor)
+SET_OTHER_ADDITIONAL_PARAMS2			Like SET_OTHER_ADDITIONAL_PARAMS but for AdditionalParameters2
+SET_OTHER_ADDITIONAL_PARAMS3			Like SET_OTHER_ADDITIONAL_PARAMS but for AdditionalParameters3
+SET_OTHER_ADDITIONAL_PARAMS4			Like SET_OTHER_ADDITIONAL_PARAMS but for AdditionalParameters4
+SET_OTHER_OBJECTIVE						Same as SET_OTHER_ADDITIONAL_PARAMS, except objective
+SET_OTHER_OBJECTIVE_PARAMS				Same as SET_OTHER_ADDITIONAL_PARAMS, except objective parameters
+ENQUEUE_OBJECTIVE						Enqueues objective specified by parameter, objective parameters specified by perf_ret
+DEQUEUE_OBJECTIVE						Dequeues next objective and objective parameter, clobbering the fields
+ENQUEUE_OTHER_OBJECTIVE					Like ENQUEUE_OBJECTIVE, but uses target unit as long as target is an ally (or if unit is scenario monitor)
+DEQUEUE_OTHER_OBJECTIVE					Like DEQUEUE_OBJECTIVE, but uses target unit as long as target is an ally (or if unit is scenario monitor)
+CLEAR_QUEUE								Clears the unit's queue
+CLEAR_OTHER_QUEUE						Same as CLEAR_QUEUE, but uses target unit as long as target is an ally (or if unit is scenario monitor)
+CLEAR_LAST_ATTACKED_DIRECTION			Clears LastAttackedDirection field -set to 0 (pass nothing to PERFORM)
+
+SET_PLAYER_CUSTOM_FIELD_1				Sets custom field 1 for the player (visible by all units as CustomField1)
+SET_PLAYER_CUSTOM_FIELD_2				Sets custom field 2 for the player (visible by all units as CustomField2)
+SET_PLAYER_CUSTOM_FIELD_3				Sets custom field 3 for the player (visible by all units as CustomField3)
+SET_PLAYER_CUSTOM_FIELD_4				Sets custom field 4 for the player (visible by all units as CustomField4)
+SET_PLAYER_CUSTOM_FIELD_5				Sets custom field 5 for the player (visible by all units as CustomField5)
+SET_PLAYER_CUSTOM_FIELD_6				Sets custom field 6 for the player (visible by all units as CustomField6)
+SET_PLAYER_CUSTOM_FIELD_7				Sets custom field 7 for the player (visible by all units as CustomField7)
+SET_PLAYER_CUSTOM_FIELD_8				Sets custom field 8 for the player (visible by all units as CustomField8)
+SET_PLAYER_CUSTOM_CONTROLS				Sets custom controls for the player (visible by all units as CustomControls)
+
+NOTHING									Unit does nothing, and script exits.
+GET_CYCLE_COUNT							perf_ret is set to the current number of interpreter cycles run.  useful for debugging long scripts, or making them squeeze down
+RAND									perf_ret is set to a 15-bit random number that is consistent with the time engine.  no time or resources are consumed by this call.
+POSITION_VISIBLE						position at parameter (packed x,y,z) is checked for visibility.  perf_ret is set to non-zero if the position is visible, zero if it is not visible
+GET_UNIT_AT								perf_ret is set to the unit number of the unit at the position specified by parameter (packed x,y,z), 0 if none there or if position is out of unit's viewing area
+GET_PLAYER_VISIBLE_UNIT_AT				perf_ret is set exactly as GET_UNIT_AT except that it uses the view of all of the player's units (if any can see the tile, then it is visible)
+IS_POSITION_WITHIN_ACTION_ANGLE			perf_ret is set to 1 is the position at target (packed x,y,z) is reachable using the unit's action (specified by parameter) and current rotation, 0 if not
+GET_BEST_POSITION_ATTACK_DIRECTION		perf_ret is set to the rotation where the current unit is facing the position specified by the parameter (packed x,y,z)
+GET_MAX_ACTION_RANGE_RADIUS				perf_ret is set to the maximum radius the current unit can perform the action specified by parameter
+GET_MAX_ACTION_RANGE_HEIGHT				perf_ret is set to the maximum height the current unit can perform the action specified by parameter
+IS_TARGET_WITHIN_ACTION_RANGE			perf_ret is set to true if the unit specified by target is within action range for the current unit's action as specified by parameter
+GET_CLOSEST_TARGET_POSITION_WITHIN_RANGE perf_ret is the position of the closest actionable location of the unit specified by target, within action range for the current unit's action as specified by parameter
+CAN_CLASS_FIT_AT						target should be set to the class number (not a unit) of the class to check
+										  parameter is the position (packed x,y,z)
+										  perf_ret is a bitmask of rotations that indicates which rotations the class will fit at that location, 0 if it can't fit
+										  if the location is not visible, or if invalid class number, perf_ret is set to -1
+										  if the unit calling this is in the way, it will ignore itself (but not ignore other units in the way); script can overwrite unit to change source unit
+CAN_PUT_CLASS							target should be set to the class number (not a unit) of the class to put
+										returns 1 if unit can put the class in an area around it, 0 if not
+GET_TERRAIN_TYPE_AT						perf_ret is set to the terrain type at the position specified by parameter (packed x,y,z)
+GET_TERRAIN_HEIGHT_AT					perf_ret is set to the terrain height in tiles at the position specified by parameter (packed x,y,z)
+GET_MAP_WIDTH							perf_ret is set to the width (east-west) of the map
+GET_MAP_LENGTH							perf_ret is set to the length (south-north) of the map
+GET_MAP_HEIGHT							perf_ret is set to the height (high-low) of the map
+GET_MAP_VERTICAL_SPACING				perf_ret is set to the map's vertical spacing: the tile distance per z-distance (e.g., each z-position is 4 tiles high)
+GET_MAP_NEXT_Z_POSITION_UP				perf_ret is set to the next position above the position passed in by the parameter
+GET_MAP_NEXT_Z_POSITION_DOWN			perf_ret is set to the next position below the position passed in by the parameter
+IS_MAP_POSITION_VALID					position at parameter (packed x, y, z) is checked to see if it is a valid destination and not under the terrain.  if it is, perf ret is set to 1, otherwise it is set to 0
+
+GET_MAX_CHRONOPORT_DISTANCE				perf_ret is the maximum distance (in time ticks) any unit can chronoport in this scenario
+GET_RECHRONOPORT_DELAY					perf_ret is the amount of time a unit must wait after chronoproting before it can chronoport again
+GET_XPORT_TIMEOUT						perf_ret is the amount of time a unit must wait after chronoporting or teleporting before it can do anything
+GET_CUR_TIME							perf_ret is set to the current internal clock tick
+CONVERT_TICKS_TO_SECONDS				parameter is the number of ticks of the time in question, perf_ret is set to that time in seconds
+CONVERT_SECONDS_TO_TICKS				parameter is the number of seconds of the time in question, perf_ret is set to that time in ticks
+UI_SELECT_UNIT							forces the player's controls to select the unit specified by the parameter.  if called by scenario monitor, uses the player specified by player variable
+UI_SELECT_ADDITIONAL_UNIT				forces the player's controls to aditionally select the unit specified by the parameter.  if called by scenario monitor, uses the player specified by player variable
+SET_PLAYER_TIME							forces the player to jump to the time specified by the parameter, but only if the player is at that time.  if called by scenario monitor, uses the player specified by player variable and will work regardless of player's current time
+SET_PLAYER_TIME_RATE					forces the player's rate of moving through time specified by the parameter , but only if the player is at that time as 0 : paused, 1 : 0.5 speed, 2 : normal speed, 3 : fast forward.  if called by scenario monitor, uses the player specified by player variable and will work regardless of player's current time
+
+GET_CHRONAL_FIELD						parameter is the chronal field number (0-3), perf_ret contains the value for scenario monitor's corresponding ChronalField
+
+ACCUMULATE_STATISTIC					accumulates statistic in parameter to statistic indexed by target (if called by scenario monitor, then player field indicates player)
+
+-----These can only be called from the scenario monitor script
+
+END_SCENARIO							Ends the scenario.  any remaining players that have not had the PLAYER_LOST action performed
+										  with that player number set are considered winners
+EXIT_ENGINE								exits the engine
+PLAYER_LOST								parameter is a bitmask for players to be marked as having lost the game (bit set == has lost)
+										  e.g. bit 0 is player 0, bit 1 is player 1, etc.
+										  Automatically disables unit and timeline controls
+
+PLAYER_ENABLE_UNIT_CONTROLS				paramater is a bitmask for players to have their unit controls enabled 
+										 (bit set == enable unit controls)
+PLAYER_DISABLE_UNIT_CONTROLS			paramater is a bitmask for players to have their unit controls disabled 
+										 (bit set == disable unit controls)
+PLAYER_ENABLE_TIMELINE_CONTROLS			paramater is a bitmask for players to have their timeline controls enabled 
+										 (bit set == enable timeline controls)
+PLAYER_DISABLE_TIMELINE_CONTROLS		paramater is a bitmask for players to have their timeline controls disabled 
+										 (bit set == disable timeline controls)
+GET_UNIT_CONTROLS_PLAYERS				returns a bitmask of the players who have their unit controls enabled
+GET_TIMELINE_CONTROLS_PLAYERS			returns a bitmask of the players who have their timeline controls enabled
+
+GET_NUMBER_OF_TEAMS						perf_ret is set to the number of teams remaining (after allignments have been accounted for)
+GET_ACTIVE_PLAYERS						returns a bitmask of the players still in play (haven't lost yet)
+										  e.g. bit 0 is player 0, bit 1 is player 1, etc.
+GET_ENABLED_PLAYERS						returns a bitmask of players that were enabled, meaning potential opponents when the game started
+GET_CONNECTED_PLAYERS					returns a bitmask of players that are currently connected to the game
+GET_PLAYER_TIMEWAVE_VISIBILIY			returns a bitmask of players whose timewaves are visible to all; default is all players set to 1
+SET_PLAYER_TIMEWAVE_VISIBILIY			parameter is a bitmask as in GET_PLAYER_TIMEWAVE_VISIBILIY; sets the players' time wave visibilities
+GET_PRESENT_TIME						perf_ret is set to the current internal clock tick of the updater at the present time
+										  this is useful to determine whether or not this instance of the scenario script is being called
+										  during the "present" time or not (useful for determining whether to check if the game has ended)
+GET_PRESENT_TIME_WAVE_TIME_RATE			perf_ret_float is set to the time rate of the present time wave
+SET_PRESENT_TIME_WAVE_TIME_RATE			the time wave rate of present is set to the value in perf_ret_float
+GET_GLOBAL_TIME_RATE					perf_ret_float is set to the time rate of the whole engine (1.0 means normal)
+SET_GLOBAL_TIME_RATE					sets time rate of the whole engine to the value stored in perf_ret_float
+GET_META_TIME							perf_ret is set to the number of ticks since the start of the game
+GET_TIME_SINCE_LOAD						perf_ret is set to the number of ticks since the game was loaded. If it is a saved game, it will restart at 0 upon load
+GET_NUM_TIME_WAVES						perf_ret is set to the number of time waves
+GET_TIME_WAVE_TIME						parameter is the time wave, numbered between 0 and number of time waves - 1, perf_ret is the time of that time wave
+SET_TIME_WAVE_TIME						parameter is the time wave, numbered between 0 and number of time waves - 1, perf_ret is the time that the time wave will jump to
+GET_TIME_WAVE_TIME_RATE					parameter is the time wave, numbered between 0 and number of time waves - 1, perf_ret_float is set to the time rate of that time wave
+SET_TIME_WAVE_TIME_RATE					parameter is the time wave, numbered between 0 and number of time waves - 1, the time wave rate is set to the value in perf_ret_float
+GET_PLAYER_TIME							parameter is the player number, returns the current time of that player
+GET_PLAYER_TIME_RATE					parameter is the player number, returns the current time rate progression of the player: 0 : paused, 1 : 0.5 speed, 2 : normal speed, 3 : fast forward
+
+GET_TIME_WINDOW_START					perf_ret is set to the clock tick corresponding to the beginning of the time window
+GET_TIME_WINDOW_DURATION				perf_ret is set to the number of clock ticks wide the complete time window is
+GET_UNPLAYABLE_PAST_DURATION			perf_ret is set to the number of clock ticks wide the unplayable past is
+GET_PRESENT_TIME_WAVE_FIXED_TIME		perf_ret is set to the number of clock ticks at which the present time will be fixed and the edge of the time window will start permanently committing the timeline
+
+GET_PLAYER_MAX_CHRONOENERGY				parameter is the player number, perf_ret_float is set to the maximum amount of chronoenergy
+GET_PLAYER_CHRONOENERGY					parameter is the player number, perf_ret_float is set to the current amount of chronoenergy
+SET_PLAYER_CHRONOENERGY					parameter is the player number, the current amount of chronoenergy is set to the value in perf_ret_float
+GET_MAX_NUM_COMMANDS_IN_PAST			perf_ret is set to the maximum number of commands that are allowed at any point in the past (restricted by chronoenergy)
+
+GET_PLAYER_CHRONOENERGY_SPENT			parameter is the player number, perf_ret_float is set to the amount of chronoenergy spent for the player since the start of the game
+GET_PLAYER_NUM_COMMANDS_ISSUED			parameter is the player number, perf_ret is set to the number of commands the player has issued since the start of the game
+GET_PLAYER_NUM_UNDOS					parameter is the player number, perf_ret is set to the number of undo commands the player has issued since the start of the game
+GET_PLAYER_NUM_TIME_JUMPS				parameter is the player number, perf_ret is set to the number of time jumps the player has made since the start of the game
+GET_PLAYER_AVERAGE_RELATIVE_TIME		parameter is the player number, perf_ret_float is set to the average relative time position (to the present) that the player has been since the start of the game
+
+GET_UNIT_AT_TIME						perf_ret is set to a unit containing the data of the target at the time passed in as the parameter.  perf_ret is 0 if target does not exist at that time
+GET_ACHRONAL_FIELD						parameter is the achronal field number (0-4095), perf_ret contains the value for scenario monitor's corresponding AchronalField
+SET_ACHRONAL_FIELD						target is the achronal field number (0-4095), parameter is the new value for scenario monitor's corresponding AchronalField
+SET_CHRONAL_FIELD						target is the chronal field number (0-3), parameter is the new value for scenario monitor's corresponding ChronalField
+
+DISABLE_PLAYER_CHRONAL_INPUT			parameter is the player number, disables all chronal input for the specified player
+ENABLE_PLAYER_CHRONAL_INPUT				parameter is the player number, enables all chronal input for the specified player	
+DISABLE_PLAYER_METATIME_INPUT			parameter is the player number, disables all metatime (timeline) input for the specified player
+ENABLE_PLAYER_METATIME_INPUT			parameter is the player number, enables all metatime (timeline) input for the specified player
+
+SET_AMBIENT_LIGHT_R						sets the ambient red component to the color specified (see AmbientLightR in event data attributes)
+SET_AMBIENT_LIGHT_G						sets the ambient green component to the color specified (see AmbientLightR in event data attributes)
+SET_AMBIENT_LIGHT_B						sets the ambient blue component to the color specified (see AmbientLightR in event data attributes)
+SET_AMBIENT_LIGHT_INTENSITY				sets the ambient intensity to the amount specified (see AmbientLightIntensity in event data attributes)
+
+SET_DIRECTION_LIGHT_R					sets the direction light red component to the color specified (see DirectionLightR in event data attributes)
+SET_DIRECTION_LIGHT_G					sets the direction light green component to the color specified (see DirectionLightR in event data attributes)
+SET_DIRECTION_LIGHT_B					sets the direction light blue component to the color specified (see DirectionLightR in event data attributes)
+SET_DIRECTION_LIGHT_ANGLE_THETA			sets the direction light orientation to the angle specified, rotating from east-west to north-south (see DirectionLightAngleTheta in event data attributes)
+SET_DIRECTION_LIGHT_ANGLE_PHI			sets the direction light height angle to the angle specified (see DirectionLightAnglePhi in event data attributes)
+SET_DIRECTION_LIGHT_INTENSITY			sets the direction light intensity to the amount specified (see DirectionLightIntensity in event data attributes)
+
+SET_FOG_R								sets the red component of the fog color
+SET_FOG_G								sets the green component of the fog color
+SET_FOG_B								sets the blue component of the fog color
+SET_FOG_INTENSITY						sets the intensity of the fog color (0->127)
+
+SET_NUM_PRECIPITATION_PARTICLES			sets the number of particles to render
+SET_PRECIPITATION_X_VELOCITY			sets the x component of the velocity of the precipitation
+SET_PRECIPITATION_Y_VELOCITY			sets the y component of the velocity of the precipitation
+SET_PRECIPITATION_Z_VELOCITY			sets the z component of the velocity of the precipitation
+SET_PRECIPITATION_WETNESS				sets the wetness of the particles, 0-31 is solid precipitation, 32 is none, 33-63 is wet
+
+SET_UNIT_OWNER							sets the owner of the unit specified by the user variable target
+SET_PLAYER_ALLIANCES					sets the player alliances bitmask for the user variable player
+SET_PLAYER_VISIBILITY_SHARING			sets the player visibility sharing bitmask for the user variable player
+SET_PLAYER_COMMAND_SHARING				sets the player command sharing bitmask for the user variable player
+SET_PLAYER_ACHRONAL_COMMAND_SHARING		sets the player's achronal command sharing bitmask for the user variable player.  Or'd with the chronal command sharing
+SET_PLAYER_CONTROL_FLAGS				sets the ControlFlags field for the user variable player
+ISSUE_UNIT_COMMAND						issues a chronal command to the unit specified by target, issued by player, to the objective specified by parameter, and perf_ret contains the value for the objective parameter
+											note that the command will not be picked up until the next timewave
+ISSUE_ENQUEUED_UNIT_COMMAND				same as ISSUE_UNIT_COMMAND, but enqueues command
+UNDO_UNIT_COMMANDS						undoes the commands to the unit specified by the user variable target by the player specified in player from the current time wave until the relative time passed in as the parameter (positive is future, negative is past)
+UNDO_LAST_UNIT_COMMAND					undoes the previous command, relative to the current timewave, to the unit specified by the user variable target by the player specified in player. perf_ret is set to the time of the command that was undone
+UNDO_NEXT_UNIT_COMMAND					undoes the next command, relative to the current timewave, to the unit specified by the user variable target by the player specified in player. perf_ret is set to the time of the command that was undone
+GET_LAST_UNIT_COMMAND_TIME				sets perf_ret to the timestep of the previous command, relative to the current timewave, issued to the unit specified by the user variable target by the player specified in player
+GET_NEXT_UNIT_COMMAND_TIME				sets perf_ret to the timestep of the next command, relative to the current timewave, issued to the unit specified by the user variable target by the player specified in player
+
+SET_ENV_TRANSITION_TIME					parameter specifies how long the rendering will transition from the old lighting and environment to the new one in time ticks
+										  internally uses UnitAIServiceTime, so the maximum time is the maximum value for UnitAIServiceTime
+										  this also commits all of the previous environment settings, so it should be performed FIRST, before setting any other
+										  parameters in a script run
+RELOAD_SCENARIO_MONITOR_SCRIPT			reloads the scenario monitor script from disk and restarts execution for the current time tick
+LOG_TIMESTEP							logs all unit data for the current timestep to unit_log.csv and all resources to resource_log.csv
+CREATE_SAVE_POINT						creates an automatic save for the player
+IS_REPLAY								sets perf_ret to 1 if the engine is replaying a game, 2 if in replay but all input is exhausted, 0 if not in replay
+
+*Special note about scenario monitor script:
+ The script is run every time tick regardless of whether or not it its UnitAIServiceTime is ready.
+ The UnitAIServiceTime field is used for animating the change of environmental effects.
+
+
+===============================================================
+unit attributes, chronal, accessible via the "->" operator
+===============================================================
+
+List of pre-defined constents to use when accessing event data (via -> operator)
+all are read-only (some can be accessed via PERFORM)
+
+If a unit is not visible to the player, then the result will always be -1.
+
+These are available to regular units
+
+Field			Visible to enemies?		# of bits	Description
+----------------------------------------------------------------------------------
+Timestamp					no			27			timestamp in clock-ticks of last active or passive action
+Age							no			31			current age (in clock-ticks) of the unit
+TimeCameFrom				no			27			timestamp that the unit came from.  If it has time traveled, it will be the most recent source, if not, then its creation time
+Name						no			16			"name" of the unit.  this is a number that represents the unit, preserved if the unit chronoports (whereas unit number is not preserved).  may be multiple units with same name if chronoported
+Parent						no			16			unit number of unit's parent.  Should only be accessed recently after creation, as unit numbers may be recycled
+Event						yes			4			last event
+UnitAIServiceTime			no			10			time until unit can perform another action
+AdditionalParameters		no			32			used for custom ai purposes
+AdditionalParameters2		no			3			used for custom ai purposes
+AdditionalParameters3		no			3			used for custom ai purposes
+AdditionalParameters4		no			3			used for custom ai purposes
+Objective					no			6			selects which objective script to run
+ObjectiveParameters			no			29			parameters for the objective script
+NumQueuedObjectives			no			3			number of queued objectives to do after current objective
+
+Position					yes			29			X,Y,Z Positions, bits packed as ZYX (5:12:12 bits each),
+														where X is least significant
+XPosition					yes			12			west-east position of unit.  if the unit is being carried, it will return -1
+XCorner						yes			12			west-east position of unit's north west corner.  if the unit is being carried, it will return -1
+YPosition					yes			12			north-south position of unit.  if the unit is being carried, it will return -1
+YCorner						yes			12			north-south position of unit's north west corner.  if the unit is being carried, it will return -1
+ZPosition					yes			5			vertical position of unit.  if the unit is being carried, it will return -1
+Rotation					yes			3			which direction the unit is rotated (see animation editor for what # is what direciton)
+
+Class						yes			12			which class the unit is
+Owner						yes			4			player # that the unit belongs to
+HP							yes			16			current number of hit points
+Energy						no			9			current number of energy points
+Status						yes			9			status bits -alignment on if set: (1 is least significant bit) CAPABILITY_5:9  CAPABILITY_4:8  CAPABILITY_3:7  CAPABILITY_2:6  CAPABILITY_1:5  STOP:4  STASIS:3  COMMJAM:2  CLOAKED:1
+IsCloaked					yes			1			returns 1 if cloaked status bit is set, 0 if not
+IsCommjam					yes			1			returns 1 if commjamm status bit is set, 0 if not
+IsStasis					yes			1			returns 1 if stasis status bit is set, 0 if not
+IsStop						yes			1			returns 1 if stop status bit is set, 0 if not
+Speed						yes			2			speed multiplier which unit does all actions (like status alignment): -2 = very slow, -1 = slow, 0 = normal, 1 = fast
+Experience					no			6			experience points for unit
+Armour						no			3			number of armour points left
+Tint						yes			2			current tint index
+Ammo						no			8			amount of ammo remaining
+Commander					no			16			comanding unit (0 if none)
+Carrier						no			16			unit that is carrying this unit
+NextSubordinate				no			16			next subordinate unit in subordinate list
+														once list is exhausted, returns 0 (if no subordinates, then returns 0 immediately)
+														after 0 is returned, the list starts over
+														every time NextSubordinate is called on a *different* unit in the same script,
+														it will start the list over. it also starts over at the beginning of each script
+NextCarriedUnit				no			16			next carried unit in carried unit list
+														once list is exhausted, returns 0 (if no carried units, then returns 0 immediately)
+														after 0 is returned, the list starts over
+														every time NextCarriedUnit is called on a *different* unit in the same script,
+														it will start the list over. it also starts over at the beginning of each script
+NextUnitOfSameName			no			16			next unit of same name (e.g., other time travelers)
+														once list is exhausted, returns 0.  It does not include its self in the list.
+														after 0 is returned, the list starts over
+														every time NextUnitOfSameName is called on a *different* unit in the same script,
+														it will start the list over. it also starts over at the beginning of each script
+NextVisibleUnit				no			16			next visible unit - iterator over every other unit that the unit can see
+														once list is exhausted, returns 0.  It does not include its self in the list.
+														after 0 is returned, the list starts over
+														every time NextUnitOfSameName is called on a *different* unit in the same script,
+														it will start the list over. it also starts over at the beginning of each script
+TotalCarriedSize			no			32			returns the sum of the Size of all units being carried by the unit
+TotalSize					no			32			returns the sum of the Size of the unit, plus all units contained within, recursively
+														returns the same as the SIZE eval type in the scenario editor
+
+ObjParamX					no			12			when ObjectiveParameters contains XYZ, it's the x coord
+ObjParamY					no			12			when ObjectiveParameters contains XYZ, it's the y coord
+ObjParamZ					no			5			when ObjectiveParameters contains XYZ, it's the z coord
+Action						no			6			action that the unit is performing
+UnitAIServiceTimeoutPeriod	no			10			total amount of time it takes the unit to perform the current action
+ActionParameters			no			29			parameters passed into last PERFORM of a custom action (or target, if specified in action)
+LastAttackedVDirection		no			2			direction unit was last attacked from vertically
+														set when a unit is attacked, otherwise 0 (and can be cleared by the unit)
+														1 if the attack came from below, 2 if at same level, 3 if from above
+LastAttackedHDirection		no			3			horizontal direction unit was last attacked
+														345  <-directions
+														2 6
+														107
+														can use rottorad to convert the direction to radians
+
+IsAlive						yes			32			is 1 if and only if the target unit is alive and the player can see the target unit
+														and the checking unit is not comm-jammed, -1 otherwise
+IsVisible					yes			1			is true if current unit can see the other unit
+ClosestVisiblePosition		yes			29			returns the packed XYZ position of the closest visible position of the unit (within visible range)
+IsAffectable				yes			1			is true if current unit can affect the other unit
+ClosestAffectablePosition	yes			29			returns the packed XYZ position of the closest affectable position of the unit (within visible range)
+BestAttackDirection			yes			3			returns the best rotation that the unit can attack the other unit (direct line of sight)
+ClosestPosition				yes			29			returns the packed XYZ position of the closest position of the unit (if unit is moving, will favor front of the unit)
+IsAlly						yes			1			is 1 if the other unit's owner is an ally (also returns true if units are of the same owner), -1 if neutral, 0 if enemy
+IsAllyToUnit				yes			1			is true if the other unit's player has the unit's player as an ally
+IsTerrainGround				yes			1			is true if any tile of the unit is on the ground
+OverTerrainType				yes			8			returns the terrain type that the center of the unit is over
+TimeSinceLastChronoport		yes			27			time since the unit last chronoported.  -1 if the unit has never chronoported
+SecondOwner					no			4			player that can also control the unit.  only accessible via scenario monitor (returns -1 if any other unit attempts to access this value)
+
+These are available to resource units (player), but only a unit's owner's is accessable (not other players).
+
+Field	# of bits	Description
+----------------------------------------------------------------
+Resource1			28			Generic resource.  In Achron, used as Vecgir Power
+Resource2			19			Generic resource.  In Achron, used as L-Crystals
+Resource3			13			Generic resource.  In Achron, used as Reserve Soldiers
+Resource4			17			Generic resource.  In Achron, used as Q-Plasma
+Allies				15			Bit set if corresponding player is considered an ally
+VisibilitySharing	15			If bit set, then shares everything the player sees with the corresponding player
+CommandSharing		15			If bit set, then shares ability to command units with the corresponding player
+Advancements		16			Global advancements/upgrades
+CustomField1		32			Free field for unit communication
+CustomField2		32			Free field for unit communication
+CustomField3		16			Free field for unit communication
+CustomField4		16			Free field for unit communication
+CustomField5		16			Free field for unit communication
+CustomField6		16			Free field for unit communication
+CustomField7		16			Free field for unit communication
+CustomField8		16			Free field for unit communication
+CustomControls		16			Free field for putting conditions on unit controls (exposed in control conditions)
+GlobalFlags			4			Flags that can be used for global player settings
+ControlFlags		6			Flags used to affect player controls.  When set, 1st bit disables player's fog of war, 2nd bit disables player's controls.
+IsComputerPlayer	1			1 if the player is a computer, 0 if human controlled
+
+
+
+
+These are available to the scenario monitor unit:
+Field						# of bits	Description
+----------------------------------------------------------------------------------
+AmbientLightR				5			red component of ambient lighting (0-31)
+AmbientLightG				5			green component of ambient lighting (0-31)
+AmbientLightB				5			blue component of ambient lighting (0-31)
+AmbientLightIntensity		8			light intensity of ambient lighting
+
+DirectionLightR				5			red component of directional (diffuse) lighting (0-31)
+DirectionLightG				5			green component of directional (diffuse) lighting (0-31)
+DirectionLightB				5			blue component of directional (diffuse) lighting (0-31)
+DirectionLightAngleTheta	6			orientation of global directional lighting.  0 is west-east, 16 is south-north, 32 is east-west, 48 is north-south, 63 is almost west-east
+DirectionLightAnglePhi		6			height of global directional lighting.  0 down one side, 31 is straight up, 63 is down the other side
+DirectionLightIntensity		8			light intensity of directional (diffuse) lighting
+
+FogR						5			red component of fog (0-31)
+FogG						5			green component of fog (0-31)
+FogB						5			blue component of fog (0-31)
+FogIntensity				7			intensity of fog (0-127)
+
+NumPrecipitationParticles	8			total number of particles rendered
+PrecipitationXVelocity		5			x velocity
+PrecipitationYVelocity		5			y velocity
+PrecipitationZVelocity		5			z velocity
+PrecipitationWetness		6			wetness
+
+UnitAIServiceTime			10			see unit attribute of the same name
+UnitAIServiceTimeoutPeriod	10			see unit attribute of the same name
+Objective					6			see unit attribute of the same name
+AdditionalParameters		32			see unit attribute of the same name
+
+
+===============================================================
+Object class attributes (achronal & global), accessible via the "." operator
+===============================================================
+
+List of pre-defined constents to use when accessing class attributes (via . operator)
+
+Rank					unit's rank level
+Type					unit's type - 32 bit generic field
+PrioritySelectionRank	unit's priority selection rank. if > 0, then shown on the priority selector, sorted by rank (highest to lowest)
+MaxHP					maximum hit points
+MaxEnergy				maximum energy
+MaxArmour				maximum armor
+MaxAmmo					maximum ammo
+SightVRange				vertical range of vision 
+SightVRange2			vertical range of vision squared (distance squared)
+SightHRange				horizontal range of vision 
+SightHRange2			horizontal range of vision squared (distance squared)
+Flags					if the least significant bit (first bit) is set, then the unit
+							can move spatially (in 3d -it can fly)
+						if the second bit is set, then the unit is unaffected by the terrain
+							when it is moving on the ground (if it is a ground unit that means all the time)
+							e.g. it will not slow down if the terrain is muddy, etc.
+							this is useful for hovercrafts, etc.
+						if the third bit is set, then the unit gains an experience point for every unit
+							that it deals a destroying attack with a rank > 0
+Length					length of the unit's model in terms of tiles (longest side)
+Size					size of the unit, determined by the number of tiles taken up by collision map
+CarryingCapacity		maximum carrying capacity of the unit (in terms of the sum of the Size attribute of units carried)
+MaxAttackAngle			maximum attack angle from direction unit is looking (0-360 degrees).
+							360 means it can attack in any direction, 46 degrees, only directly infront (shouldn't be less than 46 degrees)
+TicksToTurn45Degrees	time ticks for the unit to rotate 45 degrees.  floating point
+
+---used only on player units (e.g. player.x)
+ScenarioConstraints		a bitmask indicating which actions, upgrades, controls, etc. are available for a given scenario
