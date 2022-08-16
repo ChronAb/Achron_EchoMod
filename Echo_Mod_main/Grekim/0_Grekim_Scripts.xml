@@ -29,7 +29,7 @@
         </AIScript>
         <AIScript>
             <Name>gs210_achron_morph</Name>
-            <Path>./Achron_EchoMod/Echo_Mod_main/ais/simple_morph.abn</Path>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/claim_victory.abn</Path>
         </AIScript>
         
         <!-- octo buildings -->
@@ -45,11 +45,19 @@
             <Name>gs201_octo_dome</Name>
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/octo_dome.abn</Path>
         </AIScript>
+        <AIScript>
+            <Name>gs211_octo_dome_na</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown.abn</Path>
+        </AIScript>
         
         <!-- sepi buildings -->
         <AIScript>
             <Name>gs172_sepi_reaph</Name>
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/sepi_reaph.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gs182_sepi_reaph_na</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown.abn</Path>
         </AIScript>
         <AIScript>
             <Name>gs212_sepi_mound</Name>
@@ -84,10 +92,18 @@
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/grekim_build_fast.abn</Path>
         </AIScript>
         
-        <!-- spider probe -->
+        <!-- spider probe & atk ground -->
+        <AIScript>
+            <Name>gs00sp_spider_idle</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/spider_probe_idle.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>gs383_pharo_atk_ground</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/supressionfire.abn</Path>
+        </AIScript>
         <AIScript>
             <Name>gs400_sp_probe</Name>
-            <Path>./Achron_EchoMod/Echo_Mod_main/ais/simple_morph.abn</Path>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/reaph_chronobomb.abn</Path>
         </AIScript>
         <AIScript>
             <Name>gs410_sp_probe_na</Name>
@@ -123,6 +139,10 @@
         </AIScript>
         
         <!-- ligo abilities -->
+        <AIScript>
+            <Name>gs444_ligo_atk_ground</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/supressionfire.abn</Path>
+        </AIScript>
         <AIScript>
             <Name>gs455_oligo_rage</Name>
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/simple_morph.abn</Path>
@@ -240,7 +260,7 @@
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/grekim_octo3.abn</Path>
         </AIScript>
         <AIScript>
-            <Name>gs52q_progen_oligo_na</Name>
+            <Name>gs44q_progen_oligo_na</Name>
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown.abn</Path>
         </AIScript>
         <!-- sepiligo -->
@@ -249,7 +269,7 @@
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/grekim_sepia3.abn</Path>
         </AIScript>
         <AIScript>
-            <Name>gs53q_progen_sligo_na</Name>
+            <Name>gs45q_progen_sligo_na</Name>
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown.abn</Path>
         </AIScript>
         <!-- pharoligo -->
@@ -258,7 +278,7 @@
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/grekim_pharao3.abn</Path>
         </AIScript>
         <AIScript>
-            <Name>gs54q_progen_pligo_na</Name>
+            <Name>gs46q_progen_pligo_na</Name>
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown.abn</Path>
         </AIScript>
         
@@ -322,7 +342,7 @@
 
         <!-- mound -->
         <AIScript>
-            <Name>gbs10m_cuttle</Name>
+            <Name>gbs11m_cuttle</Name>
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/arcticus_sepia.abn</Path>
         </AIScript>
         <AIScript>

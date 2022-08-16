@@ -39,11 +39,11 @@ if( special && unit->AdditionalParameters2==0 ){
 			$SAY_RESOURCES
 			insuf =1;
 		} else {
-			if (unit->Energy < 150 && (PROGEN_CLASS == $OCTOLIGO_CLASS || PROGEN_CLASS == $SEPILIGO_CLASS || PROGEN_CLASS == $PHAROLIGO_CLASS)) {
+			if (unit->Energy < 200 && (PROGEN_CLASS == $OCTOLIGO_CLASS || PROGEN_CLASS == $SEPILIGO_CLASS || PROGEN_CLASS == $PHAROLIGO_CLASS)) {
 				$SAY_ENERGY
 				insuf =1;
 			} 
-            else if (unit->Energy < 50) {
+            else if (unit->Energy < 100) {
 				$SAY_ENERGY
 				insuf =1;
 			} 
@@ -55,7 +55,7 @@ if( special && unit->AdditionalParameters2==0 ){
 	}
     if (urank==$SPAWNER_RANK) {
 		if (unit->Ammo < 1) insuf =1;
-		else if (unit->Ammo < 4 && (PROGEN_CLASS == $OCTOPOD_CLASS || PROGEN_CLASS == $SEPIPOD_CLASS)) insuf =1;
+		else if (unit->Ammo < 2 && (PROGEN_CLASS == $OCTOPOD_CLASS || PROGEN_CLASS == $SEPIPOD_CLASS)) insuf =1;
 	}
 	
 	if(insuf){
