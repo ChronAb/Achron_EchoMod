@@ -2,7 +2,7 @@
 
 #include common/include/unit_common_header.aih
 
-// The chooser periodically looks for hostile units in the area. 
+/* The chooser periodically looks for hostile units in the area. 
 // If it sees any then it self terminates.
 
 PERFORM GET_CUR_TIME;
@@ -15,7 +15,7 @@ if(curtime%19==(unit->Name % 19)) { //every second
         
     if(checkEnemies != 0) PERFORM 10; //self-destruct
 
-}
+}*/
 
 /*PERFORM GET_CUR_TIME;
 if (perf_ret < 24)  { PERFORM NOTHING; }

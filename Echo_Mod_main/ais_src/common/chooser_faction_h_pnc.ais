@@ -1,0 +1,6 @@
+
+//Script for selecting a faction -- PnC Humans
+//  = free Specials-tech
+
+PERFORM 32;
+PERFORM SET_OBJECTIVE 50;

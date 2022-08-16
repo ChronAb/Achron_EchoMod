@@ -1,0 +1,6 @@
+
+//Script for selecting a faction -- CESO Humans
+//  = free Machinery-tech
+
+PERFORM 31;
+PERFORM SET_OBJECTIVE 50;

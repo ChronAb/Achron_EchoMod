@@ -1,0 +1,6 @@
+
+//Script for selecting a faction -- Vanguard Grekim
+//  = free S-tech
+
+PERFORM 36;
+PERFORM SET_OBJECTIVE 51;

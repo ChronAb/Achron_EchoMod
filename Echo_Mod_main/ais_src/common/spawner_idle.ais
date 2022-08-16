@@ -6,28 +6,28 @@
 int uclass = unit->Class;
 int uage = unit->Age;
 
-if(player->IsComputerPlayer){
+if(1 || player->IsComputerPlayer){
     
     // HUMAN SCOUT SPAWNER
     if(uclass==$SCOUT_SPAWNER_H){
-        if (unit%4==3 && uage>=344 && uage%4==0) {
-            PERFORM $ACTION_PROGEN_UP_S; // 2 Lancers
+        if (unit%4==3 && uage>=340 && uage<=344 && uage%4==0) {
+            PERFORM $ACTION_PROGEN_UP_O; // 2 ATHCs
             PERFORM NOTHING;
         }
-        if (unit%4==2 && uage>=344 && uage%4==0) {
-            PERFORM $ACTION_PROGEN_UP_O; // 2 ATHCs
+        if (unit%4==2 && uage==344) {
+            PERFORM $ACTION_PROGEN_UP_S; // 1 Lancers
             PERFORM NOTHING;
         }
         if (uage==344) {
             PERFORM $ACTION_PROGEN_SAME_P; // 1 Mechs
             PERFORM NOTHING;
         }
-        if (unit%4==1 && uage>=352 && uage%4==0) {
-            PERFORM $ACTION_PROGEN_SAME_S; // 2 SOPs
+        if (unit%4==1 && uage>=348 && uage%4==0) {
+            PERFORM $ACTION_PROGEN_SAME_S; // SOPs
             PERFORM NOTHING;
         }
-        if (uage>=352 && uage%4==0) {
-            PERFORM $ACTION_PROGEN_SAME_O; // 2 marines
+        if (uage>=348 && uage%4==0) {
+            PERFORM $ACTION_PROGEN_SAME_O; // marines
             PERFORM NOTHING;
         }
     }

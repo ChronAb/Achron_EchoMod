@@ -1,0 +1,6 @@
+
+//Script for selecting a faction -- Null Grekim
+//  = extra resources
+
+PERFORM 37;
+PERFORM SET_OBJECTIVE 51;

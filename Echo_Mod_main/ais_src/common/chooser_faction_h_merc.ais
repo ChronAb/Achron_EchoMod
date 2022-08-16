@@ -1,0 +1,6 @@
+
+//Script for selecting a faction -- Merc/Local PMF Humans
+//  = free Ground-tech
+
+PERFORM 33;
+PERFORM SET_OBJECTIVE 50;

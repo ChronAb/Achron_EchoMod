@@ -24,7 +24,7 @@ int uclass = unit->Class;
 if (uclass==$LANDING_PROBE_CLASS) {
     int op = unit->ObjectiveParameters;
     op[$Zpos] = 0;
-    if (op <_> unit > 36) { // Not in range yet, so move closer
+    if (op <_> unit > 100) { // Not in range yet, so move closer
         int dir = 0; 
         dir = QUERY BESTMOVE [unit, $ACTION_MOVE] MIN [query <_> op] WHERE [1];
         
@@ -42,9 +42,22 @@ if (uclass==$LANDING_PROBE_CLASS) {
         }
     } 
     
+    // Set Species Selector race
+    object cargo = unit->NextCarriedUnit;
+    while (cargo > 0){
+        if (cargo->Class == $RACE_CHOOSER_CLASS) {
+            target = cargo;
+            PERFORM SET_OTHER_OBJECTIVE $OBJECTIVE_SELECT_CESO;
+        }
+        cargo = unit->NextCarriedUnit;
+    }
+    
     // Place Human spawner
-    PERFORM $ACTION_HUMAN0 op;
-    PERFORM SET_OBJECTIVE 0;
+    if (unit->Ammo > 0) {
+        PERFORM $ACTION_HUMAN0 op;
+        PERFORM SET_OBJECTIVE 0;
+    }
+    else PERFORM SET_OBJECTIVE $OBJECTIVE_RELEASEALL;
     PERFORM NOTHING;
 }
 

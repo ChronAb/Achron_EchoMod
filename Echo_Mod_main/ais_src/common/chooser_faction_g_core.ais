@@ -1,0 +1,6 @@
+
+//Script for selecting a faction -- Core Grekim
+//  = free B-tech
+
+PERFORM 35;
+PERFORM SET_OBJECTIVE 51;

@@ -473,7 +473,7 @@
                             <Target>SELF</Target>
                             <Type>P_L_CRYSTALS</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-100</Value>
+                            <Value>-200</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -505,21 +505,21 @@
                         <Condition>
                             <Resource>P_POWER</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>100</Value>
+                            <Value>400</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
                         <Step>
                             <PrimitiveAction>CHANGE_CLASS</PrimitiveAction>
                             <Target>SELF</Target>
-                            <Value>115</Value>
+                            <Value>116</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>100</Value>
+                            <Value>400</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -613,13 +613,13 @@
                     <Script>cs20b_simple_upgrade</Script>
                     <Name>Activate Turret</Name>
                     <Details> \Activate and permanently claim this Turret</Details>
-                    <Resource1>100</Resource1>
+                    <Resource1>400</Resource1>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>21</ObjectiveNumber>
                     <Script>cs21b_simple_downgrade</Script>
                     <Name>Scuttle Turret</Name>
-                    <Details> \Destroy this Turret to salvage resources \  +100 LC</Details>
+                    <Details> \Destroy this Turret to salvage resources \  +200 LC</Details>
                 </Objective>
             </Objectives>
             <ControlShortcuts>

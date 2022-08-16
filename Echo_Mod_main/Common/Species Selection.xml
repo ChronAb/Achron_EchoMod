@@ -114,7 +114,7 @@
                     <Identifier>idle</Identifier>
                     <AnimationNum>0</AnimationNum>
                     <Sound>Sound0</Sound>
-                    <AnimationTime>24</AnimationTime>
+                    <AnimationTime>72</AnimationTime>
                     <ShowProgress>0</ShowProgress>
                     <MorphFromActionParameterClass>0</MorphFromActionParameterClass>
                     <LobProjectilePath>0</LobProjectilePath>
@@ -393,6 +393,13 @@
                             <Value>0</Value>
                         </Step>
                         <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_FLAGS</Type>
+                            <ValueEval>OR</ValueEval>
+                            <Value>6</Value>
+                        </Step>
+                        <Step>
                             <PrimitiveAction>CHANGE_CLASS</PrimitiveAction>
                             <Target>SELF</Target>
                             <Value>4047</Value>
@@ -434,14 +441,218 @@
                         </Step>
                     </Steps>
                 </Action>
+                <Action>
+                    <ActionNumber>31</ActionNumber>
+                    <Identifier>ACTION_H_CESO</Identifier>
+                    <TimeTaken>0</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_ADVANCEMENTS</Type>
+                            <ValueEval>SET_TO_VALUE</ValueEval>
+                            <Value>2</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>32</ActionNumber>
+                    <Identifier>ACTION_H_PNC</Identifier>
+                    <TimeTaken>0</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_ADVANCEMENTS</Type>
+                            <ValueEval>SET_TO_VALUE</ValueEval>
+                            <Value>8</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>33</ActionNumber>
+                    <Identifier>ACTION_H_MERC</Identifier>
+                    <TimeTaken>0</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_ADVANCEMENTS</Type>
+                            <ValueEval>SET_TO_VALUE</ValueEval>
+                            <Value>4</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>34</ActionNumber>
+                    <Identifier>ACTION_H_PIRATE</Identifier>
+                    <TimeTaken>0</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CHANGE_CLASS</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Value>220</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>35</ActionNumber>
+                    <Identifier>ACTION_G_CORE</Identifier>
+                    <TimeTaken>0</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_ADVANCEMENTS</Type>
+                            <ValueEval>SET_TO_VALUE</ValueEval>
+                            <Value>64</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_POWER</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>1000</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>36</ActionNumber>
+                    <Identifier>ACTION_G_VANGUARD</Identifier>
+                    <TimeTaken>0</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_ADVANCEMENTS</Type>
+                            <ValueEval>SET_TO_VALUE</ValueEval>
+                            <Value>256</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>37</ActionNumber>
+                    <Identifier>ACTION_G_GUARDIAN</Identifier>
+                    <TimeTaken>0</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_ADVANCEMENTS</Type>
+                            <ValueEval>SET_TO_VALUE</ValueEval>
+                            <Value>1280</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_POWER</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>400</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>38</ActionNumber>
+                    <Identifier>ACTION_G_NULL</Identifier>
+                    <TimeTaken>0</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_ADVANCEMENTS</Type>
+                            <ValueEval>SET_TO_VALUE</ValueEval>
+                            <Value>0</Value>
+                        </Step>
+                    </Steps>
+                </Action>
             </Actions>
             <Objectives>
-                <Objective>
+                <!--Objective>
                     <ObjectiveNumber>0</ObjectiveNumber>
                     <Script>cs001_chooser_idle</Script>
                     <Name></Name>
                     <Details></Details>
-                </Objective>
+                </Objective-->
                 <Objective>
                     <ObjectiveNumber>50</ObjectiveNumber>
                     <Script>cs500_pick_human</Script>
@@ -453,14 +664,14 @@
                     <ObjectiveNumber>51</ObjectiveNumber>
                     <Script>cs510_pick_grekim</Script>
                     <Name>Grekim</Name>
-                    <Details>Play as the Grekim:\Devious masters of timetravel\Rely on self-chronoportation and air power\ \Hardest to learn for new players</Details>
+                    <Details>Play as the Grekim:\Devious masters of time travel\Rely on self-chronoportation and air power\ \For Echo Ops veterans only</Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>52</ObjectiveNumber>
                     <Script>cs520_pick_vecgir</Script>
                     <Name>Vecgir</Name>
-                    <Details>Play as the Vecgir:\Insular masters of teleportation\Exploit hypermobile self-teleporting vehicles\Powerful defensive structures and abilities\Intermediate difficulty for new players</Details>
+                    <Details>Play as the Vecgir:\Insular masters of teleportation\Exploit hypermobile self-teleporting vehicles\Powerful defensive structures and abilities\Intermediate difficulty</Details>
                     <ObjectiveControlShortcutNumber>2</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
@@ -472,6 +683,12 @@
                 </Objective>
                 
                 <Objective>
+                    <ObjectiveNumber>19</ObjectiveNumber>
+                    <Script>cs19s_faction_select</Script>
+                    <Name>Select Factions</Name>
+                    <Details> \Select a Faction for special perks</Details>
+                </Objective>
+                <Objective>
                     <ObjectiveNumber>20</ObjectiveNumber>
                     <Script>cs20s_change_team</Script>
                     <Name>Change Team</Name>
@@ -482,6 +699,65 @@
                     <Script>cs21b_simple_downgrade</Script>
                     <Name>Interdiction</Name>
                     <Details> \Eliminate this asset</Details>
+                </Objective>
+                
+                <Objective>
+                    <ObjectiveNumber>24</ObjectiveNumber>
+                    <Script>cs24s_CESO</Script>
+                    <Name>CESO Defense Op</Name>
+                    <Details> \Play as CESO Achronal Ops for early access \    to heavy vehicles and better AutoMechs\ \(Start with Machinery-Tech enabled)</Details>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>25</ObjectiveNumber>
+                    <Script>cs25s_PnC</Script>
+                    <Name>PnC Special Op</Name>
+                    <Details> \Play as PnC for advanced cloaking abilities \    for ATFVs and Assault Marines\ \(Start with Specials-Tech enabled)</Details>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>26</ObjectiveNumber>
+                    <Script>cs26s_locals</Script>
+                    <Name>L-Human PMFs</Name>
+                    <Details> \Play as Human Paramilitaries for early \    access to Sensor Turrets and better Mines\ \(Start with Ground-Tech enabled)</Details>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>27</ObjectiveNumber>
+                    <Script>cs27s_pirates</Script>
+                    <Name>Pirates (Early WIP)</Name>
+                    <Details> \Play as outlaw salvage pirates for special \    starting equipment and early building \    restrictions \(Start with a Carrier and no resources)</Details>
+                </Objective>
+                
+                <Objective>
+                    <ObjectiveNumber>30</ObjectiveNumber>
+                    <Script>cs30s_core</Script>
+                    <Name>Core Grekim</Name>
+                    <Details> \Configure Core-Link for faster access to \    advanced tech and units\ \(Start B-Tech perma-enabled)</Details>
+                    <Resource1>1000</Resource1>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>31</ObjectiveNumber>
+                    <Script>cs31s_vanguard</Script>
+                    <Name>Vanguard Grekim</Name>
+                    <Details> \Set Local-Links for nomadic operation.\Give up static defense for solo progen and\    early access to special abilities\(Start with -400 QP, S-Tech perma-enabled)</Details>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>32</ObjectiveNumber>
+                    <Script>cs32s_guardian</Script>
+                    <Name>Guardian Grekim </Name>
+                    <Details> \Chrono-link Keepers to acquire an extra \    Elder in place of a Guardian\ \(Start with 2 Achrons)</Details>
+                    <Resource1>400</Resource1>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>33</ObjectiveNumber>
+                    <Script>cs33s_null</Script>
+                    <Name>Null Grekim </Name>
+                    <Details> \Dissociate all prior Grekim Linkages for\    maximum strategic flexibility\ \(Start with more resources)</Details>
+                </Objective>
+                
+                <Objective>
+                    <ObjectiveNumber>40</ObjectiveNumber>
+                    <Script>cs40s_faction_cancel</Script>
+                    <Name>Cancel Faction Select</Name>
+                    <Details></Details>
                 </Objective>
             </Objectives>
             <ControlShortcuts>
@@ -503,7 +779,13 @@
                     <EstTimeConst>0</EstTimeConst>
                     <EstTimeDist>0</EstTimeDist>
                     <Sound>Sound0</Sound>
-                    <ControlConditions />
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>SKIN_UnitControlsCustom</Resource>
+                            <Comparison>NOT_EQUAL</Comparison>
+                            <Value>1</Value>
+                        </ControlCondition>
+                    </ControlConditions>
                 </ControlShortcut>
                 <ControlShortcut>
                     <ControlNumber>1</ControlNumber>
@@ -523,7 +805,13 @@
                     <EstTimeConst>0</EstTimeConst>
                     <EstTimeDist>0</EstTimeDist>
                     <Sound>Sound0</Sound>
-                    <ControlConditions />
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>SKIN_UnitControlsCustom</Resource>
+                            <Comparison>NOT_EQUAL</Comparison>
+                            <Value>1</Value>
+                        </ControlCondition>
+                    </ControlConditions>
                 </ControlShortcut>
                 <ControlShortcut>
                     <ControlNumber>2</ControlNumber>
@@ -543,7 +831,13 @@
                     <EstTimeConst>0</EstTimeConst>
                     <EstTimeDist>0</EstTimeDist>
                     <Sound>Sound0</Sound>
-                    <ControlConditions />
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>SKIN_UnitControlsCustom</Resource>
+                            <Comparison>NOT_EQUAL</Comparison>
+                            <Value>1</Value>
+                        </ControlCondition>
+                    </ControlConditions>
                 </ControlShortcut>
                 <ControlShortcut>
                     <ControlNumber>3</ControlNumber>
@@ -563,7 +857,70 @@
                     <EstTimeConst>0</EstTimeConst>
                     <EstTimeDist>0</EstTimeDist>
                     <Sound>Sound0</Sound>
-                    <ControlConditions />
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>SKIN_UnitControlsCustom</Resource>
+                            <Comparison>NOT_EQUAL</Comparison>
+                            <Value>1</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+                
+                <ControlShortcut>
+                    <ControlNumber>10</ControlNumber>
+                    <ControlObjectiveNumber>19</ControlObjectiveNumber>
+                    <MouseInputType>SHORTCUT_QUICK_4</MouseInputType>
+                    <ParameterType>USE_VALUE</ParameterType>
+                    <Parameter>1</Parameter>
+                    <KeyboardShortcut>$AchronKBBuild</KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>1</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>SKIN_UnitControlsCustom</Resource>
+                            <Comparison>NOT_EQUAL</Comparison>
+                            <Value>1</Value>
+                        </ControlCondition>
+                        <ControlCondition>
+                            <Resource>NUM_UNITS_SELECTED</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>1</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+                <ControlShortcut>
+                    <ControlNumber>11</ControlNumber>
+                    <ControlObjectiveNumber>40</ControlObjectiveNumber>
+                    <ParameterType>USE_VALUE</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut>$AchronKBCancel</KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>1</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>SKIN_UnitControlsCustom</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>1</Value>
+                        </ControlCondition>
+                    </ControlConditions>
                 </ControlShortcut>
                 <ControlShortcut> <!-- change teams -->
                     <ControlNumber>14</ControlNumber>
@@ -582,7 +939,13 @@
                     <EstTimeConst>0</EstTimeConst>
                     <EstTimeDist>0</EstTimeDist>
                     <Sound>Sound0</Sound>
-                    <ControlConditions />
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>SKIN_UnitControlsCustom</Resource>
+                            <Comparison>NOT_EQUAL</Comparison>
+                            <Value>1</Value>
+                        </ControlCondition>
+                    </ControlConditions>
                 </ControlShortcut>
                 <ControlShortcut> <!-- self destruct -->
                     <ControlNumber>15</ControlNumber>
@@ -606,6 +969,262 @@
                             <Resource>U_IS_CARRIED</Resource>
                             <Comparison>EQUAL</Comparison>
                             <Value>0</Value>
+                        </ControlCondition>
+                        <ControlCondition>
+                            <Resource>SKIN_UnitControlsCustom</Resource>
+                            <Comparison>NOT_EQUAL</Comparison>
+                            <Value>1</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+                
+                <ControlShortcut><!-- CESO -->
+                    <ControlNumber>24</ControlNumber>
+                    <ControlObjectiveNumber>24</ControlObjectiveNumber>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut></KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>NUM_UNITS_SELECTED</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>1</Value>
+                        </ControlCondition>
+                        <ControlCondition>
+                            <Resource>SKIN_UnitControlsCustom</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>1</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+                <ControlShortcut><!-- PnC -->
+                    <ControlNumber>25</ControlNumber>
+                    <ControlObjectiveNumber>25</ControlObjectiveNumber>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut></KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>NUM_UNITS_SELECTED</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>1</Value>
+                        </ControlCondition>
+                        <ControlCondition>
+                            <Resource>SKIN_UnitControlsCustom</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>1</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+                <ControlShortcut><!-- local forces -->
+                    <ControlNumber>26</ControlNumber>
+                    <ControlObjectiveNumber>26</ControlObjectiveNumber>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut></KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>NUM_UNITS_SELECTED</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>1</Value>
+                        </ControlCondition>
+                        <ControlCondition>
+                            <Resource>SKIN_UnitControlsCustom</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>1</Value>
+                        </ControlCondition>
+                        <ControlCondition>
+                            <Resource>P_ADVANCEMENTS</Resource>
+                            <Comparison>BITMASK_NOT</Comparison>
+                            <Value>2</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+                <ControlShortcut><!-- pirates -->
+                    <ControlNumber>27</ControlNumber>
+                    <ControlObjectiveNumber>27</ControlObjectiveNumber>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut></KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>NUM_UNITS_SELECTED</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>1</Value>
+                        </ControlCondition>
+                        <ControlCondition>
+                            <Resource>SKIN_UnitControlsCustom</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>1</Value>
+                        </ControlCondition>
+                        <ControlCondition>
+                            <Resource>P_ADVANCEMENTS</Resource>
+                            <Comparison>BITMASK_NOT</Comparison>
+                            <Value>2</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+                <ControlShortcut><!-- core -->
+                    <ControlNumber>30</ControlNumber>
+                    <ControlObjectiveNumber>30</ControlObjectiveNumber>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut></KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>NUM_UNITS_SELECTED</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>1</Value>
+                        </ControlCondition>
+                        <ControlCondition>
+                            <Resource>SKIN_UnitControlsCustom</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>1</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+                <ControlShortcut><!-- vanguard -->
+                    <ControlNumber>31</ControlNumber>
+                    <ControlObjectiveNumber>31</ControlObjectiveNumber>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut></KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>NUM_UNITS_SELECTED</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>1</Value>
+                        </ControlCondition>
+                        <ControlCondition>
+                            <Resource>SKIN_UnitControlsCustom</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>1</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+                <ControlShortcut><!-- guardian -->
+                    <ControlNumber>32</ControlNumber>
+                    <ControlObjectiveNumber>32</ControlObjectiveNumber>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut></KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>NUM_UNITS_SELECTED</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>1</Value>
+                        </ControlCondition>
+                        <ControlCondition>
+                            <Resource>SKIN_UnitControlsCustom</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>1</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+                <ControlShortcut><!-- null -->
+                    <ControlNumber>33</ControlNumber>
+                    <ControlObjectiveNumber>33</ControlObjectiveNumber>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut></KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>NUM_UNITS_SELECTED</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>1</Value>
+                        </ControlCondition>
+                        <ControlCondition>
+                            <Resource>SKIN_UnitControlsCustom</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>1</Value>
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
@@ -848,14 +1467,7 @@
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-600</Value>
-                        </Step>
-                        <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>P_ADVANCEMENTS</Type>
-                            <ValueEval>OR</ValueEval>
-                            <Value>8</Value>
+                            <Value>-400</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -889,21 +1501,29 @@
                         <Step>
                             <PrimitiveAction>CREATE_UNIT_ANYWHERE</PrimitiveAction>
                             <Target>SELF</Target>
-                            <Value>4043</Value>
+                            <Value>1044</Value><!--Keeper Achron-->
+                            <!--Value>4043</Value-->
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-1000</Value>
+                            <Value>-2000</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_Q_PLASMA</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>-1800</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>P_L_CRYSTALS</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-200</Value>
+                            <Value>-5</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -1218,8 +1838,6 @@
                             <PrimitiveAction>CREATE_UNIT_ANYWHERE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Value>1039</Value>
-                            <!--Value>1041</Value>
-                            <Value>1006</Value-->
                         </Step>
                     </Steps>
                 </Action>
@@ -1760,7 +2378,7 @@
                 </Action>
                 <Action>
                     <ActionNumber>50</ActionNumber>
-                    <Identifier>ACTION_ChooseHUMAN_LANCER</Identifier>
+                    <Identifier>ACTION_ChooseHUMAN_RP</Identifier>
                     <TimeTaken>1</TimeTaken>
                     <ForceObjectAction>1</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
@@ -1794,7 +2412,7 @@
                         <Step>
                             <PrimitiveAction>CREATE_UNIT</PrimitiveAction>
                             <Target>SELF</Target>
-                            <Value>200</Value>
+                            <Value>147</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -2293,7 +2911,7 @@
                         <Condition>
                             <Resource>P_Q_PLASMA</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>1550</Value>
+                            <Value>4050</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -2327,7 +2945,7 @@
                         <Condition>
                             <Resource>P_POWER</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>2005</Value>
+                            <Value>4050</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -2336,7 +2954,7 @@
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>5</Value>
+                            <Value>50</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -2430,7 +3048,7 @@
                             <Target>SELF</Target>
                             <Type>U_AMMO</Type>
                             <ValueEval>SET_TO_VALUE</ValueEval>
-                            <Value>60</Value>
+                            <Value>80</Value>
                         </Step>
                     </Steps>
                 </Action>
