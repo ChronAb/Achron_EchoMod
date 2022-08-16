@@ -11,7 +11,7 @@
     <ActionStepModifiers>
         <ActionStepModifier>
             <Name>Tank3 anti_gnd</Name>
-            <StrengthBase>60</StrengthBase>
+            <StrengthBase>96</StrengthBase>
             <StrengthRange>0</StrengthRange>
             <StrengthCount>0</StrengthCount>
             <Flags>
@@ -34,7 +34,7 @@
         </ActionStepModifier>
         <ActionStepModifier>
             <Name>Tank3 anti_air</Name>
-            <StrengthBase>20</StrengthBase>
+            <StrengthBase>12</StrengthBase>
             <StrengthRange>0</StrengthRange>
             <StrengthCount>0</StrengthCount>
             <Flags>
@@ -59,17 +59,17 @@
     <ObjectClasses>
         <ObjectClass>
             <ClassNumber>25</ClassNumber>
-            <Name>Varangian Heavy Tank</Name>
-            <Description>VARANGIAN HEAVY TANK:&#x0D;&#x0A;Medium speed ground mechanical vehicle&#x0D;&#x0A;Mobile assault and air supression heavy armor&#x0D;&#x0A;Infects enemies with nanites&#x0D;&#x0A;Carries up to 2 troops&#x0D;&#x0A;[ Weapons Avg Damage/5secs ]&#x0D;&#x0A;   VS Ground: 68&#x0D;&#x0A;   VS Air: 90</Description>
+            <Name>Varangian H.F.V.</Name>
+            <Description>VARANGIAN Heavy Fighting Vehicle:&#x0D;&#x0A;Front line ultra heavy armor&#x0D;&#x0A;Hard hitting, heavily armored CQB tank  &#x0D;&#x0A;Strong vs ground and air &#x0D;&#x0A; &#x0D;&#x0A;Can produce Support and Assault Marines &#x0D;&#x0A;Can carry 2 Human infantry dismounts</Description>
             <Model>./humans/dbltank.mdl</Model>
             <Rank>190</Rank>
             <Type>1</Type>
             <PrioritySelectionRank>0</PrioritySelectionRank>
             <MaxHealth>1200</MaxHealth>
-            <MaxEnergy>100</MaxEnergy>
+            <MaxEnergy>60</MaxEnergy>
             <MaxArmor>0</MaxArmor>
             <MaxAmmo>2</MaxAmmo>
-            <SightRadius>32</SightRadius>
+            <SightRadius>26</SightRadius>
             <ForwardMinSightRadius>0</ForwardMinSightRadius>
             <ReverseMaxSightRadius>0</ReverseMaxSightRadius>
             <ReverseMinSightRadius>0</ReverseMinSightRadius>
@@ -82,29 +82,7 @@
             <TicksToTurn45Degrees>15</TicksToTurn45Degrees>
             <HealthFieldName>Shielding</HealthFieldName>
             <EnergyFieldName></EnergyFieldName>
-            <AmmoFieldName></AmmoFieldName>
-            <WeaponReactions>
-                <WeaponReaction>
-                    <ActionStepModifier>Tiny Pop</ActionStepModifier>
-                    <Type>ONE</Type>
-                    <Value>1.5</Value>
-                </WeaponReaction>
-                <WeaponReaction>
-                    <ActionStepModifier>Small Pop</ActionStepModifier>
-                    <Type>ONE</Type>
-                    <Value>1.5</Value>
-                </WeaponReaction>
-                <WeaponReaction>
-                    <ActionStepModifier>Med Pop</ActionStepModifier>
-                    <Type>ONE</Type>
-                    <Value>1.5</Value>
-                </WeaponReaction>
-                <WeaponReaction>
-                    <ActionStepModifier>Big Pop</ActionStepModifier>
-                    <Type>ONE</Type>
-                    <Value>1.5</Value>
-                </WeaponReaction>
-            </WeaponReactions>
+            <AmmoFieldName>Dismounts</AmmoFieldName>
             <Flags>
                 <VerticalMovementAllowed>0</VerticalMovementAllowed>
                 <UnaffectedByTerrain>1</UnaffectedByTerrain>
@@ -112,7 +90,7 @@
                 <RemainUpright>0</RemainUpright>
                 <NonGroupSelection>0</NonGroupSelection>
                 <ShowVisibilityRange>0</ShowVisibilityRange>
-                <ShowThroughFogOfWar>0</ShowThroughFogOfWar>
+                <ShowThroughFogOfWar>1</ShowThroughFogOfWar>
                 <AlwaysShowVisibility>0</AlwaysShowVisibility>
                 <SeeThroughObjects>0</SeeThroughObjects>
                 <ActiveLocatorBeacon>0</ActiveLocatorBeacon>
@@ -125,8 +103,8 @@
                 <HideHealthField>0</HideHealthField>
                 <HideEnergyField>0</HideEnergyField>
                 <HideArmorField>0</HideArmorField>
-                <HideAmmoField>1</HideAmmoField>
-                <HideCapacityField>0</HideCapacityField>
+                <HideAmmoField>0</HideAmmoField>
+                <HideCapacityField>1</HideCapacityField>
             </Flags>
             <Cloaking>
                 <Gradar>0</Gradar>
@@ -139,15 +117,7 @@
                 <Visible>1</Visible>
             </Sensing>
             <StoppedActionSteps />
-            <ChronoportedActionSteps>
-                <Step>
-                    <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-                    <Target>SELF</Target>
-                    <Type>U_OBJECTIVE_PARAMETERS</Type>
-                    <ValueEval>SET_TO_VALUE</ValueEval>
-                    <Value>49</Value>
-                </Step>
-            </ChronoportedActionSteps>
+            <ChronoportedActionSteps />
             <ChronoportArrivedActionSteps>
                 <Step>
                     <PrimitiveAction>ACCUM_STATISTIC</PrimitiveAction>
@@ -158,40 +128,6 @@
                 </Step>
             </ChronoportArrivedActionSteps>
             <Animations>
-                <Animation>
-                    <Identifier>ACTION_FINISH_CPORT2</Identifier>
-                    <AnimationNum>0</AnimationNum>
-                    <Sound>Sound0</Sound>
-                    <AnimationTime>0</AnimationTime>
-                    <ShowProgress>0</ShowProgress>
-                    <MorphFromActionParameterClass>0</MorphFromActionParameterClass>
-                    <LobProjectilePath>0</LobProjectilePath>
-                    <RenderModelExplode>0</RenderModelExplode>
-                    <Conditions>
-                        <Condition>
-                            <Resource>U_ACTION</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>53</Value>
-                        </Condition>
-                    </Conditions>
-                </Animation>
-                <Animation>
-                    <Identifier>ACTION_FINISH_CPORT1</Identifier>
-                    <AnimationNum>0</AnimationNum>
-                    <Sound>Sound0</Sound>
-                    <AnimationTime>0</AnimationTime>
-                    <ShowProgress>0</ShowProgress>
-                    <MorphFromActionParameterClass>0</MorphFromActionParameterClass>
-                    <LobProjectilePath>0</LobProjectilePath>
-                    <RenderModelExplode>0</RenderModelExplode>
-                    <Conditions>
-                        <Condition>
-                            <Resource>U_ACTION</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>52</Value>
-                        </Condition>
-                    </Conditions>
-                </Animation>
                 <Animation>
                     <Identifier>ACTION_MOVE_SLOW</Identifier>
                     <AnimationNum>0</AnimationNum>
@@ -227,40 +163,6 @@
                     </Conditions>
                 </Animation>
                 <Animation>
-                    <Identifier>ACTION_SET_OBJECTIVE_RELEASE</Identifier>
-                    <AnimationNum>0</AnimationNum>
-                    <Sound>Sound0</Sound>
-                    <AnimationTime>0</AnimationTime>
-                    <ShowProgress>0</ShowProgress>
-                    <MorphFromActionParameterClass>0</MorphFromActionParameterClass>
-                    <LobProjectilePath>0</LobProjectilePath>
-                    <RenderModelExplode>0</RenderModelExplode>
-                    <Conditions>
-                        <Condition>
-                            <Resource>U_ACTION</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>39</Value>
-                        </Condition>
-                    </Conditions>
-                </Animation>
-                <Animation>
-                    <Identifier>ACTION_CHRONOPORT</Identifier>
-                    <AnimationNum>0</AnimationNum>
-                    <Sound>Sound0</Sound>
-                    <AnimationTime>0</AnimationTime>
-                    <ShowProgress>0</ShowProgress>
-                    <MorphFromActionParameterClass>0</MorphFromActionParameterClass>
-                    <LobProjectilePath>0</LobProjectilePath>
-                    <RenderModelExplode>0</RenderModelExplode>
-                    <Conditions>
-                        <Condition>
-                            <Resource>U_ACTION</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>37</Value>
-                        </Condition>
-                    </Conditions>
-                </Animation>
-                <Animation>
                     <Identifier>ACTION_ROTATE</Identifier>
                     <AnimationNum>0</AnimationNum>
                     <Sound>Sound0</Sound>
@@ -274,40 +176,6 @@
                             <Resource>U_ACTION</Resource>
                             <Comparison>EQUAL</Comparison>
                             <Value>35</Value>
-                        </Condition>
-                    </Conditions>
-                </Animation>
-                <Animation>
-                    <Identifier>ACTION_Hitch_Full</Identifier>
-                    <AnimationNum>0</AnimationNum>
-                    <Sound>Sound0</Sound>
-                    <AnimationTime>0</AnimationTime>
-                    <ShowProgress>0</ShowProgress>
-                    <MorphFromActionParameterClass>0</MorphFromActionParameterClass>
-                    <LobProjectilePath>0</LobProjectilePath>
-                    <RenderModelExplode>0</RenderModelExplode>
-                    <Conditions>
-                        <Condition>
-                            <Resource>U_ACTION</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>34</Value>
-                        </Condition>
-                    </Conditions>
-                </Animation>
-                <Animation>
-                    <Identifier>ACTION_ERROR_CP</Identifier>
-                    <AnimationNum>0</AnimationNum>
-                    <Sound>Sound4</Sound>
-                    <AnimationTime>0</AnimationTime>
-                    <ShowProgress>0</ShowProgress>
-                    <MorphFromActionParameterClass>0</MorphFromActionParameterClass>
-                    <LobProjectilePath>0</LobProjectilePath>
-                    <RenderModelExplode>0</RenderModelExplode>
-                    <Conditions>
-                        <Condition>
-                            <Resource>U_ACTION</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>33</Value>
                         </Condition>
                     </Conditions>
                 </Animation>
@@ -346,23 +214,6 @@
                     </Conditions>
                 </Animation>
                 <Animation>
-                    <Identifier>ACTION_Post_w2_delay</Identifier>
-                    <AnimationNum>0</AnimationNum>
-                    <Sound>Sound0</Sound>
-                    <AnimationTime>0</AnimationTime>
-                    <ShowProgress>0</ShowProgress>
-                    <MorphFromActionParameterClass>0</MorphFromActionParameterClass>
-                    <LobProjectilePath>0</LobProjectilePath>
-                    <RenderModelExplode>0</RenderModelExplode>
-                    <Conditions>
-                        <Condition>
-                            <Resource>U_ACTION</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>28</Value>
-                        </Condition>
-                    </Conditions>
-                </Animation>
-                <Animation>
                     <Identifier>ACTION_TAKE_UNIT</Identifier>
                     <AnimationNum>0</AnimationNum>
                     <Sound>Sound39</Sound>
@@ -380,23 +231,6 @@
                     </Conditions>
                 </Animation>
                 <Animation>
-                    <Identifier>ACTION_Attack_w2</Identifier>
-                    <AnimationNum>4</AnimationNum>
-                    <Sound>Sound72</Sound>
-                    <AnimationTime>0</AnimationTime>
-                    <ShowProgress>0</ShowProgress>
-                    <MorphFromActionParameterClass>0</MorphFromActionParameterClass>
-                    <LobProjectilePath>0</LobProjectilePath>
-                    <RenderModelExplode>0</RenderModelExplode>
-                    <Conditions>
-                        <Condition>
-                            <Resource>U_ACTION</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>26</Value>
-                        </Condition>
-                    </Conditions>
-                </Animation>
-                <Animation>
                     <Identifier>ACTION_Attack_w1</Identifier>
                     <AnimationNum>4</AnimationNum>
                     <Sound>Sound72</Sound>
@@ -409,7 +243,7 @@
                         <Condition>
                             <Resource>U_ACTION</Resource>
                             <Comparison>EQUAL</Comparison>
-                            <Value>25</Value>
+                            <Value>26</Value>
                         </Condition>
                     </Conditions>
                 </Animation>
@@ -431,7 +265,24 @@
                     </Conditions>
                 </Animation>
                 <Animation>
-                    <Identifier>ACTION_PREP_CHRONOPORT</Identifier>
+                    <Identifier>ACTION_POST_SKIP</Identifier>
+                    <AnimationNum>0</AnimationNum>
+                    <Sound>Sound25</Sound>
+                    <AnimationTime>0</AnimationTime>
+                    <ShowProgress>1</ShowProgress>
+                    <MorphFromActionParameterClass>0</MorphFromActionParameterClass>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <RenderModelExplode>0</RenderModelExplode>
+                    <Conditions>
+                        <Condition>
+                            <Resource>U_ACTION</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>22</Value>
+                        </Condition>
+                    </Conditions>
+                </Animation>
+                <Animation>
+                    <Identifier>ACTION_CAST</Identifier>
                     <AnimationNum>0</AnimationNum>
                     <Sound>Sound0</Sound>
                     <AnimationTime>0</AnimationTime>
@@ -467,6 +318,40 @@
                     </Conditions>
                 </Animation>
                 <Animation>
+                    <Identifier>ACTION_SOP</Identifier>
+                    <AnimationNum>0</AnimationNum>
+                    <Sound>Sound0</Sound>
+                    <AnimationTime>0</AnimationTime>
+                    <ShowProgress>1</ShowProgress>
+                    <MorphFromActionParameterClass>0</MorphFromActionParameterClass>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <RenderModelExplode>0</RenderModelExplode>
+                    <Conditions>
+                        <Condition>
+                            <Resource>U_ACTION</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>12</Value>
+                        </Condition>
+                    </Conditions>
+                </Animation>
+                <Animation>
+                    <Identifier>ACTION_MARINE</Identifier>
+                    <AnimationNum>0</AnimationNum>
+                    <Sound>Sound0</Sound>
+                    <AnimationTime>0</AnimationTime>
+                    <ShowProgress>1</ShowProgress>
+                    <MorphFromActionParameterClass>0</MorphFromActionParameterClass>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <RenderModelExplode>0</RenderModelExplode>
+                    <Conditions>
+                        <Condition>
+                            <Resource>U_ACTION</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>10</Value>
+                        </Condition>
+                    </Conditions>
+                </Animation>
+                <!--Animation>
                     <Identifier>ACTION_INFECT</Identifier>
                     <AnimationNum>6</AnimationNum>
                     <Sound>Sound14</Sound>
@@ -482,24 +367,7 @@
                             <Value>10</Value>
                         </Condition>
                     </Conditions>
-                </Animation>
-                <Animation>
-                    <Identifier>ACTION_ATTACK_W2</Identifier>
-                    <AnimationNum>3</AnimationNum>
-                    <Sound>Sound74</Sound>
-                    <AnimationTime>0</AnimationTime>
-                    <ShowProgress>0</ShowProgress>
-                    <MorphFromActionParameterClass>0</MorphFromActionParameterClass>
-                    <LobProjectilePath>0</LobProjectilePath>
-                    <RenderModelExplode>0</RenderModelExplode>
-                    <Conditions>
-                        <Condition>
-                            <Resource>U_ACTION</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>5</Value>
-                        </Condition>
-                    </Conditions>
-                </Animation>
+                </Animation-->
                 <Animation>
                     <Identifier>ACTION_ATTACK_W1</Identifier>
                     <AnimationNum>3</AnimationNum>
@@ -507,7 +375,7 @@
                     <AnimationTime>0</AnimationTime>
                     <ShowProgress>0</ShowProgress>
                     <MorphFromActionParameterClass>0</MorphFromActionParameterClass>
-                    <LobProjectilePath>0</LobProjectilePath>
+                    <LobProjectilePath>1</LobProjectilePath>
                     <RenderModelExplode>0</RenderModelExplode>
                     <Conditions>
                         <Condition>
@@ -626,6 +494,13 @@
                             <ValueEval>ONE</ValueEval>
                             <Value>-100</Value>
                         </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_AMMO</Type>
+                            <ValueEval>SET_TO_VALUE</ValueEval>
+                            <Value>0</Value>
+                        </Step>
                     </Steps>
                 </Action>
                 <Action>
@@ -670,7 +545,7 @@
                 <Action>
                     <ActionNumber>2</ActionNumber>
                     <Identifier>ACTION_MOVE</Identifier>
-                    <TimeTaken>4</TimeTaken>
+                    <TimeTaken>6</TimeTaken>
                     <ForceObjectAction>0</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
                     <MutexAction>0</MutexAction>
@@ -706,6 +581,16 @@
                             <Comparison>EQUAL</Comparison>
                             <Value>1</Value>
                         </Condition>
+						<Condition>
+                            <Resource>U_ENERGY</Resource>
+                            <Comparison>GEQUAL</Comparison>
+                            <Value>6</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_ENERGY</Resource>
+                            <Comparison>MODULO_IS_ZERO</Comparison>
+                            <Value>3</Value>
+						</Condition>
                     </Conditions>
                     <Steps>
                         <Step>
@@ -714,6 +599,13 @@
                             <ValueEval>ONE</ValueEval>
                             <Value>0</Value>
                             <ActionStepModifier>Tank3 anti_gnd</ActionStepModifier>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_ENERGY</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>5</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -729,35 +621,27 @@
                     <AIScriptCanRun>0</AIScriptCanRun>
                     <SetParamZeroTicks>0</SetParamZeroTicks>
                     <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <Conditions />
+                    <Conditions>
+						<Condition>
+                            <Resource>U_ENERGY</Resource>
+                            <Comparison>GEQUAL</Comparison>
+                            <Value>1</Value>
+                        </Condition>
+                    </Conditions>
                     <Steps>
                         <Step>
                             <PrimitiveAction>NOTHING</PrimitiveAction>
                             <Target>TARGET_UNIT</Target>
                             <ActionStepModifier>Tank3 anti_air</ActionStepModifier>
                         </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_ENERGY</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>1</Value>
+                        </Step>
                     </Steps>
-                </Action>
-                <Action>
-                    <ActionNumber>5</ActionNumber>
-                    <Identifier>ACTION_ATTACK_W2</Identifier>
-                    <TimeTaken>6</TimeTaken>
-                    <ForceObjectAction>1</ForceObjectAction>
-                    <InterruptCurrentAction>0</InterruptCurrentAction>
-                    <MutexAction>1</MutexAction>
-                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
-                    <PreserveParameter>1</PreserveParameter>
-                    <AIScriptCanRun>0</AIScriptCanRun>
-                    <SetParamZeroTicks>0</SetParamZeroTicks>
-                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <Conditions>
-                        <Condition>
-                            <Resource>U_ACTION</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>25</Value>
-                        </Condition>
-                    </Conditions>
-                    <Steps />
                 </Action>
                 <Action>
                     <ActionNumber>6</ActionNumber>
@@ -806,7 +690,7 @@
                         </Step>
                     </Steps>
                 </Action>
-                <Action>
+                <!--Action>
                     <ActionNumber>10</ActionNumber>
                     <Identifier>ACTION_INFECT</Identifier>
                     <TimeTaken>8</TimeTaken>
@@ -844,6 +728,118 @@
                             <Value>50</Value>
                         </Step>
                     </Steps>
+                </Action-->
+                <Action>
+                    <ActionNumber>10</ActionNumber>
+                    <Identifier>ACTION_MARINE</Identifier>
+                    <TimeTaken>72</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions>
+                        <Condition>
+                            <Resource>U_ADDITIONAL_PARAMETERS4</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>3</Value>
+                        </Condition>
+                    </Conditions>
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_ADDITIONAL_PARAMETERS4</Type>
+                            <ValueEval>SET_TO_VALUE</ValueEval>
+                            <Value>0</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_Q_PLASMA</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>100</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_HP</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>125</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_AMMO</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>-1</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CREATE_CARRIED_UNIT</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Value>1</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>12</ActionNumber>
+                    <Identifier>ACTION_SOP</Identifier>
+                    <TimeTaken>216</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions>
+                        <Condition>
+                            <Resource>U_ADDITIONAL_PARAMETERS4</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>3</Value>
+                        </Condition>
+                    </Conditions>
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_ADDITIONAL_PARAMETERS4</Type>
+                            <ValueEval>SET_TO_VALUE</ValueEval>
+                            <Value>0</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_Q_PLASMA</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>200</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_HP</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>250</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_AMMO</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>-1</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CREATE_CARRIED_UNIT</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Value>5</Value>
+                        </Step>
+                    </Steps>
                 </Action>
                 <Action>
                     <ActionNumber>15</ActionNumber>
@@ -862,23 +858,8 @@
                 </Action>
                 <Action>
                     <ActionNumber>20</ActionNumber>
-                    <Identifier>ACTION_PREP_CHRONOPORT</Identifier>
-                    <TimeTaken>1</TimeTaken>
-                    <ForceObjectAction>0</ForceObjectAction>
-                    <InterruptCurrentAction>0</InterruptCurrentAction>
-                    <MutexAction>0</MutexAction>
-                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
-                    <PreserveParameter>1</PreserveParameter>
-                    <AIScriptCanRun>0</AIScriptCanRun>
-                    <SetParamZeroTicks>0</SetParamZeroTicks>
-                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <Conditions />
-                    <Steps />
-                </Action>
-                <Action>
-                    <ActionNumber>22</ActionNumber>
-                    <Identifier>ACTION_TELEPORTED</Identifier>
-                    <TimeTaken>0</TimeTaken>
+                    <Identifier>ACTION_CAST</Identifier>
+                    <TimeTaken>18</TimeTaken>
                     <ForceObjectAction>0</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
                     <MutexAction>0</MutexAction>
@@ -890,9 +871,71 @@
                     <Conditions />
                     <Steps>
                         <Step>
-                            <PrimitiveAction>CLEAR_STATUS</PrimitiveAction>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
-                            <Type>STATUS_CAPABILITY_1</Type>
+                            <Type>P_Q_PLASMA</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>250</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>ACCUM_STATISTIC</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>CPortDepartures</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>1</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CHRONOPORT</PrimitiveAction>
+                            <Target>SELF</Target>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>21</ActionNumber>
+                    <Identifier>ACTION_SKIP</Identifier>
+                    <TimeTaken>0</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>TELEPORT</PrimitiveAction>
+                            <Target>SELF</Target>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>22</ActionNumber>
+                    <Identifier>ACTION_POST_SKIP</Identifier>
+                    <TimeTaken>36</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>TELEPORT</PrimitiveAction>
+                            <Target>SELF</Target>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_Q_PLASMA</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>250</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -914,7 +957,7 @@
                 <Action>
                     <ActionNumber>24</ActionNumber>
                     <Identifier>ACTION_Attack_w0</Identifier>
-                    <TimeTaken>19</TimeTaken>
+                    <TimeTaken>10</TimeTaken>
                     <ForceObjectAction>1</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
                     <MutexAction>0</MutexAction>
@@ -934,6 +977,40 @@
                 </Action>
                 <Action>
                     <ActionNumber>25</ActionNumber>
+                    <Identifier>ACTION_Attack_w0_empty</Identifier>
+                    <TimeTaken>1</TimeTaken>
+                    <ForceObjectAction>1</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>1</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <Conditions>
+                        <Condition>
+                            <Resource>U_ACTION</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>24</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_ENERGY</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>1</Value>
+						</Condition>
+                    </Conditions>
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_ENERGY</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>1</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>26</ActionNumber>
                     <Identifier>ACTION_Attack_w1</Identifier>
                     <TimeTaken>4</TimeTaken>
                     <ForceObjectAction>1</ForceObjectAction>
@@ -949,35 +1026,6 @@
                             <Resource>U_ACTION</Resource>
                             <Comparison>EQUAL</Comparison>
                             <Value>4</Value>
-                        </Condition>
-                    </Conditions>
-                    <Steps>
-                        <Step>
-                            <PrimitiveAction>ATTACK</PrimitiveAction>
-                            <Target>TARGET_UNIT</Target>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>0</Value>
-                            <ActionStepModifier>Tank3 anti_air</ActionStepModifier>
-                        </Step>
-                    </Steps>
-                </Action>
-                <Action>
-                    <ActionNumber>26</ActionNumber>
-                    <Identifier>ACTION_Attack_w2</Identifier>
-                    <TimeTaken>8</TimeTaken>
-                    <ForceObjectAction>1</ForceObjectAction>
-                    <InterruptCurrentAction>0</InterruptCurrentAction>
-                    <MutexAction>1</MutexAction>
-                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
-                    <PreserveParameter>1</PreserveParameter>
-                    <AIScriptCanRun>0</AIScriptCanRun>
-                    <SetParamZeroTicks>0</SetParamZeroTicks>
-                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <Conditions>
-                        <Condition>
-                            <Resource>U_ACTION</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>5</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -1032,7 +1080,7 @@
                 <Action>
                     <ActionNumber>28</ActionNumber>
                     <Identifier>ACTION_Post_w2_delay</Identifier>
-                    <TimeTaken>12</TimeTaken>
+                    <TimeTaken>16</TimeTaken>
                     <ForceObjectAction>1</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
                     <MutexAction>0</MutexAction>
@@ -1047,6 +1095,11 @@
                             <Comparison>EQUAL</Comparison>
                             <Value>26</Value>
                         </Condition>
+                        <Condition>
+                            <Resource>U_ENERGY</Resource>
+                            <Comparison>MODULO_IS_ZERO</Comparison>
+                            <Value>4</Value>
+						</Condition>
                     </Conditions>
                     <Steps />
                 </Action>
@@ -1079,31 +1132,6 @@
                     <AllowActionWhenStopped>0</AllowActionWhenStopped>
                     <Conditions />
                     <Steps />
-                </Action>
-                <Action>
-                    <ActionNumber>33</ActionNumber>
-                    <Identifier>ACTION_ERROR_CP</Identifier>
-                    <TimeTaken>1</TimeTaken>
-                    <ForceObjectAction>0</ForceObjectAction>
-                    <InterruptCurrentAction>0</InterruptCurrentAction>
-                    <MutexAction>0</MutexAction>
-                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
-                    <PreserveParameter>0</PreserveParameter>
-                    <AIScriptCanRun>0</AIScriptCanRun>
-                    <SetParamZeroTicks>0</SetParamZeroTicks>
-                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <Conditions />
-                    <Steps>
-                        <Step>
-                            <PrimitiveAction>CLEAR_STATUS</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>STATUS_CAPABILITY_5</Type>
-                        </Step>
-                        <Step>
-                            <PrimitiveAction>CHANGE_COMMANDER</PrimitiveAction>
-                            <Target>SELF</Target>
-                        </Step>
-                    </Steps>
                 </Action>
                 <Action>
                     <ActionNumber>34</ActionNumber>
@@ -1162,7 +1190,7 @@
                     <Identifier>ACTION_REGEN</Identifier>
                     <TimeTaken>0</TimeTaken>
                     <ForceObjectAction>1</ForceObjectAction>
-                    <InterruptCurrentAction>1</InterruptCurrentAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
                     <MutexAction>0</MutexAction>
                     <FailOnInvalidTarget>0</FailOnInvalidTarget>
                     <PreserveParameter>0</PreserveParameter>
@@ -1173,12 +1201,22 @@
                         <Condition>
                             <Resource>U_AGE</Resource>
                             <Comparison>MODULO_IS_ZERO</Comparison>
-                            <Value>60</Value>
+                            <Value>72</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_ENERGY</Resource>
                             <Comparison>LESS</Comparison>
-                            <Value>100</Value>
+                            <Value>60</Value>
+						</Condition>
+                        <Condition>
+                            <Resource>U_ACTION</Resource>
+                            <Comparison>NOT_EQUAL</Comparison>
+                            <Value>3</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_ACTION</Resource>
+                            <Comparison>NOT_EQUAL</Comparison>
+                            <Value>24</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -1188,65 +1226,6 @@
                             <Type>U_ENERGY</Type>
                             <ValueEval>ONE</ValueEval>
                             <Value>-1</Value>
-                        </Step>
-                    </Steps>
-                </Action>
-                <Action>
-                    <ActionNumber>37</ActionNumber>
-                    <Identifier>ACTION_CHRONOPORT</Identifier>
-                    <TimeTaken>18</TimeTaken>
-                    <ForceObjectAction>1</ForceObjectAction>
-                    <InterruptCurrentAction>0</InterruptCurrentAction>
-                    <MutexAction>0</MutexAction>
-                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
-                    <PreserveParameter>1</PreserveParameter>
-                    <AIScriptCanRun>0</AIScriptCanRun>
-                    <SetParamZeroTicks>0</SetParamZeroTicks>
-                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <Conditions>
-                        <Condition>
-                            <Resource>U_AGE</Resource>
-                            <Comparison>MODULO_IS_ZERO</Comparison>
-                            <Value>8</Value>
-                        </Condition>
-                        <Condition>
-                            <Resource>U_STATUS</Resource>
-                            <Comparison>BITMASK</Comparison>
-                            <Value>256</Value>
-                        </Condition>
-                    </Conditions>
-                    <Steps>
-                        <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>P_L_CRYSTALS</Type>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>0</Value>
-                        </Step>
-                        <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>P_Q_PLASMA</Type>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>70</Value>
-                        </Step>
-                        <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>U_OBJECTIVE</Type>
-                            <ValueEval>SET_TO_VALUE</ValueEval>
-                            <Value>0</Value>
-                        </Step>
-                        <Step>
-                            <PrimitiveAction>ACCUM_STATISTIC</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>CPortDepartures</Type>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>1</Value>
-                        </Step>
-                        <Step>
-                            <PrimitiveAction>CHRONOPORT</PrimitiveAction>
-                            <Target>SELF</Target>
                         </Step>
                     </Steps>
                 </Action>
@@ -1412,9 +1391,68 @@
                     </Steps>
                 </Action>
                 <Action>
+                    <ActionNumber>49</ActionNumber>
+                    <Identifier>ACTION_SUMMON_TROOPS</Identifier>
+                    <TimeTaken>0</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>1</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <Conditions>
+                        <Condition>
+                            <Resource>P_CUSTOM_FIELD_4</Resource>
+                            <Comparison>NOT_EQUAL</Comparison>
+                            <Value>0</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>T_STATUS</Resource>
+                            <Comparison>BITMASK_NOT</Comparison>
+                            <Value>4</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>T_AMMO</Resource>
+                            <Comparison>GREATER</Comparison>
+                            <Value>0</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>P_RESERVE_SOLDIERS</Resource>
+                            <Comparison>GREATER</Comparison>
+                            <Value>0</Value>
+                        </Condition>
+                    </Conditions>
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_ADDITIONAL_PARAMETERS4</Type>
+                            <ValueEval>SET_TO_VALUE</ValueEval>
+                            <Value>3</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>TARGET_UNIT</Target>
+                            <Type>U_AMMO</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>1</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_RESERVE_SOLDIERS</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>1</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
                     <ActionNumber>50</ActionNumber>
                     <Identifier>ACTION_MOVE_SLOW</Identifier>
-                    <TimeTaken>4</TimeTaken>
+                    <TimeTaken>6</TimeTaken>
                     <ForceObjectAction>0</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
                     <MutexAction>0</MutexAction>
@@ -1429,74 +1467,6 @@
                             <PrimitiveAction>MOVE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Value>0</Value>
-                        </Step>
-                    </Steps>
-                </Action>
-                <Action>
-                    <ActionNumber>52</ActionNumber>
-                    <Identifier>ACTION_FINISH_CPORT1</Identifier>
-                    <TimeTaken>1</TimeTaken>
-                    <ForceObjectAction>1</ForceObjectAction>
-                    <InterruptCurrentAction>0</InterruptCurrentAction>
-                    <MutexAction>0</MutexAction>
-                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
-                    <PreserveParameter>0</PreserveParameter>
-                    <AIScriptCanRun>0</AIScriptCanRun>
-                    <SetParamZeroTicks>0</SetParamZeroTicks>
-                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <Conditions>
-                        <Condition>
-                            <Resource>U_STATUS</Resource>
-                            <Comparison>BITMASK</Comparison>
-                            <Value>256</Value>
-                        </Condition>
-                        <Condition>
-                            <Resource>U_OBJECTIVE</Resource>
-                            <Comparison>GREATER</Comparison>
-                            <Value>49</Value>
-                        </Condition>
-                    </Conditions>
-                    <Steps>
-                        <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>U_OBJECTIVE</Type>
-                            <ValueEval>SET_TO_VALUE</ValueEval>
-                            <Value>49</Value>
-                        </Step>
-                    </Steps>
-                </Action>
-                <Action>
-                    <ActionNumber>53</ActionNumber>
-                    <Identifier>ACTION_FINISH_CPORT2</Identifier>
-                    <TimeTaken>1</TimeTaken>
-                    <ForceObjectAction>1</ForceObjectAction>
-                    <InterruptCurrentAction>0</InterruptCurrentAction>
-                    <MutexAction>0</MutexAction>
-                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
-                    <PreserveParameter>0</PreserveParameter>
-                    <AIScriptCanRun>0</AIScriptCanRun>
-                    <SetParamZeroTicks>0</SetParamZeroTicks>
-                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <Conditions>
-                        <Condition>
-                            <Resource>U_STATUS</Resource>
-                            <Comparison>BITMASK</Comparison>
-                            <Value>256</Value>
-                        </Condition>
-                        <Condition>
-                            <Resource>U_OBJECTIVE</Resource>
-                            <Comparison>LESS</Comparison>
-                            <Value>48</Value>
-                        </Condition>
-                    </Conditions>
-                    <Steps>
-                        <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>U_OBJECTIVE</Type>
-                            <ValueEval>SET_TO_VALUE</ValueEval>
-                            <Value>49</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -1540,7 +1510,7 @@
             <Objectives>
                 <Objective>
                     <ObjectiveNumber>0</ObjectiveNumber>
-                    <Script>cs000_basic_idle</Script>
+                    <Script>hs001_tank_idle</Script>
                     <Name>Idle</Name>
                     <Details></Details>
                 </Objective>
@@ -1548,7 +1518,7 @@
                     <ObjectiveNumber>1</ObjectiveNumber>
                     <Script>cs010_move</Script>
                     <Name>Move</Name>
-                    <Details> \Move to specified location \Move Speed: 4.5, MaxInc: 30\Vision Range: 30, Aggro Radius: 25</Details>
+                    <Details> \Move to specified location \Move Speed: 3, MaxInc: 30\Vision Range: 25, Aggro Radius: 28</Details>
                     <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
@@ -1562,7 +1532,7 @@
                     <ObjectiveNumber>3</ObjectiveNumber>
                     <Script>cs030_atk_move</Script>
                     <Name>Attack</Name>
-                    <Details>Attack target or Attack-Move to location \ \[Weapons Avg Damage/10secs ]\Gnd: 400,  R 19,  Sta C\Air: 200,  R 14,  Sta C</Details>
+                    <Details>Attack target or Attack-Move to location \Reduced DPS when Energy is empty \[Weapons Avg Damage/10secs]\Gnd: 160 (-120),  R 15,  Sta A\Air: 120 (-60),  R 15,  Sta A</Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
                     <ParameterType>POSITION</ParameterType>
                 </Objective>
@@ -1616,24 +1586,21 @@
                     <Script>cs100_tport</Script>
                     <Name>Teleport</Name>
                     <Details>Teleport to a specified location\or self-teleport within LOS range\Teleporters extend range and negate cost\ \Blocked by Temporal Soliton Shield (TSS)</Details>
-                    <Resource1>0</Resource1>
-                    <Resource4>1000</Resource4>
-                    <!--Resource5>0</Resource5-->
+                    <Resource4>250</Resource4>
                     <ObjectiveControlShortcutNumber>5</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>11</ObjectiveNumber>
-                    <Script>cs111_g_cport</Script>
+                    <Script>cs110_cport</Script>
                     <Name>Chronoport</Name>
-                    <Details>Chronoport to a specified point in time\ \Recharges Shields 50%\Must not have a TSS</Details>
-                    <Resource1>0</Resource1>
-                    <Resource4>1000</Resource4>
+                    <Details>Chronoport to a specified point in time\if in range of a Chronoporter or Slipgate \ \Must not have a TSS</Details>
+                    <Resource4>250</Resource4>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>12</ObjectiveNumber>
                     <Script>cs120_cport_na</Script>
                     <Name>Chronoport</Name>
-                    <Details>   Not Available\    Requires Gate Tech\    upgrade at the [GATE TECH BUILDING]</Details>
+                    <Details>   Not Available\    Requires Gate Tech\    upgrade at your TELEPORTER</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>13</ObjectiveNumber>
@@ -1647,27 +1614,30 @@
                     <Name>R Clicked Ally</Name>
                     <Details></Details>
                 </Objective>
-                <Objective>
-                    <ObjectiveNumber>15</ObjectiveNumber>
-                    <Script>gs150_rally_to</Script>
-                    <Name>Offspring Dispatch</Name>
-                    <Details></Details>
-                    <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
-                </Objective>
                 
                 <Objective>
-                    <ObjectiveNumber>19</ObjectiveNumber>
-                    <Script>Script234</Script>
-                    <Name>Upgrade Tank</Name>
-                    <Details>Medium speed ground mechanical vehicle\Mobile anti air artillery\Infects enemies with nanites\Carries up to 2 troops\[ Weapon ] Ground: 68   Air: 90</Details>
-                    <Resource2>200</Resource2>
-                    <Resource4>200</Resource4>
+                    <ObjectiveNumber>22</ObjectiveNumber>
+                    <Script>hs221_tank_make_marine</Script>
+                    <Name>Create Support-Marine</Name>
+                    <Details> \Light skirmisher combat-technician \Repairs damaged units and structures \Cloaks while stationary \Invisible in Fog of War</Details>
+                    <Resource3>1</Resource3>
+                    <Resource4>100</Resource4>
+					<Resource5>125</Resource5>
                 </Objective>
                 <Objective>
-                    <ObjectiveNumber>20</ObjectiveNumber>
-                    <Script>Script231</Script>
-                    <Name>Upgrade Tank</Name>
-                    <Details>   Not available \    Requires the Ground Units\    upgrade at the ARMORY</Details>
+                    <ObjectiveNumber>24</ObjectiveNumber>
+                    <Script>hs241_tank_make_sop</Script>
+                    <Name>Create SOP</Name>
+                    <Details> \Close combat heavy-infantry \Upgradeable to cloak during combat \Invisible in Fog of War</Details>
+                    <Resource3>1</Resource3>
+                    <Resource4>200</Resource4>
+					<Resource5>250</Resource5>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>17</ObjectiveNumber>
+                    <Script>hs171_tank_release</Script>
+                    <Name>Dismount</Name>
+                    <Details> \Eject passengers \ \Triggers automatically in combat</Details>
                 </Objective>
             </Objectives>
             <ControlShortcuts>
@@ -1839,7 +1809,7 @@
                         <ControlCondition>
                             <Resource>P_ADVANCEMENTS</Resource>
                             <Comparison>BITMASK</Comparison>
-                            <Value>512</Value>
+                            <Value>16</Value>
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
@@ -1869,52 +1839,71 @@
                         <ControlCondition>
                             <Resource>P_ADVANCEMENTS</Resource>
                             <Comparison>BITMASK_NOT</Comparison>
-                            <Value>512</Value>
+                            <Value>16</Value>
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
                 
                 <ControlShortcut>
-                    <ControlNumber>10</ControlNumber>
-                    <ControlObjectiveNumber>19</ControlObjectiveNumber>
-                    <MouseInputType>SHORTCUT_QUICK_4</MouseInputType>
+                    <ControlNumber>12</ControlNumber>
+                    <ControlObjectiveNumber>22</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
-                    <KeyboardShortcut>$AchronKBUpgradeSelf</KeyboardShortcut>
+                    <KeyboardShortcut>$AchronKBMarine</KeyboardShortcut>
                     <Flags>
-                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
-                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ShortcutOnKeyRelease>1</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>1</EstTimeConstIsStart>
                         <ButtonDisabled>0</ButtonDisabled>
                         <UserControlsCustom>0</UserControlsCustom>
                         <ButtonInvisible>0</ButtonInvisible>
                         <SelectTarget>0</SelectTarget>
                     </Flags>
-                    <EstTimeConst>360</EstTimeConst>
+                    <EstTimeConst>72</EstTimeConst>
                     <EstTimeDist>0</EstTimeDist>
-                    <Sound>Sound0</Sound>
+                    <Sound>Sound9</Sound>
                     <ControlConditions>
                         <ControlCondition>
                             <Resource>U_IS_CARRIED</Resource>
                             <Comparison>EQUAL</Comparison>
                             <Value>0</Value>
                         </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+                <ControlShortcut>
+                    <ControlNumber>13</ControlNumber>
+                    <ControlObjectiveNumber>24</ControlObjectiveNumber>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut>$AchronKBSop</KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>1</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>1</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>216</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound9</Sound>
+                    <ControlConditions>
                         <ControlCondition>
-                            <Resource>P_ADVANCEMENTS</Resource>
-                            <Comparison>BITMASK</Comparison>
-                            <Value>4</Value>
+                            <Resource>U_IS_CARRIED</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>0</Value>
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
                 <ControlShortcut>
-                    <ControlNumber>11</ControlNumber>
-                    <ControlObjectiveNumber>20</ControlObjectiveNumber>
+                    <ControlNumber>14</ControlNumber>
+                    <ControlObjectiveNumber>17</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
-                    <KeyboardShortcut></KeyboardShortcut>
+                    <KeyboardShortcut>$AchronKBReleaseCargo</KeyboardShortcut>
                     <Flags>
                         <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
                         <EstTimeConstIsStart>0</EstTimeConstIsStart>
-                        <ButtonDisabled>1</ButtonDisabled>
+                        <ButtonDisabled>0</ButtonDisabled>
                         <UserControlsCustom>0</UserControlsCustom>
                         <ButtonInvisible>0</ButtonInvisible>
                         <SelectTarget>0</SelectTarget>
@@ -1927,11 +1916,6 @@
                             <Resource>U_IS_CARRIED</Resource>
                             <Comparison>EQUAL</Comparison>
                             <Value>0</Value>
-                        </ControlCondition>
-                        <ControlCondition>
-                            <Resource>P_ADVANCEMENTS</Resource>
-                            <Comparison>BITMASK_NOT</Comparison>
-                            <Value>4</Value>
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
