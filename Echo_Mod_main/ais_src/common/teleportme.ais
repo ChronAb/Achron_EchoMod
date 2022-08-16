@@ -10,12 +10,12 @@ Design:
     1. Units not near a teleporter must try to Skip-port
     2. Units near a Slipgate may teleport anywhere in a 200 sq radius
         or to any other Tport gate on the map, at 0 cost
-    3. Units near a Teleporter may teleport anywhere in a 70 sq radius
+    3. Units near & commanding a Teleporter may teleport anywhere in a 70 sq radius
         or to any other Tport gate on the map, at 0 cost
     4. Units near a Spyre may teleport to other Tport gates in a 120 sq radius,
         at 0 cost
     5. An Anchor can act as destination gate only
-    6. Unlike vanilla Achron, units in this mod (mostly) only teleport under thier own power. The Teleporter controls the teleport rate through giving teleport approval with stat_cap_1. (==> Vanilla 'porter = teleporter vs Echo 'porter = air traffic control tower) 
+    6. Unlike vanilla Achron, units in this mod (mostly) only teleport under thier own power. The Teleporter controls the teleport rate through giving teleport approval with its hierarchy pointer. 
 
 Logic flow:
     1. Verify that you are permitted to teleport and the destination is within range
@@ -42,24 +42,32 @@ Logic flow:
         } \
         else { \
             if (uclass==$ATHC_CLASS) { qp = $ATHC_CPORT_QP; } \
-            else if (uclass>=$MFB_CLASS && uclass <=$TYR_MFB_CLASS) { qp = $MFB_CPORT_QP; } \
+            else if (uclass>=$MFB_CLASS && uclass <=$HUMAN_ACHRON_CLASS) { \
+                qp = $MFB_CPORT_QP; } \
             else if (uclass==$LANCER_CLASS) { qp = $LANCER_CPORT_QP; } \
             else if (uclass==$FRIGATE_CLASS) { qp = $FRIGATE_CPORT_QP; } \
             else if (uclass==$TORNADE_CLASS) { qp = $TORNADE_CPORT_QP; } \
             else if (uclass==$CRUISER_CLASS) { qp = $CRUISER_CPORT_QP; } \
             else if (uclass==$BLACKBIRD_CLASS) { qp = $BLACKBIRD_CPORT_QP; } \
+            else if (uclass==$HUMAN_RP_CLASS || uclass==$HUMAN_RP_OFF_CLASS) { \
+                qp = $H_RP_TPORT_QP; } \
+            else if (uclass==$TETHER_CLASS) {qp = $TETHER_TPORT_QP; } \
+            else if (uclass==$TELEPORTER_CLASS) {qp = $TPORTER_TPORT_QP; } \
+            else if (uclass==$CHRONOPORTER_CLASS) {qp = $CPORTER_TPORT_QP; } \
         } \
     }  \
     else { \
         if (uclass==$OCTO_CLASS) { qp = $OCTO_CPORT_QP; } \
-        else if (uclass>=$OCTOPOD_CLASS && uclass <= ($GREKIM_ACHRON_CLASS)) { qp = $OCTOPOD_CPORT_QP; } \
+        else if (uclass>=$OCTOPOD_CLASS) { qp = $OCTOPOD_CPORT_QP; } \
         else if (uclass==$OCTOLIGO_CLASS) { qp = $OCTOLIGO_CPORT_QP; } \
         else if (uclass==$SEPI_CLASS) { qp = $SEPI_CPORT_QP; } \
         else if (uclass==$SEPIPOD_CLASS) { qp = $SEPIPOD_CPORT_QP; } \
         else if (uclass==$SEPILIGO_CLASS) { qp = $SEPILIGO_CPORT_QP; } \
         else if (uclass==$PHARO_CLASS) { qp = $PHARO_CPORT_QP; } \
         else if (uclass==$PHAROPOD_CLASS) { qp = $PHAROPOD_CPORT_QP; } \
-        else if (uclass==$PHAROLIGO_CLASS) { qp = $PHAROLIGO_CPORT_QP; } \
+        else if (uclass==$PHAROLIGO_CLASS || uclass==$PHAROLIGO_MOVING_CLASS) { qp = $PHAROLIGO_CPORT_QP; } \
+        else if (uclass==$SCOUT_GUARDIAN_CLASS || uclass==$GREKIM_ACHRON_CLASS) { qp = $GREKIM_ACHRON_CLASS; } \
+        else if (uclass==$GREKIM_RP_CLASS || uclass==$GREKIM_RP_OFF_CLASS) { qp = $G_RP_CPORT_QP; } \
     }
 
 
@@ -111,7 +119,7 @@ if (goal_dist < 25) {
 #include common/include/unit_common_header.ais
 object closesttport =  0;
 
-if (AP_UNIT) { //already have a unit stored
+if (AP_UNIT) { //already have a gate stored
     closesttport = ap[$STOREDUNIT];
     if (closesttport->IsAlive==1) {
 		int ctr = closesttport.Rank;
@@ -128,6 +136,19 @@ if (AP_UNIT) { //already have a unit stored
 		PERFORM SET_ADDITIONAL_PARAMS ap;
 		closesttport = 0;        
 	}
+    
+    // Just waiting for our turn with a teleporter - let's not waste cpu time
+    if (closesttport.Rank==$TELEPORTER_RANK && closesttport->Commander!=unit) {
+        object altPorter = unit->NextSubordinate;
+        while (altPorter > 0){
+            if (altPorter.Rank==$TELEPORTER_RANK) {
+                closesttport = altPorter;
+                altPorter = 0;
+            }
+            else altPorter = unit->NextSubordinate;
+        }
+        if (closesttport->Commander!=unit) PERFORM NOTHING;
+    }
 }
 
 //Look for a new 'porter
@@ -158,6 +179,7 @@ if (closesttport==0) {
     // then it is not remotely possible by any other means, so return to idle
 if ( closesttport!=0 && to_unit ) {
     if ( target.Rank!=$SLIPGATE_RANK 
+            && target.Rank!=$TETHER_RANK 
             && target.Rank!=$TELEPORTER_RANK 
             && target.Rank!=$SPYRE_RANK ) {
         to_unit = 0;
@@ -222,7 +244,20 @@ if (closesttport==0 && ( 1 || player->Advancements[$HUMAN_ADV_GATE] || $IS_GREKI
 
 // 4. If there is a 'porter nearby -> wait for approval before 'porting
 //********************************************************************
-if ( closesttport ) {//&& unit->Status[$CAP_BIT_1] ) {
+if ( closesttport ) {
+    // Waiting for our turn with a teleporter
+    if (closesttport.Rank==$TELEPORTER_RANK && closesttport->Commander!=unit) {
+        object altPorter = unit->NextSubordinate;
+        while (altPorter > 0){
+            if (altPorter.Rank==$TELEPORTER_RANK) {
+                closesttport = altPorter;
+                altPorter = 0;
+            }
+            else altPorter = unit->NextSubordinate;
+        }
+        if (closesttport->Commander!=unit) PERFORM NOTHING;
+    }
+    
     //It's our turn to teleport!
     PERFORM $ACTION_SKIP pos;
     int tported = perf_ret;

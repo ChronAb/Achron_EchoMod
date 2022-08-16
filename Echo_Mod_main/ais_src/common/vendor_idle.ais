@@ -4,24 +4,77 @@
 //Periodically sets the unit's owner to match nearby units
 // changes owner to neutral if ownership is contested
 
-//Units must have aproppriate actions enabled for changing teams
+//Units must have appropriate actions enabled for changing teams
 
 PERFORM GET_CUR_TIME;
 int curtime = perf_ret;
 int uclass = unit->Class;
 
 //Automatic actions for AI players
-if(curtime%109==0 && player < 14 && player->IsComputerPlayer){
+//---------------------------------
+PERFORM RAND;
+if(curtime>720 && perf_ret[0,8]>254 && player < 14 && player->IsComputerPlayer){
     //Capturable Turrets and Dead Amplifiers claimed by the AI automatically upgrade
-    if(uclass==$DERELICT_TURRET || 
-            (uclass==$GENERATOR_CLASS_3X && 
-            player->$QPlasma >= 1000 && player->$Power >= 1200)
+    if( (uclass==$DERELICT_TURRET && player->$Power>=400) || 
+            ((uclass==$AMPLIFIER_CLASS_1 || uclass==$AMPLIFIER_CLASS_2)
+            && (player->CustomField8)[10,5]>5
+            && player->$QPlasma>=1800 && player->$Power>=3400)
             ){
         PERFORM $ACTION_SELF_UPGRADE;
         PERFORM NOTHING;
     }
+    if(uclass==$DERELICT_TURRET && perf_ret[0,10]>1022 && player->$Power<400){
+        PERFORM $ACTION_SELF_DOWNGRADE;
+        PERFORM NOTHING;
+    }
 }
 
+/*AI player freeze beam auto-pilot:
+---------------------------------
+* Every 60s on average (1024 ticks: 2^10) amplifier scans for the 
+    healthiest enemy unit it can find of a valuable class within range 150 sq.
+    -> grekim: opod, ppod, oligo, pligo, sligo
+    -> human: tank, h_tank, mfb, tornade, cruiser, turrets
+* If it's an opod, tank, or tornade check the next bit of the rand perf_ret.
+    If it's 0 do nothing
+* Otherwise try to freeze.
+*/
+int freezePower = (player->CustomField8)[10,5]*400;
+if(curtime<8640) freezePower = 600; // lower threshold if t<8:00
+PERFORM RAND;
+if(perf_ret[0,12]<1){
+    if($IS_VICTORY_CLASS && player->$QPlasma >= 300 && player->$Power >= freezePower &&
+            unit->HP>=100 && player < 14 && $AUTOPILOT){
+        object freezeTarget = 0;
+        int tc = 0;
+        query_vis_distance = 150;
+        freezeTarget = QUERY UNIT [unit] MAX [query->HP] 
+                WHERE [!(query->IsAlly) && query->Owner < 12 &&
+                !(query->IsStasis) && !(query->IsStop) &&
+                ( (tc=query->Class)==$OCTOPOD_CLASS || tc==$PHAROPOD_CLASS ||
+                tc==$OCTOLIGO_CLASS || tc==$OCTOLIGO_ANGRY_CLASS ||
+                tc==$SEPILIGO_CLASS || tc==$PHAROLIGO_CLASS ||
+                tc==$PHAROLIGO_MOVING_CLASS || tc==$TANK_CLASS || tc==$TANK2_CLASS ||
+                tc==$MFB_CLASS || tc==$TORNADE_CLASS || tc==$CRUISER_CLASS || 
+                tc==$TURRET_CLASS || tc==$TURRETU_CLASS) 
+                ];
+        query_vis_distance = -1; //reset the query radius range
+        if (freezeTarget>0) {
+            tc = freezeTarget->Class;
+            PERFORM RAND;
+            if((tc!=$OCTOPOD_CLASS && tc!=$TANK_CLASS && tc!=$TORNADE_CLASS &&
+                    tc!=$TURRET_CLASS && tc!=$TURRETU_CLASS) || 
+                    curtime<8640 || perf_ret[13]==1){
+                target = freezeTarget;
+                PERFORM $ACTION_BREAKTSS;
+                PERFORM NOTHING;
+            }
+        }
+    }
+}
+
+//Team switching
+//---------------------------------
 if(curtime%19==(unit->Name % 19)) { //every second
 query_vis_distance = 12; // limit the search to only look for units within 12 spaces 
 

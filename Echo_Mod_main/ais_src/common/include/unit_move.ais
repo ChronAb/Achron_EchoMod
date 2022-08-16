@@ -21,6 +21,25 @@ if (myCarrier->IsAlive==1) {
 	}
 }
 
+//if I am a Tank carrying passengers, release them if I am at low HP
+if ($IS_CARRIER_TANK && unit->Ammo > 0 && unit->HP < 0.4*unit.MaxHP) {
+    PERFORM RAND;
+    if (perf_ret < 16384) { //50% chance of blind-releasing the carried soldier
+        PERFORM SET_OBJECTIVE $OBJECTIVE_RELEASEUNIT;
+        PERFORM NOTHING;
+    }
+    else { //50% of checking whether the carried soldier can be released in the first place
+        object backup = target;
+        target = $MARINE_CLASS;
+        PERFORM CAN_PUT_CLASS;
+        if (perf_ret==1) {
+            PERFORM SET_OBJECTIVE $OBJECTIVE_RELEASEUNIT;
+            PERFORM NOTHING;	
+        }
+        target = backup;
+    }
+}
+
 //don't teleport after commander if executing a recent player-issued order
 if (!AP_PLAYER || ap[$MOVE_COUNTER]==0) { 
 	#include common/include/unit_teleport_after_commander.ais

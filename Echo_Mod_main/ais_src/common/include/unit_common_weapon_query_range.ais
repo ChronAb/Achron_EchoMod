@@ -10,54 +10,60 @@ int spec_AA_range =  0; //special priority AA range
 int spec_AG_range =  0; //special priority AG range
 int mndmg = 0; //optimal damage vs ground targets
 int AA_mndmg = 0; //optimal damage vs air targets
-int opt_AA_range =  0; //special AA range for targets of oppertunity
-int opt_AG_range =  0; //special AG range for targets of oppertunity
+int opt_AA_range =  0; //special AA range for targets of opportunity
+int opt_AG_range =  0; //special AG range for targets of opportunity
 
 // HUMAN
-if(uclass==$MARINE_CLASS || uclass==$MARINE_RAISED_CLASS) { query_range = 24; }
-else if(uclass==$SOP_CLASS || uclass==$SOP_RAISED_CLASS) { query_range = 26; }
-else if(uclass==$MECH_CLASS) { query_range = 26; }
-else if(uclass==$ATHC_CLASS) { query_range = 28; }
-else if(uclass==$TANK_CLASS) { query_range = 28; }
-else if(uclass==$TANK2_CLASS) { query_range = 28; }
-else if(uclass==$MAR_CLASS) { query_range = 40; mndmg = 600; }
-else if(uclass==$MAR2_CLASS) { spec_AG_range = 32; query_range = 20; opt_AG_range =  35; mndmg = 60;}
-else if(uclass==$MFB_CLASS) { query_range = 22; }
-else if(uclass==202) { query_range = 13; }//Caltrop Mine
+if(uclass<$OCTO_CLASS) {
+   if(uclass==$MARINE_CLASS || uclass==$MARINE_RAISED_CLASS) { query_range = 24; }
+    else if(uclass==$SOP_CLASS || uclass==$SOP_RAISED_CLASS) { query_range = 26; }
+    else if(uclass==$MECH_CLASS || uclass==$DAMAGED_MECH_CLASS) { query_range = 26; }
+    else if(uclass==$ATHC_CLASS || uclass==$ATHC_X_CLASS) { query_range = 28; }
+    else if(uclass==$TANK_CLASS) { query_range = 28; }
+    else if(uclass==$TANK2_CLASS) { query_range = 28; mndmg = 64; }
+    else if(uclass==$MAR_CLASS) { query_range = 40; mndmg = 300; }
+    else if(uclass==$MAR2_CLASS) { spec_AG_range = 32; query_range = 20; opt_AG_range =  35; mndmg = 60;}
+    else if(uclass==$MFB_CLASS) { query_range = 25; opt_AG_range = 32; }
+    else if(uclass==$CALTROP_CLASS) { query_range = 21; }//Caltrop Mine 
+}
 
 // GREKIM
-else if(uclass==$SCOUT_GUARDIAN_CLASS || uclass==$GREKIM_ACHRON_CLASS) { query_range = 35; } 
-else if(uclass==$OCTO_CLASS || uclass==1200) { query_range = 25; }
-else if(uclass==$SEPI_CLASS) { spec_AA_range = 27; query_range = 29;
-	opt_AG_range = 32; }
-else if(uclass==$PHARO_CLASS) { query_range = 14; opt_AG_range = 25; mndmg = 36;}
-else if(uclass==$TODARO_CLASS) { query_range = 25; }
-else if(uclass==$OCTOPOD_CLASS) { query_range = 25; mndmg = 220; opt_AG_range = 28; }
-else if(uclass==$SEPIPOD_CLASS) { spec_AA_range = 20; query_range = 24;
-	opt_AA_range = 28; }
-else if(uclass==$PHAROPOD_CLASS) { spec_AG_range = 20; query_range = 20;
-	mndmg = 30;}
-else if(uclass==$GHOST_CLASS) { query_range = 16; }
-else if(uclass==$OCTOLIGO_CLASS) { spec_AA_range = 35; query_range = 24;
-	mndmg = 60; AA_mndmg = 60; }
-else if(uclass==$OCTOLIGO_ANGRY_CLASS) { query_range = 30; mndmg = 60; }
-else if(uclass==$SEPILIGO_CLASS && unit->Ammo < 30) { spec_AA_range = 23;
-	query_range = 23; }
-else if(uclass==$SEPILIGO_CLASS && unit->Ammo >= 30) { spec_AA_range = 25;
-	query_range = 26; opt_AA_range = 28; }
-else if(uclass==$PHAROLIGO_CLASS) { query_range = 33; mndmg = 150; }
-else if(uclass==$PHAROLIGO_MOVING_CLASS) { query_range = 33; mndmg = 75; }
-else if(uclass==$DOME_BEAM_CLASS) { query_range = 27; mndmg = 25; }
+else if(uclass<$VIR_ZAYIN_CLASS) {
+    if(uclass==$SCOUT_GUARDIAN_CLASS || uclass==$GREKIM_ACHRON_CLASS) { query_range = 35; } 
+    else if(uclass==$OCTO_CLASS || uclass==1200) { query_range = 25; }
+    else if(uclass==$SEPI_CLASS) { spec_AA_range = 27; query_range = 29;
+        opt_AG_range = 32; }
+    else if(uclass==$PHARO_CLASS) { query_range = 14; opt_AG_range = 25; mndmg = 10;}
+    else if(uclass==$TODARO_CLASS) { query_range = 25; }
+    else if(uclass==$OCTOPOD_CLASS) { query_range = 25; mndmg = 180; opt_AG_range = 28; }
+    else if(uclass==$SEPIPOD_CLASS) { spec_AA_range = 20; query_range = 24;
+        opt_AA_range = 28; }
+    else if(uclass==$PHAROPOD_CLASS) { spec_AG_range = 20; query_range = 20;
+        mndmg = 50;}
+    else if(uclass==$GHOST_CLASS) { query_range = 16; }
+    else if(uclass==$OCTOLIGO_CLASS) { spec_AA_range = 35; query_range = 24;
+        mndmg = 60; }
+    else if(uclass==$OCTOLIGO_ANGRY_CLASS) { query_range = 30; mndmg = 60; }
+    else if(uclass==$SEPILIGO_CLASS && unit->Ammo <= 40) { spec_AA_range = 23;
+        query_range = 23; }
+    else if(uclass==$SEPILIGO_CLASS && unit->Ammo > 40) { spec_AA_range = 25;
+        query_range = 26; opt_AA_range = 28; }
+    else if(uclass==$PHAROLIGO_CLASS) { query_range = 33; mndmg = 67; }
+    else if(uclass==$PHAROLIGO_MOVING_CLASS) { query_range = 33; mndmg = 33; }
+    else if(uclass==$DOME_BEAM_CLASS) { query_range = 27; mndmg = 25; }
+}
 
 // VECGIR
-else if(uclass==$VIR_ZAYIN_RAISED_CLASS||uclass==$VIR_ZAYIN_CLASS) { query_range = 24; }
-else if(uclass==$VIR_TETH_RAISED_CLASS||uclass==$VIR_TETH_CLASS) { query_range = 24; }
-else if(uclass==$VIR_SHIN_RAISED_CLASS||uclass==$VIR_SHIN_CLASS) { query_range = 26; }
-else if(uclass==$PULSER_Z_CLASS) { query_range = 30; }
-else if(uclass==$PULSER_T_CLASS) { query_range = 25; }
-//else if(uclass==$PULSER_S_CLASS) { query_range = 25; }
-else if(uclass==$TERCHER_Z_CLASS) { query_range = 26; }
-else if(uclass==$HALCYON_Z_CLASS) { query_range = 26; }
-else if(uclass==$HALCYON_T_CLASS) { query_range = 31; }
+else {
+    if(uclass==$VIR_ZAYIN_RAISED_CLASS||uclass==$VIR_ZAYIN_CLASS) { query_range = 24; }
+    else if(uclass==$VIR_TETH_RAISED_CLASS||uclass==$VIR_TETH_CLASS) { query_range = 24; }
+    else if(uclass==$VIR_SHIN_RAISED_CLASS||uclass==$VIR_SHIN_CLASS) { query_range = 26; }
+    else if(uclass==$PULSER_Z_CLASS) { query_range = 30; }
+    else if(uclass==$PULSER_T_CLASS) { query_range = 25; }
+    //else if(uclass==$PULSER_S_CLASS) { query_range = 25; }
+    else if(uclass==$TERCHER_Z_CLASS) { query_range = 26; }
+    else if(uclass==$HALCYON_Z_CLASS) { query_range = 26; }
+    else if(uclass==$HALCYON_T_CLASS) { query_range = 31; }
+}
 
 

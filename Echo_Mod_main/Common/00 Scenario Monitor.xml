@@ -5039,52 +5039,6 @@
             </TargetClass1>
         </ActionStepModifier>
         <ActionStepModifier>
-            <Name>MFB Recover</Name>
-            <StrengthBase>0</StrengthBase>
-            <StrengthRange>0</StrengthRange>
-            <StrengthCount>0</StrengthCount>
-            <Flags>
-                <Permeating>1</Permeating>
-                <LimitDistance>1</LimitDistance>
-                <SetLastAttackedDirection>0</SetLastAttackedDirection>
-                <ContinueActionOnStepFailure>0</ContinueActionOnStepFailure>
-            </Flags>
-            <AccuracyMultiplier>1</AccuracyMultiplier>
-            <EffectTimeout>0</EffectTimeout>
-            <MinEffectRadius>0</MinEffectRadius>
-            <EffectRadius>20</EffectRadius>
-            <EffectHeight>31</EffectHeight>
-            <MaxEffectAngle>360</MaxEffectAngle>
-            <EffectSplashHeight>0</EffectSplashHeight>
-            <EffectSplashRadius>0</EffectSplashRadius>
-            <EffectSplashEffectiveRadius>0</EffectSplashEffectiveRadius>
-        </ActionStepModifier>
-        <ActionStepModifier>
-            <Name>Macrofab Reload</Name>
-            <StrengthBase>0</StrengthBase>
-            <StrengthRange>0</StrengthRange>
-            <StrengthCount>0</StrengthCount>
-            <Flags>
-                <Permeating>1</Permeating>
-                <LimitDistance>1</LimitDistance>
-                <SetLastAttackedDirection>0</SetLastAttackedDirection>
-                <ContinueActionOnStepFailure>0</ContinueActionOnStepFailure>
-            </Flags>
-            <AccuracyMultiplier>1</AccuracyMultiplier>
-            <EffectTimeout>0</EffectTimeout>
-            <MinEffectRadius>0</MinEffectRadius>
-            <EffectRadius>31</EffectRadius>
-            <EffectHeight>31</EffectHeight>
-            <MaxEffectAngle>360</MaxEffectAngle>
-            <EffectSplashHeight>0</EffectSplashHeight>
-            <EffectSplashRadius>0</EffectSplashRadius>
-            <EffectSplashEffectiveRadius>0</EffectSplashEffectiveRadius>
-            <TargetClass1>
-                <Min>220</Min>
-                <Max>220</Max>
-            </TargetClass1>
-        </ActionStepModifier>
-        <ActionStepModifier>
             <Name>Turret BreakTSS</Name>
             <StrengthBase>0</StrengthBase>
             <StrengthRange>0</StrengthRange>
@@ -5658,31 +5612,6 @@
             <TargetClass1>
                 <Min>2010</Min>
                 <Max>2200</Max>
-            </TargetClass1>
-        </ActionStepModifier>
-        <ActionStepModifier>
-            <Name>RP Commander</Name>
-            <StrengthBase>0</StrengthBase>
-            <StrengthRange>0</StrengthRange>
-            <StrengthCount>0</StrengthCount>
-            <Flags>
-                <Permeating>1</Permeating>
-                <LimitDistance>0</LimitDistance>
-                <SetLastAttackedDirection>0</SetLastAttackedDirection>
-                <ContinueActionOnStepFailure>0</ContinueActionOnStepFailure>
-            </Flags>
-            <AccuracyMultiplier>1</AccuracyMultiplier>
-            <EffectTimeout>0</EffectTimeout>
-            <MinEffectRadius>0</MinEffectRadius>
-            <EffectRadius>0</EffectRadius>
-            <EffectHeight>0</EffectHeight>
-            <MaxEffectAngle>360</MaxEffectAngle>
-            <EffectSplashHeight>0</EffectSplashHeight>
-            <EffectSplashRadius>0</EffectSplashRadius>
-            <EffectSplashEffectiveRadius>0</EffectSplashEffectiveRadius>
-            <TargetClass1>
-                <Min>0</Min>
-                <Max>4009</Max>
             </TargetClass1>
         </ActionStepModifier>
         <ActionStepModifier>

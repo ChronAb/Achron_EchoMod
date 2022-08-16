@@ -5,6 +5,15 @@
 //unit_create_at.ais - create_at functionality, to be used by other scripts
 //UNIT_CLASS and ACTION_CREATE_AT must be defined prior to calling this script
 
+//Check that the unit creation is permitted
+int uclass= unit->Class;
+if( $IS_HUMAN && (player->CustomField8)[0] != 1 ){
+    say "Construction is unavailable";
+    PERFORM SET_OBJECTIVE 0;
+    PERFORM SET_ADDITIONAL_PARAMS3 0;
+    PERFORM NOTHING;
+}
+
 //get length of parent and unit being created
 int plength = unit.Length;
 int length = $UNIT_CLASS::Length;
@@ -51,7 +60,6 @@ if(
     PERFORM CAN_CLASS_FIT_AT OP;
     if (perf_ret>0 && perf_ret[0]) { //if (perf_ret == 255) to check for all rotations, more limiting
 		//units with raised weapons must lower them first
-		int uclass= unit->Class;
 		if ($IS_WEAPON_RAISED) {
 			PERFORM $ACTION_LOWER_WEAPON;
 			PERFORM NOTHING;

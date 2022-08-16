@@ -2,7 +2,7 @@
 
 #include common/include/unit_common_header.ais
 
-int energy = 5;  
+int energy = 0;  
 
 //blackbirds can't fix biological units
 if (uclass==$BLACKBIRD_CLASS) {

@@ -110,16 +110,6 @@ int destinationParameter = op; //copy of original destination
 PERFORM GET_CLOSEST_TARGET_POSITION_WITHIN_RANGE weaponAction;
 position =  perf_ret; 
 
-//closest attackable position is a valid position and target is not tss'd, not self 
-if (position != $INVALID_POSITION && target != unit) { 
-	#include common/include/unit_fireweapon.ais
-}
-
-int unstick = 0;
-#include common/include/unit_unstuck.ais
-
-
-//if target is within visibility range and within weapon range
 int thu = target<_>unit;
 int tvu = target<^>unit;
 
@@ -131,7 +121,16 @@ int wvr = 0;
 PERFORM GET_MAX_ACTION_RANGE_HEIGHT weaponAction;
 wvr = perf_ret;
 
+//closest attackable position is a valid position and target is not tss'd, not self 
+if (position != $INVALID_POSITION && tvu <= wvr*wvr && target != unit) { 
+	#include common/include/unit_fireweapon.ais
+}
 
+int unstick = 0;
+#include common/include/unit_unstuck.ais
+
+
+//if target is within visibility range and within weapon range
 if ( (thu <= unit.SightHRange2) && (tvu <= unit.SightVRange2) && 
 	 (thu <= whr*whr) && (tvu <= wvr*wvr) ) {
 	

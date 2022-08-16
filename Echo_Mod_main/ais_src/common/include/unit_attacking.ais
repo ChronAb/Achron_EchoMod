@@ -31,6 +31,7 @@ if (!AP_PLAYER || ap[$MOVE_COUNTER]==0) {
 int FORCE_AUTOPILOT = 0;
 int op = unit->ObjectiveParameters;  
 int destinationParameter = op; //copy of original destination 
+int distToOP = unit<_>destinationParameter;//distance to the destination stored in op
 object closestenemy=0;
 int targetIsOnGround = 1; //default the z parameter to 1, meaning target is on the ground
 
@@ -177,6 +178,16 @@ if  (!skip  || !AP_PLAYER  )  { //if no target unit or following priority unit a
 }
 
 
+/* Ignore the target if chasing the it would greatly divert us from 
+    the journey to the objective
+*/
+int targetDistToOP = target<_>destinationParameter;
+if (targetalive && distToOP>400) {
+    if (targetDistToOP > distToOP+1200) {
+        targetalive = 0;
+    }
+}
+
 
 if (targetalive) {   
 	if (target->IsStasis) {       //check if target is TSSd
@@ -231,8 +242,20 @@ if (targetalive) {
 	position =  perf_ret; 
 	ap[$TEMPUNIT_BIT] = 1;  //'temporary unit' bit
 	setAdditionalParameters = 1;      
+    
+    int thu = target<_>unit;
+    int tvu = target<^>unit;
+
+    int whr = 0;
+    PERFORM GET_MAX_ACTION_RANGE_RADIUS weaponAction;
+    whr = perf_ret;
+
+    int wvr = 0;
+    PERFORM GET_MAX_ACTION_RANGE_HEIGHT weaponAction;
+    wvr = perf_ret;
+    
 	//closest attackable position is a valid position and target is not statised, not self 
-	if (position != $INVALID_POSITION && target != unit ) { 		
+	if (position != $INVALID_POSITION && tvu <= wvr*wvr && target != unit ) { 		
 
 		#include common/include/unit_fireweapon.ais
 		
@@ -241,26 +264,15 @@ if (targetalive) {
 	#include common/include/unit_unstuck.ais
 
 
-	//if target is within visibility range and within weapon range
-	int thu = target<_>unit;
-	int tvu = target<^>unit;
-    
-	int whr = 0;
-	PERFORM GET_MAX_ACTION_RANGE_RADIUS weaponAction;
-	whr = perf_ret;
-	
-	int wvr = 0;
-	PERFORM GET_MAX_ACTION_RANGE_HEIGHT weaponAction;
-	wvr = perf_ret;
-   
-   
-	if ( (thu <= unit.SightHRange2) && (tvu <= unit.SightVRange2) && 
-		 (thu <= whr*whr) && (tvu <= wvr*wvr) ) {
+	//if target is within visibility range and within weapon range   
+	if ( (thu <= unit.SightHRange2) && (thu <= whr*whr) ) {
+        int counter = unit->AdditionalParameters2; //move counter to move in the same direction
 		
-		if (thu > 11) { // distance to unit is more than 3 spaces  
-			//if air unit and targetIsOnGround is on the ground, store location off the ground
+        // Move closer if distance to unit is more than 5 spaces or is melee
+		if (thu > 25 || $IS_MELEE) {
+            
 			if ($IS_AIR_UNIT) {
-		
+                //if air unit and targetIsOnGround is on the ground, store location off the ground
 				if (targetIsOnGround) { 
 					PERFORM GET_MAP_NEXT_Z_POSITION_UP op; //get the spot above the OP
 					if (perf_ret[$Zpos] >= unitPosition[$Zpos]) { op[$Zpos] = perf_ret[$Zpos]; }
@@ -277,12 +289,8 @@ if (targetalive) {
 					}	
 				
 				}
-
 			}
-			
-			
-						
-			int counter = unit->AdditionalParameters2; //move counter to move in the same direction
+            
 			if (counter>0) {           //more than 0 means already moving in a direction
 				counter = counter - 1; //decrease the counter
 				int rot = unit->Rotation; //get the unit's current rotation
@@ -309,30 +317,70 @@ if (targetalive) {
 				
 			}
 			dir[16,8] = 0; //clear out the 3rd byte that stores the counter
-			
-			if (dir == $QUERY_EXHAUSTED || dir==0 ) {  //something is in the way OR can't move AND not at destination yet
-				PERFORM SET_ADDITIONAL_PARAMS2 counter;
-				#include common/include/unit_stuck.ais
-			}
-			
-			if (counter>1) {
-				$UPDATE_SPEED_FOR_FAST_UNITS
-			}
-			//store the updated counter
-			int ap2 = counter;
-			
-			PERFORM $ACTION_MOVE dir; 
-			if ( perf_ret!=1) { 
-				ap2 =  0;
-			}
-			PERFORM SET_ADDITIONAL_PARAMS2 ap2;
-			$SET_AP
-			PERFORM NOTHING;
+            
+        }
+        else {  
+            //Within range, but still not visible 
+            //  = target is cloaked, out of vertical range, or no LOS
+            
+            // air units try changing elevation
+            if (airunit) {
+                if(unitPosition[$Zpos]>op[$Zpos]) {
+                    PERFORM GET_MAP_NEXT_Z_POSITION_DOWN unitPosition; //get the spot above the OP
+                    temp1 = perf_ret; 
+                }
+                else if(unitPosition[$Zpos]<op[$Zpos]) {
+                    PERFORM GET_MAP_NEXT_Z_POSITION_UP unitPosition; //get the spot below the OP
+                    temp1 = perf_ret; 
+                }
+                object backuptarget = target; //make a backup of the original target
+                target = uclass;
+                PERFORM CAN_CLASS_FIT_AT temp1; //check if the unit can fit at the spot
+                if ( perf_ret & ( 1 << (unit->Rotation) ) ) {
+                    dir = QUERY BESTMOVE [unit, $ACTION_MOVE] MIN [ temp1 <=> query ] WHERE [1];
+                    dir[16,8]=0; //clear out the 3rd byte that stores the counter
+                    if (dir && dir != $QUERY_EXHAUSTED) {
+                        PERFORM $ACTION_MOVE dir;
+                        $SET_AP
+                        PERFORM SET_ADDITIONAL_PARAMS2 0;
+                        PERFORM NOTHING;
+                    }
+                }
+            }
+            
+            //otherwise just keep advancing or retreating
+            else {
+                if (counter>0) {           //more than 0 means already moving in a direction
+                    counter = counter - 1; //decrease the counter
+                    int rot = unit->Rotation; //get the unit's current rotation
+                    $DIR_FROM_ROT             //set the dir to move to based on that unit's rotation
+                }
+                else {
+                    dir = QUERY BESTMOVE [unit, $ACTION_MOVE] MAX [ (target <=> query) * 1.2] WHERE [1]; 	
+                }
+            }
 		}
-		else {  //within range, but still not visible = target is cloaked?
-			   //Can't see target! (cloaked/obstacle?) no LOS
-		}
-	  
+			
+        // Execute move order
+        if (dir == $QUERY_EXHAUSTED || dir==0 ) {  //something is in the way OR can't move AND not at destination yet
+            PERFORM SET_ADDITIONAL_PARAMS2 counter;
+            #include common/include/unit_stuck.ais
+        }
+        
+        if (counter>1) {
+            $UPDATE_SPEED_FOR_FAST_UNITS
+        }
+        //store the updated counter
+        int ap2 = counter;
+        
+        PERFORM $ACTION_MOVE dir; 
+        if ( perf_ret!=1) { 
+            ap2 =  0;
+        }
+        PERFORM SET_ADDITIONAL_PARAMS2 ap2;
+        $SET_AP
+        PERFORM NOTHING;
+  
 	} 
 
 
@@ -371,8 +419,6 @@ if (targetIsOnGround && airunit) {
 	}
 }    
 
-//store current distance to the destination stored in op
-int distToOP = unit<_>destinationParameter;
 
 //match speed with slowest unit in hierarchy
 //match speeds if not grekim, not doing priority 

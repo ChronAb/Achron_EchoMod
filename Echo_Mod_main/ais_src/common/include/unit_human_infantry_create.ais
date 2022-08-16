@@ -1,0 +1,118 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+/*unit_human_infantry_create.ais - human unit creation script for infantry
+    different from the general script because infantry create instantly
+    and can be made inside tanks
+    */
+
+//this is called by each individual create script, that predefines the unit (OBJECT) being created
+//and the CREATE_ACTION as the actual action to do the creation
+// human creation flow:
+// 1) verify resources, siphon reserve soldiers, insta-make the unit
+// 2) if making from a building, transfer rally point orders
+
+int ap = unit->AdditionalParameters;
+int uclass = unit->Class;
+
+// *Spawners* have their own logic
+if (unit.Rank==$SPAWNER_RANK) {
+    if (unit->Ammo < 2) {
+        PERFORM SET_OBJECTIVE 0;
+        PERFORM NOTHING;
+    }
+    if ($OBJECT == $MARINE_CLASS) {
+        PERFORM $ACTION_PROGEN_SAME_O;
+        PERFORM SET_OBJECTIVE 0; PERFORM NOTHING;
+    }
+    if ($OBJECT == $SOP_CLASS) {
+        PERFORM $ACTION_PROGEN_SAME_S;
+        PERFORM SET_OBJECTIVE 0; PERFORM NOTHING;
+    }
+}
+
+
+//unit resource costs
+int lcrystals=0;
+int qplasma=0;
+int hpcost=0;
+int reserve = 1;
+
+if ($OBJECT == $MARINE_CLASS) { //marine
+  lcrystals = $MARINE_LC;
+  qplasma = $MARINE_QP;
+  hpcost = $MARINE_HP;
+}
+if ($OBJECT == $SOP_CLASS) { //sop
+  lcrystals = $SOP_LC;
+  qplasma = $SOP_QP;
+  hpcost = $SOP_HP;
+}
+
+//Buildings: Order new units to the rally point
+if (unit.Rank==$IMPORTER_RANK && unit->AdditionalParameters2==1) {
+	target = unit->ActionParameters;
+	
+	if (target->IsAlive==1) {
+        PERFORM SET_OTHER_OBJECTIVE $OBJECTIVE_ATTACKPOS_DISPATCH;
+        PERFORM SET_OTHER_OBJECTIVE_PARAMS (unit->ObjectiveParameters);
+	}
+	else{//I guess it got killed or blocked 
+		say "Dispatch failed";
+	}
+    
+    PERFORM SET_ADDITIONAL_PARAMS2 0;
+    PERFORM SET_OBJECTIVE 0;
+    PERFORM NOTHING;
+}
+
+//Tanks: check that the newly created unit will fit
+if ($IS_CARRIER_TANK && unit->Ammo == unit.MaxAmmo) {
+    $SAY_ENQUEUE
+    PERFORM SET_OBJECTIVE 0;
+    PERFORM NOTHING;
+} 
+
+//verify that the player has enough resources to make this unit
+if ( player->$LCrystals >= lcrystals && player->$QPlasma >= qplasma && unit->HP > hpcost) {
+
+	//this new unit requires one or more reserve soldier, so siphon it 
+	if (reserve == 1 && player->$ReserveSoldiers >= 1) {
+        
+		//transfer(AdditionalParameters4) field is 0 and an importer to siphon from exists
+		if (unit->AdditionalParameters4==0) {
+			target = player->CustomField4;
+            
+			if (target != 0 ) { //importer with RS are stored in customfield4
+				/*if the importer in the field is dead, disabled, or empty 
+                    then clear it out and try with another one.
+                    Another importer will place itself there if it has RS.
+                */
+				if (target->IsAlive!=1 || target->IsStop || target->IsStasis || 
+                        target->Ammo<1) {
+					PERFORM SET_PLAYER_CUSTOM_FIELD_4 0;
+					PERFORM NOTHING;
+				}
+				else PERFORM $ACTION_SUMMON_TROOPS target; //siphon the reserve soldier
+			}
+            
+            //wait for another importer to switch
+            else PERFORM NOTHING;
+		}
+	}
+    
+    //Reserves consumed -> make the unit!
+    if ( unit->AdditionalParameters4>= reserve) { //transfer field is set
+        PERFORM $CREATE_ACTION //make the unit
+        if ($IS_CARRIER_TANK) PERFORM SET_OBJECTIVE 0;
+        PERFORM NOTHING;
+    }
+    else $SAY_RESERVES
+}
+else {
+    $SAY_ENOUGH
+    $SAY_ENOUGHR
+}
+
+PERFORM SET_ADDITIONAL_PARAMS (ap & ~7);
+PERFORM $ACTION_ERROR2; 
+PERFORM SET_OBJECTIVE 0;

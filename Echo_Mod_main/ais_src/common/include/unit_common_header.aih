@@ -42,19 +42,19 @@
 #define IS_VECGIR_BUILDING (uclass >= 2070 && uclass < 2200)
 
 #define IS_MELEE (uclass == $OCTO_CLASS || uclass == 1200)
-#define IS_ANTI_AIR (uclass==$MECH_CLASS || uclass==$SEPI_CLASS || uclass==$VIR_TETH_CLASS || uclass==$VIR_TETH_RAISED_CLASS || uclass==$PULSER_T_CLASS || uclass==$OCTOLIGO_CLASS)
-#define IS_GROUND_ONLY_UNIT (uclass == $OCTO_CLASS || uclass == $PHARO_CLASS || uclass == $OCTOPOD_CLASS || uclass == $PHAROPOD_CLASS || uclass == $OCTOLIGO_ANGRY_CLASS || uclass == $PHAROLIGO_CLASS || uclass == $PHAROLIGO_MOVING_CLASS || uclass==$VIR_ZAYIN_CLASS || uclass==$VIR_ZAYIN_RAISED_CLASS || uclass == $PULSER_Z_CLASS || uclass==$SOP_CLASS || uclass==$SOP_RAISED_CLASS || uclass == $ATHC_CLASS || uclass == $ATHC_X_CLASS || uclass == $MAR_CLASS || uclass == $MAR2_CLASS)
+#define IS_ANTI_AIR (uclass==$MECH_CLASS || uclass==$DAMAGED_MECH_CLASS || uclass==$SEPI_CLASS || uclass==$VIR_TETH_CLASS || uclass==$VIR_TETH_RAISED_CLASS || uclass==$PULSER_T_CLASS || uclass==$OCTOLIGO_CLASS)
+#define IS_GROUND_ONLY_UNIT (uclass == $OCTO_CLASS || uclass == $PHARO_CLASS || uclass == $OCTOPOD_CLASS || uclass == $PHAROPOD_CLASS || uclass == $OCTOLIGO_ANGRY_CLASS || uclass == $PHAROLIGO_CLASS || uclass == $PHAROLIGO_MOVING_CLASS || uclass==$VIR_ZAYIN_CLASS || uclass==$VIR_ZAYIN_RAISED_CLASS || uclass == $PULSER_Z_CLASS || uclass == $ATHC_CLASS || uclass == $ATHC_X_CLASS || uclass == $MAR_CLASS || uclass == $MAR2_CLASS)
 #define IS_BREAKTSS_UNIT (uclass==4040)
 //#define IS_BREAKTSS_UNIT (uclass==$LANCER_CLASS || uclass == $PULSER_S_CLASS || uclass == $SEPIPOD_CLASS)
 #define IS_RECOVER_UNIT (uclass == 4040)
 //#define IS_RECOVER_UNIT (uclass == $TERCHER_T_CLASS || uclass == $FRIGATE_CLASS || uclass == $PHAROPOD_CLASS)
 #define IS_CARRIER_UNIT (uclass == $CARRIER_CLASS || uclass == $INCEPTER_CLASS || uclass == $GARGANTUAN_CLASS || uclass == $TYR_CARRIER_CLASS)
-#define IS_CARRIER_TANK (uclass == $TANK2_CLASS || uclass == $MAR2_CLASS)
-#define IS_REPAIR_UNIT (uclass == $MFB_CLASS || uclass==$BLACKBIRD_CLASS || uclass==$GHOST_CLASS)
+#define IS_CARRIER_TANK (uclass == $TANK_CLASS || uclass == $TANK2_CLASS || uclass == $MAR2_CLASS)
+#define IS_REPAIR_UNIT (uclass==$MARINE_CLASS || uclass == $MFB_CLASS || uclass==$BLACKBIRD_CLASS)
 //uclass == $SOP_CLASS || uclass == $SOP_RAISED_CLASS || 
 //#define IS_CLOAKABLE_UNIT (uclass==$BLACKBIRD_CLASS || uclass == $PHAROPOD_CLASS || uclass==$TERCHER_Z_CLASS)
-#define IS_WEAPON_RAISED (uclass==$MARINE_RAISED_CLASS || uclass==$SOP_RAISED_CLASS || uclass==$HOLLOWAY_RAISED_CLASS || uclass==$WINTERS_RAISED_CLASS || uclass==$VIR_ZAYIN_RAISED_CLASS || uclass==$VIR_TETH_RAISED_CLASS || uclass==$VIR_SHIN_RAISED_CLASS || uclass==$KILDEN_RAISED_CLASS || uclass==$DJELT_RAISED_CLASS || uclass==$DAMATH_RAISED_CLASS)
-#define IS_WEAPON_LOWERED (uclass==$MARINE_CLASS || uclass==$SOP_CLASS || uclass==$HOLLOWAY_CLASS || uclass==$WINTERS_CLASS || uclass==$VIR_ZAYIN_CLASS || uclass==$VIR_TETH_CLASS || uclass==$VIR_SHIN_CLASS || uclass==$KILDEN_CLASS || uclass==$DJELT_CLASS || uclass==$DAMATH_CLASS)
+#define IS_WEAPON_RAISED (uclass==$SOP_RAISED_CLASS || uclass==$HOLLOWAY_RAISED_CLASS || uclass==$WINTERS_RAISED_CLASS || uclass==$VIR_ZAYIN_RAISED_CLASS || uclass==$VIR_TETH_RAISED_CLASS || uclass==$VIR_SHIN_RAISED_CLASS || uclass==$KILDEN_RAISED_CLASS || uclass==$DJELT_RAISED_CLASS || uclass==$DAMATH_RAISED_CLASS)
+#define IS_WEAPON_LOWERED (uclass==$SOP_CLASS || uclass==$HOLLOWAY_CLASS || uclass==$WINTERS_CLASS || uclass==$VIR_ZAYIN_CLASS || uclass==$VIR_TETH_CLASS || uclass==$VIR_SHIN_CLASS || uclass==$KILDEN_CLASS || uclass==$DJELT_CLASS || uclass==$DAMATH_CLASS)
 #define IS_HALCYON (uclass>=$HALCYON_Z_CLASS && uclass<=$HALCYON_S_CLASS)
 #define IS_OPEN_RP (uclass==$HUMAN_RP_CLASS || uclass==$GREKIM_RP_CLASS || uclass==$VECGIR_RP_CLASS)
 #define IS_BANKING_FLYER ((uclass==$TORNADE_CLASS  || uclass==$LANCER_CLASS || uclass==$FRIGATE_CLASS || uclass==$CRUISER_CLASS || uclass==$BLACKBIRD_CLASS || uclass==$TERCHER_T_CLASS || uclass == $TERCHER_S_CLASS || uclass==$PULSER_S_CLASS))
@@ -62,12 +62,13 @@
 #define IS_FAST_UNIT ((uclass>=$LANCER_CLASS && uclass <= $BLACKBIRD_CLASS) || uclass==$PULSER_S_CLASS || uclass==$TERCHER_T_CLASS ||\
 		uclass==$TERCHER_S_CLASS || uclass==$HALCYON_S_CLASS || uclass==$INCEPTER_CLASS || uclass==$CARRIER_CLASS || uclass==$TYR_CARRIER_CLASS ||\
         uclass==$MECH_CLASS || uclass==$DAMAGED_MECH_CLASS || uclass==$OCTOLIGO_CLASS ||\
-		uclass==$TODARO_CLASS || uclass==$SEPIPOD_CLASS || uclass==$PHAROPOD_CLASS || uclass==$SEPILIGO_CLASS || uclass==$GARGANTUAN_CLASS || uclass==$LANDING_PROBE_CLASS)		
+		uclass==$TODARO_CLASS || uclass==$SEPIPOD_CLASS || uclass==$PHAROPOD_CLASS || uclass==$SEPILIGO_CLASS || uclass==$GARGANTUAN_CLASS || \
+        uclass==$LANDING_PROBE_CLASS || uclass==$TETHER_CLASS)		
 		//fast units move more than 1 square per step; speeds are specified below
 #define IS_RP_OPEN (uclass==$HUMAN_RP_CLASS || uclass==$GREKIM_RP_CLASS || uclass==$VECGIR_RP_CLASS)
 #define IS_RP_CLOSED (uclass==$HUMAN_RP_OFF_CLASS || uclass==$GREKIM_RP_OFF_CLASS || uclass==$VECGIR_RP_OFF_CLASS)
 
-#define IS_VICTORY_CLASS (uclass == $GENERATOR_CLASS_1 || uclass == $GENERATOR_CLASS_2)
+#define IS_VICTORY_CLASS (uclass == $AMPLIFIER_CLASS_1 || uclass == $AMPLIFIER_CLASS_2)
 #define IS_CAPTURABLE ($IS_VICTORY_CLASS || uclass == $GENERATOR_CLASS_3X || uclass == $DERELICT_TURRET || uclass == $OBSERVATION_NODE_CLASS)
 #define IS_BENIGN ($IS_CAPTURABLE)
 #define IS_IMMORTAL ($IS_CAPTURABLE)
@@ -132,17 +133,16 @@
 #define OBJECTIVE_BUILD_FOUNDATION 11
 #define OBJECTIVE_BUILD 11
 #define OBJECTIVE_MERGE 11
-#define OBJECTIVE_DROP_NUKE 11 
+#define OBJECTIVE_DROP_NUKE 22 
 #define OBJECTIVE_PICKUP 11
-#define OBJECTIVE_NUKE 12      
+#define OBJECTIVE_NUKE 22
 #define OBJECTIVE_RELEASEALL 12
 #define OBJECTIVE_CLEAR_NANITE 12
-#define OBJECTIVE_HITCH 13
 #define OBJECTIVE_AUTOMERGE 13
 #define OBJECTIVE_RELOAD 14 
 #define OBJECTIVE_CANCEL 14
-#define REPAIR_UNIT_OBJ 22
-#define RECOVER_UNIT_OBJ 15
+#define REPAIR_UNIT_OBJ 18
+#define RECOVER_UNIT_OBJ 20
 #define BREAKTSS_UNIT_OBJ 15
 #define OBJECTIVE_RELEASEUNIT 17
 #define OBJECTIVE_CLOAK 17
@@ -151,16 +151,19 @@
 #define OBJECTIVE_JAM 20  
 #define OBJECTIVE_INFECT 20  
 #define OBJECTIVE_REPEL 20
+#define OBJECTIVE_HITCH 21
 #define OBJECTIVE_SKIPTO 21
-#define OBJECTIVE_BUILD_RP  22
+#define OBJECTIVE_BUILD_TETHER 22
 #define OBJECTIVE_BUILD_SLINGSHOT 22  
+#define OBJECTIVE_BUILD_RP 22
 #define OBJECTIVE_BUILD_IMPORTER 23
-#define OBJECTIVE_BUILD_TELEPORTER  23
-#define OBJECTIVE_BUILD_FACTORY 24
-#define OBJECTIVE_BUILD_ARMORY  25
-#define OBJECTIVE_BUILD_TURRET  26
+#define OBJECTIVE_BUILD_ARMORY 24
+#define OBJECTIVE_BUILD_FACTORY 25
+#define OBJECTIVE_BUILD_MACROFAB 26
+#define OBJECTIVE_BUILD_TURRET 28
+#define OBJECTIVE_BUILD_SENSOR_TURRET 29
+#define OBJECTIVE_BUILD_TELEPORTER 30
 #define OBJECTIVE_BUILD_COMMC  26
-#define OBJECTIVE_BUILD_MACROFAB  27
 #define OBJECTIVE_BUILD_CHRONOPORTER  28
 //#define OBJECTIVE_BUILD_TURRET  24
 //#define OBJECTIVE_BUILD_MACROFAB  25
@@ -187,28 +190,35 @@
 #define OBJ_BLDG_STOP_PROCESS 3
 #define OBJ_BLDG_SMARTIDLE 5
 #define OBJ_BLDG_AUTOHIERARCHY 4
+#define OBJ_BLDG_DEPLOY 2
+#define OBJ_BLDG_PREDEPLOY 3
+#define OBJ_BLDG_CONGREGATE 4
+#define OBJ_BLDG_ATTACK_POS 5
+#define OBJ_BLDG_CLEAR_CONGREGATE 6
+
 #define OBJ_BLDG_FOUNDATION_DOWN 1
 #define OBJ_BLDG_FOUNDATION_UP 2
 #define OBJ_BLDG_FOUNDATION_DOWN_LEFT 3
 #define OBJ_BLDG_FOUNDATION_DOWN_RIGHT 4
 #define OBJ_BLDG_FOUNDATION_UP_LEFT 5
 #define OBJ_BLDG_FOUNDATION_UP_RIGHT 6
-#define OBJ_BLDG_MARINE 2
-#define OBJ_BLDG_SOP 3
-#define OBJ_BLDG_MECH 2
-#define OBJ_BLDG_ATHC 3
-#define OBJ_BLDG_LANCER 4
-#define OBJ_BLDG_TORNADE 5
-#define OBJ_BLDG_TANK 6
-#define OBJ_BLDG_FRIGATE 2
-#define OBJ_BLDG_MFB 3
-#define OBJ_BLDG_BLACKBIRD 4
-#define OBJ_BLDG_MAR 6
-#define OBJ_BLDG_HC 7
+#define OBJ_BLDG_MARINE 8
+#define OBJ_BLDG_SOP 9
+#define OBJ_BLDG_LANCER 11
+#define OBJ_BLDG_MECH 12
+#define OBJ_BLDG_ATHC 14
+#define OBJ_BLDG_TANK 16
+#define OBJ_BLDG_TORNADE 18
+#define OBJ_BLDG_MFB 20
+#define OBJ_BLDG_MAR 22
+#define OBJ_BLDG_FRIGATE 24
+#define OBJ_BLDG_BLACKBIRD 26
+#define OBJ_BLDG_HC 28
+#define OBJ_BLDG_EQUIP 12
 #define OBJ_BLDG_AUTOMOVE 7
 #define OBJ_BLDG_ATTACK 8
+#define OBJ_BLDG_MOVE 8
 #define OBJ_BLDG_STARTMOVE 9
-#define OBJ_BLDG_MOVE 10
 #define OBJ_BLDG_PLANT 11
 #define OBJ_BLDG_PLANT_DISPATCH 12
 #define OBJ_BLDG_BUILD 12
@@ -216,22 +226,16 @@
 #define OBJ_BLDG_CONVERT_QP 13
 #define OBJ_BLDG_CLEAR_NANITE 14
 #define OBJ_BLDG_GATE_RECHARGE 14
-#define OBJ_BLDG_DEPLOY 15
-#define OBJ_BLDG_PREDEPLOY 16
 #define OBJ_BLDG_CONTINUE_DEPLOYBIT 0
 #define OBJ_BLDG_DEPLOYBIT 1
 #define OBJ_BLDG_INTERRUPTBIT 2
 #define OBJ_BLDG_TSS 16
 #define OBJ_BLDG_BREAKTSS 17
-#define OBJ_BLDG_CONGREGATE 18
-#define OBJ_BLDG_CLEAR_CONGREGATE 19
 #define OBJ_BLDG_LAUNCH 20
 #define OBJ_BLDG_BOMB 21
 #define OBJ_BLDG_DEFEND 20
-#define OBJ_BLDG_EQUIP 20
 #define OBJ_BLDG_REPAIR 21
 #define OBJ_BLDG_CANCEL_REPEL 21
-#define OBJ_BLDG_ATTACK_POS 21
 #define OBJ_BLDG_CHANGE 22
 #define OBJ_BLDG_ACTIVE 23
 #define OBJ_ARCTICUS_OCTO 3
@@ -329,26 +333,25 @@
 #define ACTION_DROP_NUKE 10
 #define ACTION_MAKE_CARRIER 16
 #define ACTION_MAKE_SPYRE 16
+#define ACTION_MAKE_TELEPORTER 8
 #define ACTION_MAKE_LFACTORY 9
 #define ACTION_MAKE_MACROFAB 10
 #define ACTION_MAKE_RP 11
+#define ACTION_MAKE_TETHER 11
 #define ACTION_MAKE_SSLINGSHOT 11
 #define ACTION_MAKE_IMPORTER 12
-#define ACTION_MAKE_TELEPORTER 12
 #define ACTION_MAKE_TURRET 13
-#define ACTION_MAKE_CHRONOPORTER 13
+#define ACTION_MAKE_CHRONOPORTER 15
 #define ACTION_MAKE_ARMORY 14
 #define ACTION_MAKE_IMPORTER_MECH 17
 #define ACTION_MAKE_ARMORY_MECH 18
-//#define ACTION_MAKE_LFACTORY 13
-//#define ACTION_MAKE_MACROFAB 14
-//#define ACTION_MAKE_CHRONOPORTER 15
 #define ACTION_MAKE_FOUNDATION 21
 #define ACTION_PILOT_PULSER 12
 #define ACTION_PILOT_TERCHER 13
 #define ACTION_PILOT_HALCYON 14
 #define ACTION_SELF_DOWNGRADE 14
 #define ACTION_SELF_UPGRADE 15
+#define ACTION_VICTORY 16
 #define ACTION_PULSER 16
 #define ACTION_TERCHER 17
 #define ACTION_HALCYON 18
@@ -422,6 +425,7 @@
 #define ACTION_TSS 11
 #define ACTION_TELEPORT 12
 #define ACTION_POSTTELEPORT 14
+#define ACTION_POSTCPORT 14
 #define ACTION_FAKE_TELEPORT 15
 #define ACTION_TIMEPORT 13
 #define ACTION_CHRONOPORT 14
@@ -447,10 +451,12 @@
 #define ACTION_Z_HALCYON 21
 #define ACTION_T_HALCYON 22
 #define ACTION_S_HALCYON 23
+#define ACTION_SPINDOWN 19
 #define ACTION_SPINUP 20
-#define ACTION_SPINDOWN 21
 #define ACTION_SETACTIVE 22
 #define ACTION_CLEARACTIVE 23
+#define ACTION_MARINE 10
+#define ACTION_SOP 12
 #define ACTION_MECH 25
 #define ACTION_ATHC 26
 #define ACTION_AMG 27
@@ -461,8 +467,6 @@
 #define ACTION_HEAVYC 28
 #define ACTION_TANK 29
 #define ACTION_BLACKBIRD 29
-#define ACTION_MARINE 27
-#define ACTION_SOP 28
 #define ACTION_ZAYIN 27
 #define ACTION_TETH 28
 #define ACTION_SHIN 29
@@ -499,12 +503,12 @@
 #define ACTION_MOVE_UP 48
 #define ACTION_MOVE_DOWN 49
 #define ACTION_ACTIVEGATE 54
-#define ACTION_SUMMON_TROOPS 40
 #define ACTION_DEFEND 41
 #define ACTION_NO_DEFEND 42
 //#define ACTION_CLEAR_LAD 43 //forced action on all buildings
 #define ACTION_OUTPUT 47
-#define ACTION_SIPHON_TSS 48
+#define ACTION_SUMMON_TROOPS 49
+#define ACTION_SIPHON_TSS 49
 #define ACTION_SET_COMMANDER_TO 51
 #define ACTION_SET_SIPHON 52
 
@@ -645,22 +649,31 @@
 #define FOUNDATION_BIT 8
 #define FOUNDATION_FAIL_BIT 9
 #define VECGIR_ADV_POWER 0
+
+ //machinery
 #define HUMAN_ADV_HEAVY 1
+ //ground
 #define HUMAN_ADV_BASIC 2
+ //specials
 #define HUMAN_ADV_EXTRAS 3
+ // gate
 #define HUMAN_ADV_GATE 4
+ //aerospace
 #define HUMAN_ADV_WEAPONS 5
-#define GREKIM_ADV_LOLIGO 7
+
 #define GREKIM_ADV_AUTODEFENCE 6
+#define GREKIM_ADV_LOLIGO 7
 #define GREKIM_ADV_EXTRAS 8
 #define GREKIM_ADV_GATE 9
 #define GREKIM_ADV_WEAPONS 10
-#define GREKIM_ADV_VANGUARD 15
+#define GREKIM_ADV_VANGUARD 8
+
 #define VECGIR_ADV_AUTODEFENCE 11
 #define VECGIR_ADV_HALCYON 12
 #define VECGIR_ADV_EXTRAS 13
 #define VECGIR_ADV_GATE 14
 #define VECGIR_ADV_WEAPONS 15
+
 #define CPORT_STORED_COMMANDER 13
 #define CPORT_NO_COMMANDER 14
 #define CPORT_RESTORED_COMMANDER 15
@@ -799,8 +812,9 @@
 #define MFB_CLASS 60
 #define TYR_DISABLED_CLASS 61
 #define TYR_MFB_CLASS 62
-#define HUMAN_ACHRON_CLASS 64
+#define HUMAN_ACHRON_CLASS 65
 #define LANCER_CLASS 200
+#define CALTROP_CLASS 202
 #define FRIGATE_CLASS 205
 #define TORNADE_CLASS 210
 #define CARRIER_CLASS 215 
@@ -815,6 +829,7 @@
 #define IMPORTER_CLASS 120
 #define CHRONOPORTER_CLASS 125
 #define SLINGSHOT_CLASS 130
+#define TETHER_CLASS 138
 #define TELEPORTER_CLASS 135
 #define INDUSTRIAL_TELEPORTER_CLASS 137
 #define HUMAN_RP_CLASS 145
@@ -953,6 +968,7 @@
 #define ACHRON_RANK 111
 #define MARINE_RANK 120
 #define SOP_RANK 130
+#define TETHER_RANK 138
 #define MECH_RANK 145
 #define TANK_RANK 180
 #define TANK2_RANK 190
@@ -980,6 +996,7 @@
 #define OCTO_RANK 122
 #define SEPI_RANK 124
 #define PHARO_RANK 132
+#define CUTTLE_RANK 216
 #define OCTOPOD_RANK 165
 #define SEPIPOD_RANK 220
 #define PHAROPOD_RANK 238
@@ -1034,7 +1051,7 @@
 #define MFB_SPEED 6
 #define LANCER_SPEED 2
 #define FRIGATE_SPEED 2
-#define TORNADE_SPEED 3
+#define TORNADE_SPEED 2
 //actual TORNADE_SPEED 2.5
 #define CRUISER_SPEED 3
 #define BLACKBIRD_SPEED 3
@@ -1195,105 +1212,104 @@
 
 //******* COSTS, defined in the XML and checked by ACTION preconditions
 #define LC_SMART_THRESHOLD 0
-#define QP_SMART_THRESHOLD 1600
-#define POWER_SMART_THRESHOLD 400
+#define QP_SMART_THRESHOLD 3000
+#define POWER_SMART_THRESHOLD 2000
 
 #define SCAN_PULSE_LC 0
 #define SCAN_PULSE_QP 200
 
-//RS:  1 reserve = 50 qp
-//Health: 1 lc = 1 qp = 5 hp
+//RS:  1 reserve = 100 qp
+//Health: 1 lc = 1 qp = 2.5 hp
 
-//Marine 50/120: RS:50 H:20
-#define MARINE_LC 50
-#define MARINE_QP 0
-#define MARINE_HP 100
-//SOP 100/200: RS:50 H:50
+//Marine 100/250: RS:100 H:50
+#define MARINE_LC 0
+#define MARINE_QP 100
+#define MARINE_HP 125
+//SOP 200/400: RS:100 H:100
 #define SOP_LC 0
-#define SOP_QP 100
+#define SOP_QP 200
 #define SOP_HP 250
-//Mech 100/120: RS:0 H:20
-#define MECH_LC 0
-#define MECH_QP 200
-#define MECH_HP 100
-//ATHC 200/300: RS:50 H:50
-#define ATHC_LC 200
-#define ATHC_QP 0
-#define ATHC_HP 250
-//MAR 300/450: RS:50 H:150
-#define MAR_LC 300
-#define MAR_QP 0
-#define MAR_HP 500
-//Tank 400/550: RS:50 H:100
-#define TANK_LC 400
-#define TANK_QP 0
-#define TANK_HP 500
-//MFB 600/750: RS:50 H:100
-#define MFB_LC 0
-#define MFB_QP 600
-#define MFB_HP 500
-//Lancer 200/300: RS:50 H:50
+//Lancer 200/400: RS:100 H:100
 #define LANCER_LC 0
 #define LANCER_QP 200
 #define LANCER_HP 250
-//Frigate 300/420: RS:50 H:70
-#define FRIGATE_LC 0
-#define FRIGATE_QP 300
-#define FRIGATE_HP 350
-//Tornade 400/580: RS:50 H:130
+//Mech 300/400: RS:0 H:100
+#define MECH_LC 300
+#define MECH_QP 0
+#define MECH_HP 250
+//ATHC 300/450: RS:100 H:50
+#define ATHC_LC 300
+#define ATHC_QP 0
+#define ATHC_HP 125
+//Tank 400/800: RS:100 H:300
+#define TANK_LC 400
+#define TANK_QP 0
+#define TANK_HP 750
+//Tornade 500/800: RS:100 H:200
 #define TORNADE_LC 0
-#define TORNADE_QP 400
-#define TORNADE_HP 650
-//Cruiser 600/800: RS:50 H:150
-#define CRUISER_LC 0
-#define CRUISER_QP 600
-#define CRUISER_HP 750
-//BBird 500/700: RS:50 H:150
+#define TORNADE_QP 500
+#define TORNADE_HP 500
+//MFB 600/900: RS:100 H:200
+#define MFB_LC 0
+#define MFB_QP 600
+#define MFB_HP 500
+//MAR 300/500: RS:100 H:100
+#define MAR_LC 300
+#define MAR_QP 0
+#define MAR_HP 250
+//Frigate 400/600: RS:100 H:100
+#define FRIGATE_LC 0
+#define FRIGATE_QP 400
+#define FRIGATE_HP 250
+//BBird 600/1000: RS:100 H:300
 #define BLACKBIRD_LC 0
-#define BLACKBIRD_QP 500
+#define BLACKBIRD_QP 600
 #define BLACKBIRD_HP 750
+//Cruiser 800/1200: RS:100 H:300
+#define CRUISER_LC 0
+#define CRUISER_QP 800
+#define CRUISER_HP 750
 
 #define CARRIER_LC 0
 #define CARRIER_QP 550
 
 #define RP_LC 0
-#define RP_QP 600
+#define RP_QP 300
 #define COMMC_LC 0
 #define COMMC_QP 600
-#define ARMORY_LC 100
+#define ARMORY_LC 200
 #define ARMORY_QP 0
 #define IMPORTER_LC 0
-#define IMPORTER_QP 300
-#define FACTORY_LC 200
+#define IMPORTER_QP 600
+#define FACTORY_LC 400
 #define FACTORY_QP 0
 #define MACROFAB_LC 0
 #define MACROFAB_QP 600
-#define TURRET_LC 0
-#define TURRET_QP 200
-#define SLINGSHOT_LC 0
-#define SLINGSHOT_QP 75
+#define TURRET_LC 200
+#define TURRET_QP 0
+#define TETHER_LC 0
+#define TETHER_QP 150
 #define TELEPORTER_LC 0 
-#define TELEPORTER_QP 200 
+#define TELEPORTER_QP 300 
 #define CHRONOPORTER_LC 0
-#define CHRONOPORTER_QP 200
+#define CHRONOPORTER_QP 400
 
 #define ADV1_LC 0
-#define ADV1_QP 200
+#define ADV1_QP 0
 #define ADV2_LC 0
-#define ADV2_QP 40
+#define ADV2_QP 0
 #define ADV3_LC 0
-#define ADV3_QP 150
+#define ADV3_QP 0
 #define ADV4_LC 0
-#define ADV4_QP 200
-#define ADV4_G_LC 0
-#define ADV4_G_QP 250
+#define ADV4_QP 0
 #define ADV5_LC 0
-#define ADV5_QP 400
+#define ADV5_QP 0
+
 #define ADV6_LC 0
 #define ADV6_QP 250
 
-#define NUKE_LC 150
-#define NUKE_QP 150
+#define NUKE_LC 0
+#define NUKE_QP 0
 #define CHRONOBOMB_LC 0
 #define CHRONOBOMB_QP 270
 #define PLASMABOMB_LC 0
@@ -1303,8 +1319,8 @@
 
 #define TANK_UPGRADE_LC 200
 #define TANK_UPGRADE_QP 200
-#define TURRET_UPGRADE_LC 10
-#define TURRET_UPGRADE_QP 8
+#define TURRET_UPGRADE_LC 0
+#define TURRET_UPGRADE_QP 200
 #define DOME_UPGRADE_LC 0
 #define DOME_UPGRADE_QP 200
 
@@ -1316,25 +1332,25 @@
 #define ARCTICUS_PHARO_QP 100
 
 #define OCTO_LC 0
-#define OCTO_QP 100
+#define OCTO_QP 200
 #define SEPI_LC 0
-#define SEPI_QP 100
+#define SEPI_QP 200
 #define PHARO_LC 0
-#define PHARO_QP 150
+#define PHARO_QP 200
 #define TODARO_LC 0
-#define TODARO_QP 200
+#define TODARO_QP 400
 #define OCTOPOD_LC 0
-#define OCTOPOD_QP 300
+#define OCTOPOD_QP 400
 #define SEPIPOD_LC 0
-#define SEPIPOD_QP 400
+#define SEPIPOD_QP 500
 #define PHAROPOD_LC 0
-#define PHAROPOD_QP 500
+#define PHAROPOD_QP 600
 #define OCTOLIGO_LC 0
-#define OCTOLIGO_QP 400
+#define OCTOLIGO_QP 800
 #define SEPILIGO_LC 0
-#define SEPILIGO_QP 600
+#define SEPILIGO_QP 800
 #define PHAROLIGO_LC 0
-#define PHAROLIGO_QP 400
+#define PHAROLIGO_QP 600
 #define GARGANTUAN_LC 0
 #define GARGANTUAN_QP 400
 
@@ -1345,43 +1361,37 @@
 #define GREKIM_ARCT_R 60
 
 #define GREKIM_RP_LC 0
-#define GREKIM_RP_QP 50
+#define GREKIM_RP_QP 100
 #define GREKIM_RP_E 30
 #define REAPH_LC 0
 #define REAPH_QP 0
 #define REAPH_E 20
 #define MOUND_LC 0
-#define MOUND_QP 50
+#define MOUND_QP 100
 #define MOUND_E 10
 #define SPYRE_LC 0
-#define SPYRE_QP 150
+#define SPYRE_QP 300
 #define ARCTICUS_LC 0
-#define ARCTICUS_QP 100
+#define ARCTICUS_QP 200
 #define DOME_LC 0
-#define DOME_QP 50
+#define DOME_QP 100
 #define DOME_E 0
-#define PRI_RP_LC 0
-#define PRI_RP_QP 300
-#define PRI_REAPH_LC 0
-#define PRI_REAPH_QP 50
-#define PRI_ARCTICUS_LC 0
-#define PRI_ARCTICUS_QP 200
 
-// Adv structures tech (100 +50 +50 =200 QP +200 P -> 200 QP)
+// Adv structures tech (200 +100 = 300 QP +200 P -> 300 QP)
 #define ADV1_G_LC 0
-#define ADV1_G_QP 50
-// Loligo tech (100 +50 +150 =300 QP +500 P -> 400 QP)
+#define ADV1_G_QP 0
+// Loligo tech (200 +100 +300 = 600 QP +1000 P -> 800 QP)
 #define ADV2_G_LC 0
-#define ADV2_G_QP 150
-// Specials Tech (100 +50 +50 =200 QP +300 P -> 250 QP)
+#define ADV2_G_QP 300
+// Specials Tech (200 +100 +100 = 400 QP +200 P -> 400 QP)
 #define ADV3_G_LC 0
-#define ADV3_G_QP 50
-// Chrono tech (100 +50 +50 =200 QP +600 P -> 500 QP)
+#define ADV3_G_QP 100
+// Chrono tech (200 +100 +100 = 400 QP +1200 P -> 800 QP)
 #define ADV4_G_LC 0
-#define ADV4_G_QP 50
-// Weapons tech (100 +50 +150 =300 QP +600 P -> 450 QP)
+#define ADV4_G_QP 100
+// Weapons tech (200 +100 +300 = 600 QP +1200 P -> 900 QP)
 #define ADV5_G_LC 0
-#define ADV5_G_QP 150
+#define ADV5_G_QP 300
 
 #define PULSER_POWER 1
 #define TERCHER_POWER 2
@@ -1437,17 +1447,21 @@
 #define MARINE_CPORT_QP 10
 #define SOP_CPORT_QP 20
 #define MECH_CPORT_QP 80
-#define TANK_CPORT_QP 160
-#define TANK2_CPORT_QP 240
-#define MAR_CPORT_QP 46
-#define MAR2_CPORT_QP 70
-#define ATHC_CPORT_QP 80
-#define MFB_CPORT_QP 63
-#define LANCER_CPORT_QP 80
-#define FRIGATE_CPORT_QP 63
-#define TORNADE_CPORT_QP 67
-#define CRUISER_CPORT_QP 83
-#define BLACKBIRD_CPORT_QP 69
+#define TANK_CPORT_QP 150
+#define TANK2_CPORT_QP 250
+#define MAR_CPORT_QP 150
+#define MAR2_CPORT_QP 300
+#define ATHC_CPORT_QP 100
+#define MFB_CPORT_QP 200
+#define LANCER_CPORT_QP 100
+#define FRIGATE_CPORT_QP 150
+#define TORNADE_CPORT_QP 200
+#define CRUISER_CPORT_QP 400
+#define BLACKBIRD_CPORT_QP 300
+#define H_RP_TPORT_QP 150
+#define TETHER_TPORT_QP 40
+#define TPORTER_TPORT_QP 200
+#define CPORTER_TPORT_QP 200
 
 #define ZAYIN_CPORT_QP 30
 #define TETH_CPORT_QP 30
@@ -1462,26 +1476,26 @@
 #define HALCYON_T_CPORT_QP 67
 #define HALCYON_S_CPORT_QP 92
 
-#define OCTO_CPORT_QP 20 
-// 40 p => 20 qp
-#define SEPI_CPORT_QP 20 
-// 60 p => 30 qp 
-#define PHARO_CPORT_QP 20 
-// 30 p => 15 qp
-#define OCTOPOD_CPORT_QP 40 
-// 150 p => 75 qp
-#define SEPIPOD_CPORT_QP 40 
-// 360 p => 180 qp
-#define PHAROPOD_CPORT_QP 40 
-// 160 p => 80 qp
-#define OCTOLIGO_CPORT_QP 40 
+#define OCTO_CPORT_QP 40
+// 80 p => 40 qp
+#define SEPI_CPORT_QP 40
+// 120 p => 60 qp 
+#define PHARO_CPORT_QP 40
+// 60 p => 30 qp, tport 160 p => 80 qp
+#define OCTOPOD_CPORT_QP 80
 // 300 p => 150 qp
-#define SEPILIGO_CPORT_QP 40 
-// 400 p => 200 qp
-#define PHAROLIGO_CPORT_QP 40 
-// 800 p => 400 qp
-#define G_RP_CPORT_QP 20 
-// 100 p => 50 qp
+#define SEPIPOD_CPORT_QP 80
+// 160 p => 80 qp, tport 320 p => 160 qp
+#define PHAROPOD_CPORT_QP 80
+// 320 p => 160 qp
+#define OCTOLIGO_CPORT_QP 80
+// 600 p => 300 qp, tport 400 p => 200 qp
+#define SEPILIGO_CPORT_QP 80
+// 800 p => 400 qp, tport 400 p => 200 qp
+#define PHAROLIGO_CPORT_QP 80
+// 1200 p => 600 qp, tport 480 p => 240 qp
+#define G_RP_CPORT_QP 80
+// 200 p => 100 qp
 
 #define SET_AP if (setAdditionalParameters) { PERFORM SET_ADDITIONAL_PARAMS ap; }
 

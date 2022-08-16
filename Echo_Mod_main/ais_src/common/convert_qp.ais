@@ -31,7 +31,7 @@ if(unit.Rank == $RESOURCE_RANK || unit.Rank == $EMPTIED_RANK){
 }
 
 /*Grekim Achron, Guardian:
-    convert 200 LC (+ 100 P) -> 200 QP
+    convert 400 LC (+ 480 P) -> 400 QP
 */
 {
 	if (player->$LCrystals < 400) {
@@ -39,7 +39,7 @@ if(unit.Rank == $RESOURCE_RANK || unit.Rank == $EMPTIED_RANK){
 		PERFORM $ACTION_ERROR1;
 	}
 	else {
-		if (unit->Energy < 20) {
+		if (unit->Energy < 80) {
 			say "Not enough Energy";
 			PERFORM $ACTION_ERROR1;
 		}

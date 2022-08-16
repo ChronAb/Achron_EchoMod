@@ -3,8 +3,9 @@
 #include common/include/unit_common_header.ais
 
 
-//called by _CHRONPORTED , unit should have capbit 5 set when cporting via gate
+//called by _CHRONPORTED
 
+/*
 object myCarrier =  unit->Carrier;
 //this unit is being carried and the carrier must have been chronoported [tanks carrying marines]
 if (myCarrier->IsAlive==1) {  
@@ -132,9 +133,9 @@ if (myStatus[$CAP_BIT_5] ) { //just chronoported
 		PERFORM SET_PARAM unit->Position;
 		ap = 0;
 	}
-}
+}*/
     
-if ($AUTOPILOT) { //only move away if autopilot player
+if (1 || $AUTOPILOT) { //move away
 		
 
 	if (ap[$OBJECTIVE] != $OBJECTIVE_CHRONOPORTED) {

@@ -69,10 +69,9 @@
         </AIScript>
         
         <AIScript>
-            <Name>cs180_human_build</Name>
-            <Path>./Achron_EchoMod/Echo_Mod_main/ais/human_build.abn</Path>
+            <Name>cs440_atk_ground</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/supressionfire.abn</Path>
         </AIScript>
-        
         <AIScript>
             <Name>cs200_simple_upgrade</Name>
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/simple_morph.abn</Path>
@@ -92,6 +91,10 @@
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/chooser_idle.abn</Path>
         </AIScript>
         <AIScript>
+            <Name>cs00p_portal_idle</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/portal_idle.abn</Path>
+        </AIScript>
+        <AIScript>
             <Name>cs00s_spawner_idle</Name>
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/spawner_idle.abn</Path>
         </AIScript>
@@ -107,6 +110,23 @@
         <AIScript>
             <Name>cs170_cloak</Name>
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/cloak.abn</Path>
+        </AIScript>
+        
+        <AIScript>
+            <Name>cs400_pick_human</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/chooser_human.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs410_pick_grekim</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/chooser_grekim.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs420_pick_vecgir</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/chooser_vecgir.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs430_pick_random</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/chooser_random.abn</Path>
         </AIScript>
         
         <AIScript>
@@ -130,6 +150,15 @@
             <Name>cs20s_nanite</Name>
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/nanite.abn</Path>
         </AIScript>
+        <AIScript>
+            <Name>cs19s_faction_select</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/human_build.abn</Path>
+        </AIScript>
+        
+        <AIScript>
+            <Name>cs02p_portal_dispatch</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/portal_dispatch.abn</Path>
+        </AIScript>
 		<AIScript>
             <Name>cs20s_change_team</Name>
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/transfer_ownership.abn</Path>
@@ -137,6 +166,44 @@
         <AIScript>
             <Name>cs21s_simple_downgrade</Name>
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/simple_unmorph.abn</Path>
+        </AIScript>
+
+        <AIScript>
+            <Name>cs24s_CESO</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/chooser_faction_h_ceso.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs25s_PnC</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/chooser_faction_h_pnc.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs26s_locals</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/chooser_faction_h_merc.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs27s_pirates</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/chooser_faction_h_pirate.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs30s_core</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/chooser_faction_g_core.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs31s_vanguard</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/chooser_faction_g_vguard.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs32s_guardian</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/chooser_faction_g_guardian.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs33s_null</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/chooser_faction_g_null.abn</Path>
+        </AIScript>
+        
+        <AIScript>
+            <Name>cs40s_faction_cancel</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/cancel.abn</Path>
         </AIScript>
 
         <!-- amplifier scripts -->
@@ -173,6 +240,35 @@
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/pharo_spyre.abn</Path>
         </AIScript>
         
+        <AIScript>
+            <Name>cs23a_amp_importer</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/amp_importer.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs24a_amp_armory</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/amp_armory.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs25a_amp_fac</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/amp_fac.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs26a_amp_mfab</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/amp_mfab.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs28a_amp_turret</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/amp_turret.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs29a_amp_sensor</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/amp_sensor.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs30a_amp_tporter</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/amp_tporter.abn</Path>
+        </AIScript>
+        
         <!-- general building scripts -->
         <AIScript>
             <Name>cs09b_relocate</Name>
@@ -195,12 +291,12 @@
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/auto_reactivate.abn</Path>
         </AIScript>
         <AIScript>
-            <Name>cs09mb_move</Name>
-            <Path>./Achron_EchoMod/Echo_Mod_main/ais/simple_move_dispatch.abn</Path>
+            <Name>cs08mb_moving</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/simple_move.abn</Path>
         </AIScript>
         <AIScript>
-            <Name>cs10mb_moving</Name>
-            <Path>./Achron_EchoMod/Echo_Mod_main/ais/simple_move.abn</Path>
+            <Name>cs09mb_move</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/simple_move_dispatch.abn</Path>
         </AIScript>
         <AIScript>
             <Name>cs11mb_stop</Name>
@@ -248,24 +344,12 @@
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/mine_idle.abn</Path>
         </AIScript>
         <AIScript>
-            <Name>cs01r_rp_mine</Name>
-            <Path>./Achron_EchoMod/Echo_Mod_main/ais/mine_mine.abn</Path>
-        </AIScript>
-        <AIScript>
-            <Name>cs02r_rp_pickmine</Name>
-            <Path>./Achron_EchoMod/Echo_Mod_main/ais/mine_pickmine.abn</Path>
+            <Name>cs08r_rp_moving</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/simple_move.abn</Path>
         </AIScript>
         <AIScript>
             <Name>cs09r_rp_move</Name>
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/simple_move_dispatch.abn</Path>
-        </AIScript>
-        <AIScript>
-            <Name>cs10r_rp_moving</Name>
-            <Path>./Achron_EchoMod/Echo_Mod_main/ais/simple_move.abn</Path>
-        </AIScript>
-        <AIScript>
-            <Name>cs13r_rp_convert</Name>
-            <Path>./Achron_EchoMod/Echo_Mod_main/ais/convert_qp.abn</Path>
         </AIScript>
         <AIScript>
             <Name>cs011r_rp_plant</Name>
@@ -275,9 +359,35 @@
             <Name>cs16r_rp_stop</Name>
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/set_idle.abn</Path>
         </AIScript>
+        
         <AIScript>
-            <Name>cs47r_rp_tport</Name>
+            <Name>cs01r_rp_mine</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/mine_mine.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs02r_rp_pickmine</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/mine_pickmine.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs13r_rp_convert</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/convert_qp.abn</Path>
+        </AIScript>
+        
+        <AIScript>
+            <Name>cs10r_rp_tport</Name>
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/teleportme.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs48r_rp_cport</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/chronoportme.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs48r_g_rp_cport</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/grekim_cast.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>cs49r_cport_na</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown.abn</Path>
         </AIScript>
         
         

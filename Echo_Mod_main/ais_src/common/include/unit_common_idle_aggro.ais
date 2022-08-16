@@ -39,9 +39,9 @@ if idle, and commander needs assistance, set everything as with AP_DISTPANCE, an
 */
 
 
-//(1)*** Check to see if was attacked by anyone, and if so, start moving towards that direction
+//(1)*** Check to see if was attacked by anyone, and if so, start a-moving away from that direction (because they might be cloaked so better retreat)
 if ( !AP_DISTANCE && !AP_UNIT) {
-	//if attacked, set the move counter and bits to go find who attacked 
+	//if attacked, set the move counter and bits to get away from who attacked 
 	int attackedVertical = unit->LastAttackedVDirection;
 	if (attackedVertical) {
 	
@@ -58,50 +58,49 @@ if ( !AP_DISTANCE && !AP_UNIT) {
             }
 			//PERFORM CLEAR_LAST_ATTACKED_DIRECTION;
 		}
-		else {       
-			int lahd = unit->LastAttackedHDirection;
-			float direction = rottorad(lahd) + 3.1415926;	//find the opposite direction
-			int sindir = 10.0 * sin(direction);
-			int cosdir = 10.0 * cos(direction);
-			int uX = unitPosition[$Xpos];
-			int uY = unitPosition[$Ypos];
-			int y = uY - sindir;
-			int x = uX + cosdir;
-			PERFORM CLEAR_LAST_ATTACKED_DIRECTION;
+        
+        int lahd = unit->LastAttackedHDirection;
+        float direction = rottorad(lahd) + 3.1415926;	//find the opposite direction
+        int sindir = 10.0 * sin(direction);
+        int cosdir = 10.0 * cos(direction);
+        int uX = unitPosition[$Xpos];
+        int uY = unitPosition[$Ypos];
+        int y = uY - sindir;
+        int x = uX + cosdir;
+        PERFORM CLEAR_LAST_ATTACKED_DIRECTION;
 
-			//ground units that can't retaliate try to run away by attack-moving away from the air-attacker
-			if ($IS_GROUND_ONLY_UNIT && attackedVertical != $LAST_ATTACKED_V_DIRECTION_SAME ){
-						
-				//get the map boundaries
-				PERFORM GET_MAP_WIDTH;
-				int mapwidth = perf_ret;
-				PERFORM GET_MAP_LENGTH;
-				int maplength = perf_ret;
-				if (x < 5) x = 5;
-				if (y < 5) y = 5;
-				if (x > mapwidth - 5) x = mapwidth - 5;
-				if (y > maplength -5) y = maplength - 5;
-				int awaydir = 0;
-				awaydir[$Xpos] = x; awaydir[$Ypos] = y; 
-				ap=0;
-				ap[$ATTACK_BIT] = 1;
-				ap[$OBJECTIVE] = $OBJECTIVE_ATTACKING;
-				PERFORM SET_ADDITIONAL_PARAMS ap;
-				PERFORM SET_PARAM awaydir;
-				PERFORM SET_OBJECTIVE $OBJECTIVE_ATTACKING; 
-				PERFORM NOTHING;
-			}
-			
-			setAdditionalParameters = 1;
-			ap[$DISTANCE_BIT] = 1;
-			ap[$HOLDMOVE_BIT] = 0; //not returning
-			ap[$HOLD_TARGET_BIT] = 0; //no enemy found
-			ap[$HOLD_COUNTER] = 7;    //max counter
-			ap[$HOLD_LAHD] = lahd; //lahd 
-			ap[$STUCK_IDLE_ATTACK_APPROACH_BIT] = 0; 
-			PERFORM SET_PARAM unitPosition;            //set unit's own location to its OP
-			AP_DISTANCE = 1;	
-		}
+        //try to run away by attack-moving away from the attacker
+        if (1 || traitor>0 || ($IS_GROUND_ONLY_UNIT && attackedVertical!=$LAST_ATTACKED_V_DIRECTION_SAME) ){
+                    
+            //get the map boundaries
+            PERFORM GET_MAP_WIDTH;
+            int mapwidth = perf_ret;
+            PERFORM GET_MAP_LENGTH;
+            int maplength = perf_ret;
+            if (x < 5) x = 5;
+            if (y < 5) y = 5;
+            if (x > mapwidth - 5) x = mapwidth - 5;
+            if (y > maplength -5) y = maplength - 5;
+            int awaydir = 0;
+            awaydir[$Xpos] = x; awaydir[$Ypos] = y; 
+            ap=0;
+            ap[$ATTACK_BIT] = 1;
+            ap[$OBJECTIVE] = $OBJECTIVE_ATTACKING;
+            PERFORM SET_ADDITIONAL_PARAMS ap;
+            PERFORM SET_PARAM awaydir;
+            PERFORM SET_OBJECTIVE $OBJECTIVE_ATTACKING; 
+            PERFORM NOTHING;
+        }
+        
+        setAdditionalParameters = 1;
+        ap[$DISTANCE_BIT] = 1;
+        ap[$HOLDMOVE_BIT] = 0; //not returning
+        ap[$HOLD_TARGET_BIT] = 0; //no enemy found
+        ap[$HOLD_COUNTER] = 7;    //max counter
+        ap[$HOLD_LAHD] = lahd; //lahd 
+        ap[$STUCK_IDLE_ATTACK_APPROACH_BIT] = 0; 
+        PERFORM SET_PARAM unitPosition;            //set unit's own location to its OP
+        AP_DISTANCE = 1;	
 	}
 	
 }
@@ -163,21 +162,29 @@ if (perf_ret < 16384 || AP_ATTACK) { //if currently attacking something while id
 			int position = target->Position;
 			int targetIsOnGround = target->IsTerrainGround;
 			#include common/include/common_weapons.ais  
+            
 			int weapon_range = 0;	
 			PERFORM GET_MAX_ACTION_RANGE_RADIUS weaponAction;
 			weapon_range = perf_ret;
+            
+            int weapon_v_range = 0;
+            PERFORM GET_MAX_ACTION_RANGE_HEIGHT weaponAction;
+            weapon_v_range = perf_ret;
+            
 			int moveCloser = 0;
 			
 			//since GET_CLOSEST_TARGET_POSITION_WITHIN_RANGE is somewhat cpu intensive, we first 
 			//try to move closer if unit is definitely not close enough to attack
 			int distToEnemy = unit<_>closestenemy;
+            int vDistToEnemy = unit<^>closestenemy;
 			//melee units should start checking if unit is attackable earlier, only blindly move closer when truly way out of range
 			if($IS_MELEE) { 
 				if ( distToEnemy > (weapon_range+6) * (weapon_range+6) ) {
 					moveCloser = 1;
 				}
 			}
-			else if ( distToEnemy > (weapon_range+3) * (weapon_range+3) ) {
+			else if ( distToEnemy > (weapon_range+3) * (weapon_range+3) || 
+                    vDistToEnemy > weapon_v_range*weapon_v_range ) {
 				moveCloser = 1;
 			}
 			
@@ -286,48 +293,17 @@ if (perf_ret < 16384 || AP_ATTACK) { //if currently attacking something while id
 				}				
 			}
 			
-      if (moveCloser) { //outside of weapon range, need to move closer to the enemy 
-			
-				if (!AP_DISTANCE) { //haven't start moving yet towards enemy
-					setAdditionalParameters = 1;
-					ap[$DISTANCE_BIT] = 1;
-					ap[$HOLDMOVE_BIT] = 0;
-					ap[$HOLD_TARGET_BIT] = 1; //found a target
-					PERFORM SET_PARAM unitPosition;            //set unit's own location to its OP
-				}
-				
-
-				int uZ = unitPosition[$Zpos];
-				int position = closestenemy->Position;
-
-				if ( uZ > 0 ) { //check if this is an air unit
-					if (position[$Zpos] == 0) { //the target is on the ground
-						PERFORM GET_MAP_NEXT_Z_POSITION_UP position;
-						if (uZ > perf_ret[$Zpos]) { perf_ret[$Zpos] = uZ; } //allow the air unit to remain on its height level
-						position = perf_ret;
-					}
-				} 
-				
-				ignore_collision_with_unit = closestenemy;
-				dir = QUERY BESTMOVE [unit, $ACTION_MOVE] MIN [query <=> position] WHERE [1];
-	
-				dir[16,8] = 0; //clear out the 3rd byte that stores the counter
-				if (dir && dir != $QUERY_EXHAUSTED) {
-
-					ap[$STUCK_IDLE_ATTACK_APPROACH_BIT] = 0;
-					setAdditionalParameters = 1;
-					PERFORM $ACTION_MOVE dir;
-					PERFORM SET_ADDITIONAL_PARAMS2 0;
-				} 
-				else { //could not get closer, mark self as stuck/give up
-
-					ap[$STUCK_IDLE_ATTACK_APPROACH_BIT] = 1;
-					setAdditionalParameters = 1;
-				}
-				$SET_AP
-				PERFORM NOTHING;
-			
-      }
+            if (moveCloser) { //outside of weapon range, need to a-move closer to the enemy 
+                int anchor = unitPosition;
+                anchor[$Zpos] = 0;
+                ap=0;
+                ap[$ATTACK_BIT] = 1;
+                ap[$OBJECTIVE] = $OBJECTIVE_ATTACKING;
+                PERFORM SET_ADDITIONAL_PARAMS ap;
+                PERFORM SET_PARAM anchor;
+                PERFORM SET_OBJECTIVE $OBJECTIVE_ATTACKING; 
+                PERFORM NOTHING;
+            }
 		}
         
 		

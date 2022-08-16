@@ -7,6 +7,53 @@
     <TimelineStatistics />
     <UnitLists />
     <ActionStepModifiers>
+        <ActionStepModifier>
+            <Name>RP Commander</Name>
+            <StrengthBase>0</StrengthBase>
+            <StrengthRange>0</StrengthRange>
+            <StrengthCount>0</StrengthCount>
+            <Flags>
+                <Permeating>1</Permeating>
+                <LimitDistance>1</LimitDistance>
+                <SetLastAttackedDirection>0</SetLastAttackedDirection>
+                <ContinueActionOnStepFailure>0</ContinueActionOnStepFailure>
+            </Flags>
+            <AccuracyMultiplier>1</AccuracyMultiplier>
+            <EffectTimeout>0</EffectTimeout>
+            <MinEffectRadius>0</MinEffectRadius>
+            <EffectRadius>60</EffectRadius>
+            <EffectHeight>30</EffectHeight>
+            <MaxEffectAngle>360</MaxEffectAngle>
+            <EffectSplashHeight>0</EffectSplashHeight>
+            <EffectSplashRadius>0</EffectSplashRadius>
+            <EffectSplashEffectiveRadius>0</EffectSplashEffectiveRadius>
+            <TargetClass1>
+                <Min>0</Min>
+                <Max>4009</Max>
+            </TargetClass1>
+        </ActionStepModifier>
+        <ActionStepModifier>
+            <Name>MFB Recover</Name>
+            <StrengthBase>0</StrengthBase>
+            <StrengthRange>0</StrengthRange>
+            <StrengthCount>0</StrengthCount>
+            <Flags>
+                <Permeating>1</Permeating>
+                <LimitDistance>1</LimitDistance>
+                <SetLastAttackedDirection>0</SetLastAttackedDirection>
+                <ContinueActionOnStepFailure>0</ContinueActionOnStepFailure>
+            </Flags>
+            <AccuracyMultiplier>1</AccuracyMultiplier>
+            <EffectTimeout>0</EffectTimeout>
+            <MinEffectRadius>0</MinEffectRadius>
+            <EffectRadius>20</EffectRadius>
+            <EffectHeight>31</EffectHeight>
+            <MaxEffectAngle>360</MaxEffectAngle>
+            <EffectSplashHeight>0</EffectSplashHeight>
+            <EffectSplashRadius>0</EffectSplashRadius>
+            <EffectSplashEffectiveRadius>0</EffectSplashEffectiveRadius>
+        </ActionStepModifier>
+    
         <!-- wreckage action modifiers -->
         <ActionStepModifier>
             <Name>Tiny Pop</Name>

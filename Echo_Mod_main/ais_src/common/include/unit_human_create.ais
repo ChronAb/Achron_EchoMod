@@ -12,33 +12,30 @@ int ap = unit->AdditionalParameters;
 
 // *Spawners* have their own logic
 if (unit.Rank==$SPAWNER_RANK) {
-    if (unit->Ammo < 2 && $OBJECT > $SOP_CLASS) {
+    if (unit->Ammo < 2) {
         PERFORM SET_OBJECTIVE 0;
-		PERFORM NOTHING;
+        PERFORM NOTHING;
     }
-    if ($OBJECT == $MARINE_CLASS) PERFORM $ACTION_PROGEN_SAME_O;
-    else if ($OBJECT == $SOP_CLASS) PERFORM $ACTION_PROGEN_SAME_S;
-    else if ($OBJECT == $MECH_CLASS) PERFORM $ACTION_PROGEN_SAME_P;
-    else if ($OBJECT == $ATHC_CLASS) PERFORM $ACTION_PROGEN_UP_O;
-    else if ($OBJECT == $LANCER_CLASS) PERFORM $ACTION_PROGEN_UP_S;
-    PERFORM SET_OBJECTIVE 0;
-    PERFORM NOTHING;
+    if ($OBJECT == $LANCER_CLASS) {
+        PERFORM $ACTION_PROGEN_UP_S;
+        PERFORM SET_OBJECTIVE 0; PERFORM NOTHING;
+    }
+    // marines and sops use unit_human_infantry_create.ais
+    
+    if (unit->Ammo < 3) {
+        PERFORM SET_OBJECTIVE 0;
+        PERFORM NOTHING;
+    }
+    if ($OBJECT == $MECH_CLASS) {
+        PERFORM $ACTION_PROGEN_SAME_P;
+        PERFORM SET_OBJECTIVE 0; PERFORM NOTHING;
+    }
+    if ($OBJECT == $ATHC_CLASS) {
+        PERFORM $ACTION_PROGEN_UP_O;
+        PERFORM SET_OBJECTIVE 0; PERFORM NOTHING;
+    }
 }
 
-//verify that the newly created unit can fit into the building and is not over capacity
-if ($OBJECT::Size + unit->TotalCarriedSize > unit.CarryingCapacity) {
-    $SAY_ENQUEUE
-	//play error sound only if nothing else is enqued, since if there is, it's being deployed
-	//and we can't execute two actions at the same time
-    if (!(ap[$OBJ_BLDG_CONTINUE_DEPLOYBIT])) { 
-        PERFORM $ACTION_ERROR2; 
-        PERFORM SET_OBJECTIVE 0;
-    }
-    else {  //return to deploying the current unit
-        PERFORM SET_OBJECTIVE $OBJ_BLDG_DEPLOY;
-    }
-    PERFORM NOTHING;
-}
 
 //unit resource costs
 int lcrystals=0;
@@ -46,16 +43,7 @@ int qplasma=0;
 int hpcost=0;
 int reserve = 1;
 
-if ($OBJECT == $MARINE_CLASS) { //marine
-  lcrystals = $MARINE_LC;
-  qplasma = $MARINE_QP;
-  hpcost = $MARINE_HP;
-}
-if ($OBJECT == $SOP_CLASS) { //sop
-  lcrystals = $SOP_LC;
-  qplasma = $SOP_QP;
-  hpcost = $SOP_HP;
-}
+// marines and sops use unit_human_infantry_create.ais
 if ($OBJECT == $MECH_CLASS) { // mech
   lcrystals = $MECH_LC;
   qplasma = $MECH_QP;
@@ -109,36 +97,46 @@ if ($OBJECT == $FRIGATE_CLASS) { //frigate
 }
 
 
-//verify that the player has enough resources to make this unit
-if ( player->$LCrystals >= lcrystals && player->$QPlasma >= qplasma && unit->HP >= hpcost) {
+//verify that the newly created unit can fit into the building and is not over capacity
+if ($OBJECT::Size + unit->TotalCarriedSize > unit.CarryingCapacity) {
+    $SAY_ENQUEUE
+	//play error sound only if nothing else is enqued, since if there is, it's being deployed
+	//and we can't execute two actions at the same time
+    if (!(ap[$OBJ_BLDG_CONTINUE_DEPLOYBIT])) { 
+        PERFORM $ACTION_ERROR2; 
+        PERFORM SET_OBJECTIVE 0;
+    }
+    else {  //return to deploying the current unit
+        PERFORM SET_OBJECTIVE $OBJ_BLDG_DEPLOY;
+    }
+    PERFORM NOTHING;
+}
 
-	//this new unit requires a reserve soldier, so siphon it 
+
+//verify that the player has enough resources to make this unit
+if ( player->$LCrystals >= lcrystals && player->$QPlasma >= qplasma && unit->HP > hpcost) {
+
+	//this new unit requires one or more reserve soldier, so siphon it 
 	if (reserve == 1 && player->$ReserveSoldiers >= 1) {
+        
 		//transfer(AdditionalParameters4) field is 0 and an importer to siphon from exists
 		if (unit->AdditionalParameters4==0) {
 			target = player->CustomField4;
+            
 			if (target != 0 ) { //importer with RS are stored in customfield4
-				
-				//if the importer in the field is dead, clear it out, and try it with another one
-				//since another importer will automatically place itself there if it has RS
-				if (target->IsAlive!=1||target->IsStop) {
+				/*if the importer in the field is dead, disabled, or empty 
+                    then clear it out and try with another one.
+                    Another importer will place itself there if it has RS.
+                */
+				if (target->IsAlive!=1 || target->IsStop || target->IsStasis || 
+                        target->Ammo<1) {
 					PERFORM SET_PLAYER_CUSTOM_FIELD_4 0;
 					PERFORM NOTHING;
 				}
-				if (target->Ammo>0) {
-					if(target->IsStasis) {
-						PERFORM $ACTION_SIPHON_TSS target; //siphon the reserve soldier from a TSS'd importer
-					}
-					else {
-						PERFORM $ACTION_SUMMON_TROOPS target; //siphon the reserve soldier
-					}
-				}
-				else { //switch to another importer
-					PERFORM SET_PLAYER_CUSTOM_FIELD_4 0;
-					PERFORM NOTHING;
-				}
-			} else { //wait for another importer to switch
-
+				else PERFORM $ACTION_SUMMON_TROOPS target; //siphon the reserve soldier
+			}
+            
+            else { //wait for another importer to switch
 				if(unit->UnitAIServiceTime <= 0) { //not in the middle of deploying a unit
 					object next = unit->NextCarriedUnit;
 					if (next->IsAlive==1) {
@@ -150,12 +148,12 @@ if ( player->$LCrystals >= lcrystals && player->$QPlasma >= qplasma && unit->HP 
 						PERFORM ENQUEUE_OBJECTIVE unitObjective; //return back to trying to create this unit
 					}
 				}
-				
 				PERFORM NOTHING;
 			}
 		}
 	}
 
+    //Reserves consumed -> make the unit!
     if ( unit->AdditionalParameters4>= reserve) { //transfer field is set
         PERFORM SET_OBJECTIVE $OBJ_BLDG_PREDEPLOY;
         //set the 'first unit' bit, specifying to start auto-deployment

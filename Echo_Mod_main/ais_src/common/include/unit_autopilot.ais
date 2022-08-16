@@ -9,7 +9,7 @@
 // 
 //* 
 
-if($AUTOPILOT) //only if it's a NON-passive computer player
+if($AUTOPILOT && !$PASSIVE_AI) //only if it's a NON-passive computer player
 {
     int pX=0; int pY=0;  //int uclass = unit->Class;  //this should be set in the caller's idle script
     PERFORM GET_CUR_TIME;

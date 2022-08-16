@@ -255,12 +255,23 @@ if (targetalive) {
 	//check if close to target, ATTACK, else move 
 	PERFORM GET_CLOSEST_TARGET_POSITION_WITHIN_RANGE weaponAction;
 	position =  perf_ret; 
+    
+    int thu = target<_>unit;
+	int tvu = target<^>unit;
+
+	int whr = 0;
+	PERFORM GET_MAX_ACTION_RANGE_RADIUS weaponAction;
+	whr = perf_ret;
 	
+	int wvr = 0;
+	PERFORM GET_MAX_ACTION_RANGE_HEIGHT weaponAction;
+	wvr = perf_ret;
 		
 	ap[$TEMPUNIT_BIT] = 1;  //'temporary unit' bit
-	setAdditionalParameters = 1;      
+	setAdditionalParameters = 1;   
+    
 	//closest attackable position is a valid position and target is not statised, not self 
-	if (position != $INVALID_POSITION && target != unit ) { 		
+	if (position != $INVALID_POSITION && tvu <= wvr*wvr && target != unit ) { 		
 		#include common/include/unit_fireweapon.ais
 		
 	}
@@ -276,18 +287,6 @@ if (targetalive) {
 	}
 	
 	//if target is within visibility range and within weapon range
-	int thu = target<_>unit;
-	int tvu = target<^>unit;
-
-	int whr = 0;
-	PERFORM GET_MAX_ACTION_RANGE_RADIUS weaponAction;
-	whr = perf_ret;
-	
-	int wvr = 0;
-	PERFORM GET_MAX_ACTION_RANGE_HEIGHT weaponAction;
-	wvr = perf_ret;
-   
-   
 	if ( (thu <= unit.SightHRange2) && (tvu <= unit.SightVRange2) && 
 		 (thu <= whr*whr) && (tvu <= wvr*wvr) ) {
 		
