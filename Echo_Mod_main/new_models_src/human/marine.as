@@ -74,26 +74,17 @@ animation throw
 
 animation raiseWeapon
 0 f1
-#0.0833333333333333 f50
 0.166666666666667 f51
-#0.25 f52
 0.333333333333333 f53
-#0.416666666666667 f54
 0.5 f55
-#0.583333333333333 f56
 0.666666666666667 f57
-#0.75 f58
 0.833333333333333 f59
-#0.916666666666667 f60
 1 f61
 
 animation fireWeapon
 0 f61
-#0.142857142857143 f62
 0.285714285714286 f63
-#0.428571428571429 f64
 0.571428571428571 f65
-#0.714285714285714 f66
 0.857142857142857 f67
 1 f61
  
@@ -101,17 +92,23 @@ projectile missile_small
   size 1
   0.0 none
 	no_shadow
-    model_scale 0.4
+    light_color 1.0 1.0 0.5
+    light_intensity 0.0 0.0
+    model_scale 0.6
   0.1 f1
     start_moving -0.3 -0.1 0.6
+    light_color 1.0 1.0 0.5
+    light_intensity 1.0 2.0
 	glow 10
     no_shadow
-    model_scale 0.4
+    model_scale 0.6
   1.0 none
     end_moving
+    light_color 1.0 1.0 0.5
+    light_intensity 1.0 2.0
 	glow 10
     no_shadow
-    model_scale 0.4
+    model_scale 0.6
 
 animation rpg_hit
  0.0 f61 
@@ -158,17 +155,11 @@ projectile missileImpact
     
 animation lowerWeapon
 0 f61
-#0.0833333333333333 f70
 0.166666666666667 f71
-#0.25 f72
 0.333333333333333 f73
-#0.416666666666667 f74
 0.5 f75
-#0.583333333333333 f76
 0.666666666666667 f77
-#0.75 f78
 0.833333333333333 f79
-#0.916666666666667 f80
 1 f1
     
 animation die
@@ -247,3 +238,50 @@ animation walkLowered
 #0.88	f46
 0.94	f47
 1	f31
+
+animation heal
+0 f61
+0.2 f63
+0.4 f65
+0.6 f67
+0.8 f61
+#0.166666666666667 f71
+#0.333333333333333 f73
+0.9 f75
+#0.666666666666667 f77
+0.95 f79
+1 f1
+
+
+projectile heal
+size 3
+ 0.0 none
+	end_moving
+	no_shadow
+    no_depth_write
+ 0.05 f1
+	no_shadow
+    no_depth_write
+    alpha 1.0
+	model_scale 0.1
+	translation 0.0 0.0 -0.5
+	#soft_depth_blend 1.0
+	distort_texture .1 -0.5 0.5
+    
+ 0.20 f1
+	no_shadow
+    no_depth_write
+    alpha 0.8
+	model_scale 1.0
+	translation 0.0 0.0 -0.5
+	#soft_depth_blend 1.0
+	distort_texture 0 0 0.5
+    
+ 0.65 f1
+	no_shadow
+    no_depth_write
+    alpha 0.0
+	model_scale 5.0
+	translation 0.0 0.0 -0.5
+	#soft_depth_blend 1.0
+	distort_texture 0 0 0.1

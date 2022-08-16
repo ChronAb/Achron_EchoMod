@@ -1,5 +1,5 @@
 model sop
-	scale 1.25
+	scale 1.35
 	anchor 0.0 0.0 0.0
 
 animation stand
@@ -98,7 +98,7 @@ animation fireamg
 1 f61
  
  projectile AntiMatterBlast
- size 1
+ size 2
  0.0 f11
     start_moving 0.0 0.0 0.75
 	no_shadow
@@ -125,7 +125,7 @@ animation amg_hit
  0.0 f61 
 
 projectile AntiMatterBlast_IMP
- size 1
+ size 2
  0.0 none
 	start_moving 0.0 0.0 0.75
     end_moving
