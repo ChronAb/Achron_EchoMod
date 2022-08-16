@@ -3,68 +3,81 @@
 #include common/include/unit_common_header.aih
 #include human/human_building_idle.ais
 
-//48 should be set for all unit's objective to 'cportMe'
+
+/*
+Echo Mod Operation:
+State 1 - Idle Cporter (!myStatus[$CAP_BIT_2])
+    1. Look for units wanting to Cport
+    2. If it finds one -> it spins up (sets STATUS_CAPABILITY_2 -> U_STATUS 32)
+State 2 - Activated Cporter (myStatus[$CAP_BIT_2], no Commander)
+    1. Look for the beefiest unit wanting to Cport
+    2. If nobody wants to Cport -> clear commander and spin down
+    3. Otherwise, move the Cporter's commander-pointer to the beefy Cportee.
+        This gives it permission to Cport.
+State 3 - Engaged Cporter (myStatus[$CAP_BIT_2], Commander)
+    1. Check if commander is still in range and still wants to Cport.
+    2. If not, clear commander
+*/
 
 
-//if not spun up, just idling, so don't look for units 1/2 times
 int myStatus = unit->Status;
-PERFORM GET_CUR_TIME;  
-int current = perf_ret;
+object chronoportee = unit->Commander;
+object cportObj = 0;
+query_vis_distance = 26; // Cport radius
 
 
-//gate is ready to cport
-if (unit->Objective==0) {
-	if (current%2==0) {
-		int qrank = 0; //find unit that wants to chronoport but is too far away
-		target = QUERY UNIT [unit] MIN [ query <_> unit ] WHERE [ query->IsAlly==1 && query.Rank>=$BUILDINGS_RANK && query->Objective==$OBJECTIVE_CHRONOPORT && 
-																  query->AdditionalParameters[1,5] > 0 &&  //has a wait counter
-																  (qrank=(query->Commander).Rank)!=$CHRONOPORTER_RANK && qrank!=$SLIPGATE_RANK ];
-		if (target->IsAlive==1) {
-			PERFORM $ACTION_SET_COMMANDER_TO unit; //set self as its commander
-		}
-	}
-    //get the maximum chronoporting distance in ticks
-    PERFORM GET_MAX_CHRONOPORT_DISTANCE;
-    int cport_max = perf_ret;
-	
-	PERFORM GET_RECHRONOPORT_DELAY;
-	int rechronoportdelay = perf_ret;
+// State 1 - Idle Cporter looks for units wanting to Cport
+//********************************************************************
+if (!myStatus[$CAP_BIT_2]) {
+    PERFORM RAND;  //not spun up, so don't look for units 7/8 times
+    if (perf_ret[0,3]<1) {
+        //was moving, so plant here, legacy code. shouldn't be executed
+        if (myStatus[$CAP_BIT_1]) PERFORM SET_OBJECTIVE $OBJ_BLDG_PLANT;
+        PERFORM NOTHING;
+    }
     
-	int timeSinceLastChronoport=0;
-	int qStatus = 0;
-
-	//subordinates of this gate are units that chose this gate as the one to use
-	while (1) {
-		target = unit->NextSubordinate;
-		if (target>0) {
-			if ( target->IsAlive==1) {
-			
-				if (target.Rank<$BUILDINGS_RANK) { continue; } // ignore building subordinates  (unit # churn)
-			
-				int op = target->ObjectiveParameters;
-				//check if destination falls within chronoporting distance
-				if ( abs(op - current) < cport_max ) {		
-				
-					if (!myStatus[$CAP_BIT_2] ) {    //make sure Cporter is spun up
-						PERFORM $ACTION_SPINUP;      //this action sets cap_bit_2 and does the animation         
-						$SET_AP
-						PERFORM NOTHING;
-					}
-										
-					PERFORM $ACTION_SET_COMMANDER_TO 0;
-					PERFORM $ACTION_TIMEPORT target; 
-				} 
-			
-			
-			
-			}
-			else { continue; } //inaccessible subordinate, get the next one
-		} 
-		else { break; } //stop looking for subordinates
-	}
-	
+    //find any unit that wants to Cport
+    target = QUERY UNIT [unit] MAX [unit->HP] WHERE [ (cportObj = query->Objective) 
+                && cportObj == $OBJECTIVE_CHRONOPORT && query.Rank > $BUILDINGS_RANK
+                && query->IsAlly==1 && !query->IsStasis && !query->IsStop ];
+                   
+    //valid Cport requestor found -> make gate spin up
+    if (target->IsAlive==1) PERFORM $ACTION_SPINUP; 
+    PERFORM NOTHING;
 }
 
-#include common/include/unit_autopilot_building.ais
 
-$SET_AP
+// State 2 - Activated Cporter moves commander arrow
+//********************************************************************
+if (myStatus[$CAP_BIT_2] && chronoportee==0) {
+    
+    //find beefiest unit that wants to Cport
+    target = QUERY UNIT [unit] MAX [16*query->HP - unit<=>query] 
+            WHERE [ (cportObj = query->Objective) 
+                && cportObj == $OBJECTIVE_CHRONOPORT && query.Rank > $BUILDINGS_RANK
+                && query->IsAlly==1 && !query->IsStasis && !query->IsStop ];
+                
+    if (target==0) { //no takers
+        PERFORM $ACTION_SPINDOWN; 
+        PERFORM NOTHING;
+    }    
+    
+    if (target->IsAlive==1) { //permission to Cport
+        //say "tryin to port ", target, " status ", myStatus;
+        PERFORM $ACTION_TIMEPORT target; 
+        PERFORM NOTHING;
+    }
+}
+
+
+// State 3 - Engaged Cporter monitors its Cportee
+//********************************************************************
+if (myStatus[$CAP_BIT_2] && chronoportee>0) {
+    target = chronoportee;
+    
+    //Cportee is dead, out of range, or not wanting to Cport anymore
+    if (chronoportee->IsAlive==0 || chronoportee->Objective!=$OBJECTIVE_CHRONOPORT
+            || unit<_>chronoportee>676) {
+        PERFORM $ACTION_POSTCPORT 0;
+    }
+}

@@ -2,9 +2,23 @@
 
 #include common/include/unit_common_header.aih
 
+// Distribute Reserves
+//****************************
+//****************************
 target = player->CustomField4; //CF4 stores the current siphoning importer for factories
 //this importer has more than the one stored, stored as the 'main' siphoning importer
-if (unit->Ammo > target->Ammo) {
+if (unit->Ammo > target->Ammo && !unit->IsStasis) {
 	PERFORM $ACTION_SET_SIPHON; //stores self into CustomField4
 }
 
+
+// Autopilot: Make infantry with excess reserves
+//****************************
+//****************************
+if (player->IsComputerPlayer && player->CustomControls==0) {
+    if (unit->HP > 460 && player->$ReserveSoldiers>7 && player->$QPlasma > 1400) {
+        if (unit->Age%180==unit%180) PERFORM SET_OBJECTIVE $OBJ_BLDG_MARINE;
+        if (unit->Age%360==90+unit%180) PERFORM SET_OBJECTIVE $OBJ_BLDG_SOP;
+        PERFORM NOTHING;
+    }
+}

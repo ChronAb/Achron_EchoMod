@@ -2,6 +2,34 @@
 
 #include human/human_building_idle.ais
 
+PERFORM GET_CUR_TIME;
+int curtime = perf_ret;
+
+// Autopilot: research Aerospace
+//  Build MARs with LC and Frigates + MFBs with QP
+if (player->IsComputerPlayer && player->CustomControls==0) {
+    int advancements = player->Advancements;
+    if (unit->Age%6480==4860) {
+        if (!advancements[$HUMAN_ADV_WEAPONS]){
+            PERFORM SET_OBJECTIVE $OBJ_BLDG_UPGRADE5;
+            PERFORM NOTHING;
+        }
+    }
+    if (unit->HP > 1160 && player->$ReserveSoldiers>0) {
+        if (unit->Age%180==unit%60 && player->$LCrystals > 800) {
+            PERFORM SET_OBJECTIVE $OBJ_BLDG_MAR;
+            PERFORM NOTHING;
+        }
+        if (unit->Age%180==60+unit%60 && player->$QPlasma > 1800) {
+            PERFORM SET_OBJECTIVE $OBJ_BLDG_FRIGATE;
+            PERFORM NOTHING;
+        }
+        if (unit->Age%180==120+unit%60 && player->$QPlasma > 1800) {
+            PERFORM SET_OBJECTIVE $OBJ_BLDG_MFB;
+            PERFORM NOTHING;
+        }
+    }
+}
 
 PERFORM RAND;
 if (perf_ret < 1024) {
@@ -18,7 +46,7 @@ if (ap[$OBJ_BLDG_CONTINUE_DEPLOYBIT]) {
     PERFORM NOTHING; 
 }
 
-//look for cruiser to reload that wants to be reloaded
+/*look for cruiser to reload that wants to be reloaded
 PERFORM RAND;
 if (perf_ret < 4096 && (player->Advancements[$HUMAN_ADV_EXTRAS]))  { 
   if (player->$LCrystals >= $NUKE_LC && player->$QPlasma >= $NUKE_QP) {
@@ -29,8 +57,7 @@ if (perf_ret < 4096 && (player->Advancements[$HUMAN_ADV_EXTRAS]))  {
 		PERFORM SET_OBJECTIVE $OBJ_BLDG_EQUIP; 
 	 }
   }
-}
-
+}*/
 
 #include common/include/unit_autopilot_building.ais
 

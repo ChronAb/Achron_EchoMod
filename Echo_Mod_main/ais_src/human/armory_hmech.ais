@@ -30,7 +30,7 @@ if (player->Advancements[$HUMAN_ADV_HEAVY]) { PERFORM SET_OBJECTIVE 0; PERFORM N
 
 int ua = unit->Action;
 int interrupt = 0;
-if (ua == $ACTION_REL_SOP || ua==$ACTION_REL_MAR) {
+if (unit->Ammo>0) {
 	interrupt = 1;
 }
 

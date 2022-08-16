@@ -4,10 +4,66 @@
     <!-- Note: The order of the AI scripts here determines the order they are fitted 
         onto unit command grids. The naming-scheme is just for readability. -->
         
+        <!-- Spawner production -->
+        <AIScript>
+            <Name>hs12s_make_lancer</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/factory_lancer.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hs13s_make_mech</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/factory_8080.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hs14s_blank_1</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/Template.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hs15s_blank_2</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/Template.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hs17s_make_marine</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/armory_marine.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hs18s_make_spec_ops</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/armory_sop.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hs16s_make_athc</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/factory_athc.abn</Path>
+        </AIScript>
+        
+        <!-- MFB & Achron abilities -->
+        <AIScript>
+            <Name>hs000_mfb_idle</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/mfb_idle.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hs150_mfb_upgrade</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/simple_morph.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hs160_recover</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/mfb_recover.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hs180_mfb_heal</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/repair.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hs200_recover</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/mfb_recover.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hs210_achron_morph</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/claim_victory.abn</Path>
+        </AIScript>
+        
         <!-- Marine & Spec Ops abilities -->
         <AIScript>
-            <Name>hs000_sop_idle</Name>
-            <Path>./Achron_EchoMod/Echo_Mod_main/ais/sop_idle.abn</Path>
+            <Name>hs000_marine_idle</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/marine_idle.abn</Path>
         </AIScript>
         <AIScript>
             <Name>hs170_marine_cloak</Name>
@@ -22,41 +78,293 @@
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/marine_hitch.abn</Path>
         </AIScript>
         <AIScript>
-            <Name>hs220_sop_heal</Name>
-            <Path>./Achron_EchoMod/Echo_Mod_main/ais/sop_heal.abn</Path>
+            <Name>hs220_marine_heal</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/marine_heal.abn</Path>
         </AIScript>
         
-        <!-- Spawner production -->
+        <!-- ATHC -->
         <AIScript>
-            <Name>hs02s_make_marine</Name>
+            <Name>hs190_human_build</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/human_build.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hs200_simple_upgrade</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/simple_morph.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hs210_simple_upgrade_na</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hs250_athc_fac</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/marine_lfactory.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hs260_athc_mfab</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/8080_macrofab.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hs240_athc_armory</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/marine_armory.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hs230_athc_importer</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/marine_importer.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hs300_athc_tporter</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/8080_teleporter.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hs310_athc_tporter_na</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hs220_athc_rp</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/marine_mining.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hs280_athc_turret</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/8080_turret.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hs400_build_cancel</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/cancel.abn</Path>
+        </AIScript>
+        
+        <!-- Med + Heavy Beam Tanks -->
+        <AIScript>
+            <Name>hs001_tank_idle</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/tank_idle.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hs191_tank_upgrade</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/tank_upgrade.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hs201_tank_upgrade_na</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hs221_tank_make_marine</Name>
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/armory_marine.abn</Path>
         </AIScript>
         <AIScript>
-            <Name>hs03s_make_spec_ops</Name>
+            <Name>hs241_tank_make_sop</Name>
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/armory_sop.abn</Path>
         </AIScript>
         <AIScript>
-            <Name>hs04s_make_mech</Name>
+            <Name>hs171_tank_release</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/tank_release.abn</Path>
+        </AIScript>
+        
+        <!-- Cruiser -->
+        <AIScript>
+            <Name>hs211_cruiser_nuke_now</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/cruiser_drop_nuke.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hs221_cruiser_nuke</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/cruiser_nuke_dispatch.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hs241_nuke_reload</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/cruiser_reload.abn</Path>
+        </AIScript>
+        
+        <!-- *** Building Scripts *** -->
+        <AIScript>
+            <Name>hbs010_waypoint</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/blank.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hbs020_deploy</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/deploy.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hbs030_deploy</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/predeploy.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hbs040_rally_to</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/building_common_relocate.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hbs050_rally_to_unit</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/rally_on_unit.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hbs060_clear_rally_point</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/building_common_off.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hbs500_constructing</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown.abn</Path>
+        </AIScript>
+        
+        <!-- Importer -->
+        <AIScript>
+            <Name>hbs000_importer_idle</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/importer_idle.abn</Path>
+        </AIScript>
+        
+        <!-- Armory -->
+        <AIScript>
+            <Name>hbs00a_arm_idle</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/armory_idle.abn</Path>
+        </AIScript>        
+        <AIScript>
+            <Name>hbs08a_arm_marine</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/armory_marine.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hbs09a_arm_sop</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/armory_sop.abn</Path>
+        </AIScript>
+        
+        <!-- Factory -->
+        <AIScript>
+            <Name>hbs00f_fac_idle</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/factory_idle.abn</Path>
+        </AIScript>        
+        <AIScript>
+            <Name>hbs11f_fac_lancer</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/factory_lancer.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hbs12f_fac_mech</Name>
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/factory_8080.abn</Path>
         </AIScript>
         <AIScript>
-            <Name>hs05s_make_athc</Name>
+            <Name>hbs14f_fac_athc</Name>
             <Path>./Achron_EchoMod/Echo_Mod_main/ais/factory_athc.abn</Path>
         </AIScript>
         <AIScript>
-            <Name>hs06s_make_lancer</Name>
-            <Path>./Achron_EchoMod/Echo_Mod_main/ais/factory_lancer.abn</Path>
+            <Name>hbs16f_fac_tank</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/factory_al.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hbs17f_fac_tank_na</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown_bldg.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hbs18f_fac_tornade</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/factory_tornade.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hbs19f_fac_tornade_na</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown_bldg.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hbs24f_fac_machinery</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/armory_hmech.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hbs26f_fac_ground</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/armory_upgrade_ground.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hbs28f_fac_specials</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/armory_extras.abn</Path>
         </AIScript>
         
-         
-        <!-- ************* -->
-        <!-- production -->
-        <!-- ************* -->
-
+        <!-- Macrofab -->
+        <AIScript>
+            <Name>hbs00m_mfab_idle</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/macrofab_idle.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hbs11m_mfab_nuke</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/macrofab_reload_hcG.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hbs12m_mfab_nuke</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/macrofab_reload_hc.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hbs32m_mfab_aerospace</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/armory_upgrade_aerospace.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hbs33m_mfab_aerospace_na</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown_bldg.abn</Path>
+        </AIScript>
         
-        <!-- *** Building Scripts *** -->
+        <AIScript>
+            <Name>hbs20m_mfab_mfb</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/macrofab_mfb.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hbs21m_mfab_mfb_na</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown_bldg.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hbs22m_mfab_mar</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/macrofab_mar.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hbs24m_mfab_frigate</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/macrofab_frigate.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hbs26m_mfab_bbird</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/macrofab_blackbird.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hbs27m_mfab_bbird_na</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown_bldg.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hbs28m_mfab_cruiser</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/macrofab_heavyc.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hbs29m_mfab_cruiser_na</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown_bldg.abn</Path>
+        </AIScript>
         
-         
+        <!-- Turrets -->
+        <AIScript>
+            <Name>hbs19t_turret_upgrade</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/turret_upgrade.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hbs20t_turret_upgrade_na</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown.abn</Path>
+        </AIScript>
+        
+        <!-- Teleporter -->
+        <AIScript>
+            <Name>hbs00t_tporter_idle</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/tport_idle.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hbs22t_tporter_slingshot</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/8080_sslingshot.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hbs23t_tporter_slingshot_na</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown_bldg.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hbs28t_tporter_cporter</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/8080_chronoporter.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hbs29t_tporter_cporter_na</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/unknown_bldg.abn</Path>
+        </AIScript>
+        <AIScript>
+            <Name>hbs30t_tporter_gatetech</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/armory_gate.abn</Path>
+        </AIScript>
+        
+        <!-- Chronoporter -->
+        <AIScript>
+            <Name>hbs00c_cporter_idle</Name>
+            <Path>./Achron_EchoMod/Echo_Mod_main/ais/cport_idle.abn</Path>
+        </AIScript>
+        
     </AIScripts>
     <Sounds />
     <EffectsResources />

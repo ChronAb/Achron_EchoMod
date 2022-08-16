@@ -2,10 +2,10 @@
 
 #include common/include/unit_common_header.aih
 
-if (!(player->Advancements[$HUMAN_ADV_GATE])) {
+/*if (!(player->Advancements[$HUMAN_ADV_GATE])) {
     PERFORM SET_OBJECTIVE 0;
     PERFORM NOTHING;
-}
+}*/
 
 #include common/include/unit_created_check.ais
 

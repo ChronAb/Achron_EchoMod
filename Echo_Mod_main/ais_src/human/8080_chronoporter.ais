@@ -7,12 +7,29 @@ if (!(player->Advancements[$HUMAN_ADV_GATE])) {
     PERFORM NOTHING;
 }
 
-#include common/include/unit_created_check.ais
+//#include common/include/unit_created_check.ais
 
 #define LC_COST $CHRONOPORTER_LC
 #define QP_COST $CHRONOPORTER_QP
 
-#define ACTION_CREATE_AT $ACTION_MAKE_CHRONOPORTER
+#define ACTION_CREATE $ACTION_MAKE_CHRONOPORTER
 #define UNIT_CLASS $CHRONOPORTER_CLASS
 
-#include common/include/unit_create_at.ais
+//check for resources
+if (player->$LCrystals < $LC_COST || player->$QPlasma < $QP_COST ) {
+    if ($QP_COST==0) { 
+        $SAY_LC
+    } else {
+        $SAY_RESOURCES
+    }
+    PERFORM SET_ADDITIONAL_PARAMS 0;
+    PERFORM SET_OBJECTIVE 0;
+    PERFORM $ACTION_ERROR1;
+    PERFORM NOTHING;
+}
+
+PERFORM $ACTION_CREATE;
+PERFORM SET_ADDITIONAL_PARAMS 0;
+PERFORM SET_OBJECTIVE 0;
+
+//#include common/include/unit_create_at.ais

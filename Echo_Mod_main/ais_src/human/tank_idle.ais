@@ -1,0 +1,72 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.ais
+#include common/include/human_idle.ais
+
+PERFORM RAND;
+if (perf_ret < 16000) { 
+	$SET_AP
+	PERFORM NOTHING; 
+}
+
+
+//PERFORM $ACTION_ROTATE ((unit->Rotation + 1) % 9);   PERFORM NOTHING;  //pirhouette around for no reason. Yay spinny. maybe this should stay commented out.
+
+int lad = unit->LastAttackedVDirection;
+int u_hp = unit->HP;
+int u_ammo = unit->Ammo;
+int u_space = unit.MaxAmmo-u_ammo;
+
+//release all passengers if damaged:
+// all dismount if HP < 40%
+if (u_ammo > 0 &&  u_hp < 0.4*unit.MaxHP) {
+    PERFORM RAND;
+    if (perf_ret < 16384) { //50% chance of blind-releasing the carried soldier
+        PERFORM SET_OBJECTIVE $OBJECTIVE_RELEASEUNIT;
+        PERFORM NOTHING;
+    }
+    else { //50% of checking whether the carried soldier can be released in the first place
+        object backup = target;
+        target = $MARINE_CLASS;
+        PERFORM CAN_PUT_CLASS;
+        if (perf_ret==1) {
+            PERFORM SET_OBJECTIVE $OBJECTIVE_RELEASEUNIT;
+            PERFORM NOTHING;	
+        }
+        target = backup;
+    }
+}
+
+//occasionally dismount a marine if HP < max - 120
+if (unit->Age%45==0 && u_ammo > 0 &&  u_hp < unit.MaxHP - 120) {
+    object carried = unit->NextCarriedUnit;
+    if (carried.Rank!=$MARINE_RANK){
+        carried = unit->NextCarriedUnit;
+    }
+    
+    if (carried.Rank==$MARINE_RANK){
+        target = carried->Class;
+        PERFORM CAN_PUT_CLASS target;
+        if (perf_ret>0){
+            target = carried;
+            PERFORM $ACTION_RELEASE_UNIT;
+            PERFORM NOTHING;
+        }
+    }
+}
+
+//look for infantry that want to be picked up if not full
+if (u_space > 0 && u_hp >= 0.4*unit.MaxHP) {
+	int qrank=0;
+	target = QUERY UNIT [unit] MIN [unit <_> query] 
+					WHERE [query->Objective == $OBJECTIVE_HITCH && query->IsAlly==1  && ( (qrank = query.Rank)==$MARINE_RANK || qrank==$SOP_RANK) ];
+					
+	int distance = target<_>unit;
+	if (distance >0 && distance < 20) {
+		PERFORM $ACTION_TAKE_UNIT target;
+	}
+}
+
+
+#include common/include/unit_autopilot.ais
+$SET_AP

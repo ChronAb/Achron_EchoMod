@@ -4,5 +4,4 @@
 #include common/include/unit_common_header.aih
 #define OBJECT 1
 #define CREATE_ACTION $ACTION_MARINE;
-#define CREATE_TIME 192
-#include common/include/unit_human_create.ais
+#include common/include/unit_human_infantry_create.ais

@@ -2,6 +2,38 @@
 
 #include human/human_building_idle.ais
 
+// Autopilot: research Machinery, Specials, and Ground Tech
+//  Then build Tanks with LC and Tornades with QP
+if (player->IsComputerPlayer && player->CustomControls==0) {
+    int advancements = player->Advancements;
+    
+    if (unit->Age%1620==630) {
+        if (!advancements[$HUMAN_ADV_HEAVY]){ //Machinery
+            PERFORM SET_OBJECTIVE $OBJ_BLDG_UPGRADE1;
+            PERFORM NOTHING;
+        }
+        if (!advancements[$HUMAN_ADV_EXTRAS]){ //Specials
+            PERFORM SET_OBJECTIVE $OBJ_BLDG_UPGRADE3;
+            PERFORM NOTHING;
+        }
+        if (!advancements[$HUMAN_ADV_BASIC]){ //Ground
+            PERFORM SET_OBJECTIVE $OBJ_BLDG_UPGRADE2;
+            PERFORM NOTHING;
+        }
+    }
+    
+    if (unit->HP > 860 && player->$ReserveSoldiers>5 && advancements[$HUMAN_ADV_HEAVY]) {
+        if (unit->Age%180==unit%90 && player->$LCrystals > 800) {
+            PERFORM SET_OBJECTIVE $OBJ_BLDG_TANK;
+            PERFORM NOTHING;
+        }
+        if (unit->Age%180==90+unit%90 && player->$QPlasma > 1800) { 
+            PERFORM SET_OBJECTIVE $OBJ_BLDG_TORNADE;
+            PERFORM NOTHING;
+        }
+    }
+}
+
 PERFORM RAND;
 if (perf_ret < 1024) {
 	if (ap[$OBJ_BLDG_DEPLOYBIT]  || (unit->NextCarriedUnit)->IsAlive==1) { //couldn't deploy unit, so retry occasionally	

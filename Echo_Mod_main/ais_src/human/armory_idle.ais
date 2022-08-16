@@ -17,6 +17,28 @@ if (ap[$OBJ_BLDG_CONTINUE_DEPLOYBIT] ) {
     PERFORM NOTHING; 
 }
 
+// Autopilot: after Machinery research Specials, 
+//  then Ground Units, 
+//  Build Marines and SOPs
+if (player->IsComputerPlayer && player->CustomControls==0) {
+    int advancements = player->Advancements;
+    if (unit->Age%1620==630 && advancements[$HUMAN_ADV_HEAVY]) {
+        if (!advancements[$HUMAN_ADV_EXTRAS]) {
+            PERFORM SET_OBJECTIVE $OBJ_BLDG_UPGRADE3;
+            PERFORM NOTHING;
+        }
+                    
+        if (!advancements[$HUMAN_ADV_BASIC]) {
+            PERFORM SET_OBJECTIVE $OBJ_BLDG_UPGRADE2;
+            PERFORM NOTHING;
+        }
+    }
+    if (player->$ReserveSoldiers>4 && (unit->HP+50)>unit.MaxHP) {
+        if (unit->Age%1080==16 || unit->Age%1080==376) PERFORM SET_OBJECTIVE $OBJ_BLDG_MARINE;
+        if (unit->Age%1080==736) PERFORM SET_OBJECTIVE $OBJ_BLDG_SOP;
+        PERFORM NOTHING;
+    }
+}
 
 #include common/include/unit_autopilot_building.ais
 
