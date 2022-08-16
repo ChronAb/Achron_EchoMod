@@ -50,10 +50,6 @@
             <EffectSplashHeight>0</EffectSplashHeight>
             <EffectSplashRadius>0</EffectSplashRadius>
             <EffectSplashEffectiveRadius>0</EffectSplashEffectiveRadius>
-            <TargetClass1>
-                <Min>1</Min>
-                <Max>4000</Max>
-            </TargetClass1>
         </ActionStepModifier>
     </ActionStepModifiers>
     <ObjectClasses>
@@ -1653,16 +1649,16 @@
                     <Details></Details>
                 </Objective>
                 <Objective>
-                    <ObjectiveNumber>9</ObjectiveNumber>
-                    <Script>cs09mb_move</Script>
-                    <Name>Move</Name>
+                    <ObjectiveNumber>8</ObjectiveNumber>
+                    <Script>cs08mb_moving</Script>
+                    <Name>Moving</Name>
                     <Details></Details>
                     <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
-                    <ObjectiveNumber>10</ObjectiveNumber>
-                    <Script>cs10mb_moving</Script>
-                    <Name>Moving</Name>
+                    <ObjectiveNumber>9</ObjectiveNumber>
+                    <Script>cs09mb_move</Script>
+                    <Name>Move</Name>
                     <Details></Details>
                     <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
                 </Objective>

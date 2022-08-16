@@ -1,5 +1,12 @@
 <?xml version="1.0" ?>
 <ResequenceObjectClassSet>
+    <!-- Todaro
+        cost: 200 QP
+        speed: 12 sq/s
+        HP: 40 (20 HP/100QP)
+        AG: 12/s (6 dps/100QP, *120)
+        AA: 12/s (6 dps/100QP, *120)
+    -->
     <AIScripts />
     <Sounds>
         <!-- specific -->
@@ -57,7 +64,7 @@
         </ActionStepModifier>
         <ActionStepModifier>
             <Name>Cuttle AA Revenge</Name>
-            <StrengthBase>60</StrengthBase>
+            <StrengthBase>30</StrengthBase>
             <StrengthRange>0</StrengthRange>
             <StrengthCount>0</StrengthCount>
             <Flags>
@@ -442,6 +449,13 @@
                         </Condition>
                     </Conditions>
                     <Steps>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>P_L_CRYSTALS</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>-120</Value>
+                        </Step>
                         <Step>
                             <PrimitiveAction>ACCUM_STATISTIC</PrimitiveAction>
                             <Target>SELF</Target>
@@ -856,7 +870,7 @@
                     <ObjectiveNumber>1</ObjectiveNumber>
                     <Script>cs010_move</Script>
                     <Name>Move</Name>
-                    <Details>Move to specified location\ \Move Speed: 12 (aircraft)\Vision Radius: 24, Aggro Range: 30\Invisible in Fog of War</Details>
+                    <Details>Move to specified location\ \Move Speed: 12 (aircraft)\Vision Radius: 24, Aggro Range: 25\Invisible in Fog of War</Details>
                     <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
@@ -870,7 +884,7 @@
                     <ObjectiveNumber>3</ObjectiveNumber>
                     <Script>cs030_atk_move</Script>
                     <Name>Attack</Name>
-                    <Details>Attack target or Attack-Move to location \60 damage air last-hit \[Weapons Avg Damage/10secs]\Gnd: 120,  R 8,  SR 2,  Sta C\Air: 120,  R 1,  Sta C</Details>
+                    <Details>Attack target or Attack-Move to location \30 damage air last-hit \[Weapons Avg Damage/10secs]\Gnd: 120,  R 8,  SR 2,  Sta C\Air: 120,  R 1,  Sta C</Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
                     <ParameterType>POSITION</ParameterType>
                 </Objective>

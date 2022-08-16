@@ -662,7 +662,7 @@
             <Objectives>
                 <Objective>
                     <ObjectiveNumber>0</ObjectiveNumber>
-                    <Script>cs000_basic_idle</Script>
+                    <Script>gs00sp_spider_idle</Script>
                     <Name>Idle</Name>
                     <Details></Details>
                 </Objective>

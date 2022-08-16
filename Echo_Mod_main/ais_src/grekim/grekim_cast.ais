@@ -36,21 +36,21 @@ int lc = 0;
 int qp = 0;
 
 if (uclass==$OCTO_CLASS) { qp = $OCTO_CPORT_QP; } 
-else if (uclass==$OCTOPOD_CLASS || uclass==$GHOST_CLASS) { qp = $OCTOPOD_CPORT_QP; } 
+else if (uclass==$OCTOPOD_CLASS) { qp = $OCTOPOD_CPORT_QP; } 
 else if (uclass==$OCTOLIGO_CLASS) { qp = $OCTOLIGO_CPORT_QP; } 
 else if (uclass==$SEPI_CLASS) { qp = $SEPI_CPORT_QP; } 
 else if (uclass==$SEPIPOD_CLASS) { qp = $SEPIPOD_CPORT_QP; } 
 else if (uclass==$SEPILIGO_CLASS) { qp = $SEPILIGO_CPORT_QP; } 
 else if (uclass==$PHARO_CLASS) { qp = $PHARO_CPORT_QP; } 
 else if (uclass==$PHAROPOD_CLASS) { qp = $PHAROPOD_CPORT_QP; } 
-else if (uclass==$PHAROLIGO_CLASS) { qp = $PHAROLIGO_CPORT_QP; } 
+else if (uclass==$PHAROLIGO_CLASS || uclass==$PHAROLIGO_MOVING_CLASS) { qp = $PHAROLIGO_CPORT_QP; } 
 else if (uclass==$GREKIM_RP_CLASS || uclass==$GREKIM_RP_OFF_CLASS) { qp = $G_RP_CPORT_QP; } 
 
 //was 225/175 for all
 if (player->$LCrystals<lc || player->$QPlasma<qp) {
     $SAY_RESOURCES
     PERFORM SET_PARAM 0;
-    PERFORM $ACTION_ERROR_CP 0;
+    PERFORM $ACTION_ERROR1 0;
     PERFORM NOTHING;
 }
 
@@ -67,7 +67,7 @@ if (timeSinceLastChronoport!=-1 && timeSinceLastChronoport<= perf_ret ) { //-1 m
 	PERFORM SET_ADDITIONAL_PARAMS2 0;
 	PERFORM SET_ADDITIONAL_PARAMS 0;
 	PERFORM SET_PARAM 0;
-	PERFORM $ACTION_ERROR_CP;
+	PERFORM $ACTION_ERROR1;
 	PERFORM NOTHING;
 }
 
@@ -89,7 +89,7 @@ if ( abs(op - current) >= cport_max ) {
 /*
     $SAY_CHRONOPORT
     PERFORM SET_PARAM 0;
-    PERFORM $ACTION_ERROR_CP 0;
+    PERFORM $ACTION_ERROR1 0;
     PERFORM NOTHING;
 */
 	//if cporting beyond max range, cport TO the max range
@@ -112,13 +112,13 @@ if (op > current) {
 		PERFORM SET_ADDITIONAL_PARAMS 0;
 		PERFORM SET_ADDITIONAL_PARAMS2 0;
 		PERFORM SET_PARAM 0;
-		PERFORM $ACTION_ERROR_CP;
+		PERFORM $ACTION_ERROR1;
 		PERFORM NOTHING;
 	}
 }
 
 
-
+//Execute time jump
 object myCommander = unit->Commander;
 
 if (myCommander->IsAlive==1) {
@@ -127,7 +127,11 @@ if (myCommander->IsAlive==1) {
 	PERFORM SET_ADDITIONAL_PARAMS ap;
 }
 
+if (uclass==$GREKIM_RP_CLASS || uclass==$GREKIM_RP_OFF_CLASS) {
+    PERFORM SET_OBJECTIVE 0;
+} else {
+    PERFORM SET_OBJECTIVE $OBJECTIVE_CHRONOPORTED;
+}
 
-PERFORM SET_OBJECTIVE $OBJECTIVE_CHRONOPORTED;
 PERFORM $ACTION_CAST op;
 PERFORM NOTHING;

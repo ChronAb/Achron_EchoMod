@@ -1,0 +1,18 @@
+// Copyright (C) 2002-2011 Hazardous Software Inc.  See EULA for license information.
+
+#include common/include/unit_common_header.ais
+
+int op = unit->ObjectiveParameters;
+//int ap = unit->AdditionalParameters;
+
+//just got created - get orders from parent
+if ( unit->Age<3 && (ap == 0 || op != ap)) { 
+    //$print "getting target info\n";
+	op = (unit->Parent)->ObjectiveParameters;
+    PERFORM SET_PARAM op; //grab mom's target 
+    PERFORM SET_ADDITIONAL_PARAMS op;
+    PERFORM SET_OBJECTIVE $OBJECTIVE_MOVE_DISPATCH;
+    PERFORM NOTHING;
+}
+
+#include common/include/unit_common_idle.ais

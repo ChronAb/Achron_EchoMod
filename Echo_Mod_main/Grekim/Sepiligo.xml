@@ -1,15 +1,15 @@
 <?xml version="1.0" ?>
 <ResequenceObjectClassSet>
     <!-- Sepipod
-        cost: 600 QP, 150 Arct E (= 600-1000 QP)
+        cost: 800 QP, 200 Arct E (= 800-1200 QP)
         speed: 12 sq/s
-        HP: 480 (0.8 HP/QP)
-        AG: 7.5/s ( 1.25 dps/100QP, *1.0)
-            half: 5/s (0.83 dps/100QP, *0.67)
-            empty: 2.5/s (0.42 dps/100QP, *0.33)
-        AA: 30/s (5 dps/100QP, *4.0)
-            half: 20/s (3.33 dps/100QP, *2.67)
-            empty: 10/s (1.67 dps/100QP, *1.33)
+        HP: 480 (60 HP/100QP)
+        AG: 9/s ( 1.13 dps/100QP, *68)
+            half: 6/s (0.75 dps/100QP, *45)
+            empty: 3/s (0.38 dps/100QP, *23)
+        AA: 9/s (1.13 dps/100QP, *68)
+            half: 6/s (0.75 dps/100QP, *45)
+            empty: 3/s (0.38 dps/100QP, *23)
     -->
     <AIScripts />
     <Sounds>
@@ -22,7 +22,7 @@
     <ActionStepModifiers>
 	    <ActionStepModifier>
             <Name>Sligo anti_gnd 1</Name>
-            <StrengthBase>5</StrengthBase>
+            <StrengthBase>10</StrengthBase>
             <StrengthRange>0</StrengthRange>
             <StrengthCount>0</StrengthCount>
             <Flags>
@@ -45,7 +45,7 @@
         </ActionStepModifier>
         <ActionStepModifier>
             <Name>Sligo anti_air 1</Name>
-            <StrengthBase>20</StrengthBase>
+            <StrengthBase>10</StrengthBase>
             <StrengthRange>0</StrengthRange>
             <StrengthCount>0</StrengthCount>
             <Flags>
@@ -72,12 +72,12 @@
             <!-- Special ability: can grab & carry an allied or enemy unit of lesser max HP -->
             <ClassNumber>1105</ClassNumber>
             <Name>Hydra (Sepiligo)</Name>
-            <Description>HYDRA/SEPILIGO:&#x0D;&#x0A;Durable air supremacy bio-gunship&#x0D;&#x0A; &#x0D;&#x0A;Variable atk rate: rises while stationary (400 QP), decreases after moving&#x0D;&#x0A;Devastating vs aircraft when energized&#x0D;&#x0A; &#x0D;&#x0A;Upgrades: &#x0D;&#x0A;L-Tech: Progenerate Octo+Pharo pair</Description>
+            <Description>HYDRA/SEPILIGO:&#x0D;&#x0A;Durable air supremacy bio-gunship&#x0D;&#x0A; &#x0D;&#x0A;Variable atk rate: rises while stationary (1000 QP), decreases when moving&#x0D;&#x0A;Devastating vs aircraft when energized&#x0D;&#x0A; &#x0D;&#x0A;Upgrades: &#x0D;&#x0A;L-Tech: Progenerate Octo+Pharo pair</Description>
             <Model>./grekim/sepiligo.mdl</Model>
             <Rank>245</Rank>
             <Type>2</Type>
             <PrioritySelectionRank>0</PrioritySelectionRank>
-            <MaxHealth>480</MaxHealth>
+            <MaxHealth>360</MaxHealth>
             <MaxEnergy>40</MaxEnergy>
             <MaxArmor>0</MaxArmor>
             <MaxAmmo>60</MaxAmmo>
@@ -143,7 +143,7 @@
 					<Target>SELF</Target>
 					<Type>U_HP</Type>
 					<ValueEval>ONE</ValueEval>
-					<Value>-240</Value>
+					<Value>-180</Value>
 				</Step>
                 <Step>
                     <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -728,7 +728,7 @@
                             <Target>SELF</Target>
                             <Type>U_HP</Type>
                             <ValueEval>SET_TO_VALUE</ValueEval>
-                            <Value>480</Value>
+                            <Value>360</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -902,27 +902,21 @@
                     <AIScriptCanRun>0</AIScriptCanRun>
                     <SetParamZeroTicks>0</SetParamZeroTicks>
                     <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <Conditions>
-                        <Condition>
-                            <Resource>P_ADVANCEMENTS</Resource>
-                            <Comparison>BITMASK</Comparison>
-                            <Value>512</Value>
-                        </Condition>
-                    </Conditions>
+                    <Conditions />
                     <Steps>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>40</Value>
+                            <Value>80</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>400</Value>
+                            <Value>800</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>ACCUM_STATISTIC</PrimitiveAction>
@@ -982,14 +976,14 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>40</Value>
+                            <Value>80</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>200</Value>
+                            <Value>400</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -1068,7 +1062,7 @@
                         <Condition>
                             <Resource>U_AMMO</Resource>
                             <Comparison>LESS</Comparison>
-                            <Value>30</Value>
+                            <Value>40</Value>
                         </Condition>
                     </Conditions>
                     <Steps />
@@ -1194,7 +1188,7 @@
                         <Condition>
                             <Resource>U_AGE</Resource>
                             <Comparison>MODULO_IS_ZERO</Comparison>
-                            <Value>3</Value>
+                            <Value>6</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_AMMO</Resource>
@@ -1233,7 +1227,7 @@
                         <Condition>
                             <Resource>U_AGE</Resource>
                             <Comparison>MODULO_IS_ZERO</Comparison>
-                            <Value>4</Value>
+                            <Value>6</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_AMMO</Resource>
@@ -1477,8 +1471,13 @@
                         <Condition>
                             <Resource>U_HP</Resource>
                             <Comparison>LEQUAL</Comparison>
-                            <Value>144</Value>
+                            <Value>108</Value>
                         </Condition>
+                        <Condition>
+                            <Resource>U_ACTION</Resource>
+                            <Comparison>NOT_EQUAL</Comparison>
+                            <Value>13</Value>
+						</Condition>
                     </Conditions>
                     <Steps>
                         <Step>
@@ -1654,7 +1653,7 @@
                         <Condition>
                             <Resource>U_HP</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>470</Value>
+                            <Value>350</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_SECOND_OWNER</Resource>
@@ -1683,7 +1682,7 @@
                     <ObjectiveNumber>1</ObjectiveNumber>
                     <Script>cs010_move</Script>
                     <Name>Move</Name>
-                    <Details>Move to specified location\ \Movement drains Weapon Energy \Move Speed: 12 (aircraft)\Vision Range: 28, Aggro Radius: 35</Details>
+                    <Details>Move to specified location\ \Movement drains Weapon Energy \Move Speed: 12 (aircraft)\Vision Range: 28, Aggro Radius: 28</Details>
                     <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
@@ -1697,7 +1696,7 @@
                     <ObjectiveNumber>3</ObjectiveNumber>
                     <Script>cs030_atk_move</Script>
                     <Name>Attack</Name>
-					<Details>Attack target or Attack-Move to location \Fire-rate increases at W-Energy 20, 30 \[Weapons Avg Damage/10secs]\Gnd: 75 (50, 25),  R 22,  Sta S\Air: 300 (200, 100),  R 22,  Sta S</Details>
+					<Details>Attack target or Attack-Move to location \Fire-rate increases at W-Energy 20, 40 \[Weapons Avg Damage/10secs]\Gnd: 150 (100, 50),  R 22,  Sta S\Air: 150 (100, 50),  R 22,  Sta S</Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
                     <ParameterType>POSITION</ParameterType>
                 </Objective>
@@ -1751,8 +1750,8 @@
                     <Script>cs100_tport</Script>
                     <Name>Teleport</Name>
                     <Details>Teleport to a specified location\or self-teleport within LOS range\Teleporters extend range and negate cost\ \Blocked by Temporal Soliton Shield (TSS)</Details>
-                    <Resource1>200</Resource1>
-                    <Resource4>40</Resource4>
+                    <Resource1>400</Resource1>
+                    <Resource4>80</Resource4>
                     <!--Resource5>60</Resource5-->
                     <ObjectiveControlShortcutNumber>5</ObjectiveControlShortcutNumber>
                 </Objective>
@@ -1761,8 +1760,8 @@
                     <Script>cs111_g_cport</Script>
                     <Name>Chronoport</Name>
                     <Details>Chronoport to a specified point in time\ \Recharges Shields 50%\Must not have a TSS</Details>
-                    <Resource1>400</Resource1>
-                    <Resource4>40</Resource4>
+                    <Resource1>800</Resource1>
+                    <Resource4>80</Resource4>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>12</ObjectiveNumber>

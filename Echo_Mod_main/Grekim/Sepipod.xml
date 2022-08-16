@@ -1,13 +1,13 @@
 <?xml version="1.0" ?>
 <ResequenceObjectClassSet>
     <!-- Sepipod
-        cost: 400 QP, 5 progen E
+        cost: 500 QP, 5 progen E
         speed: 9 sq/s
-        HP: 180 (0.45 HP/QP)
-        AG: 27/s (6.75 dps/100QP, *3.0), 360 sta
-            empty: 9/s (2.25 dps/100QP, *1.0)
-        AA: 27/s (6.75 dps/100QP, *3.0), 360 sta
-            empty: 9/s (2.25 dps/100QP, *1.0)
+        HP: 180 (36 HP/100QP)
+        AG: 9/s (1.8 dps/100QP, *65), 240 sta
+            empty: 3/s (0.6 dps/100QP, *22)
+        AA: 9/s (1.8 dps/100QP, *65), 240 sta
+            empty: 3/s (0.6 dps/100QP, *22)
     -->
     <AIScripts />
     <Sounds>
@@ -20,7 +20,7 @@
     <ActionStepModifiers>
 	    <ActionStepModifier>
             <Name>Spod anti_gnd 1</Name>
-            <StrengthBase>18</StrengthBase>
+            <StrengthBase>6</StrengthBase>
             <StrengthRange>0</StrengthRange>
             <StrengthCount>0</StrengthCount>
             <Flags>
@@ -43,7 +43,7 @@
         </ActionStepModifier>
         <ActionStepModifier>
             <Name>Spod anti_air 1</Name>
-            <StrengthBase>18</StrengthBase>
+            <StrengthBase>6</StrengthBase>
             <StrengthRange>0</StrengthRange>
             <StrengthCount>0</StrengthCount>
             <Flags>
@@ -77,7 +77,7 @@
             <MaxHealth>180</MaxHealth>
             <MaxEnergy>40</MaxEnergy>
             <MaxArmor>0</MaxArmor>
-            <MaxAmmo>40</MaxAmmo>
+            <MaxAmmo>80</MaxAmmo>
             <SightRadius>21</SightRadius>
             <ForwardMinSightRadius>0</ForwardMinSightRadius>
             <ReverseMaxSightRadius>0</ReverseMaxSightRadius>
@@ -147,7 +147,7 @@
 					<Target>SELF</Target>
 					<Type>U_AMMO</Type>
 					<ValueEval>ONE</ValueEval>
-					<Value>-20</Value>
+					<Value>-40</Value>
 				</Step>
             </ChronoportArrivedActionSteps>
             <Animations>
@@ -556,7 +556,7 @@
                             <Target>SELF</Target>
                             <Type>U_AMMO</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-30</Value>
+                            <Value>-60</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -857,27 +857,21 @@
                     <AIScriptCanRun>0</AIScriptCanRun>
                     <SetParamZeroTicks>0</SetParamZeroTicks>
                     <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <Conditions>
-                        <Condition>
-                            <Resource>P_ADVANCEMENTS</Resource>
-                            <Comparison>BITMASK</Comparison>
-                            <Value>512</Value>
-                        </Condition>
-                    </Conditions>
+                    <Conditions />
                     <Steps>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>40</Value>
+                            <Value>80</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>80</Value>
+                            <Value>160</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>ACCUM_STATISTIC</PrimitiveAction>
@@ -937,14 +931,14 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>40</Value>
+                            <Value>80</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>160</Value>
+                            <Value>320</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -1157,12 +1151,12 @@
                         <Condition>
                             <Resource>U_AMMO</Resource>
                             <Comparison>LESS</Comparison>
-                            <Value>40</Value>
+                            <Value>80</Value>
                         </Condition>
                         <Condition>
                             <Resource>P_Q_PLASMA</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>400</Value>
+                            <Value>1000</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_ACTION</Resource>
@@ -1241,7 +1235,7 @@
                         <Condition>
                             <Resource>P_Q_PLASMA</Resource>
                             <Comparison>LESS</Comparison>
-                            <Value>400</Value>
+                            <Value>1000</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_ACTION</Resource>
@@ -1300,7 +1294,7 @@
                         <Condition>
                             <Resource>P_POWER</Resource>
                             <Comparison>GREATER</Comparison>
-                            <Value>800</Value>
+                            <Value>2000</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -1310,6 +1304,75 @@
                             <Type>U_ENERGY</Type>
                             <ValueEval>ONE</ValueEval>
                             <Value>-1</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>38</ActionNumber>
+                    <Identifier>ACTION_IDLE_GENERATE_HP</Identifier>
+                    <TimeTaken>0</TimeTaken>
+                    <ForceObjectAction>1</ForceObjectAction>
+                    <InterruptCurrentAction>1</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <Conditions>
+                        <Condition>
+                            <Resource>U_OWNER</Resource>
+                            <Comparison>LESS</Comparison>
+                            <Value>15</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_ACTION</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>58</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_AGE</Resource>
+                            <Comparison>MODULO_IS_ZERO</Comparison>
+                            <Value>72</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_HP</Resource>
+                            <Comparison>LESS</Comparison>
+                            <Value>180</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_HP</Resource>
+                            <Comparison>GREATER</Comparison>
+                            <Value>0</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_AMMO</Resource>
+                            <Comparison>GEQUAL</Comparison>
+                            <Value>80</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_ENERGY</Resource>
+                            <Comparison>GEQUAL</Comparison>
+                            <Value>40</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>P_POWER</Resource>
+                            <Comparison>GREATER</Comparison>
+                            <Value>1000</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_SECOND_OWNER</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>15</Value>
+                        </Condition>
+                    </Conditions>
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_HP</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>-2</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -1384,7 +1447,7 @@
                             <Target>SELF</Target>
                             <Type>P_L_CRYSTALS</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-80</Value>
+                            <Value>-100</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CHANGE_CLASS</PrimitiveAction>
@@ -1722,7 +1785,7 @@
                     <ObjectiveNumber>1</ObjectiveNumber>
                     <Script>cs010_move</Script>
                     <Name>Move</Name>
-                    <Details> \Move to specified location\ \Move Speed: 9 (aircraft)\Vision Range: 20, Aggro Radius: 40</Details>
+                    <Details> \Move to specified location\ \Move Speed: 9 (aircraft)\Vision Range: 20, Aggro Radius: 28</Details>
                     <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
@@ -1736,7 +1799,7 @@
                     <ObjectiveNumber>3</ObjectiveNumber>
                     <Script>cs030_atk_move</Script>
                     <Name>Attack</Name>
-                    <Details>Attack target or Attack-Move to location\Reduced DPS when Ammo is empty \[Weapons Avg Damage/10secs]\Gnd: 270 (-180),  R 15,  SR 2,  Sta C\Air: 270 (-180),  R 15,  SR 2,  Sta C</Details>
+                    <Details>Attack target or Attack-Move to location\Reduced DPS when Ammo is empty \[Weapons Avg Damage/10secs]\Gnd: 90 (-60),  R 15,  SR 2,  Sta C\Air: 90 (-60),  R 15,  SR 2,  Sta C</Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
                     <ParameterType>POSITION</ParameterType>
                 </Objective>
@@ -1790,8 +1853,8 @@
                     <Script>cs100_tport</Script>
                     <Name>Teleport</Name>
                     <Details>Teleport to a specified location\or self-teleport within LOS range\Teleporters extend range and negate cost\ \Blocked by Temporal Soliton Shield (TSS)</Details>
-                    <Resource1>160</Resource1>
-                    <Resource4>40</Resource4>
+                    <Resource1>320</Resource1>
+                    <Resource4>80</Resource4>
                     <!--Resource5>40</Resource5-->
                     <ObjectiveControlShortcutNumber>5</ObjectiveControlShortcutNumber>
                 </Objective>
@@ -1800,8 +1863,8 @@
                     <Script>cs111_g_cport</Script>
                     <Name>Chronoport</Name>
                     <Details>Chronoport to a specified point in time\ \Recharges Shields 50%\Must not have a TSS</Details>
-                    <Resource1>80</Resource1>
-                    <Resource4>40</Resource4>
+                    <Resource1>160</Resource1>
+                    <Resource4>80</Resource4>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>12</ObjectiveNumber>
@@ -2307,7 +2370,7 @@
 					<Target>SELF</Target>
 					<Type>U_AMMO</Type>
 					<ValueEval>ONE</ValueEval>
-					<Value>-20</Value>
+					<Value>-40</Value>
 				</Step>
             </ChronoportArrivedActionSteps>
             <Animations>

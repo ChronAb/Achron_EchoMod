@@ -20,6 +20,13 @@ if (unit.Rank == $AMPLIFIER_RANK && player->IsComputerPlayer) {
 	PERFORM NOTHING;
 }
 
+if( (player->CustomField8)[1] != 1 ){
+    say "Metamorphosis unavailable";
+    PERFORM SET_OBJECTIVE 0;
+    PERFORM SET_ADDITIONAL_PARAMS3 0;
+    PERFORM NOTHING;
+}
+
 //Sepi: if on full energy can plant a reaph
 if (unit->Class == $SEPI_CLASS && unit->Energy >= $REAPH_E 
 	&& dist <= $GREKIM_SPAWN_R && vis != 0) { //range is 12 (144)

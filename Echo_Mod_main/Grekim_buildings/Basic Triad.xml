@@ -412,7 +412,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>100</Value>
+                            <Value>200</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -466,7 +466,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>300</Value>
+                            <Value>400</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -520,7 +520,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>100</Value>
+                            <Value>200</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -574,7 +574,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>400</Value>
+                            <Value>500</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -628,7 +628,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>100</Value>
+                            <Value>200</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -682,7 +682,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>500</Value>
+                            <Value>600</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -1463,7 +1463,7 @@
                     <Script>gs38p_progen_octo</Script>
                     <Name>Produce Octo</Name>
                     <Details>Resilient melee assault trooper\Good at absorbing enemy fire\Cannot attack air targets\Morphs into RP or Dome\Invisible in Fog of War</Details>
-                    <Resource4>100</Resource4>
+                    <Resource4>200</Resource4>
                     <Resource6>5</Resource6>
                 </Objective>
                 <Objective>
@@ -1471,7 +1471,7 @@
                     <Script>gs39p_progen_sepi</Script>
                     <Name>Produce Squiddy/Sepi</Name>
                     <Details>Cloaking support sharpshooter\Low HP, high DPS vs ground and air\Cloaks while moving or idle\Morphs into Mound or Reaph\Invisible in Fog of War</Details>
-                    <Resource4>100</Resource4>
+                    <Resource4>200</Resource4>
                     <Resource6>5</Resource6>
                 </Objective>
                 <Objective>
@@ -1479,7 +1479,7 @@
                     <Script>gs40p_progen_pharo</Script>
                     <Name>Produce Pharo</Name>
                     <Details>Heavily armored shock grenadier\Detects cloaked enemies\Only effective vs light ground targets\Morphs into Spyre or Arcticus\Invisible in Fog of War</Details>
-                    <Resource4>100</Resource4>
+                    <Resource4>200</Resource4>
                     <Resource6>5</Resource6>
                 </Objective>
                 <Objective>
@@ -1487,7 +1487,7 @@
                     <Script>gs41p_progen_opod</Script>
                     <Name>Produce Octopod</Name>
                     <Details> \Biological main ground-assault armor\Mobile, high impact AG-only sniper\Low HP and combat endurance</Details>
-                    <Resource4>300</Resource4>
+                    <Resource4>400</Resource4>
                     <Resource6>5</Resource6>
                 </Objective>
                 <Objective>
@@ -1495,7 +1495,7 @@
                     <Script>gs42p_progen_spod</Script>
                     <Name>Produce Humboldt/Sepipod</Name>
                     <Details> \Biological air superiority fighter-bomber\Good scout and raider\Detects cloaked enemies\Limited combat endurance</Details>
-                    <Resource4>400</Resource4>
+                    <Resource4>500</Resource4>
                     <Resource6>5</Resource6>
                 </Objective>
                 <Objective>
@@ -1503,7 +1503,7 @@
                     <Script>gs43p_progen_ppod</Script>
                     <Name>Produce Vampire/Pharopod</Name>
                     <Details> \Biological steatlh strike-bomber\Very high damage: only against ground targets\Cloaks while not firing\Uses TSS when in danger (req. C-Tech)</Details>
-                    <Resource4>500</Resource4>
+                    <Resource4>600</Resource4>
                     <Resource6>5</Resource6>
                 </Objective>
                 
@@ -1513,7 +1513,7 @@
                     <Name>Resource Processor Dispatch</Name>
                     <Details>   - place near resource bins\Assimilates resources: Power and Q-Plasma\ \Can move itself</Details>
                     <Resource1>0</Resource1>
-                    <Resource4>150</Resource4>
+                    <Resource4>300</Resource4>
                     <Resource6>5</Resource6>
                 </Objective>
                 <Objective>
@@ -2819,7 +2819,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>100</Value>
+                            <Value>200</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -2873,7 +2873,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>300</Value>
+                            <Value>400</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -2927,7 +2927,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>100</Value>
+                            <Value>200</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -2981,7 +2981,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>400</Value>
+                            <Value>500</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -3035,7 +3035,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>100</Value>
+                            <Value>200</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -3089,7 +3089,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>500</Value>
+                            <Value>600</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -3877,7 +3877,7 @@
                     <Script>gs38p_progen_octo</Script>
                     <Name>Produce Octo</Name>
                     <Details>Resilient melee assault trooper\Good at absorbing enemy fire\Cannot attack air targets\Morphs into RP or Dome\Invisible in Fog of War</Details>
-                    <Resource4>100</Resource4>
+                    <Resource4>200</Resource4>
                     <Resource6>5</Resource6>
                 </Objective>
                 <Objective>
@@ -3885,7 +3885,7 @@
                     <Script>gs39p_progen_sepi</Script>
                     <Name>Produce Squiddy/Sepi</Name>
                     <Details>Cloaking support sharpshooter\Low HP, high DPS vs ground and air\Cloaks while moving or idle\Morphs into Mound or Reaph\Invisible in Fog of War</Details>
-                    <Resource4>100</Resource4>
+                    <Resource4>200</Resource4>
                     <Resource6>5</Resource6>
                 </Objective>
                 <Objective>
@@ -3893,7 +3893,7 @@
                     <Script>gs40p_progen_pharo</Script>
                     <Name>Produce Pharo</Name>
                     <Details>Heavily armored shock grenadier\Detects cloaked enemies\Only effective vs light ground targets\Morphs into Spyre or Arcticus\Invisible in Fog of War</Details>
-                    <Resource4>100</Resource4>
+                    <Resource4>200</Resource4>
                     <Resource6>5</Resource6>
                 </Objective>
                 <Objective>
@@ -3901,7 +3901,7 @@
                     <Script>gs41p_progen_opod</Script>
                     <Name>Produce Octopod</Name>
                     <Details> \Biological main ground-assault armor\Mobile, high impact AG-only sniper\Low HP and combat endurance</Details>
-                    <Resource4>300</Resource4>
+                    <Resource4>400</Resource4>
                     <Resource6>5</Resource6>
                 </Objective>
                 <Objective>
@@ -3909,7 +3909,7 @@
                     <Script>gs42p_progen_spod</Script>
                     <Name>Produce Humboldt/Sepipod</Name>
                     <Details> \Biological air superiority fighter-bomber\Good scout and raider\Detects cloaked enemies\Limited combat endurance</Details>
-                    <Resource4>400</Resource4>
+                    <Resource4>500</Resource4>
                     <Resource6>5</Resource6>
                 </Objective>
                 <Objective>
@@ -3917,7 +3917,7 @@
                     <Script>gs43p_progen_ppod</Script>
                     <Name>Produce Vampire/Pharopod</Name>
                     <Details> \Biological steatlh strike-bomber\Very high damage: only against ground targets\Cloaks while not firing\Uses TSS when in danger (req. C-Tech)</Details>
-                    <Resource4>500</Resource4>
+                    <Resource4>600</Resource4>
                     <Resource6>5</Resource6>
                 </Objective>
                 
@@ -3927,7 +3927,7 @@
                     <Name>Resource Processor Dispatch</Name>
                     <Details>   - place near resource bins\Assimilates resources: Power and Q-Plasma\ \Can move itself</Details>
                     <Resource1>0</Resource1>
-                    <Resource4>150</Resource4>
+                    <Resource4>300</Resource4>
                     <Resource6>5</Resource6>
                 </Objective>
                 <Objective>
@@ -5233,7 +5233,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>100</Value>
+                            <Value>200</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -5287,7 +5287,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>300</Value>
+                            <Value>400</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -5341,7 +5341,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>100</Value>
+                            <Value>200</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -5395,7 +5395,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>400</Value>
+                            <Value>500</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -5449,7 +5449,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>100</Value>
+                            <Value>200</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -5503,7 +5503,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>500</Value>
+                            <Value>600</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -6291,7 +6291,7 @@
                     <Script>gs38p_progen_octo</Script>
                     <Name>Produce Octo</Name>
                     <Details>Resilient melee assault trooper\Good at absorbing enemy fire\Cannot attack air targets\Morphs into RP or Dome\Invisible in Fog of War</Details>
-                    <Resource4>100</Resource4>
+                    <Resource4>200</Resource4>
                     <Resource6>5</Resource6>
                 </Objective>
                 <Objective>
@@ -6299,7 +6299,7 @@
                     <Script>gs39p_progen_sepi</Script>
                     <Name>Produce Squiddy/Sepi</Name>
                     <Details>Cloaking support sharpshooter\Low HP, high DPS vs ground and air\Cloaks while moving or idle\Morphs into Mound or Reaph\Invisible in Fog of War</Details>
-                    <Resource4>100</Resource4>
+                    <Resource4>200</Resource4>
                     <Resource6>5</Resource6>
                 </Objective>
                 <Objective>
@@ -6307,7 +6307,7 @@
                     <Script>gs40p_progen_pharo</Script>
                     <Name>Produce Pharo</Name>
                     <Details>Heavily armored shock grenadier\Detects cloaked enemies\Only effective vs light ground targets\Morphs into Spyre or Arcticus\Invisible in Fog of War</Details>
-                    <Resource4>100</Resource4>
+                    <Resource4>200</Resource4>
                     <Resource6>5</Resource6>
                 </Objective>
                 <Objective>
@@ -6315,7 +6315,7 @@
                     <Script>gs41p_progen_opod</Script>
                     <Name>Produce Octopod</Name>
                     <Details> \Biological main ground-assault armor\Mobile, high impact AG-only sniper\Low HP and combat endurance</Details>
-                    <Resource4>300</Resource4>
+                    <Resource4>400</Resource4>
                     <Resource6>5</Resource6>
                 </Objective>
                 <Objective>
@@ -6323,7 +6323,7 @@
                     <Script>gs42p_progen_spod</Script>
                     <Name>Produce Humboldt/Sepipod</Name>
                     <Details> \Biological air superiority fighter-bomber\Good scout and raider\Detects cloaked enemies\Limited combat endurance</Details>
-                    <Resource4>400</Resource4>
+                    <Resource4>500</Resource4>
                     <Resource6>5</Resource6>
                 </Objective>
                 <Objective>
@@ -6331,7 +6331,7 @@
                     <Script>gs43p_progen_ppod</Script>
                     <Name>Produce Vampire/Pharopod</Name>
                     <Details> \Biological steatlh strike-bomber\Very high damage: only against ground targets\Cloaks while not firing\Uses TSS when in danger (req. C-Tech)</Details>
-                    <Resource4>500</Resource4>
+                    <Resource4>600</Resource4>
                     <Resource6>5</Resource6>
                 </Objective>
                 
@@ -6341,7 +6341,7 @@
                     <Name>Resource Processor Dispatch</Name>
                     <Details>   - place near resource bins\Assimilates resources: Power and Q-Plasma\ \Can move itself</Details>
                     <Resource1>0</Resource1>
-                    <Resource4>150</Resource4>
+                    <Resource4>300</Resource4>
                     <Resource6>5</Resource6>
                 </Objective>
                 <Objective>

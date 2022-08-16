@@ -1,12 +1,12 @@
 <?xml version="1.0" ?>
 <ResequenceObjectClassSet>
     <!-- Sepi
-        cost: 100 QP, 5 progen E
+        cost: 200 QP, 5 progen E
         speed: 3 sq/s
-        HP: 90 (0.9 HP/QP)
-        AG: 3/s (3 dps/100QP, *2.7)
-            400qp bonus: 6/s (6 dps/100QP, *3.6)
-        AA: 6/s (6 dps/100QP, *5.4)
+        HP: 90 (45 HP/100QP)
+        AG: 3/s (1.5 dps/100QP, *68)
+            1000qp bonus: 6/s (3 dps/100QP, *90)
+        AA: 6/s (3 dps/100QP, *135)
     -->
     <AIScripts />
     <Sounds>
@@ -755,9 +755,29 @@
                     <Steps />
                 </Action>
                 <Action>
+                    <ActionNumber>6</ActionNumber>
+                    <Identifier>ACTION_CHANGE_COMMANDER</Identifier>
+                    <TimeTaken>0</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CHANGE_COMMANDER</PrimitiveAction>
+                            <Target>SELF</Target>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
                     <ActionNumber>9</ActionNumber>
                     <Identifier>ACTION_CHANGE_MATE</Identifier>
-                    <TimeTaken>144</TimeTaken>
+                    <TimeTaken>90</TimeTaken>
                     <ForceObjectAction>0</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
                     <MutexAction>0</MutexAction>
@@ -801,7 +821,7 @@
                         <Condition>
                             <Resource>P_ADVANCEMENTS</Resource>
                             <Comparison>BITMASK_NOT</Comparison>
-                            <Value>32768</Value>
+                            <Value>256</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -931,7 +951,7 @@
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>100</Value>
+                            <Value>200</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -974,7 +994,7 @@
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-100</Value>
+                            <Value>-200</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -997,27 +1017,21 @@
                     <AIScriptCanRun>0</AIScriptCanRun>
                     <SetParamZeroTicks>0</SetParamZeroTicks>
                     <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <Conditions>
-                        <Condition>
-                            <Resource>P_ADVANCEMENTS</Resource>
-                            <Comparison>BITMASK</Comparison>
-                            <Value>512</Value>
-                        </Condition>
-                    </Conditions>
+                    <Conditions />
                     <Steps>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>20</Value>
+                            <Value>40</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>60</Value>
+                            <Value>120</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>ACCUM_STATISTIC</PrimitiveAction>
@@ -1096,7 +1110,7 @@
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>60</Value>
+                            <Value>120</Value>
                         </Step>
                         <!--Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -1138,7 +1152,7 @@
                         <Condition>
                             <Resource>P_Q_PLASMA</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>400</Value>
+                            <Value>1000</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -1232,7 +1246,7 @@
                         <Condition>
                             <Resource>P_Q_PLASMA</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>50</Value>
+                            <Value>100</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_ENERGY</Resource>
@@ -1246,7 +1260,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>50</Value>
+                            <Value>100</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -1675,7 +1689,7 @@
                             <Target>SELF</Target>
                             <Type>P_L_CRYSTALS</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-60</Value>
+                            <Value>-120</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -1864,7 +1878,7 @@
                         <Condition>
                             <Resource>P_POWER</Resource>
                             <Comparison>GREATER</Comparison>
-                            <Value>400</Value>
+                            <Value>1000</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_LAST_ATTACKED_DIR</Resource>
@@ -1913,7 +1927,7 @@
                         <Condition>
                             <Resource>P_POWER</Resource>
                             <Comparison>GREATER</Comparison>
-                            <Value>800</Value>
+                            <Value>2000</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -1995,7 +2009,7 @@
                     <ObjectiveNumber>1</ObjectiveNumber>
                     <Script>cs010_move</Script>
                     <Name>Move</Name>
-                    <Details> \Move to specified location \Move Speed: 3 (hovercraft), MaxInc: 45\Vision Range: 18, Aggro Radius: 35 \Invisible in Fog of War</Details>
+                    <Details> \Move to specified location \Move Speed: 3 (hovercraft), MaxInc: 45\Vision Range: 18, Aggro Radius: 32 \Invisible in Fog of War</Details>
                     <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
@@ -2009,7 +2023,7 @@
                     <ObjectiveNumber>3</ObjectiveNumber>
                     <Script>cs030_atk_move</Script>
                     <Name>Attack</Name>
-                    <Details>Attack target or Attack-Move to location \2X gnd atk when > 60 HP, 10 E, 400 QP\[Weapons Avg Damage/10secs]\Gnd: 30 (+30),  R 28,  Sta B\Air: 60,  R 24,  SR 4,  Sta C</Details>
+                    <Details>Attack target or Attack-Move to location \2X gnd atk when > 60 HP, 10 E, 1000 QP\[Weapons Avg Damage/10secs]\Gnd: 30 (+30),  R 28,  Sta B\Air: 60,  R 24,  SR 4,  Sta C</Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
                     <ParameterType>POSITION</ParameterType>
                 </Objective>
@@ -2063,8 +2077,8 @@
                     <Script>cs100_tport</Script>
                     <Name>Teleport</Name>
                     <Details>Teleport to a specified location\or self-teleport within LOS range\Teleporters extend range and negate cost\ \Blocked by Temporal Soliton Shield (TSS)</Details>
-                    <Resource1>60</Resource1>
-                    <Resource4>20</Resource4>
+                    <Resource1>120</Resource1>
+                    <Resource4>40</Resource4>
                     <!--Resource5>10</Resource5-->
                     <ObjectiveControlShortcutNumber>5</ObjectiveControlShortcutNumber>
                 </Objective>
@@ -2073,8 +2087,8 @@
                     <Script>cs111_g_cport</Script>
                     <Name>Chronoport</Name>
                     <Details>Chronoport to a specified point in time\ \Recharges Shields 50%\Must not have a TSS</Details>
-                    <Resource1>60</Resource1>
-                    <Resource4>20</Resource4>
+                    <Resource1>120</Resource1>
+                    <Resource4>40</Resource4>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>12</ObjectiveNumber>
@@ -2122,17 +2136,23 @@
                     <Script>gs172_sepi_reaph</Script>
                     <Name>Reaph</Name>
                     <Details> \Defensive support building\Repairs friendly units and structures\ \Revives frozen and jammed allies</Details>
-                    <Resource1>100</Resource1>
+                    <Resource1>200</Resource1>
                     <Resource4>0</Resource4>
                     <Resource6>20</Resource6>
                     <ObjectiveControlShortcutNumber>10</ObjectiveControlShortcutNumber>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>18</ObjectiveNumber>
+                    <Script>gs182_sepi_reaph_na</Script>
+                    <Name>Reaph</Name>
+                    <Details>   Not Available\    Blocked by S-Tech</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>21</ObjectiveNumber>
                     <Script>gs212_sepi_mound</Script>
                     <Name>Morph: Mound</Name>
                     <Details>Robust tech/comm and raider building\Performs tech tree and comm upgrades\ \Produces Cuttles: \ultra-light scout-raider aircraft</Details>
-                    <Resource4>50</Resource4>
+                    <Resource4>100</Resource4>
                     <Resource6>10</Resource6>
                     <ObjectiveControlShortcutNumber>12</ObjectiveControlShortcutNumber>
                 </Objective>
@@ -2423,15 +2443,45 @@
                     <EstTimeDist>6</EstTimeDist>
                     <Sound>Sound0</Sound>
                     <ControlConditions>
-                        <Condition>
+                        <ControlCondition>
                             <Resource>P_ADVANCEMENTS</Resource>
                             <Comparison>BITMASK_NOT</Comparison>
-                            <Value>32768</Value>
-                        </Condition>
+                            <Value>256</Value>
+                        </ControlCondition>
                         <ControlCondition>
                             <Resource>U_IS_CARRIED</Resource>
                             <Comparison>EQUAL</Comparison>
                             <Value>0</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+                <ControlShortcut>
+                    <ControlNumber>11</ControlNumber> <!-- Reaph NA -->
+                    <ControlObjectiveNumber>18</ControlObjectiveNumber>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut></KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>1</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>U_IS_CARRIED</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>0</Value>
+                        </ControlCondition>
+                        <ControlCondition>
+                            <Resource>P_ADVANCEMENTS</Resource>
+                            <Comparison>BITMASK</Comparison>
+                            <Value>256</Value>
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>

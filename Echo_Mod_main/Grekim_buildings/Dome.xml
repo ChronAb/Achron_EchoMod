@@ -11,7 +11,7 @@
     <ActionStepModifiers>
         <ActionStepModifier>
             <Name>Dome anti_gnd</Name>
-            <StrengthBase>60</StrengthBase>
+            <StrengthBase>30</StrengthBase>
             <StrengthRange>0</StrengthRange>
             <StrengthCount>0</StrengthCount>
             <Flags>
@@ -34,7 +34,7 @@
         </ActionStepModifier>
         <ActionStepModifier>
             <Name>Dome anti_air</Name>
-            <StrengthBase>60</StrengthBase>
+            <StrengthBase>30</StrengthBase>
             <StrengthRange>0</StrengthRange>
             <StrengthCount>0</StrengthCount>
             <Flags>
@@ -60,7 +60,8 @@
         <ObjectClass>
             <ClassNumber>1065</ClassNumber>
             <Name>Dome</Name>
-            <Description>DOME:&#x0D;&#x0A;Cloaked weapon emplacement&#x0D;&#x0A;Devastating versus aircraft&#x0D;&#x0A; &#x0D;&#x0A;Detects cloaked units &#x0D;&#x0A;Cloaked while QP > 400 &#x0D;&#x0A;Upgrade D-Tech: increase attack rate&#x0D;&#x0A;Supremacy: upgradeable to Beam Cannon (planned)</Description>
+            <Description>DOME:&#x0D;&#x0A;Cloaked weapon emplacement&#x0D;&#x0A;Devastating versus aircraft&#x0D;&#x0A; &#x0D;&#x0A;Detects cloaked units &#x0D;&#x0A;Cloaked while QP > 1000 &#x0D;&#x0A;Upgrade D-Tech: increase attack rate</Description>
+            <!-- &#x0D;&#x0A;Supremacy: upgradeable to Beam Cannon (planned) -->
             <Model>./grekim/dome.mdl</Model>
             <Rank>90</Rank>
             <Type>2</Type>
@@ -599,7 +600,7 @@
                     <Conditions />
                     <Steps />
                 </Action>
-                <Action>
+                <!--Action>
                     <ActionNumber>15</ActionNumber>
                     <Identifier>ACTION_SELF_UPGRADE</Identifier>
                     <TimeTaken>900</TimeTaken>
@@ -640,7 +641,7 @@
                             <Value>100</Value>
                         </Step>
                     </Steps>
-                </Action>
+                </Action-->
                 <Action>
                     <ActionNumber>30</ActionNumber>
                     <Identifier>ACTION_ERROR1</Identifier>
@@ -722,7 +723,7 @@
                         <Condition>
                             <Resource>P_Q_PLASMA</Resource>
                             <Comparison>LESS</Comparison>
-                            <Value>400</Value>
+                            <Value>1000</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_STATUS</Resource>
@@ -764,7 +765,7 @@
                         <Condition>
                             <Resource>P_Q_PLASMA</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>400</Value>
+                            <Value>1000</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_OWNER</Resource>
@@ -977,13 +978,6 @@
                             <Value>1</Value>
                         </Step>
                         <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>P_L_CRYSTALS</Type>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>-60</Value>
-                        </Step>
-                        <Step>
                             <PrimitiveAction>CHANGE_CLASS</PrimitiveAction>
                             <Target>SELF</Target>
                             <Value>1265</Value>
@@ -1078,7 +1072,7 @@
                     <ObjectiveNumber>8</ObjectiveNumber>
                     <Script>cs08b_turret_atk</Script>
                     <Name>Attack</Name>
-                    <Details>Attack specified target \Fire rate boosted with D-Tech\[Weapons Avg Damage/10secs]\All: 100 (+50),  R 24</Details>
+                    <Details>Attack specified target \Fire rate boosted with D-Tech\[Weapons Avg Damage/10secs]\All: 50 (+25),  R 24</Details>
                     <ValidRadius>23</ValidRadius>
                     <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
                 </Objective>
@@ -1899,16 +1893,16 @@
                     <Details></Details>
                 </Objective>
                 <Objective>
-                    <ObjectiveNumber>9</ObjectiveNumber>
-                    <Script>cs09mb_move</Script>
-                    <Name>Move</Name>
+                    <ObjectiveNumber>8</ObjectiveNumber>
+                    <Script>cs08mb_moving</Script>
+                    <Name>Moving</Name>
                     <Details></Details>
                     <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
-                    <ObjectiveNumber>10</ObjectiveNumber>
-                    <Script>cs10mb_moving</Script>
-                    <Name>Moving</Name>
+                    <ObjectiveNumber>9</ObjectiveNumber>
+                    <Script>cs09mb_move</Script>
+                    <Name>Move</Name>
                     <Details></Details>
                     <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
                 </Objective>

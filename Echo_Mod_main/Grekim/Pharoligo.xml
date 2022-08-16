@@ -1,11 +1,11 @@
 <?xml version="1.0" ?>
 <ResequenceObjectClassSet>
     <!-- Pharoligo
-        cost: 400 QP, 150 Arct E (= 400-800 QP)
+        cost: 600 QP, 200 Arct E (= 600-1000 QP)
         speed: 4.5 sq/s
-        HP: 220 (0.55 HP/QP)
-        AG: 20/s (5 dps/100QP, *2.75)
-            siege: 40/s (10 dps/100QP, *5.5)
+        HP: 220 (37 HP/100QP)
+        AG: 10/s (1.7 dps/100QP, *56)
+            siege: 20/s (3.3 dps/100QP, *111)
         AA: 0
     -->
     <AIScripts />
@@ -26,14 +26,14 @@
     <ActionStepModifiers>
 	    <ActionStepModifier>
             <Name>Pligo strong anti_gnd 1</Name>
-            <StrengthBase>120</StrengthBase>
+            <StrengthBase>60</StrengthBase>
             <StrengthRange>0</StrengthRange>
             <StrengthCount>0</StrengthCount>
             <Flags>
                 <Permeating>1</Permeating>
                 <LimitDistance>1</LimitDistance>
                 <SetLastAttackedDirection>1</SetLastAttackedDirection>
-                <ContinueActionOnStepFailure>0</ContinueActionOnStepFailure>
+                <ContinueActionOnStepFailure>1</ContinueActionOnStepFailure>
             </Flags>
             <AccuracyMultiplier>1</AccuracyMultiplier>
             <EffectTimeout>0</EffectTimeout>
@@ -49,7 +49,7 @@
         </ActionStepModifier>
         <ActionStepModifier>
             <Name>Pligo strong anti_gnd 2</Name>
-            <StrengthBase>80</StrengthBase>
+            <StrengthBase>40</StrengthBase>
             <StrengthRange>0</StrengthRange>
             <StrengthCount>0</StrengthCount>
             <Flags>
@@ -72,7 +72,7 @@
         </ActionStepModifier>
 	    <ActionStepModifier>
             <Name>Pligo weak anti_gnd 1</Name>
-            <StrengthBase>40</StrengthBase>
+            <StrengthBase>20</StrengthBase>
             <StrengthRange>0</StrengthRange>
             <StrengthCount>0</StrengthCount>
             <Flags>
@@ -95,7 +95,7 @@
         </ActionStepModifier>
         <ActionStepModifier>
             <Name>Pligo weak anti_gnd 2</Name>
-            <StrengthBase>60</StrengthBase>
+            <StrengthBase>30</StrengthBase>
             <StrengthRange>0</StrengthRange>
             <StrengthCount>0</StrengthCount>
             <Flags>
@@ -1019,27 +1019,21 @@
                     <AIScriptCanRun>0</AIScriptCanRun>
                     <SetParamZeroTicks>0</SetParamZeroTicks>
                     <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <Conditions>
-                        <Condition>
-                            <Resource>P_ADVANCEMENTS</Resource>
-                            <Comparison>BITMASK</Comparison>
-                            <Value>512</Value>
-                        </Condition>
-                    </Conditions>
+                    <Conditions />
                     <Steps>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>40</Value>
+                            <Value>80</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>800</Value>
+                            <Value>1200</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>ACCUM_STATISTIC</PrimitiveAction>
@@ -1099,14 +1093,14 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>40</Value>
+                            <Value>80</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>240</Value>
+                            <Value>480</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -1758,7 +1752,7 @@
                     <ObjectiveNumber>3</ObjectiveNumber>
                     <Script>cs030_atk_move</Script>
                     <Name>Attack</Name>
-					<Details>Attack target or Attack-Move to location \Chrono Tech: 2X atk + TSS firing at rest \[Weapons Avg Damage/10secs]\Gnd (Moving): 200,  R 30,  SR 5,  Sta S\Gnd C-Tech, Resting: 400,  SR 9</Details>
+					<Details>Attack target or Attack-Move to location \Chrono Tech: 2X atk + TSS firing at rest \[Weapons Avg Damage/10secs]\Gnd (Moving): 100,  R 30,  SR 5,  Sta S\Gnd C-Tech, Resting: 200,  SR 9</Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
                     <ParameterType>POSITION</ParameterType>
                 </Objective>
@@ -1812,8 +1806,8 @@
                     <Script>cs100_tport</Script>
                     <Name>Teleport</Name>
                     <Details>Teleport to a specified location\or self-teleport within LOS range\Teleporters extend range and negate cost\ \Blocked by Temporal Soliton Shield (TSS)</Details>
-                    <Resource1>240</Resource1>
-                    <Resource4>40</Resource4>
+                    <Resource1>480</Resource1>
+                    <Resource4>80</Resource4>
                     <!--Resource5>30</Resource5-->
                     <ObjectiveControlShortcutNumber>5</ObjectiveControlShortcutNumber>
                 </Objective>
@@ -1822,8 +1816,8 @@
                     <Script>cs111_g_cport</Script>
                     <Name>Chronoport</Name>
                     <Details>Chronoport to a specified point in time\ \Recharges Shields 50%\Must not have a TSS</Details>
-                    <Resource1>800</Resource1>
-                    <Resource4>40</Resource4>
+                    <Resource1>1200</Resource1>
+                    <Resource4>80</Resource4>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>12</ObjectiveNumber>
@@ -1872,12 +1866,20 @@
                     <Details>   Not Available\    Requires L-Tech\    upgrade at the MOUND</Details>
                 </Objective>
                 <Objective>
+                    <ObjectiveNumber>44</ObjectiveNumber>
+                    <Script>gs444_ligo_atk_ground</Script>
+                    <Name>Attack Ground</Name>
+                    <Details> \Fire continuously at a designated \ground location</Details>
+                    <ObjectiveControlShortcutNumber>18</ObjectiveControlShortcutNumber>
+                </Objective>
+                <Objective>
                     <ObjectiveNumber>48</ObjectiveNumber>
                     <Script>gs484_freezebeam</Script>
                     <Name>Fire Temporal Disruption Beam</Name>
                     <Details> \Instantly eliminate a single target\ \Range: 34 vs all\Air targets require extra 8s lock-on</Details>
                     <Resource4>200</Resource4>
 					<Resource6>30</Resource6>
+                    <ValidRadius>35</ValidRadius>
                     <ObjectiveControlShortcutNumber>3</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
@@ -2177,6 +2179,31 @@
                             <Resource>P_ADVANCEMENTS</Resource>
                             <Comparison>BITMASK_NOT</Comparison>
                             <Value>128</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+                <ControlShortcut>
+                    <ControlNumber>18</ControlNumber>
+                    <ControlObjectiveNumber>44</ControlObjectiveNumber>
+                    <ParameterType>POSITION</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut>$AchronKBDropNukeNow</KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>U_IS_CARRIED</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>0</Value>
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
@@ -3115,27 +3142,21 @@
                     <AIScriptCanRun>0</AIScriptCanRun>
                     <SetParamZeroTicks>0</SetParamZeroTicks>
                     <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <Conditions>
-                        <Condition>
-                            <Resource>P_ADVANCEMENTS</Resource>
-                            <Comparison>BITMASK</Comparison>
-                            <Value>512</Value>
-                        </Condition>
-                    </Conditions>
+                    <Conditions />
                     <Steps>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>40</Value>
+                            <Value>80</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>800</Value>
+                            <Value>1200</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>ACCUM_STATISTIC</PrimitiveAction>
@@ -3195,14 +3216,14 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>40</Value>
+                            <Value>80</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>240</Value>
+                            <Value>480</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -3852,7 +3873,7 @@
                     <ObjectiveNumber>3</ObjectiveNumber>
                     <Script>cs030_atk_move</Script>
                     <Name>Attack</Name>
-					<Details>Attack target or Attack-Move to location \Chrono Tech: 2X atk + TSS firing at rest \[Weapons Avg Damage/10secs]\Gnd (Moving): 200,  R 30,  SR 5,  Sta S\Gnd C-Tech, Resting: 400,  SR 9</Details>
+					<Details>Attack target or Attack-Move to location \Chrono Tech: 2X atk + TSS firing at rest \[Weapons Avg Damage/10secs]\Gnd (Moving): 100,  R 30,  SR 5,  Sta S\Gnd C-Tech, Resting: 200,  SR 9</Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
                     <ParameterType>POSITION</ParameterType>
                 </Objective>
@@ -3906,8 +3927,8 @@
                     <Script>cs100_tport</Script>
                     <Name>Teleport</Name>
                     <Details>Teleport to a specified location\or self-teleport within LOS range\Teleporters extend range and negate cost\ \Blocked by Temporal Soliton Shield (TSS)</Details>
-                    <Resource1>240</Resource1>
-                    <Resource4>40</Resource4>
+                    <Resource1>480</Resource1>
+                    <Resource4>80</Resource4>
                     <!--Resource5>30</Resource5-->
                     <ObjectiveControlShortcutNumber>5</ObjectiveControlShortcutNumber>
                 </Objective>
@@ -3916,8 +3937,8 @@
                     <Script>cs111_g_cport</Script>
                     <Name>Chronoport</Name>
                     <Details>Chronoport to a specified point in time\ \Recharges Shields 50%\Must not have a TSS</Details>
-                    <Resource1>800</Resource1>
-                    <Resource4>40</Resource4>
+                    <Resource1>1200</Resource1>
+                    <Resource4>80</Resource4>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>12</ObjectiveNumber>
@@ -3966,12 +3987,20 @@
                     <Details>   Not Available\    Requires L-Tech\    upgrade at the MOUND</Details>
                 </Objective>
                 <Objective>
+                    <ObjectiveNumber>44</ObjectiveNumber>
+                    <Script>gs444_ligo_atk_ground</Script>
+                    <Name>Attack Ground</Name>
+                    <Details> \Fire continuously at a designated \ground location</Details>
+                    <ObjectiveControlShortcutNumber>18</ObjectiveControlShortcutNumber>
+                </Objective>
+                <Objective>
                     <ObjectiveNumber>48</ObjectiveNumber>
                     <Script>gs484_freezebeam</Script>
                     <Name>Fire Temporal Disruption Beam</Name>
                     <Details> \Instantly eliminate a single target\ \Range: 34 vs all\Air targets require extra 8s lock-on</Details>
                     <Resource4>200</Resource4>
 					<Resource6>30</Resource6>
+                    <ValidRadius>35</ValidRadius>
                     <ObjectiveControlShortcutNumber>3</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
@@ -4269,6 +4298,31 @@
                             <Resource>P_ADVANCEMENTS</Resource>
                             <Comparison>BITMASK_NOT</Comparison>
                             <Value>128</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+                <ControlShortcut>
+                    <ControlNumber>18</ControlNumber>
+                    <ControlObjectiveNumber>44</ControlObjectiveNumber>
+                    <ParameterType>POSITION</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut>$AchronKBDropNukeNow</KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>U_IS_CARRIED</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>0</Value>
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
@@ -5081,7 +5135,7 @@
                     <ObjectiveNumber>1</ObjectiveNumber>
                     <Script>cs010_move</Script>
                     <Name>Move</Name>
-                    <Details> \Move to specified location \Move Speed: 3, MaxInc: 45\Vision Range: 18, Aggro Radius: 25 \Invisible in Fog of War</Details>
+                    <Details></Details>
                     <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
@@ -5095,7 +5149,7 @@
                     <ObjectiveNumber>3</ObjectiveNumber>
                     <Script>cs030_atk_move</Script>
                     <Name>Attack</Name>
-                    <Details>Attack target or Attack-Move to location \+25% TSS Energy per attack \[Weapons Avg Damage/10secs]\Gnd: 50,  R 1,  SR 3,  Sta C</Details>
+                    <Details></Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
                     <ParameterType>POSITION</ParameterType>
                 </Objective>

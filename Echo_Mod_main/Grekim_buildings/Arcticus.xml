@@ -475,7 +475,7 @@
                             <Target>SELF</Target>
                             <Type>U_ENERGY</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>50</Value>
+                            <Value>100</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CREATE_UNIT</PrimitiveAction>
@@ -515,7 +515,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>400</Value>
+                            <Value>800</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -583,7 +583,7 @@
                             <Target>SELF</Target>
                             <Type>U_ENERGY</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>50</Value>
+                            <Value>100</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CREATE_UNIT</PrimitiveAction>
@@ -623,7 +623,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>600</Value>
+                            <Value>800</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -691,7 +691,7 @@
                             <Target>SELF</Target>
                             <Type>U_ENERGY</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>50</Value>
+                            <Value>100</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CREATE_UNIT</PrimitiveAction>
@@ -731,7 +731,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>400</Value>
+                            <Value>600</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -784,7 +784,7 @@
                         <Condition>
                             <Resource>U_ENERGY</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>150</Value>
+                            <Value>200</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -793,7 +793,7 @@
                             <Target>SELF</Target>
                             <Type>U_ENERGY</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>150</Value>
+                            <Value>200</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -946,13 +946,6 @@
                             <Type>UnitsDestroyed</Type>
                             <ValueEval>ONE</ValueEval>
                             <Value>1</Value>
-                        </Step>
-                        <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>P_L_CRYSTALS</Type>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>-40</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CHANGE_CLASS</PrimitiveAction>
@@ -1185,13 +1178,6 @@
                     <Details> \Dispatch subordinates to morph\into buildings</Details>
                 </Objective>
                 <Objective>
-                    <ObjectiveNumber>12</ObjectiveNumber>
-                    <Script>Script225</Script>
-                    <Name>Clear Nanite</Name>
-                    <Details> \Remove Nanites from any direct\subordinate</Details>
-                    <Resource6>20</Resource6>
-                </Objective>
-                <Objective>
                     <ObjectiveNumber>14</ObjectiveNumber>
                     <Script>Script74</Script>
                     <Name>Cancel Make Buildings</Name>
@@ -1293,7 +1279,7 @@
                     <Name>Produce Octo</Name>
                     <Details>Resilient melee assault trooper\Good at absorbing enemy fire\Cannot attack air targets\Morphs into RP or Dome\Invisible in Fog of War</Details>
                     <Resource4>100</Resource4>
-                    <Resource6>50</Resource6>
+                    <Resource6>100</Resource6>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>39</ObjectiveNumber>
@@ -1301,7 +1287,7 @@
                     <Name>Produce Squiddy/Sepi</Name>
                     <Details>Cloaking support sharpshooter\Low HP, high DPS vs ground and air\Cloaks while moving or idle\Morphs into Mound or Reaph\Invisible in Fog of War</Details>
                     <Resource4>100</Resource4>
-                    <Resource6>50</Resource6>
+                    <Resource6>100</Resource6>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>40</ObjectiveNumber>
@@ -1309,31 +1295,49 @@
                     <Name>Produce Pharo</Name>
                     <Details>Heavily armored shock grenadier\Detects cloaked enemies\Only effective vs light ground targets\Morphs into Spyre or Arcticus\Invisible in Fog of War</Details>
                     <Resource4>100</Resource4>
-                    <Resource6>50</Resource6>
+                    <Resource6>100</Resource6>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>41</ObjectiveNumber>
                     <Script>gs41q_progen_oligo</Script>
                     <Name>Produce Cthulhu/Octoligo</Name>
                     <Details>Biological heavy-support armor\Slow, high-impact brawler\Devastating vs aircraft and swarms\ \Vulnerable to burst damage</Details>
-                    <Resource4>400</Resource4>
-                    <Resource6>150</Resource6>
+                    <Resource4>800</Resource4>
+                    <Resource6>200</Resource6>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>42</ObjectiveNumber>
                     <Script>gs42q_progen_sligo</Script>
                     <Name>Produce Hydra/Sepiligo</Name>
                     <Details> \Durable air supremacy bio-gunship\Very fast, but attacks slowly after moving\Devastating vs aircraft when energized</Details>
-                    <Resource4>600</Resource4>
-                    <Resource6>150</Resource6>
+                    <Resource4>800</Resource4>
+                    <Resource6>200</Resource6>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>43</ObjectiveNumber>
                     <Script>gs43q_progen_pligo</Script>
                     <Name>Produce Medusa/Pharoligo</Name>
                     <Details> \Slow, standoff-range, saturation bio-bomber\Fires slow moving, explosive energy blasts\Devastating vs buildings and infantry</Details>
-                    <Resource4>400</Resource4>
-                    <Resource6>150</Resource6>
+                    <Resource4>600</Resource4>
+                    <Resource6>200</Resource6>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>44</ObjectiveNumber>
+                    <Script>gs44q_progen_oligo_na</Script>
+                    <Name>Cthulhu/Octoligo</Name>
+                    <Details> \Must be near a Spyre\or upgrade L-Tech</Details>
+                </Objective>					
+                <Objective>
+                    <ObjectiveNumber>45</ObjectiveNumber>
+                    <Script>gs45q_progen_sligo_na</Script>
+                    <Name>Hydra/Sepiligo</Name>
+                    <Details> \Must be near a Spyre\or upgrade L-Tech</Details>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>46</ObjectiveNumber>
+                    <Script>gs46q_progen_pligo_na</Script>
+                    <Name>Medusa/Pharoligo</Name>
+                    <Details> \Must be near a Spyre\or upgrade L-Tech</Details>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>50</ObjectiveNumber>
@@ -1343,21 +1347,11 @@
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>52</ObjectiveNumber>
-                    <Script>gs52q_progen_oligo_na</Script>
-                    <Name>Cthulhu/Octoligo</Name>
-                    <Details> \Must be near a Spyre\or upgrade L-Tech</Details>
-                </Objective>					
-                <Objective>
-                    <ObjectiveNumber>53</ObjectiveNumber>
-                    <Script>gs53q_progen_sligo_na</Script>
-                    <Name>Hydra/Sepiligo</Name>
-                    <Details> \Must be near a Spyre\or upgrade L-Tech</Details>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>54</ObjectiveNumber>
-                    <Script>gs54q_progen_pligo_na</Script>
-                    <Name>Medusa/Pharoligo</Name>
-                    <Details> \Must be near a Spyre\or upgrade L-Tech</Details>
+                    <Script>gs52p_progen_RP</Script>
+                    <Name>Resource Processor Dispatch</Name>
+                    <Details>   - place near resource bins\Assimilates resources: Power and Q-Plasma\ \Can move itself</Details>
+                    <Resource4>200</Resource4>
+                    <Resource6>100</Resource6>
                 </Objective>
             </Objectives>
             <ControlShortcuts>
@@ -1415,6 +1409,25 @@
                     </Flags>
                     <EstTimeConst>216</EstTimeConst>
                     <EstTimeDist>9</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions />
+                </ControlShortcut>
+                <ControlShortcut>
+                    <ControlNumber>8</ControlNumber>
+                    <ControlObjectiveNumber>52</ControlObjectiveNumber>
+                    <ParameterType>POSITION_CLASS</ParameterType>
+                    <Parameter>1056</Parameter>
+                    <KeyboardShortcut>$AchronKBRpGrekim</KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>756</EstTimeConst>
+                    <EstTimeDist>6</EstTimeDist>
                     <Sound>Sound0</Sound>
                     <ControlConditions />
                 </ControlShortcut>
@@ -1514,7 +1527,7 @@
                 </ControlShortcut>
                 <ControlShortcut>
                     <ControlNumber>15</ControlNumber>
-                    <ControlObjectiveNumber>52</ControlObjectiveNumber>
+                    <ControlObjectiveNumber>44</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
                     <KeyboardShortcut></KeyboardShortcut>
@@ -1539,7 +1552,7 @@
                 </ControlShortcut>
                 <ControlShortcut>
                     <ControlNumber>16</ControlNumber>
-                    <ControlObjectiveNumber>53</ControlObjectiveNumber>
+                    <ControlObjectiveNumber>45</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
                     <KeyboardShortcut></KeyboardShortcut>
@@ -1564,7 +1577,7 @@
                 </ControlShortcut>
                 <ControlShortcut>
                     <ControlNumber>17</ControlNumber>
-                    <ControlObjectiveNumber>54</ControlObjectiveNumber>
+                    <ControlObjectiveNumber>46</ControlObjectiveNumber>
                     <ParameterType>NO_PARAMETER</ParameterType>
                     <Parameter>0</Parameter>
                     <KeyboardShortcut></KeyboardShortcut>
@@ -2154,7 +2167,7 @@
                         <Condition>
                             <Resource>U_HP</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>140</Value>
+                            <Value>240</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_SECOND_OWNER</Resource>
@@ -2173,34 +2186,34 @@
             <Objectives>
                 <Objective>
                     <ObjectiveNumber>0</ObjectiveNumber>
-                    <Script>Script389</Script>
+                    <Script>cs00mb_relocating_idle</Script>
                     <Name></Name>
                     <Details></Details>
                 </Objective>
                 <Objective>
-                    <ObjectiveNumber>9</ObjectiveNumber>
-                    <Script>Script24</Script>
-                    <Name>Move</Name>
-                    <Details></Details>
-                    <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
-                </Objective>
-                <Objective>
-                    <ObjectiveNumber>10</ObjectiveNumber>
-                    <Script>Script23</Script>
+                    <ObjectiveNumber>8</ObjectiveNumber>
+                    <Script>cs08mb_moving</Script>
                     <Name>Moving</Name>
                     <Details></Details>
                     <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
+                    <ObjectiveNumber>9</ObjectiveNumber>
+                    <Script>cs09mb_move</Script>
+                    <Name>Move</Name>
+                    <Details></Details>
+                    <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
+                </Objective>
+                <Objective>
                     <ObjectiveNumber>11</ObjectiveNumber>
-                    <Script>Script181</Script>
+                    <Script>cs11mb_stop</Script>
                     <Name>Activating</Name>
                     <Details></Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>12</ObjectiveNumber>
-                    <Script>Script182</Script>
+                    <Script>cs12mb_plant</Script>
                     <Name>Activate</Name>
                     <Details> \Plant on the ground and activate</Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>

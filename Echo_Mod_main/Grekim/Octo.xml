@@ -1,12 +1,12 @@
 <?xml version="1.0" ?>
 <ResequenceObjectClassSet>
     <!-- Octo
-        cost: 100 QP, 5 progen E
+        cost: 200 QP, 5 progen E
         speed: 3 sq/s
-        HP: 120 (1.2 HP/QP)
-            B-tech: 300 (3 HP/QP)
-            D-tech: 480 (4.8 HP/QP)
-        AG: 3/s (3 dps/100QP, *3.6, *9, *14.4)
+        HP: 120 (60 HP/100QP)
+            B-tech: 300 (150 HP/100QP)
+            D-tech: 480 (240 HP/100QP)
+        AG: 4/s (2 dps/100QP, *120, *300, *480)
         AA: 0/s
     -->
     <AIScripts />
@@ -64,13 +64,13 @@
         </ActionStepModifier>
         <ActionStepModifier>
             <Name>Octo anti_gnd 2</Name>
-            <StrengthBase>4</StrengthBase>
+            <StrengthBase>6</StrengthBase>
             <StrengthRange>0</StrengthRange>
             <StrengthCount>0</StrengthCount>
             <Flags>
                 <Permeating>1</Permeating>
                 <LimitDistance>1</LimitDistance>
-                <SetLastAttackedDirection>1</SetLastAttackedDirection>
+                <SetLastAttackedDirection>0</SetLastAttackedDirection>
                 <ContinueActionOnStepFailure>0</ContinueActionOnStepFailure>
             </Flags>
             <AccuracyMultiplier>1</AccuracyMultiplier>
@@ -87,7 +87,7 @@
         </ActionStepModifier>
         <ActionStepModifier>
             <Name>Octo burst</Name>
-            <StrengthBase>60</StrengthBase>
+            <StrengthBase>80</StrengthBase>
             <StrengthRange>0</StrengthRange>
             <StrengthCount>0</StrengthCount>
             <Flags>
@@ -113,7 +113,7 @@
         <ObjectClass>
             <ClassNumber>1000</ClassNumber>
             <Name>Octo</Name>
-            <Description>OCTO:&#x0D;&#x0A;Resilient melee assault trooper&#x0D;&#x0A;Good at absorbing enemy fire&#x0D;&#x0A;Morphs into Mound and Dome&#x0D;&#x0A; &#x0D;&#x0A;Upgradable defensive abilities:&#x0D;&#x0A;B-Tech: Cloaks when stationary &#x0D;&#x0A;    Shield regen. [+180 hp, +18/s] &#x0D;&#x0A;D-Tech: 2X  regen. [+360 hp, +36/s]</Description>
+            <Description>OCTO:&#x0D;&#x0A;Resilient melee assault trooper&#x0D;&#x0A;Good at absorbing enemy fire&#x0D;&#x0A;Morphs into Mound and Dome&#x0D;&#x0A; &#x0D;&#x0A;Upgradeable defensive abilities:&#x0D;&#x0A;B-Tech: Cloaks when stationary &#x0D;&#x0A;    Shield regen. [+180 hp, +18/s] &#x0D;&#x0A;D-Tech: 2X  regen. [+360 hp, +36/s]</Description>
             <Model>./Achron_EchoMod/Echo_Mod_main/New_Models/octo.mdl</Model>
             <Rank>122</Rank>
             <Type>2</Type>
@@ -450,7 +450,7 @@
                         <Condition>
                             <Resource>U_ACTION</Resource>
                             <Comparison>EQUAL</Comparison>
-                            <Value>7</Value>
+                            <Value>8</Value>
                         </Condition>
                     </Conditions>
                 </Animation>
@@ -467,7 +467,7 @@
                         <Condition>
                             <Resource>U_ACTION</Resource>
                             <Comparison>EQUAL</Comparison>
-                            <Value>6</Value>
+                            <Value>7</Value>
                         </Condition>
                     </Conditions>
                 </Animation>
@@ -792,6 +792,26 @@
                 </Action>
                 <Action>
                     <ActionNumber>6</ActionNumber>
+                    <Identifier>ACTION_CHANGE_COMMANDER</Identifier>
+                    <TimeTaken>0</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CHANGE_COMMANDER</PrimitiveAction>
+                            <Target>SELF</Target>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>7</ActionNumber>
                     <Identifier>ACTION_OVERCHARGE_ATTACK_HP</Identifier>
                     <TimeTaken>27</TimeTaken>
                     <ForceObjectAction>1</ForceObjectAction>
@@ -840,7 +860,7 @@
                     </Steps>
                 </Action>
                 <Action>
-                    <ActionNumber>7</ActionNumber>
+                    <ActionNumber>8</ActionNumber>
                     <Identifier>ACTION_second_attack</Identifier>
                     <TimeTaken>26</TimeTaken>
                     <ForceObjectAction>1</ForceObjectAction>
@@ -878,7 +898,7 @@
                 <Action>
                     <ActionNumber>9</ActionNumber>
                     <Identifier>ACTION_CHANGE_MATE</Identifier>
-                    <TimeTaken>144</TimeTaken>
+                    <TimeTaken>90</TimeTaken>
                     <ForceObjectAction>0</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
                     <MutexAction>0</MutexAction>
@@ -907,7 +927,7 @@
                         <Condition>
                             <Resource>P_Q_PLASMA</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>50</Value>
+                            <Value>100</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -916,7 +936,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>50</Value>
+                            <Value>100</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -1067,7 +1087,7 @@
                         <Condition>
                             <Resource>P_ADVANCEMENTS</Resource>
                             <Comparison>BITMASK_NOT</Comparison>
-                            <Value>32768</Value>
+                            <Value>256</Value>
                         </Condition>
                         <!--Condition>
                             <Resource>P_ADVANCEMENTS</Resource>
@@ -1087,7 +1107,7 @@
                         <Condition>
                             <Resource>P_Q_PLASMA</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>50</Value>
+                            <Value>100</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_ENERGY</Resource>
@@ -1101,14 +1121,14 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>50</Value>
+                            <Value>100</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>150</Value>
+                            <Value>300</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -1162,27 +1182,21 @@
                     <AIScriptCanRun>0</AIScriptCanRun>
                     <SetParamZeroTicks>0</SetParamZeroTicks>
                     <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <Conditions>
-                        <Condition>
-                            <Resource>P_ADVANCEMENTS</Resource>
-                            <Comparison>BITMASK</Comparison>
-                            <Value>512</Value>
-                        </Condition>
-                    </Conditions>
+                    <Conditions />
                     <Steps>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>20</Value>
+                            <Value>40</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>40</Value>
+                            <Value>80</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>ACCUM_STATISTIC</PrimitiveAction>
@@ -1242,14 +1256,14 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>20</Value>
+                            <Value>40</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>40</Value>
+                            <Value>80</Value>
                         </Step>
                         <!--Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -1450,7 +1464,7 @@
                         <Condition>
                             <Resource>P_POWER</Resource>
                             <Comparison>GREATER</Comparison>
-                            <Value>400</Value>
+                            <Value>1000</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_SECOND_OWNER</Resource>
@@ -1514,7 +1528,7 @@
                         <Condition>
                             <Resource>P_POWER</Resource>
                             <Comparison>GREATER</Comparison>
-                            <Value>800</Value>
+                            <Value>2000</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_STATUS</Resource>
@@ -1563,7 +1577,7 @@
                         <Condition>
                             <Resource>U_ACTION</Resource>
                             <Comparison>NOT_EQUAL</Comparison>
-                            <Value>7</Value>
+                            <Value>8</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_STATUS</Resource>
@@ -1652,7 +1666,7 @@
                             <Target>SELF</Target>
                             <Type>P_L_CRYSTALS</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-60</Value>
+                            <Value>-120</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -2019,7 +2033,7 @@
                     <ObjectiveNumber>3</ObjectiveNumber>
                     <Script>cs030_atk_move</Script>
                     <Name>Attack</Name>
-                    <Details>Attack target or Attack-Move to location \+10% TSS Energy per attack \[Weapons Avg Damage/10secs]\Gnd: 30,  R 1,  SR 3,  Sta B</Details>
+                    <Details>Attack target or Attack-Move to location \+10% TSS Energy per attack \[Weapons Avg Damage/10secs]\Gnd: 40,  R 1,  SR 3,  Sta B</Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
                     <ParameterType>POSITION</ParameterType>
                 </Objective>
@@ -2073,8 +2087,8 @@
                     <Script>cs100_tport</Script>
                     <Name>Teleport</Name>
                     <Details>Teleport to a unit / location \or self-teleport within LOS range\Teleporters extend range and negate cost\ \Blocked by Temporal Soliton Shield (TSS)</Details>
-                    <Resource1>40</Resource1>
-                    <Resource4>20</Resource4>
+                    <Resource1>80</Resource1>
+                    <Resource4>40</Resource4>
                     <!--Resource5>20</Resource5-->
                     <ObjectiveControlShortcutNumber>5</ObjectiveControlShortcutNumber>
                 </Objective>
@@ -2083,8 +2097,8 @@
                     <Script>cs111_g_cport</Script>
                     <Name>Chronoport</Name>
                     <Details>Chronoport to a specified point in time\ \Recharges Shields 50%\Must not have a TSS</Details>
-                    <Resource1>40</Resource1>
-                    <Resource4>20</Resource4>
+                    <Resource1>80</Resource1>
+                    <Resource4>40</Resource4>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>12</ObjectiveNumber>
@@ -2133,7 +2147,7 @@
                     <Name>Resource Processor</Name>
                     <Details>   - place near resource bins\Assimilates resources: Power and Q-Plasma\Can convert Q-Plasma into Power\Cloaks and moves itself</Details>
                     <Resource1>0</Resource1>
-                    <Resource4>50</Resource4>
+                    <Resource4>100</Resource4>
                     <Resource6>0</Resource6>
                     <ObjectiveControlShortcutNumber>10</ObjectiveControlShortcutNumber>
                 </Objective>
@@ -2153,19 +2167,19 @@
                 <Objective>
                     <ObjectiveNumber>20</ObjectiveNumber>
                     <Script>gs201_octo_dome</Script>
-                    <Name>Morph: Dome</Name>
+                    <Name>Dome</Name>
                     <Details> \Cloaked weapon emplacement \Devastating to aircraft \Detects cloaked units \Cloaks and moves itself</Details>
-                    <Resource1>150</Resource1>
-                    <Resource4>50</Resource4>
+                    <Resource1>300</Resource1>
+                    <Resource4>100</Resource4>
                     <Resource6>0</Resource6>
                     <ObjectiveControlShortcutNumber>12</ObjectiveControlShortcutNumber>
                 </Objective>
-                <!--Objective>
+                <Objective>
                     <ObjectiveNumber>21</ObjectiveNumber>
-                    <Script></Script>
-                    <Name>Morph: Dome</Name>
-                    <Details>   Not Available\    Requires B-Tech\    upgrade at the MOUND</Details>
-                </Objective-->
+                    <Script>gs211_octo_dome_na</Script>
+                    <Name>Dome</Name>
+                    <Details>   Not Available\    Blocked by S-Tech</Details>
+                </Objective>
             </Objectives>
             <ControlShortcuts>
                 <ControlShortcut>
@@ -2482,7 +2496,7 @@
                         <ControlCondition>
                             <Resource>P_ADVANCEMENTS</Resource>
                             <Comparison>BITMASK_NOT</Comparison>
-                            <Value>32768</Value>
+                            <Value>256</Value>
                         </ControlCondition>
                         <!--ControlCondition>
                             <Resource>P_ADVANCEMENTS</Resource>
@@ -2498,6 +2512,36 @@
                             <Resource>U_IS_CARRIED</Resource>
                             <Comparison>EQUAL</Comparison>
                             <Value>0</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+                <ControlShortcut>
+                    <ControlNumber>13</ControlNumber> <!-- Dome NA -->
+                    <ControlObjectiveNumber>21</ControlObjectiveNumber>
+                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut></KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>1</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>U_IS_CARRIED</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>0</Value>
+                        </ControlCondition>
+                        <ControlCondition>
+                            <Resource>P_ADVANCEMENTS</Resource>
+                            <Comparison>BITMASK</Comparison>
+                            <Value>256</Value>
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>

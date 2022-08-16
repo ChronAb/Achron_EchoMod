@@ -16,6 +16,13 @@ if (unit.Rank == $AMPLIFIER_RANK && player->IsComputerPlayer) {
 	PERFORM NOTHING;
 }
 
+if( (player->CustomField8)[1] != 1 ){
+    say "Metamorphosis unavailable";
+    PERFORM SET_OBJECTIVE 0;
+    PERFORM SET_ADDITIONAL_PARAMS3 0;
+    PERFORM NOTHING;
+}
+
 if (unit->Position == op) {
 
 	if (player->$LCrystals < $ARCTICUS_LC || player->$QPlasma < $ARCTICUS_QP) {

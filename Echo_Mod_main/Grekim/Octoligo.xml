@@ -1,11 +1,11 @@
 <?xml version="1.0" ?>
 <ResequenceObjectClassSet>
     <!-- Octoligo
-        cost: 400 QP, 150 Arct E (= 400-800 QP)
+        cost: 800 QP, 200 Arct E (= 800-1200 QP)
         speed: 1.8 sq/s
-        HP: 1200 (3 HP/QP)
-        AG: 20/s (5 dps/100QP, *15.0)
-        AA: 8/s (2 dps/100QP, *6.0)
+        HP: 1200 (150 HP/100QP)
+        AG: 10/s (1.3 dps/100QP, *188)
+        AA: 4/s (0.5 dps/100QP, *75)
     -->
     <AIScripts />
     <Sounds>
@@ -24,7 +24,7 @@
     <UnitLists />
     <ActionStepModifiers>
        <ActionStepModifier>
-            <Name>CommJam</Name>
+            <Name>Oligo CommJam</Name>
             <StrengthBase>0</StrengthBase>
             <StrengthRange>0</StrengthRange>
             <StrengthCount>0</StrengthCount>
@@ -50,10 +50,33 @@
         </ActionStepModifier>
         
         <ActionStepModifier>
-            <Name>HE S.O.C.</Name>
-            <StrengthBase>90</StrengthBase>
-            <StrengthRange>60</StrengthRange>
-            <StrengthCount>1</StrengthCount>
+            <Name>Oligo anti_gnd</Name>
+            <StrengthBase>40</StrengthBase>
+            <StrengthRange>0</StrengthRange>
+            <StrengthCount>0</StrengthCount>
+            <Flags>
+                <Permeating>1</Permeating>
+                <LimitDistance>1</LimitDistance>
+                <SetLastAttackedDirection>1</SetLastAttackedDirection>
+                <ContinueActionOnStepFailure>1</ContinueActionOnStepFailure>
+            </Flags>
+            <AccuracyMultiplier>1</AccuracyMultiplier>
+            <EffectTimeout>0</EffectTimeout>
+            <MinEffectRadius>0</MinEffectRadius>
+            <EffectRadius>18</EffectRadius>
+            <EffectHeight>30</EffectHeight>
+            <MaxEffectAngle>360</MaxEffectAngle>
+            <EffectSplashHeight>4</EffectSplashHeight>
+            <EffectSplashRadius>4</EffectSplashRadius>
+            <EffectSplashEffectiveRadius>8</EffectSplashEffectiveRadius>
+            <SelfStatistic>DamageDealt</SelfStatistic>
+            <TargetStatistic>DamageReceived</TargetStatistic>
+        </ActionStepModifier>
+		<ActionStepModifier>
+            <Name>Oligo anti_gnd crit</Name>
+            <StrengthBase>80</StrengthBase>
+            <StrengthRange>0</StrengthRange>
+            <StrengthCount>0</StrengthCount>
             <Flags>
                 <Permeating>1</Permeating>
                 <LimitDistance>1</LimitDistance>
@@ -68,13 +91,13 @@
             <MaxEffectAngle>360</MaxEffectAngle>
             <EffectSplashHeight>6</EffectSplashHeight>
             <EffectSplashRadius>6</EffectSplashRadius>
-            <EffectSplashEffectiveRadius>9</EffectSplashEffectiveRadius>
+            <EffectSplashEffectiveRadius>8</EffectSplashEffectiveRadius>
             <SelfStatistic>DamageDealt</SelfStatistic>
             <TargetStatistic>DamageReceived</TargetStatistic>
         </ActionStepModifier>
         <ActionStepModifier>
-            <Name>HE AM Projection Cannon</Name>
-            <StrengthBase>25</StrengthBase>
+            <Name>Oligo anti_air 1</Name>
+            <StrengthBase>12</StrengthBase>
             <StrengthRange>0</StrengthRange>
             <StrengthCount>0</StrengthCount>
             <Flags>
@@ -96,8 +119,8 @@
             <TargetStatistic>DamageReceived</TargetStatistic>
         </ActionStepModifier>
         <ActionStepModifier>
-            <Name>Chronoton Cascade</Name>
-            <StrengthBase>15</StrengthBase>
+            <Name>Oligo anti_air 2</Name>
+            <StrengthBase>8</StrengthBase>
             <StrengthRange>0</StrengthRange>
             <StrengthCount>0</StrengthCount>
             <Flags>
@@ -115,99 +138,6 @@
             <EffectSplashHeight>8</EffectSplashHeight>
             <EffectSplashRadius>15</EffectSplashRadius>
             <EffectSplashEffectiveRadius>16</EffectSplashEffectiveRadius>
-            <SelfStatistic>DamageDealt</SelfStatistic>
-            <TargetStatistic>DamageReceived</TargetStatistic>
-        </ActionStepModifier>
-		
-        <ActionStepModifier>
-            <Name>HE S.O.C. Crit</Name>
-            <StrengthBase>90</StrengthBase>
-            <StrengthRange>40</StrengthRange>
-            <StrengthCount>1</StrengthCount>
-            <Flags>
-                <Permeating>1</Permeating>
-                <LimitDistance>1</LimitDistance>
-                <SetLastAttackedDirection>1</SetLastAttackedDirection>
-                <ContinueActionOnStepFailure>0</ContinueActionOnStepFailure>
-            </Flags>
-            <AccuracyMultiplier>1</AccuracyMultiplier>
-            <EffectTimeout>0</EffectTimeout>
-            <MinEffectRadius>0</MinEffectRadius>
-            <EffectRadius>18</EffectRadius>
-            <EffectHeight>30</EffectHeight>
-            <MaxEffectAngle>360</MaxEffectAngle>
-            <EffectSplashHeight>3</EffectSplashHeight>
-            <EffectSplashRadius>4</EffectSplashRadius>
-            <EffectSplashEffectiveRadius>6</EffectSplashEffectiveRadius>
-            <SelfStatistic>DamageDealt</SelfStatistic>
-            <TargetStatistic>DamageReceived</TargetStatistic>
-        </ActionStepModifier>
-        <ActionStepModifier>
-            <Name>HE AA S.O.C.</Name>
-            <StrengthBase>40</StrengthBase>
-            <StrengthRange>20</StrengthRange>
-            <StrengthCount>1</StrengthCount>
-            <Flags>
-                <Permeating>0</Permeating>
-                <LimitDistance>1</LimitDistance>
-                <SetLastAttackedDirection>1</SetLastAttackedDirection>
-                <ContinueActionOnStepFailure>0</ContinueActionOnStepFailure>
-            </Flags>
-            <AccuracyMultiplier>1</AccuracyMultiplier>
-            <EffectTimeout>0</EffectTimeout>
-            <MinEffectRadius>0</MinEffectRadius>
-            <EffectRadius>32</EffectRadius>
-            <EffectHeight>30</EffectHeight>
-            <MaxEffectAngle>360</MaxEffectAngle>
-            <EffectSplashHeight>2</EffectSplashHeight>
-            <EffectSplashRadius>1</EffectSplashRadius>
-            <EffectSplashEffectiveRadius>2</EffectSplashEffectiveRadius>
-            <SelfStatistic>DamageDealt</SelfStatistic>
-            <TargetStatistic>DamageReceived</TargetStatistic>
-        </ActionStepModifier>
-        <ActionStepModifier>
-            <Name>HE E S.O.C.</Name>
-            <StrengthBase>100</StrengthBase>
-            <StrengthRange>0</StrengthRange>
-            <StrengthCount>0</StrengthCount>
-            <Flags>
-                <Permeating>1</Permeating>
-                <LimitDistance>1</LimitDistance>
-                <SetLastAttackedDirection>1</SetLastAttackedDirection>
-                <ContinueActionOnStepFailure>0</ContinueActionOnStepFailure>
-            </Flags>
-            <AccuracyMultiplier>1</AccuracyMultiplier>
-            <EffectTimeout>0</EffectTimeout>
-            <MinEffectRadius>0</MinEffectRadius>
-            <EffectRadius>10</EffectRadius>
-            <EffectHeight>30</EffectHeight>
-            <MaxEffectAngle>360</MaxEffectAngle>
-            <EffectSplashHeight>3</EffectSplashHeight>
-            <EffectSplashRadius>4</EffectSplashRadius>
-            <EffectSplashEffectiveRadius>6</EffectSplashEffectiveRadius>
-            <SelfStatistic>DamageDealt</SelfStatistic>
-            <TargetStatistic>DamageReceived</TargetStatistic>
-        </ActionStepModifier>
-        <ActionStepModifier>
-            <Name>HE E AA S.O.C.</Name>
-            <StrengthBase>50</StrengthBase>
-            <StrengthRange>100</StrengthRange>
-            <StrengthCount>1</StrengthCount>
-            <Flags>
-                <Permeating>0</Permeating>
-                <LimitDistance>1</LimitDistance>
-                <SetLastAttackedDirection>1</SetLastAttackedDirection>
-                <ContinueActionOnStepFailure>0</ContinueActionOnStepFailure>
-            </Flags>
-            <AccuracyMultiplier>1</AccuracyMultiplier>
-            <EffectTimeout>0</EffectTimeout>
-            <MinEffectRadius>0</MinEffectRadius>
-            <EffectRadius>12</EffectRadius>
-            <EffectHeight>30</EffectHeight>
-            <MaxEffectAngle>360</MaxEffectAngle>
-            <EffectSplashHeight>2</EffectSplashHeight>
-            <EffectSplashRadius>1</EffectSplashRadius>
-            <EffectSplashEffectiveRadius>2</EffectSplashEffectiveRadius>
             <SelfStatistic>DamageDealt</SelfStatistic>
             <TargetStatistic>DamageReceived</TargetStatistic>
         </ActionStepModifier>
@@ -402,6 +332,23 @@
                     </Conditions>
                 </Animation>
                 <Animation>
+                    <Identifier>ACTION_ATTACK_w0</Identifier>
+                    <AnimationNum>2</AnimationNum>
+                    <Sound>Sound67</Sound>
+                    <AnimationTime>0</AnimationTime>
+                    <ShowProgress>0</ShowProgress>
+                    <MorphFromActionParameterClass>0</MorphFromActionParameterClass>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <RenderModelExplode>0</RenderModelExplode>
+                    <Conditions>
+                        <Condition>
+                            <Resource>U_ACTION</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>24</Value>
+                        </Condition>
+                    </Conditions>
+                </Animation>
+                <Animation>
                     <Identifier>ACTION_POST_SKIP</Identifier>
                     <AnimationNum>0</AnimationNum>
                     <Sound>Sound25</Sound>
@@ -534,23 +481,6 @@
                             <Resource>U_ACTION</Resource>
                             <Comparison>EQUAL</Comparison>
                             <Value>4</Value>
-                        </Condition>
-                    </Conditions>
-                </Animation>
-                <Animation>
-                    <Identifier>ACTION_ATTACK</Identifier>
-                    <AnimationNum>2</AnimationNum>
-                    <Sound>Sound67</Sound>
-                    <AnimationTime>0</AnimationTime>
-                    <ShowProgress>0</ShowProgress>
-                    <MorphFromActionParameterClass>0</MorphFromActionParameterClass>
-                    <LobProjectilePath>0</LobProjectilePath>
-                    <RenderModelExplode>0</RenderModelExplode>
-                    <Conditions>
-                        <Condition>
-                            <Resource>U_ACTION</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>3</Value>
                         </Condition>
                     </Conditions>
                 </Animation>
@@ -726,7 +656,7 @@
                 <Action>
                     <ActionNumber>3</ActionNumber>
                     <Identifier>ACTION_ATTACK</Identifier>
-                    <TimeTaken>18</TimeTaken>
+                    <TimeTaken>4</TimeTaken>
                     <ForceObjectAction>0</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
                     <MutexAction>1</MutexAction>
@@ -754,25 +684,9 @@
                     </Conditions>
                     <Steps>
                         <Step>
-                            <PrimitiveAction>ATTACK</PrimitiveAction>
+                            <PrimitiveAction>NOTHING</PrimitiveAction>
                             <Target>TARGET_UNIT</Target>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>0</Value>
-                            <ActionStepModifier>HE S.O.C.</ActionStepModifier>
-                        </Step>
-                        <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>U_AMMO</Type>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>100</Value>
-                        </Step>
-                        <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>U_HP</Type>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>10</Value>
+                            <ActionStepModifier>Oligo anti_gnd</ActionStepModifier>
                         </Step>
                     </Steps>
                 </Action>
@@ -811,7 +725,7 @@
                             <Target>TARGET_UNIT</Target>
                             <ValueEval>ONE</ValueEval>
                             <Value>0</Value>
-                            <ActionStepModifier>HE AM Projection Cannon</ActionStepModifier>
+                            <ActionStepModifier>Oligo anti_air 1</ActionStepModifier>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -899,7 +813,7 @@
                             <PrimitiveAction>SET_STATUS</PrimitiveAction>
                             <Target>TARGET_UNIT</Target>
                             <Type>STATUS_COMMJAM</Type>
-                            <ActionStepModifier>CommJam</ActionStepModifier>
+                            <ActionStepModifier>Oligo CommJam</ActionStepModifier>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -1143,27 +1057,21 @@
                     <AIScriptCanRun>0</AIScriptCanRun>
                     <SetParamZeroTicks>0</SetParamZeroTicks>
                     <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <Conditions>
-                        <Condition>
-                            <Resource>P_ADVANCEMENTS</Resource>
-                            <Comparison>BITMASK</Comparison>
-                            <Value>512</Value>
-                        </Condition>
-                    </Conditions>
+                    <Conditions />
                     <Steps>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>40</Value>
+                            <Value>80</Value>
                         </Step>
 						<Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>300</Value>
+                            <Value>600</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>ACCUM_STATISTIC</PrimitiveAction>
@@ -1223,14 +1131,14 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>40</Value>
+                            <Value>80</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>200</Value>
+                            <Value>400</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -1238,6 +1146,57 @@
                             <Type>U_HP</Type>
                             <ValueEval>ONE</ValueEval>
                             <Value>0</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>24</ActionNumber>
+                    <Identifier>ACTION_Attack_w0</Identifier>
+                    <TimeTaken>14</TimeTaken>
+                    <ForceObjectAction>1</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>1</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>1</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <Conditions>
+                        <Condition>
+                            <Resource>U_ACTION</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>3</Value>
+                        </Condition>
+                    </Conditions>
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>ATTACK</PrimitiveAction>
+                            <Target>TARGET_UNIT</Target>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>0</Value>
+                            <ActionStepModifier>Oligo anti_gnd</ActionStepModifier>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>ATTACK</PrimitiveAction>
+                            <Target>TARGET_UNIT</Target>
+							<Probability>0.25</Probability>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>0</Value>
+                            <ActionStepModifier>Oligo anti_gnd crit</ActionStepModifier>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_AMMO</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>100</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_HP</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>10</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -1266,7 +1225,7 @@
                             <Target>TARGET_UNIT</Target>
                             <ValueEval>ONE</ValueEval>
                             <Value>0</Value>
-                            <ActionStepModifier>Chronoton Cascade</ActionStepModifier>
+                            <ActionStepModifier>Oligo anti_air 2</ActionStepModifier>
                         </Step>
                     </Steps>
                 </Action>
@@ -1347,6 +1306,11 @@
                         <Condition>
                             <Resource>U_ACTION</Resource>
                             <Comparison>NOT_EQUAL</Comparison>
+                            <Value>24</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_ACTION</Resource>
+                            <Comparison>NOT_EQUAL</Comparison>
                             <Value>25</Value>
                         </Condition>
                         <Condition>
@@ -1402,6 +1366,11 @@
                             <Resource>U_ACTION</Resource>
                             <Comparison>NOT_EQUAL</Comparison>
                             <Value>4</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_ACTION</Resource>
+                            <Comparison>NOT_EQUAL</Comparison>
+                            <Value>24</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_ACTION</Resource>
@@ -1564,7 +1533,7 @@
                             <Target>SELF</Target>
                             <Type>P_L_CRYSTALS</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-120</Value>
+                            <Value>-160</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CHANGE_CLASS</PrimitiveAction>
@@ -1872,7 +1841,7 @@
                     <ObjectiveNumber>3</ObjectiveNumber>
                     <Script>cs030_atk_move</Script>
                     <Name>Attack</Name>
-                    <Details>Attack target or Attack-Move to location\ \[Weapons Avg Damage/10secs]\Gnd: 200,  R 16,  SR 4,  Sta A\Air: 80,  R 30,  SR 15,  Sta A</Details>
+                    <Details>Attack target or Attack-Move to location\AG: 6s mobile reload, 25% 3x crit chance \[Weapons Avg Damage/10secs]\Gnd: 100,  R 16,  SR 4,  Sta A\Air: 40,  R 30,  SR 15,  Sta A</Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
                     <ParameterType>POSITION</ParameterType>
                 </Objective>
@@ -1926,8 +1895,8 @@
                     <Script>cs100_tport</Script>
                     <Name>Teleport</Name>
                     <Details>Teleport to a specified location\or self-teleport within LOS range\Teleporters extend range and negate cost\ \Blocked by Temporal Soliton Shield (TSS)</Details>
-                    <Resource1>200</Resource1>
-                    <Resource4>40</Resource4>
+                    <Resource1>400</Resource1>
+                    <Resource4>80</Resource4>
                     <!-- Resource5>60</Resource5 -->
                     <ObjectiveControlShortcutNumber>5</ObjectiveControlShortcutNumber>
                 </Objective>
@@ -1936,8 +1905,8 @@
                     <Script>cs111_g_cport</Script>
                     <Name>Chronoport</Name>
                     <Details>Chronoport to a specified point in time\ \Recharges Shields 50%\Must not have a TSS</Details>
-                    <Resource1>300</Resource1>
-                    <Resource4>40</Resource4>
+                    <Resource1>600</Resource1>
+                    <Resource4>80</Resource4>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>12</ObjectiveNumber>
@@ -1987,6 +1956,13 @@
                 </Objective>
                 
                 <Objective>
+                    <ObjectiveNumber>44</ObjectiveNumber>
+                    <Script>gs444_ligo_atk_ground</Script>
+                    <Name>Attack Ground</Name>
+                    <Details> \Fire continuously at a designated \ground location</Details>
+                    <ObjectiveControlShortcutNumber>18</ObjectiveControlShortcutNumber>
+                </Objective>
+                <Objective>
                     <ObjectiveNumber>45</ObjectiveNumber>
                     <Script>gs455_oligo_rage</Script>
                     <Name>Warp Spasm</Name>
@@ -1999,6 +1975,7 @@
                     <Name>Comm Spike</Name>
                     <Details>Damage the target and disable \its command link until healed\ \Damage: 30, Range: 40 vs all</Details>
                     <Resource6>12</Resource6>
+                    <ValidRadius>42</ValidRadius>
                     <ObjectiveControlShortcutNumber>20</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
@@ -2301,7 +2278,31 @@
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>
-
+                <ControlShortcut>
+                    <ControlNumber>18</ControlNumber>
+                    <ControlObjectiveNumber>44</ControlObjectiveNumber>
+                    <ParameterType>POSITION</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut>$AchronKBDropNukeNow</KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>U_IS_CARRIED</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>0</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
                 <ControlShortcut>
                     <ControlNumber>19</ControlNumber>
                     <ControlObjectiveNumber>45</ControlObjectiveNumber>
@@ -2571,6 +2572,23 @@
                     </Conditions>
                 </Animation>
                 <Animation>
+                    <Identifier>ACTION_ATTACK_w0</Identifier>
+                    <AnimationNum>2</AnimationNum>
+                    <Sound>Sound67</Sound>
+                    <AnimationTime>0</AnimationTime>
+                    <ShowProgress>0</ShowProgress>
+                    <MorphFromActionParameterClass>0</MorphFromActionParameterClass>
+                    <LobProjectilePath>0</LobProjectilePath>
+                    <RenderModelExplode>0</RenderModelExplode>
+                    <Conditions>
+                        <Condition>
+                            <Resource>U_ACTION</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>24</Value>
+                        </Condition>
+                    </Conditions>
+                </Animation>
+                <Animation>
                     <Identifier>ACTION_POST_SKIP</Identifier>
                     <AnimationNum>0</AnimationNum>
                     <Sound>Sound25</Sound>
@@ -2686,23 +2704,6 @@
                             <Resource>U_ACTION</Resource>
                             <Comparison>EQUAL</Comparison>
                             <Value>4</Value>
-                        </Condition>
-                    </Conditions>
-                </Animation>
-                <Animation>
-                    <Identifier>ACTION_ATTACK</Identifier>
-                    <AnimationNum>2</AnimationNum>
-                    <Sound>Sound67</Sound>
-                    <AnimationTime>0</AnimationTime>
-                    <ShowProgress>0</ShowProgress>
-                    <MorphFromActionParameterClass>0</MorphFromActionParameterClass>
-                    <LobProjectilePath>0</LobProjectilePath>
-                    <RenderModelExplode>0</RenderModelExplode>
-                    <Conditions>
-                        <Condition>
-                            <Resource>U_ACTION</Resource>
-                            <Comparison>EQUAL</Comparison>
-                            <Value>3</Value>
                         </Condition>
                     </Conditions>
                 </Animation>
@@ -2878,7 +2879,7 @@
                 <Action>
                     <ActionNumber>3</ActionNumber>
                     <Identifier>ACTION_ATTACK</Identifier>
-                    <TimeTaken>18</TimeTaken>
+                    <TimeTaken>4</TimeTaken>
                     <ForceObjectAction>0</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
                     <MutexAction>1</MutexAction>
@@ -2911,25 +2912,9 @@
                     </Conditions>
                     <Steps>
                         <Step>
-                            <PrimitiveAction>ATTACK</PrimitiveAction>
+                            <PrimitiveAction>NOTHING</PrimitiveAction>
                             <Target>TARGET_UNIT</Target>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>0</Value>
-                            <ActionStepModifier>HE S.O.C.</ActionStepModifier>
-                        </Step>
-                        <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>U_AMMO</Type>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>48</Value>
-                        </Step>
-                        <Step>
-                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
-                            <Target>SELF</Target>
-                            <Type>U_HP</Type>
-                            <ValueEval>ONE</ValueEval>
-                            <Value>10</Value>
+                            <ActionStepModifier>Oligo anti_gnd</ActionStepModifier>
                         </Step>
                     </Steps>
                 </Action>
@@ -3040,27 +3025,21 @@
                     <AIScriptCanRun>0</AIScriptCanRun>
                     <SetParamZeroTicks>0</SetParamZeroTicks>
                     <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <Conditions>
-                        <Condition>
-                            <Resource>P_ADVANCEMENTS</Resource>
-                            <Comparison>BITMASK</Comparison>
-                            <Value>512</Value>
-                        </Condition>
-                    </Conditions>
+                    <Conditions />
                     <Steps>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>40</Value>
+                            <Value>80</Value>
                         </Step>
 						<Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>300</Value>
+                            <Value>600</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>ACCUM_STATISTIC</PrimitiveAction>
@@ -3120,14 +3099,14 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>40</Value>
+                            <Value>80</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>200</Value>
+                            <Value>400</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -3135,6 +3114,57 @@
                             <Type>U_HP</Type>
                             <ValueEval>ONE</ValueEval>
                             <Value>0</Value>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
+                    <ActionNumber>24</ActionNumber>
+                    <Identifier>ACTION_Attack_w0</Identifier>
+                    <TimeTaken>14</TimeTaken>
+                    <ForceObjectAction>1</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>1</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>1</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <Conditions>
+                        <Condition>
+                            <Resource>U_ACTION</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>3</Value>
+                        </Condition>
+                    </Conditions>
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>ATTACK</PrimitiveAction>
+                            <Target>TARGET_UNIT</Target>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>0</Value>
+                            <ActionStepModifier>Oligo anti_gnd</ActionStepModifier>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>ATTACK</PrimitiveAction>
+                            <Target>TARGET_UNIT</Target>
+							<Probability>0.25</Probability>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>0</Value>
+                            <ActionStepModifier>Oligo anti_gnd crit</ActionStepModifier>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_AMMO</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>48</Value>
+                        </Step>
+                        <Step>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>U_HP</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>10</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -3292,6 +3322,11 @@
                         <Condition>
                             <Resource>U_ACTION</Resource>
                             <Comparison>NOT_EQUAL</Comparison>
+                            <Value>24</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_ACTION</Resource>
+                            <Comparison>NOT_EQUAL</Comparison>
                             <Value>26</Value>
                         </Condition>
                         <Condition>
@@ -3342,6 +3377,11 @@
                             <Resource>U_ACTION</Resource>
                             <Comparison>NOT_EQUAL</Comparison>
                             <Value>4</Value>
+                        </Condition>
+                        <Condition>
+                            <Resource>U_ACTION</Resource>
+                            <Comparison>NOT_EQUAL</Comparison>
+                            <Value>24</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_ACTION</Resource>
@@ -3621,7 +3661,7 @@
                     <ObjectiveNumber>3</ObjectiveNumber>
                     <Script>cs030_atk_move</Script>
                     <Name>Attack</Name>
-                    <Details>Attack target or Attack-Move to location\ \[Weapons Avg Damage/10secs]\Gnd: 400,  R 16,  SR 4,  Sta C</Details>
+                    <Details>Attack target or Attack-Move to location\25% 3x crit chance \[Weapons Avg Damage/10secs]\Gnd: 200,  R 16,  SR 4,  Sta C</Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
                     <ParameterType>POSITION</ParameterType>
                 </Objective>
@@ -3675,8 +3715,8 @@
                     <Script>cs100_tport</Script>
                     <Name>Teleport</Name>
                     <Details>Teleport to a specified location\or self-teleport within LOS range\Teleporters extend range and negate cost\ \Blocked by Temporal Soliton Shield (TSS)</Details>
-                    <Resource1>200</Resource1>
-                    <Resource4>40</Resource4>
+                    <Resource1>400</Resource1>
+                    <Resource4>80</Resource4>
                     <!-- Resource5>60</Resource5 -->
                     <ObjectiveControlShortcutNumber>5</ObjectiveControlShortcutNumber>
                 </Objective>
@@ -3685,8 +3725,8 @@
                     <Script>cs111_g_cport</Script>
                     <Name>Chronoport</Name>
                     <Details>Chronoport to a specified point in time\ \Recharges Shields 50%\Must not have a TSS</Details>
-                    <Resource1>300</Resource1>
-                    <Resource4>40</Resource4>
+                    <Resource1>600</Resource1>
+                    <Resource4>80</Resource4>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>12</ObjectiveNumber>
@@ -3712,6 +3752,13 @@
                     <Name>Offspring Dispatch</Name>
                     <Details></Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
+                </Objective>
+                <Objective>
+                    <ObjectiveNumber>44</ObjectiveNumber>
+                    <Script>gs444_ligo_atk_ground</Script>
+                    <Name>Attack Ground</Name>
+                    <Details> \Fire continuously at a designated \ground location</Details>
+                    <ObjectiveControlShortcutNumber>18</ObjectiveControlShortcutNumber>
                 </Objective>
             </Objectives>
             <ControlShortcuts>
@@ -3914,6 +3961,31 @@
                             <Resource>P_ADVANCEMENTS</Resource>
                             <Comparison>BITMASK_NOT</Comparison>
                             <Value>512</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+                <ControlShortcut>
+                    <ControlNumber>18</ControlNumber>
+                    <ControlObjectiveNumber>44</ControlObjectiveNumber>
+                    <ParameterType>POSITION</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut>$AchronKBDropNukeNow</KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>U_IS_CARRIED</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>0</Value>
                         </ControlCondition>
                     </ControlConditions>
                 </ControlShortcut>

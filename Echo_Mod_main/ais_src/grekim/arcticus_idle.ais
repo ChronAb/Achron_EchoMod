@@ -27,11 +27,11 @@ int curtime = perf_ret;
 // Autopilot - Smart Production
 //  When the Arct hits full Energy it will try to spawn a Loligo
 //  if that is possible, and a base class if not.
-if (player->IsComputerPlayer && unit->Energy>=150 && curtime%90==unit%90) {
+if (player->IsComputerPlayer && unit->Energy>=200 && curtime%180==unit%180) {
     PERFORM RAND;
     
     // Try to make a Loligo
-    if (player->$QPlasma > 1200 && 
+    if (player->$QPlasma > 1800 && 
             (player->Advancements[$GREKIM_ADV_LOLIGO] ||
             unit->Status[$CAP_BIT_5])){
         if(perf_ret[1]==1){
@@ -47,7 +47,7 @@ if (player->IsComputerPlayer && unit->Energy>=150 && curtime%90==unit%90) {
     }
     
     // Try to make a base class unit
-    if (player->$QPlasma > 900){
+    if (player->$QPlasma > 1800){
         if(perf_ret[1]==1){
             PERFORM $ACTION_PROGEN_SAME_O; // Octo
             PERFORM NOTHING;

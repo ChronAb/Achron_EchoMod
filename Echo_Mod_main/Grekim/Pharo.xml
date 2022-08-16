@@ -1,11 +1,11 @@
 <?xml version="1.0" ?>
 <ResequenceObjectClassSet>
     <!-- Pharo
-        cost: 100 QP, 5 progen E
+        cost: 200 QP, 5 progen E
         speed: 2 sq/s
-        HP: 360 (3.6 HP/QP)
-        HP (shield): 540 (5.4 HP/QP)
-        AG: 3/s (3 dps/100QP, *10.8)
+        HP: 360 (180 HP/100QP)
+        HP (shield): 540 (270 HP/100QP)
+        AG: 3/s (1.5 dps/100QP, *270)
         AA: 0/s
     -->
     <AIScripts />
@@ -26,7 +26,7 @@
                 <Permeating>1</Permeating>
                 <LimitDistance>1</LimitDistance>
                 <SetLastAttackedDirection>1</SetLastAttackedDirection>
-                <ContinueActionOnStepFailure>0</ContinueActionOnStepFailure>
+                <ContinueActionOnStepFailure>1</ContinueActionOnStepFailure>
             </Flags>
             <AccuracyMultiplier>1</AccuracyMultiplier>
             <EffectTimeout>0</EffectTimeout>
@@ -730,6 +730,26 @@
                     <Steps />
                 </Action>
                 <Action>
+                    <ActionNumber>6</ActionNumber>
+                    <Identifier>ACTION_CHANGE_COMMANDER</Identifier>
+                    <TimeTaken>0</TimeTaken>
+                    <ForceObjectAction>0</ForceObjectAction>
+                    <InterruptCurrentAction>0</InterruptCurrentAction>
+                    <MutexAction>0</MutexAction>
+                    <FailOnInvalidTarget>0</FailOnInvalidTarget>
+                    <PreserveParameter>0</PreserveParameter>
+                    <AIScriptCanRun>0</AIScriptCanRun>
+                    <SetParamZeroTicks>0</SetParamZeroTicks>
+                    <AllowActionWhenStopped>0</AllowActionWhenStopped>
+                    <Conditions />
+                    <Steps>
+                        <Step>
+                            <PrimitiveAction>CHANGE_COMMANDER</PrimitiveAction>
+                            <Target>SELF</Target>
+                        </Step>
+                    </Steps>
+                </Action>
+                <Action>
                     <ActionNumber>9</ActionNumber>
                     <Identifier>ACTION_CHANGE_MATE</Identifier>
                     <TimeTaken>90</TimeTaken>
@@ -760,7 +780,7 @@
                         <Condition>
                             <Resource>P_Q_PLASMA</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>100</Value>
+                            <Value>200</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_STATUS</Resource>
@@ -774,14 +794,14 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>100</Value>
+                            <Value>200</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>600</Value>
+                            <Value>800</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -805,7 +825,7 @@
                             <Target>SELF</Target>
                             <Type>U_ENERGY</Type>
                             <ValueEval>SET_TO_VALUE</ValueEval>
-                            <Value>150</Value>
+                            <Value>200</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -936,7 +956,7 @@
                         <Condition>
                             <Resource>P_Q_PLASMA</Resource>
                             <Comparison>GEQUAL</Comparison>
-                            <Value>150</Value>
+                            <Value>300</Value>
                         </Condition>
                         <Condition>
                             <Resource>P_ADVANCEMENTS</Resource>
@@ -950,7 +970,7 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>150</Value>
+                            <Value>300</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -997,27 +1017,21 @@
                     <AIScriptCanRun>0</AIScriptCanRun>
                     <SetParamZeroTicks>0</SetParamZeroTicks>
                     <AllowActionWhenStopped>0</AllowActionWhenStopped>
-                    <Conditions>
-                        <Condition>
-                            <Resource>P_ADVANCEMENTS</Resource>
-                            <Comparison>BITMASK</Comparison>
-                            <Value>512</Value>
-                        </Condition>
-                    </Conditions>
+                    <Conditions />
                     <Steps>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>20</Value>
+                            <Value>40</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>30</Value>
+                            <Value>60</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>ACCUM_STATISTIC</PrimitiveAction>
@@ -1077,14 +1091,14 @@
                             <Target>SELF</Target>
                             <Type>P_Q_PLASMA</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>20</Value>
+                            <Value>40</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
                             <Type>P_POWER</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>80</Value>
+                            <Value>160</Value>
                         </Step>
                         <!--Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -1437,7 +1451,7 @@
                         <Condition>
                             <Resource>P_POWER</Resource>
                             <Comparison>GREATER</Comparison>
-                            <Value>400</Value>
+                            <Value>1000</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_LAST_ATTACKED_DIR</Resource>
@@ -1486,7 +1500,7 @@
                         <Condition>
                             <Resource>P_POWER</Resource>
                             <Comparison>GREATER</Comparison>
-                            <Value>800</Value>
+                            <Value>2000</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
@@ -1565,7 +1579,7 @@
                             <Target>SELF</Target>
                             <Type>P_L_CRYSTALS</Type>
                             <ValueEval>ONE</ValueEval>
-                            <Value>-60</Value>
+                            <Value>-120</Value>
                         </Step>
                         <Step>
                             <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
@@ -1874,7 +1888,7 @@
                     <ObjectiveNumber>1</ObjectiveNumber>
                     <Script>cs010_move</Script>
                     <Name>Move</Name>
-                    <Details> \Move to specified location \Move Speed: 2, MaxInc: 45\Vision Range: 18, Aggro Radius: 30 \Invisible in Fog of War</Details>
+                    <Details> \Move to specified location \Move Speed: 2, MaxInc: 45\Vision Range: 18, Aggro Radius: 25 \Invisible in Fog of War</Details>
                     <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
@@ -1942,8 +1956,8 @@
                     <Script>cs100_tport</Script>
                     <Name>Teleport</Name>
                     <Details>Teleport to a specified location\or self-teleport within LOS range\Teleporters extend range and negate cost\ \Blocked by Temporal Soliton Shield (TSS)</Details>
-                    <Resource1>80</Resource1>
-                    <Resource4>20</Resource4>
+                    <Resource1>160</Resource1>
+                    <Resource4>40</Resource4>
                     <!--Resource5>40</Resource5-->
                     <ObjectiveControlShortcutNumber>5</ObjectiveControlShortcutNumber>
                 </Objective>
@@ -1952,8 +1966,8 @@
                     <Script>cs111_g_cport</Script>
                     <Name>Chronoport</Name>
                     <Details>Chronoport to a specified point in time\ \Recharges Shields 50%\Must not have a TSS</Details>
-                    <Resource1>30</Resource1>
-                    <Resource4>20</Resource4>
+                    <Resource1>60</Resource1>
+                    <Resource4>40</Resource4>
                 </Objective>
                 <Objective>
                     <ObjectiveNumber>12</ObjectiveNumber>
@@ -2001,8 +2015,8 @@
                     <Script>gs183_pharo_arct</Script>
                     <Name>Morph: Arcticus</Name>
                     <Details> \Advanced progeneration hub\Produces base and Ligo class units\Cloaks and fertilizes all progenitors\in a large area</Details>
-                    <Resource1>600</Resource1>
-                    <Resource4>100</Resource4>
+                    <Resource1>800</Resource1>
+                    <Resource4>200</Resource4>
                     <ObjectiveControlShortcutNumber>10</ObjectiveControlShortcutNumber>
                 </Objective>
                 <!--Objective>
@@ -2017,7 +2031,7 @@
                     <Name>Morph: Spyre</Name>
                     <Details> \Teleporter network node and \advanced-production support building \Enables progeneration of aerospace \and Ligo units in its vision radius</Details>
                     <Resource1>0</Resource1>
-                    <Resource4>150</Resource4>
+                    <Resource4>300</Resource4>
                     <ObjectiveControlShortcutNumber>12</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
@@ -2027,6 +2041,13 @@
                     <Details>   Not Available\    Requires B-Tech\    upgrade at the MOUND</Details>
                 </Objective>
                 
+                <Objective>
+                    <ObjectiveNumber>38</ObjectiveNumber>
+                    <Script>gs383_pharo_atk_ground</Script>
+                    <Name>Attack Ground</Name>
+                    <Details> \Fire continuously at a designated \ground location</Details>
+                    <ObjectiveControlShortcutNumber>18</ObjectiveControlShortcutNumber>
+                </Objective>
                 <Objective>
                     <ObjectiveNumber>40</ObjectiveNumber>
                     <Script>gs400_sp_probe</Script>
@@ -2432,10 +2453,35 @@
                 </ControlShortcut>
 
                 <ControlShortcut>
+                    <ControlNumber>18</ControlNumber>
+                    <ControlObjectiveNumber>38</ControlObjectiveNumber>
+                    <ParameterType>POSITION</ParameterType>
+                    <Parameter>0</Parameter>
+                    <KeyboardShortcut>$AchronKBDropNukeNow</KeyboardShortcut>
+                    <Flags>
+                        <ShortcutOnKeyRelease>0</ShortcutOnKeyRelease>
+                        <EstTimeConstIsStart>0</EstTimeConstIsStart>
+                        <ButtonDisabled>0</ButtonDisabled>
+                        <UserControlsCustom>0</UserControlsCustom>
+                        <ButtonInvisible>0</ButtonInvisible>
+                        <SelectTarget>0</SelectTarget>
+                    </Flags>
+                    <EstTimeConst>0</EstTimeConst>
+                    <EstTimeDist>0</EstTimeDist>
+                    <Sound>Sound0</Sound>
+                    <ControlConditions>
+                        <ControlCondition>
+                            <Resource>U_IS_CARRIED</Resource>
+                            <Comparison>EQUAL</Comparison>
+                            <Value>0</Value>
+                        </ControlCondition>
+                    </ControlConditions>
+                </ControlShortcut>
+                <ControlShortcut>
                     <ControlNumber>20</ControlNumber>
                     <ControlObjectiveNumber>40</ControlObjectiveNumber>
                     <MouseInputType>SHORTCUT_QUICK_4</MouseInputType>
-                    <ParameterType>NO_PARAMETER</ParameterType>
+                    <ParameterType>POSITION_AUTO_HEIGHT</ParameterType>
                     <Parameter>0</Parameter>
                     <KeyboardShortcut>$AchronKBUpgradeSelf</KeyboardShortcut>
                     <Flags>
