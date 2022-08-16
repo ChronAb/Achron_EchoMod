@@ -14,7 +14,7 @@ if (target->IsAlive != 1) {
     PERFORM NOTHING; 
 }
 
-if (unit->Energy < 25) {
+/*if (unit->Energy < 25) {
 	$SAY_ENERGY
 	PERFORM $ACTION_ERROR1;
 	PERFORM SET_ADDITIONAL_PARAMS2 0;
@@ -22,7 +22,7 @@ if (unit->Energy < 25) {
 	PERFORM SET_PARAM 0;
 	PERFORM SET_OBJECTIVE 0;
 	PERFORM NOTHING;
-}
+}*/
 
 int tstatus = target->Status;
 if (tstatus[$TSS_BIT] ) {
