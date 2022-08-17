@@ -3,9 +3,9 @@
 Achron: Echo Ops mod v0.600
 ************************************
 ....................................
-Preamble: Commence Echo Operations. 
+Preamble:
 ....................................
-
+Commence Echo Operations. 
 Welcome to Echo Ops: a meta-temporal tactics simulation.
 
 Echo Ops is based on and was created using the 2011 RTS title Achron and its Resequence engine.  Hazardous Software's Achron was an ambitious attempt to create a sophisticated tactical strategy sandbox based on free-form, multiplayer time travel where up to 15 simultaneous players could issue commands anywhere within a continuously updating simulated timeline. Echo Ops is a comprehensive balance-overhaul mod that expands and refines the mechanics and gameplay concepts introduced by Achron to demonstrate a tactical meta-time sandbox with enduring appeal and replay-ability.
