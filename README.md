@@ -6,7 +6,7 @@ Achron: Echo Ops mod v0.600
 Preamble:
 ....................................
 
-Commence Echo Operations. 
+(Commence Echo Operations)
 
 Welcome to Echo Ops: a meta-temporal tactics simulation.
 
