@@ -38,17 +38,28 @@ Human techs
     Gate - Teleporter
         *Enable Chronoporting
         *Enable Chronoporter & Tether
-
-
-Double shots can get stuck when unit hits 0 hp (Frigate, Mech?)
-Idle Tanks should eject marines if they are injured 
-marines jump-roping on damaged tanks 
+        
 
 Change some grekim counter info in the manual to ???
 Cut refs to blackbird & twin mar from descriptions  
 
 
-Echo HM - Hoard Mode
+SM control of Portal-spawning 
+    - Portals should have a non-forced action for each unit type it can spawn
+    - + an action to set Ammo
+    - Idle script triggers actions to a pre-set build schedule based on Energy 
+        and Ammo
+    - New objective: Spawn_Class
+        Portal spawns a unit of Objective-Parameter class
+    - New objective: Release_Recent
+        Portal releases the most recently created unit
+    - SM keeps track of Portals in a couple of Achronal Fields
+    - SM can order Portals to produce specific units based on game-state information 
+        using Spawn_Class objective dispatching
+    - SM can order Portals to release specific units with Release_Recent dispatching
+
+
+Echo HM - Horde Mode
     - A deck drawing, wave survival, RPG game mode
     - Played on a 6:00 timeline with slow timewaves 
     - Players start at a fixed location with only a scout spawner of their 

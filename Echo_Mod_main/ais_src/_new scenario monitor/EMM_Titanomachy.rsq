@@ -970,6 +970,20 @@ if (current < 270 $seconds) PERFORM NOTHING;
     * (4) UPPercuts - Raid variant. Picked raiders M-move to a picked 
         target and Cport after a designated time.
         Deep Past
+        
+        thrusts
+        t 6:40, 8:20,  9:10, 12:30, 13:20, 14:30, 20:00
+        m 6:40, 9:20, 13:10, 15:30, 13:20, 20:00, 25:00
+
+        waves
+        t=m
+         7:00,  8:10, 13:40, 14:10, 14:30
+        17:00, 18:10, 23:40, 24:10, 24:30
+        27:00, 28:10
+
+        raids & UPPercuts
+        t 12:00, 12:30, 16:00, 18:00, (21:00-21:00)
+        m 17:00, 17:30, 21:00, 23:00, (21:30-23:30)
 */
 if (1) { // Thrusts
     // initialize @ 5:00
