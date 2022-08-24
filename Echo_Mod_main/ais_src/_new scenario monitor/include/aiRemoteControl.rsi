@@ -45,9 +45,9 @@ if(current >= 36 && current <= 80){
                 ];
     }
     
-    // Look for the nearest Enemy human player
+    // Look for the furthest Enemy human player
     if (chooser>0) {
-        herald = QUERY UNIT [unit] MIN [query<_>chooser] WHERE [ 
+        herald = QUERY UNIT [unit] MAX [query<_>chooser] WHERE [ 
                 (queryOwnr = query->Owner)->IsComputerPlayer == 0 &&
                 (allymask & 1<<queryOwnr) < 1
                 ];
@@ -63,7 +63,25 @@ if(current >= 36 && current <= 80){
     }
 }
 
-// 2. Allied Delegation (T 0:20 to 1:00 every 20s)
+// 2. Reset (T 0:19.5)
+if(current == 351){
+    object chooser = 1;
+    while (chooser>0) {
+        // Look for nanited chooser type units
+        chooser = QUERY UNIT [unit] MIN [1] WHERE [ 
+                (query.Rank == $RACE_CHOOSER_RANK ||
+                query.Rank == $SPAWNER_RANK) &&
+                query->SecondOwner < 15
+                ];
+        
+        if (chooser>1){
+            target = chooser;
+            PERFORM $ACTION_SM_NANITE 15;
+        }
+    }
+}
+
+// 3. Allied Delegation (T 0:20 to 1:00 every 20s)
 if(current >= 360 && current <= 1091 && current%360 >= 0 && current%360 <= 11 ){
 	player = (current-360)%12;
     allymask = player->Allies;
@@ -71,7 +89,7 @@ if(current >= 360 && current <= 1091 && current%360 >= 0 && current%360 <= 11 ){
     object herald = 0;
     int humanity = 15;
 	
-    // Look for a chooser type unit that's not been nanited yet
+    // Look for a chooser type unit that's not nanited yet
     if (player->IsComputerPlayer) {
         chooser = QUERY UNIT [unit] MIN [1] WHERE [ 
                 (query.Rank == $RACE_CHOOSER_RANK ||
