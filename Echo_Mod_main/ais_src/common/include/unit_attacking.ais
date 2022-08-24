@@ -108,48 +108,77 @@ if  (!skip  || !AP_PLAYER  )  { //if no target unit or following priority unit a
 	
 	if (runCheck || ap[$TEMPUNIT_BIT]) {
 		if ( !ap[$EVERYOTHER_BIT] || ap[$TEMPUNIT_BIT]  ) { //dont look for enemies every other time unless 'temporary unit' bit is set
-			//repair units prefer to heal over attack if not doing a priority attack
-			if ($IS_REPAIR_UNIT && !ap[$MOVE_BIT] )  { //this is not during priority since priority has both attack and move bits set
-				int energy = 5;  //default to station or MFB (60 or 225) 
+        
+			//repair units prefer to heal over attack (if not doing a priority attack)
+			if ($IS_REPAIR_UNIT && !ap[$MOVE_BIT] )  {
+				int energy = 0;
 				int hpcost = 0;
-				int type1 = $TYPE_MECHANICAL;
-				int type2 = $TYPE_BIOLOGICAL;
-				int healDist = 144; //default for most units
-				if (uclass<=$HOLLOWAY_RAISED_CLASS) { //sop and Holloway
-					energy = 1;
-					hpcost = 0;
-					healDist = 36;
-					type1 = $TYPE_BIOLOGICAL; //sop heals Biological only
-				}
-				if (uclass==$BLACKBIRD_CLASS) { //Blackbird
-					type2 = $TYPE_MECHANICAL; //blackbird heals Mechanical only
+                object buddy = 0;
+                
+                /*Marines have special rules:
+                    They mostly only heal themselves, unless they have ammo
+                    then they prioritize attack 50% of the time.
+                    + Infrequently they'll switch to idle to help out a friendly.
+                    (Their healing rules are too complicated to mesh with aggro.)
+                */
+                if (uclass==$MARINE_CLASS) {
+                    PERFORM RAND;
+                    if (unit->HP <= (unit.MaxHP-hpcost-5) &&
+                            (perf_ret[0,1]<1 || unit->Ammo < 100)) {
+                        target = unit;
+                        PERFORM $ACTION_HEAL target;
+                        PERFORM NOTHING;
+                    } 
+                    if (perf_ret[1,7]<1) {
+                        int q_action = 0;
+                        query_vis_distance = 24;
+                        buddy =  QUERY UNIT [unit] MIN [ query->HP ] 
+                            WHERE [ query->IsAlly==1 && 
+                            query->HP <= (query.MaxHP-10) &&
+                            query->HP > 0 && !(query->IsStasis) &&
+                            query->ZPosition == 0 && 
+                            (q_action=query->Action)!=$ACTION_ROTATE &&
+                            q_action!=$ACTION_MOVE && 
+                            q_action!=$ACTION_MOVE_SLOW
+                            ];
+                        if (buddy->IsAlive==1) {
+                            PERFORM SET_ADDITIONAL_PARAMS2 0;
+                            PERFORM SET_ADDITIONAL_PARAMS 0;
+                            PERFORM SET_OBJECTIVE 0;
+                            PERFORM NOTHING;
+                        }
+                    }
 				}
 				
 				//only look for damaged allies if there's enough energy and hp to fix them
-				if (unit->Energy > energy && unit->HP > (hpcost*3)) { 
-					object buddy = 0;
-					
+                query_vis_distance = -1; //reset query vis range to unit vis
+				if (unit->Energy >= energy && unit->HP > (hpcost*3) &&
+                        uclass!=$MARINE_CLASS) { 
 					//Self preservation is top priority, so heal self if health is too low 
 					// (encourages healers to tank)
 					if(unit->HP < (0.6*unit.MaxHP)) buddy = unit;
 					
-					//unit's commander has priority over others, so fix commander if it's damaged
-					if (buddy==0 && myCommander!=0 && unit<_>myCommander <= healDist && !(myCommander->IsStasis) && myCommander->HP < (myCommander.MaxHP-hpcost-5) && ( myCommander.Type==type1 || myCommander.Type==type2)) { 
-						buddy = myCommander;
+					//Look for other allies to fix
+					if (buddy==0) {
+						buddy =  QUERY UNIT [unit] MIN [ query->HP ] 
+                                WHERE [ query->IsAlly==1 && 
+                                query->HP <= (query.MaxHP-hpcost-5) &&
+                                query->HP > 0 && !(query->IsStasis) ];
 					}
 					
-					//if commander doesn't need healing, look for other allies to fix
-					if (buddy==0) {
-						buddy =  QUERY UNIT [unit] MIN [ unit <_> query*(query->HP)**2 ] WHERE [ query->IsAlly==1 && (query->HP <= (query.MaxHP-hpcost-5)) && 
-							 !(query->IsStasis) && ( query.Type==type1 || query.Type==type2 )]; 
-					}
-						
-					//fix buddy if there is one that's close enough to be repaired						
-					if (buddy->IsAlive==1 && buddy<_>unit <= healDist && buddy->HP!=0) {
-						if (uclass==$SOP_RAISED_CLASS || uclass==$HOLLOWAY_RAISED_CLASS) {
-							PERFORM $ACTION_LOWER_WEAPON;
-							PERFORM NOTHING;
-						}
+                    //Heal action range
+                    int hhr = 0; // healing H range
+                    PERFORM GET_MAX_ACTION_RANGE_RADIUS $ACTION_HEAL;
+                    hhr = perf_ret;
+
+                    int hvr = 0; // healing V range
+                    PERFORM GET_MAX_ACTION_RANGE_HEIGHT $ACTION_HEAL;
+                    hvr = perf_ret;
+                    //give up if the vertical distance is too much
+                    if (target<^>unit > hvr*hvr) buddy = 0;
+                    
+					//fix buddy if it's close enough to be repaired						
+					if (buddy->IsAlive==1 && buddy<_>unit <= hhr*hhr && buddy->HP>0) {
 						target = buddy;
 						PERFORM $ACTION_REPAIR target;
 						PERFORM NOTHING;

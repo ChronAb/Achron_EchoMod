@@ -3,7 +3,6 @@
 #include common/include/unit_common_header.ais
 #include common/include/human_idle.ais
 
-
 object buddy=0;
 int uEnergy = unit->Energy;
 
@@ -16,20 +15,19 @@ int uEnergy = unit->Energy;
     #include common/include/unit_heal_response.ais
 }*/
 
-PERFORM RAND;
-if (perf_ret > 4096)  { 
-	$SET_AP
+//Look for someone to heal 3 times every 2.5 seconds
+if (unit->Age%15>0)  { 
 	PERFORM NOTHING;  
 }
 
 //First heal self
-if(unit->HP < unit.MaxHP-2) buddy = unit;
+if (unit->HP < unit.MaxHP-2 && unit->HP > 0) buddy = unit;
 
 //heal other friendlies
 if (buddy==0){
     query_vis_distance = 24;
     int q_action = 0;
-    buddy =  QUERY UNIT [unit] MIN [ unit <_> query*(query->HP)**2 ]
+    buddy =  QUERY UNIT [unit] MIN [ unit <_> query ]
         WHERE [query->IsAlly==1 && !(query->IsStasis) &&
             query->HP < (query.MaxHP-2) && query->HP > 0 &&
             query->ZPosition == 0 && (q_action=query->Action)!=$ACTION_ROTATE &&
@@ -39,11 +37,87 @@ if (buddy==0){
 }
        
 
-if (buddy) {
-    PERFORM SET_ADDITIONAL_PARAMS 0;
-    PERFORM SET_PARAM buddy; //set unit->ObjectiveParameters to the buddy
-    PERFORM SET_OBJECTIVE $REPAIR_UNIT_OBJ;
-    PERFORM NOTHING;
+//Found a friend to heal
+if (buddy>0) {
+    target = buddy;
+    
+    if (ap[$UNIT_BIT]) {
+		ap[$UNIT_BIT] = 0;
+		setAdditionalParameters = 1;
+	}
+	if (ap[$MOVE_BIT]) {
+		ap[$MOVE_BIT] = 0;
+		setAdditionalParameters = 1;
+	}
+	if (ap[$ATTACK_BIT]) {
+		ap[$ATTACK_BIT] = 0;
+		setAdditionalParameters = 1;
+	}
+    
+    //Check whether our friend is in range to heal
+    int hhr = 0; // healing H range
+    PERFORM GET_MAX_ACTION_RANGE_RADIUS $ACTION_HEAL;
+    hhr = perf_ret;
+    
+    PERFORM GET_CLOSEST_TARGET_POSITION_WITHIN_RANGE $ACTION_HEAL;
+    int position =  perf_ret; 
+    if (unit <_> buddy <= hhr*hhr && unit <_> position <= 8) {
+        //rotate to face the target
+        target = position;
+        PERFORM IS_POSITION_WITHIN_ACTION_ANGLE $ACTION_HEAL;
+        if (perf_ret>0 || target==unit) {
+            // Heal already!
+            target = buddy;
+            PERFORM $ACTION_HEAL target;
+            $SET_AP
+            PERFORM NOTHING;
+        } else {
+            PERFORM GET_BEST_POSITION_ATTACK_DIRECTION position;
+            int direction = perf_ret;
+            PERFORM $ACTION_ROTATE direction;
+            $SET_AP
+            PERFORM NOTHING;
+        }
+    }
+    
+    //Friend is out of range, so move closer
+    else {
+        
+        // but move slowly to maintain our cloak
+        if (!unit->IsCloaked || unit->Energy < 2) {
+            PERFORM NOTHING;
+        }
+        
+        int dir = 0;
+        int counter = unit->AdditionalParameters2; //move counter to move in the same direction
+        if (counter>0) {           //more than 0 means already moving in a direction
+            counter = counter - 1; //decrease the counter
+            PERFORM SET_ADDITIONAL_PARAMS2 counter;
+            int rot = unit->Rotation; //get the unit's current rotation
+            $DIR_FROM_ROT             //set the dir to move to based on that unit's rotation
+        }
+        else {  //no move counter stored, so query where to move to next
+            
+            ignore_collision_with_unit = target;
+            dir = QUERY BESTMOVE [unit, $ACTION_MOVE] MIN [ target <_> query ] WHERE [1];    
+            if (dir[0,8] >= 16) { counter = 0; } //moving up or down, so don't store counter
+            else {
+                counter = dir[16,8]; 			  //the counter is stored in the 3rd byte of dir
+                if (counter > 7) { counter = 7; } //cap it at 7 since AdditionalParameters2 only has 3 bits
+            }
+            PERFORM SET_ADDITIONAL_PARAMS2 counter;
+        }
+
+        dir[16,8] = 0; //clear out the 3rd byte that stores the counter
+        if (dir && dir != $QUERY_EXHAUSTED) {
+            PERFORM $ACTION_MOVE dir; 
+            if ( perf_ret!=1) { 
+                PERFORM SET_ADDITIONAL_PARAMS2 0;
+            }
+            $SET_AP
+            PERFORM NOTHING;
+        }   
+    }
 }
 
 
