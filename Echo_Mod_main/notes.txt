@@ -42,6 +42,10 @@ Human techs
 
 Change some grekim counter info in the manual to ???
 Cut refs to blackbird & twin mar from descriptions  
+Give progenitors proper death actions
+Swap Echo SM pecks at vulnerable AMPs to be their own attack class
+    - with their AF triggers for consistency
+    - (this would reward UPPercut AMP grabbing)
 
 
 SM control of Portal-spawning 
