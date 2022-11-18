@@ -1281,7 +1281,7 @@
                     <ObjectiveNumber>1</ObjectiveNumber>
                     <Script>cs010_move</Script>
                     <Name>Move</Name>
-                    <Details> \Move to specified location\ \Move Speed: 9 (aircraft)\Vision Range: 28, Aggro Radius: 40</Details>
+                    <Details> \Move to specified location\ \Move Speed: 9 (aircraft)\Vision Range: 28, Aggro Radius: 35</Details>
                     <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>

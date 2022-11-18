@@ -23,16 +23,15 @@ if(uclass<$OCTO_CLASS) {
     else if(uclass==$TANK2_CLASS) { query_range = 28; mndmg = 64; }
     else if(uclass==$MAR_CLASS) { query_range = 40; mndmg = 300; }
     else if(uclass==$MAR2_CLASS) { spec_AG_range = 32; query_range = 20; opt_AG_range =  35; mndmg = 60;}
-    else if(uclass==$MFB_CLASS) { query_range = 25; opt_AG_range = 32; }
+    else if(uclass==$MFB_CLASS || uclass==$HUMAN_ACHRON_CLASS) { query_range = 24; opt_AG_range = 32; }
     else if(uclass==$CALTROP_CLASS) { query_range = 21; }//Caltrop Mine 
 }
 
 // GREKIM
 else if(uclass<$VIR_ZAYIN_CLASS) {
-    if(uclass==$SCOUT_GUARDIAN_CLASS || uclass==$GREKIM_ACHRON_CLASS) { query_range = 35; } 
+    if(uclass==$SCOUT_GUARDIAN_CLASS || uclass==$GREKIM_ACHRON_CLASS) { query_range = 40; } 
     else if(uclass==$OCTO_CLASS || uclass==1200) { query_range = 25; }
-    else if(uclass==$SEPI_CLASS) { spec_AA_range = 27; query_range = 29;
-        opt_AG_range = 32; }
+    else if(uclass==$SEPI_CLASS) { spec_AA_range = 27; query_range = 30; }
     else if(uclass==$PHARO_CLASS) { query_range = 14; opt_AG_range = 25; mndmg = 10;}
     else if(uclass==$TODARO_CLASS) { query_range = 25; }
     else if(uclass==$OCTOPOD_CLASS) { query_range = 25; mndmg = 180; opt_AG_range = 28; }

@@ -4,7 +4,7 @@
         cost: 400 QP, 5 progen E
         speed: 3 sq/s
         HP: 360 (90 HP/100QP)
-        AG: 8/s (2 dps/100QP, *180)
+        AG: 16/s (4 dps/100QP, *360)
         AA: 0/s
     -->
     <AIScripts />
@@ -41,7 +41,7 @@
         </ActionStepModifier>
 		<ActionStepModifier>
             <Name>Opod anti_gnd crit</Name>
-            <StrengthBase>230</StrengthBase>
+            <StrengthBase>275</StrengthBase>
             <StrengthRange>0</StrengthRange>
             <StrengthCount>0</StrengthCount>
             <Flags>
@@ -542,7 +542,7 @@
                         <Step>
                             <PrimitiveAction>ATTACK</PrimitiveAction>
                             <Target>TARGET_UNIT</Target>
-							<Probability>0.2</Probability>
+							<Probability>0.4</Probability>
                             <ValueEval>ONE</ValueEval>
                             <Value>0</Value>
                             <ActionStepModifier>Opod anti_gnd crit</ActionStepModifier>
@@ -1392,7 +1392,7 @@
                     <ObjectiveNumber>3</ObjectiveNumber>
                     <Script>cs030_atk_move</Script>
                     <Name>Attack</Name>
-                    <Details>Attack target or Attack-Move to location\8s mobile reload \[Weapons Avg Damage/10secs]\Gnd: 120,  R 22,  Sta C \    20%: -280hp crit;  80%: -50hp non-crit </Details>
+                    <Details>Attack target or Attack-Move to location\8s mobile reload \[Weapons Avg Damage/10secs]\Gnd: 160,  R 22,  Sta C \    40%: -325hp crit;  60%: -50hp non-crit </Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
                     <ParameterType>POSITION</ParameterType>
                 </Objective>

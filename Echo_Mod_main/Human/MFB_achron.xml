@@ -486,7 +486,7 @@
                 <Action>
                     <ActionNumber>2</ActionNumber>
                     <Identifier>ACTION_MOVE</Identifier>
-                    <TimeTaken>4</TimeTaken>
+                    <TimeTaken>8</TimeTaken>
                     <ForceObjectAction>0</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
                     <MutexAction>0</MutexAction>
@@ -1363,7 +1363,7 @@
                 <Action>
                     <ActionNumber>50</ActionNumber>
                     <Identifier>ACTION_MOVE_SLOW</Identifier>
-                    <TimeTaken>4</TimeTaken>
+                    <TimeTaken>8</TimeTaken>
                     <ForceObjectAction>0</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
                     <MutexAction>0</MutexAction>
@@ -1420,7 +1420,7 @@
                     <ObjectiveNumber>1</ObjectiveNumber>
                     <Script>cs010_move</Script>
                     <Name>Move</Name>
-                    <Details> \Move to specified location\ \Move Speed: 4.5, MaxInc: 30\Vision Range: 30, Aggro Radius: 32</Details>
+                    <Details> \Move to specified location\ \Move Speed: 2.25, MaxInc: 30\Vision Range: 28, Aggro Radius: 32</Details>
                     <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
@@ -1551,7 +1551,7 @@
                         <SelectTarget>0</SelectTarget>
                     </Flags>
                     <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>4</EstTimeDist>
+                    <EstTimeDist>8</EstTimeDist>
                     <Sound>Sound0</Sound>
                     <ControlConditions />
                 </ControlShortcut>
@@ -1571,7 +1571,7 @@
                         <SelectTarget>0</SelectTarget>
                     </Flags>
                     <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>4</EstTimeDist>
+                    <EstTimeDist>8</EstTimeDist>
                     <Sound>Sound0</Sound>
                     <ControlConditions>
                         <ControlCondition>
@@ -1712,7 +1712,7 @@
                         <SelectTarget>0</SelectTarget>
                     </Flags>
                     <EstTimeConst>0</EstTimeConst>
-                    <EstTimeDist>4</EstTimeDist>
+                    <EstTimeDist>8</EstTimeDist>
                     <Sound>Sound0</Sound>
                     <ControlConditions>
                         <ControlCondition>
@@ -1738,7 +1738,7 @@
                         <SelectTarget>0</SelectTarget>
                     </Flags>
                     <EstTimeConst>315</EstTimeConst>
-                    <EstTimeDist>4</EstTimeDist>
+                    <EstTimeDist>8</EstTimeDist>
                     <Sound>Sound0</Sound>
                     <ControlConditions>
                         <ControlCondition>

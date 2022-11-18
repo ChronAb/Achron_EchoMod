@@ -23,7 +23,7 @@
             <AccuracyMultiplier>1</AccuracyMultiplier>
             <EffectTimeout>0</EffectTimeout>
             <MinEffectRadius>0</MinEffectRadius>
-            <EffectRadius>33</EffectRadius>
+            <EffectRadius>36</EffectRadius>
             <EffectHeight>30</EffectHeight>
             <MaxEffectAngle>90</MaxEffectAngle>
             <EffectSplashHeight>5</EffectSplashHeight>
@@ -1472,7 +1472,7 @@
                     <ObjectiveNumber>1</ObjectiveNumber>
                     <Script>cs010_move</Script>
                     <Name>Move</Name>
-                    <Details> \Move to specified location\Move Speed: 3, MaxInc: 30\Vision Range: 25, Aggro Radius: 35 \Invisible in Fog of War</Details>
+                    <Details> \Move to specified location\Move Speed: 3, MaxInc: 30\Vision Range: 25, Aggro Radius: 40 \Invisible in Fog of War</Details>
                     <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
@@ -1486,7 +1486,7 @@
                     <ObjectiveNumber>3</ObjectiveNumber>
                     <Script>cs030_atk_move</Script>
                     <Name>Attack</Name>
-                    <Details>Attack target or Attack-Move to location\2X Atk rate if Energy is full \[Weapons Avg Damage/10secs]\All: 60 (+60),  R 32,  SR 2,  Sta S</Details>
+                    <Details>Attack target or Attack-Move to location\2X Atk rate if Energy is full \[Weapons Avg Damage/10secs]\All: 60 (+60),  R 35,  SR 2,  Sta S</Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
                     <ParameterType>POSITION</ParameterType>
                 </Objective>

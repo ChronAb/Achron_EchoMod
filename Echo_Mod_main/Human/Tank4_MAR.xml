@@ -23,7 +23,7 @@
             <AccuracyMultiplier>1</AccuracyMultiplier>
             <EffectTimeout>0</EffectTimeout>
             <MinEffectRadius>0</MinEffectRadius>
-            <EffectRadius>36</EffectRadius>
+            <EffectRadius>66</EffectRadius>
             <EffectHeight>10</EffectHeight>
             <MaxEffectAngle>50</MaxEffectAngle>
             <EffectSplashHeight>3</EffectSplashHeight>
@@ -44,7 +44,7 @@
             <AccuracyMultiplier>1</AccuracyMultiplier>
             <EffectTimeout>0</EffectTimeout>
             <MinEffectRadius>5</MinEffectRadius>
-            <EffectRadius>36</EffectRadius>
+            <EffectRadius>66</EffectRadius>
             <EffectHeight>10</EffectHeight>
             <MaxEffectAngle>50</MaxEffectAngle>
             <EffectSplashHeight>3</EffectSplashHeight>
@@ -509,7 +509,7 @@
                 <Action>
                     <ActionNumber>4</ActionNumber>
                     <Identifier>ACTION_ATTACK_ChargeUp</Identifier>
-                    <TimeTaken>95</TimeTaken>
+                    <TimeTaken>99</TimeTaken>
                     <ForceObjectAction>1</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
                     <MutexAction>0</MutexAction>
@@ -827,7 +827,7 @@
                 <Action>
                     <ActionNumber>26</ActionNumber>
                     <Identifier>ACTION_Attack_w0_delay</Identifier>
-                    <TimeTaken>45</TimeTaken>
+                    <TimeTaken>54</TimeTaken>
                     <ForceObjectAction>1</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
                     <MutexAction>0</MutexAction>
@@ -1160,7 +1160,7 @@
                     <ObjectiveNumber>1</ObjectiveNumber>
                     <Script>cs010_move</Script>
                     <Name>Move</Name>
-                    <Details> \Move to specified location\ \Move Speed: 4.5, MaxInc: 30\Vision Range: 25, Aggro Radius: 40</Details>
+                    <Details> \Move to specified location\ \Move Speed: 2.25, MaxInc: 30\Vision Range: 25, Aggro Radius: 40</Details>
                     <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
@@ -1174,7 +1174,7 @@
                     <ObjectiveNumber>3</ObjectiveNumber>
                     <Script>cs030_atk_move</Script>
                     <Name>Attack</Name>
-                    <Details>Attack target or Attack-Move to location \Reduced DPS when Energy is empty \[Weapons Avg Damage/10secs]\Gnd: 200 (-150),  R 15,  Sta C\Air: 70 (-35),  R 15,  Sta C</Details>
+                    <Details>Attack target or Attack-Move to location \6s firing cycle  (cancel-able) +4s reload \[Weapons Avg Damage/10secs]\Gnd: 450,  R 65,  SR 1,  Sta S</Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
                     <ParameterType>POSITION</ParameterType>
                 </Objective>

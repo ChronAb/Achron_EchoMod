@@ -1069,7 +1069,7 @@
                     <ObjectiveNumber>1</ObjectiveNumber>
                     <Script>cs010_move</Script>
                     <Name>Move</Name>
-                    <Details> \Move to specified location \Move Speed: 2.25, MaxInc: 45\Vision Range: 12, Aggro Radius: 25 \Invisible in Fog of War</Details>
+                    <Details> \Move to specified location \Move Speed: 2.25, MaxInc: 45\Vision Range: 12, Aggro Radius: 26 \Invisible in Fog of War</Details>
                     <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>

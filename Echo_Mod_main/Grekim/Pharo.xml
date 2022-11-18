@@ -5,7 +5,7 @@
         speed: 2 sq/s
         HP: 360 (180 HP/100QP)
         HP (shield): 540 (270 HP/100QP)
-        AG: 3/s (1.5 dps/100QP, *270)
+        AG: 4/s (2 dps/100QP, *360)
         AA: 0/s
     -->
     <AIScripts />
@@ -19,7 +19,7 @@
     <ActionStepModifiers>
         <ActionStepModifier>
             <Name>Pharo anti_gnd 1</Name>
-            <StrengthBase>6</StrengthBase>
+            <StrengthBase>8</StrengthBase>
             <StrengthRange>0</StrengthRange>
             <StrengthCount>0</StrengthCount>
             <Flags>
@@ -42,7 +42,7 @@
         </ActionStepModifier>
         <ActionStepModifier>
             <Name>Pharo anti_gnd 2</Name>
-            <StrengthBase>9</StrengthBase>
+            <StrengthBase>12</StrengthBase>
             <StrengthRange>0</StrengthRange>
             <StrengthCount>0</StrengthCount>
             <Flags>
@@ -1902,7 +1902,7 @@
                     <ObjectiveNumber>3</ObjectiveNumber>
                     <Script>cs030_atk_move</Script>
                     <Name>Attack</Name>
-                    <Details>Attack target or Attack-Move to location \ \[Weapons Avg Damage/10secs]\Gnd: 30,  R 10,  SR 5,  Sta C</Details>
+                    <Details>Attack target or Attack-Move to location \ \[Weapons Avg Damage/10secs]\Gnd: 40,  R 10,  SR 5,  Sta C</Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
                     <ParameterType>POSITION</ParameterType>
                 </Objective>

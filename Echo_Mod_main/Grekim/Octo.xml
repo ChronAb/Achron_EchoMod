@@ -6,7 +6,7 @@
         HP: 120 (60 HP/100QP)
             B-tech: 300 (150 HP/100QP)
             D-tech: 480 (240 HP/100QP)
-        AG: 4/s (2 dps/100QP, *120, *300, *480)
+        AG: 8/s (4 dps/100QP, *240, *600, *960)
         AA: 0/s
     -->
     <AIScripts />
@@ -41,7 +41,7 @@
     <ActionStepModifiers>
         <ActionStepModifier>
             <Name>Octo anti_gnd 1</Name>
-            <StrengthBase>2</StrengthBase>
+            <StrengthBase>4</StrengthBase>
             <StrengthRange>0</StrengthRange>
             <StrengthCount>0</StrengthCount>
             <Flags>
@@ -64,7 +64,7 @@
         </ActionStepModifier>
         <ActionStepModifier>
             <Name>Octo anti_gnd 2</Name>
-            <StrengthBase>6</StrengthBase>
+            <StrengthBase>12</StrengthBase>
             <StrengthRange>0</StrengthRange>
             <StrengthCount>0</StrengthCount>
             <Flags>
@@ -87,7 +87,7 @@
         </ActionStepModifier>
         <ActionStepModifier>
             <Name>Octo burst</Name>
-            <StrengthBase>80</StrengthBase>
+            <StrengthBase>160</StrengthBase>
             <StrengthRange>0</StrengthRange>
             <StrengthCount>0</StrengthCount>
             <Flags>
@@ -102,9 +102,9 @@
             <EffectRadius>2</EffectRadius>
             <EffectHeight>4</EffectHeight>
             <MaxEffectAngle>180</MaxEffectAngle>
-            <EffectSplashHeight>3</EffectSplashHeight>
-            <EffectSplashRadius>3</EffectSplashRadius>
-            <EffectSplashEffectiveRadius>4</EffectSplashEffectiveRadius>
+            <EffectSplashHeight>5</EffectSplashHeight>
+            <EffectSplashRadius>5</EffectSplashRadius>
+            <EffectSplashEffectiveRadius>10</EffectSplashEffectiveRadius>
             <SelfStatistic>DamageDealt</SelfStatistic>
             <TargetStatistic>DamageReceived</TargetStatistic>
         </ActionStepModifier>
@@ -690,7 +690,7 @@
                     <TimeTaken>10</TimeTaken>
                     <ForceObjectAction>0</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
-                    <MutexAction>0</MutexAction>
+                    <MutexAction>1</MutexAction>
                     <FailOnInvalidTarget>0</FailOnInvalidTarget>
                     <PreserveParameter>1</PreserveParameter>
                     <AIScriptCanRun>0</AIScriptCanRun>
@@ -724,7 +724,7 @@
                     <TimeTaken>27</TimeTaken>
                     <ForceObjectAction>1</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
-                    <MutexAction>0</MutexAction>
+                    <MutexAction>1</MutexAction>
                     <FailOnInvalidTarget>0</FailOnInvalidTarget>
                     <PreserveParameter>1</PreserveParameter>
                     <AIScriptCanRun>0</AIScriptCanRun>
@@ -739,7 +739,7 @@
                         <Condition>
                             <Resource>U_HP</Resource>
                             <Comparison>GREATER</Comparison>
-                            <Value>0</Value>
+                            <Value>36</Value>
                         </Condition>
                         <Condition>
                             <Resource>U_AMMO</Resource>
@@ -816,7 +816,7 @@
                     <TimeTaken>27</TimeTaken>
                     <ForceObjectAction>1</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
-                    <MutexAction>0</MutexAction>
+                    <MutexAction>1</MutexAction>
                     <FailOnInvalidTarget>0</FailOnInvalidTarget>
                     <PreserveParameter>1</PreserveParameter>
                     <AIScriptCanRun>0</AIScriptCanRun>
@@ -834,17 +834,17 @@
                             <Value>36</Value>
                         </Condition>
                         <Condition>
-                            <Resource>U_HP</Resource>
-                            <Comparison>GREATER</Comparison>
-                            <Value>0</Value>
-                        </Condition>
-                        <Condition>
                             <Resource>U_AMMO</Resource>
                             <Comparison>GEQUAL</Comparison>
                             <Value>100</Value>
                         </Condition>
                     </Conditions>
                     <Steps>
+                        <Step>
+                            <PrimitiveAction>SET_STATUS</PrimitiveAction>
+                            <Target>SELF</Target>
+                            <Type>STATUS_STASIS</Type>
+                        </Step>
                         <Step>
                             <PrimitiveAction>ATTACK</PrimitiveAction>
                             <Target>TARGET_UNIT</Target>
@@ -853,9 +853,11 @@
                             <ActionStepModifier>Octo burst</ActionStepModifier>
                         </Step>
                         <Step>
-                            <PrimitiveAction>SET_STATUS</PrimitiveAction>
+                            <PrimitiveAction>CONSUME_RESOURCE</PrimitiveAction>
                             <Target>SELF</Target>
-                            <Type>STATUS_STASIS</Type>
+                            <Type>U_HP</Type>
+                            <ValueEval>ONE</ValueEval>
+                            <Value>-1</Value>
                         </Step>
                     </Steps>
                 </Action>
@@ -865,7 +867,7 @@
                     <TimeTaken>26</TimeTaken>
                     <ForceObjectAction>1</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
-                    <MutexAction>0</MutexAction>
+                    <MutexAction>1</MutexAction>
                     <FailOnInvalidTarget>0</FailOnInvalidTarget>
                     <PreserveParameter>1</PreserveParameter>
                     <AIScriptCanRun>0</AIScriptCanRun>
@@ -1280,7 +1282,7 @@
                     <TimeTaken>27</TimeTaken>
                     <ForceObjectAction>1</ForceObjectAction>
                     <InterruptCurrentAction>0</InterruptCurrentAction>
-                    <MutexAction>0</MutexAction>
+                    <MutexAction>1</MutexAction>
                     <FailOnInvalidTarget>0</FailOnInvalidTarget>
                     <PreserveParameter>0</PreserveParameter>
                     <AIScriptCanRun>0</AIScriptCanRun>
@@ -2033,7 +2035,7 @@
                     <ObjectiveNumber>3</ObjectiveNumber>
                     <Script>cs030_atk_move</Script>
                     <Name>Attack</Name>
-                    <Details>Attack target or Attack-Move to location \+10% TSS Energy per attack \[Weapons Avg Damage/10secs]\Gnd: 40,  R 1,  SR 3,  Sta B</Details>
+                    <Details>Attack target or Attack-Move to location \+10% TSS Energy per attack \[Weapons Avg Damage/10secs]\Gnd: 80,  R 1,  SR 3,  Sta B</Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
                     <ParameterType>POSITION</ParameterType>
                 </Objective>

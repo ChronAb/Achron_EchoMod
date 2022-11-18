@@ -1532,7 +1532,7 @@
                     <ObjectiveNumber>3</ObjectiveNumber>
                     <Script>cs030_atk_move</Script>
                     <Name>Attack</Name>
-                    <Details>Attack target or Attack-Move to location \Reduced DPS when Energy is empty \[Weapons Avg Damage/10secs]\Gnd: 160 (-120),  R 15,  Sta A\Air: 120 (-60),  R 15,  Sta A</Details>
+                    <Details>Attack target or Attack-Move to location \Reduced DPS when Energy is empty \[Weapons Avg Damage/10secs]\Gnd: 160 (-120),  R 20,  Sta A\Air: 120 (-60),  R 15,  Sta A</Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
                     <ParameterType>POSITION</ParameterType>
                 </Objective>

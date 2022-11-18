@@ -31,7 +31,7 @@
             <AccuracyMultiplier>1</AccuracyMultiplier>
             <EffectTimeout>0</EffectTimeout>
             <MinEffectRadius>0</MinEffectRadius>
-            <EffectRadius>29</EffectRadius>
+            <EffectRadius>45</EffectRadius>
             <EffectHeight>30</EffectHeight>
             <MaxEffectAngle>60</MaxEffectAngle>
             <EffectSplashHeight>0</EffectSplashHeight>
@@ -2009,7 +2009,7 @@
                     <ObjectiveNumber>1</ObjectiveNumber>
                     <Script>cs010_move</Script>
                     <Name>Move</Name>
-                    <Details> \Move to specified location \Move Speed: 3 (hovercraft), MaxInc: 45\Vision Range: 18, Aggro Radius: 32 \Invisible in Fog of War</Details>
+                    <Details> \Move to specified location \Move Speed: 3 (hovercraft), MaxInc: 45\Vision Range: 18, Aggro Radius: 30 \Invisible in Fog of War</Details>
                     <ObjectiveControlShortcutNumber>0</ObjectiveControlShortcutNumber>
                 </Objective>
                 <Objective>
@@ -2023,7 +2023,7 @@
                     <ObjectiveNumber>3</ObjectiveNumber>
                     <Script>cs030_atk_move</Script>
                     <Name>Attack</Name>
-                    <Details>Attack target or Attack-Move to location \2X gnd atk when > 60 HP, 10 E, 1000 QP\[Weapons Avg Damage/10secs]\Gnd: 30 (+30),  R 28,  Sta B\Air: 60,  R 24,  SR 4,  Sta C</Details>
+                    <Details>Attack target or Attack-Move to location \2X gnd atk when > 60 HP, 10 E, 1000 QP\[Weapons Avg Damage/10secs]\Gnd: 30 (+30),  R 44,  Sta B\Air: 60,  R 24,  SR 4,  Sta C</Details>
                     <ObjectiveControlShortcutNumber>1</ObjectiveControlShortcutNumber>
                     <ParameterType>POSITION</ParameterType>
                 </Objective>
